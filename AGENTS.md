@@ -17,6 +17,11 @@ Before making changes, read the documents relevant to the task:
   implementation plan and file boundaries.
 - `docs/superpowers/plans/2026-08-05-phase-1-evidence-completion.md` for the
   scorecard, published evidence, and release-narrative completion plan.
+- `docs/superpowers/plans/2026-08-05-core-explorer.md` for Phase 2 explorer
+  state, filtering, comparison, view, and export requirements.
+- `docs/superpowers/specs/2026-08-05-explorer-three-column-layout-design.md`
+  and `docs/superpowers/plans/2026-08-05-explorer-three-column-layout.md` for
+  the approved wide-screen explorer layout and responsive behavior.
 - `snyk-vulnbench-js-1.0/UPSTREAM-PROVENANCE.md` for the imported research
   source revision and immutability policy.
 
@@ -46,6 +51,9 @@ The implemented foundation includes:
 - `src/components/site/` — global navigation, footer, wordmark, and page shell.
 - `src/components/home/` — homepage narrative sections.
 - `src/components/charts/` — typed interactive analytical components.
+- `src/components/explorer/` — Phase 2 URL state, selectors, controls,
+  comparison, exports, and guided explorer views.
+- `src/data/explorer/` — validated browser-safe explorer dataset.
 - `src/data/releases/` — release schema, manifests, selectors, and contract
   tests.
 - `src/styles/` — global design tokens and shared styles.

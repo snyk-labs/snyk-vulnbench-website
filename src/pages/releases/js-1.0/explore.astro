@@ -1,12 +1,12 @@
 ---
-import { RecurrenceContrast } from "../../../components/charts/RecurrenceContrast";
+import { ExplorerApp } from "../../../components/explorer/ExplorerApp";
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { loadJs10ExplorerDataset } from "../../../data/explorer/js-1.0";
 import { currentRelease } from "../../../data/releases";
-import { getHeadlineEvidence } from "../../../data/releases/headline";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-const evidence = getHeadlineEvidence("js-1.0");
+const explorerDataset = await loadJs10ExplorerDataset();
 ---
 
 <BaseLayout
@@ -15,12 +15,12 @@ const evidence = getHeadlineEvidence("js-1.0");
   release={currentRelease}
 >
   <PageHero
-    eyebrow="JS 1.0 · Evidence view"
-    title="Explore the published recurrence evidence"
-    description="This Phase 1 view preserves the release’s central evidence, exact values, provenance, and interpretation boundaries. The configurable multi-view workbench follows in Phase 2."
+    eyebrow="JS 1.0 · Interactive explorer"
+    title="Test the published conclusions against the evidence"
+    description="Filter configurations and projects, move between guided analytical views, compare up to four configurations, and share deterministic explorer state."
   >
     <div slot="actions" class="button-row">
-      <a class="button" href="#repeatability">View repeatability</a>
+      <a class="button" href="#explorer-workbench">Open the workbench</a>
       <a class="button secondary" href={currentRelease.links.overview}
         >Read the release narrative</a
       >
@@ -28,172 +28,17 @@ const evidence = getHeadlineEvidence("js-1.0");
     <ReleaseMeta slot="aside" release={currentRelease} />
   </PageHero>
 
-  <section class="context-strip" aria-label="Explorer context">
-    <div class="container">
-      <span><strong>Release</strong> JS 1.0</span>
-      <span><strong>Dataset</strong> <span class="metric">1.0.0</span></span>
-      <span><strong>Aggregation</strong> Unique signatures</span>
-      <span><strong>Runs represented</strong> 250 model runs</span>
-    </div>
-  </section>
-
-  <section class="section" id="repeatability">
-    <div class="container explorer-grid">
-      <aside class="guide">
-        <p class="eyebrow">Guided view</p>
-        <h2>Finding recurrence</h2>
-        <p>
-          Compare how often normalized signatures appeared across five
-          identical repetitions.
-        </p>
-        <dl>
-          <div>
-            <dt>Finding status</dt>
-            <dd>Matched and unmatched</dd>
-          </div>
-          <div>
-            <dt>Mode</dt>
-            <dd>Unique signatures</dd>
-          </div>
-          <div>
-            <dt>Unit</dt>
-            <dd>Count and percentage</dd>
-          </div>
-        </dl>
-        <p class="phase-note">
-          Filters, pinned comparisons, URL-state restoration, and additional
-          views are deliberately reserved for the tested Phase 2 explorer.
-        </p>
-      </aside>
-
-      <div>
-        <div class="section-heading">
-          <p class="eyebrow">Published default view</p>
-          <h2>Stable matches, variable extras</h2>
-          <p class="lede">
-            134 of 158 reference-matched signatures recurred in all five runs.
-            Half of unique unmatched signatures appeared only once.
-          </p>
-        </div>
-        <RecurrenceContrast evidence={evidence} client:visible />
-        <div class="definition">
-          <h3>Metric definition</h3>
-          <p>
-            Finding recurrence counts the identical repetitions in which a
-            normalized finding signature appeared. Signature normalization and
-            reference matching follow the documented JS 1.0 scorer.
-          </p>
-          <p>
-            <strong>Caveat:</strong> unmatched is not a synonym for false
-            positive, and reference-matched is not a synonym for independently
-            adjudicated true positive.
-          </p>
-        </div>
-      </div>
-    </div>
+  <section id="explorer-workbench">
+    <ExplorerApp
+      dataset={explorerDataset}
+      initialSearch=""
+      client:load
+    />
   </section>
 </BaseLayout>
 
 <style>
-  .context-strip {
-    border-bottom: 1px solid var(--rule);
-    background: var(--ink);
-    color: var(--paper-raised);
-  }
-
-  .context-strip .container {
-    display: flex;
-    padding-block: var(--space-3);
-    gap: var(--space-3) var(--space-5);
-    flex-wrap: wrap;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-  }
-
-  .context-strip strong {
-    color: #aaa2b0;
-    font-weight: 500;
-  }
-
-  .explorer-grid {
-    display: grid;
-    gap: var(--space-6);
-  }
-
-  .guide {
-    padding: var(--space-4);
-    border: 1px solid var(--rule-strong);
-    background: var(--paper-muted);
-    align-self: start;
-  }
-
-  .guide h2 {
-    margin-top: var(--space-2);
-    font-size: var(--step-2);
-  }
-
-  .guide > p:not(.eyebrow) {
-    margin-top: var(--space-3);
-    color: var(--ink-soft);
-  }
-
-  .guide dl {
-    display: grid;
-    margin: var(--space-5) 0 0;
-    gap: var(--space-3);
-  }
-
-  .guide dl div {
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--rule);
-  }
-
-  .guide dt {
-    color: var(--ink-faint);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-  }
-
-  .guide dd {
-    margin: 0.15rem 0 0;
-    font-size: var(--step--1);
-    font-weight: 700;
-  }
-
-  .phase-note {
-    padding-left: var(--space-3);
-    border-left: 0.2rem solid var(--warning);
-    font-size: var(--step--1);
-  }
-
-  .definition {
-    display: grid;
-    padding: var(--space-4);
-    margin-top: var(--space-5);
-    border-left: 0.3rem solid var(--purple);
-    background: var(--purple-soft);
-    gap: var(--space-2);
-  }
-
-  .definition h3 {
-    font-size: var(--step-0);
-  }
-
-  .definition p {
-    color: var(--ink-soft);
-    font-size: var(--step--1);
-  }
-
-  @media (min-width: 62rem) {
-    .explorer-grid {
-      grid-template-columns: 18rem minmax(0, 1fr);
-      align-items: start;
-    }
-
-    .guide {
-      position: sticky;
-      top: 1rem;
-    }
+  #explorer-workbench {
+    border-top: 1px solid var(--ink);
   }
 </style>

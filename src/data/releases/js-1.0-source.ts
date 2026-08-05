@@ -65,6 +65,23 @@ const coverageSchema = z.object({
   ),
 });
 
+const unmatchedCoverageSchema = z.object({
+  unit: z.literal("number"),
+  columns: z.array(
+    z.object({
+      key: z.string().min(1),
+      label: z.string().min(1),
+    }),
+  ),
+  rows: z.array(
+    z.object({
+      label: z.string().min(1),
+      runConfigType: z.literal("model"),
+      values: z.record(z.string(), z.number().nonnegative()),
+    }),
+  ),
+});
+
 const caseRowsSchema = z.object({
   unit: z.string().min(1),
   rows: z.array(
@@ -122,6 +139,14 @@ export interface PublishedEvidence {
       values: Record<string, number>;
     }[];
   };
+  unmatchedCoverage: {
+    columns: { key: string; label: string }[];
+    rows: {
+      name: string;
+      type: "model";
+      values: Record<string, number>;
+    }[];
+  };
   largerFixture: {
     name: "JS Todo App (SQLite 4)";
     rows: {
@@ -145,7 +170,7 @@ export interface PublishedEvidence {
   provenance: {
     release: "Snyk VulnBench JS 1.0";
     datasetVersion: "1.0.0";
-    aggregation: "Macro average across 10 fixtures and 5 repetitions";
+    aggregation: string;
     source: "/data/js-1.0/published-evidence.json";
   };
 }
@@ -242,6 +267,26 @@ function recurrenceDistribution(
       .sort((left, right) => Number(left.label[0]) - Number(right.label[0]))
       .map(({ count }) => count),
   };
+}
+
+function validateMatrixKeys(
+  columns: { key: string }[],
+  rows: { label: string; values: Record<string, number> }[],
+  context: string,
+) {
+  const keys = columns.map(({ key }) => key);
+  if (new Set(keys).size !== keys.length) {
+    throw new Error(`${context} columns must be unique`);
+  }
+  const sortedKeys = [...keys].sort();
+  for (const row of rows) {
+    if (
+      JSON.stringify(Object.keys(row.values).sort()) !==
+      JSON.stringify(sortedKeys)
+    ) {
+      throw new Error(`${context} keys for ${row.label} do not match columns`);
+    }
+  }
 }
 
 export async function loadJs10PublishedEvidence(
@@ -380,21 +425,25 @@ export async function loadJs10PublishedEvidence(
   if (coverageSource.columns.length !== 17 || coverageSource.rows.length !== 6) {
     throw new Error("Published vulnerability coverage matrix is incomplete");
   }
-  const coverageKeys = coverageSource.columns.map(({ key }) => key);
-  if (new Set(coverageKeys).size !== coverageKeys.length) {
-    throw new Error("Published vulnerability coverage columns must be unique");
+  validateMatrixKeys(
+    coverageSource.columns,
+    coverageSource.rows,
+    "Published vulnerability coverage",
+  );
+  const unmatchedCoverageSource = unmatchedCoverageSchema.parse(
+    requireChart(calloutManifest, "extra-reports-by-type-and-model"),
+  );
+  if (
+    unmatchedCoverageSource.columns.length !== 10 ||
+    unmatchedCoverageSource.rows.length !== 5
+  ) {
+    throw new Error("Published unmatched coverage matrix is incomplete");
   }
-  const sortedCoverageKeys = [...coverageKeys].sort();
-  for (const row of coverageSource.rows) {
-    if (
-      JSON.stringify(Object.keys(row.values).sort()) !==
-      JSON.stringify(sortedCoverageKeys)
-    ) {
-      throw new Error(
-        `Coverage keys for ${row.label} do not match the published columns`,
-      );
-    }
-  }
+  validateMatrixKeys(
+    unmatchedCoverageSource.columns,
+    unmatchedCoverageSource.rows,
+    "Published unmatched coverage",
+  );
 
   const largerFixtureSource = validateMetricSummary(
     metricRowsSchema.parse(
@@ -431,6 +480,16 @@ export async function loadJs10PublishedEvidence(
     coverage: {
       columns: coverageSource.columns,
       rows: coverageSource.rows.map(
+        ({ label, runConfigType, values }) => ({
+          name: label,
+          type: runConfigType,
+          values,
+        }),
+      ),
+    },
+    unmatchedCoverage: {
+      columns: unmatchedCoverageSource.columns,
+      rows: unmatchedCoverageSource.rows.map(
         ({ label, runConfigType, values }) => ({
           name: label,
           type: runConfigType,

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { ConfigurationEvidence } from "../../data/releases/js-1.0-source";
 
 interface ConfigurationScorecardProps {
+  aggregationCaption?: string;
   configurations: ConfigurationEvidence[];
 }
 
@@ -82,6 +83,7 @@ const columns: Column[] = [
 ];
 
 export function ConfigurationScorecard({
+  aggregationCaption = "Macro average across 10 fixtures and 5 repetitions",
   configurations,
 }: ConfigurationScorecardProps) {
   const [sort, setSort] = useState<{
@@ -178,8 +180,7 @@ export function ConfigurationScorecard({
 
       <div className="configuration-scorecard__caption">
         <p>
-          Macro average across 10 fixtures and 5 repetitions · Dataset 1.0.0 ·
-          Snyk VulnBench JS 1.0
+          {aggregationCaption} · Dataset 1.0.0 · Snyk VulnBench JS 1.0
         </p>
         <p>
           <strong>Interpretation boundary:</strong> Snyk Code’s 100% row is

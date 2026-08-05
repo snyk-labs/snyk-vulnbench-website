@@ -6,8 +6,9 @@ The initial release will showcase [Snyk VulnBench JS 1.0](https://snyk.io/blog/s
 
 ## Project status
 
-The Phase 1 static foundation and JS 1.0 research narrative are implemented.
-The next delivery phase is the configurable benchmark explorer.
+The Phase 1 static research narrative and Phase 2 configurable benchmark
+explorer are implemented. The next delivery phase adds finding-level and richer
+case evidence.
 
 ## Project documentation
 

@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type {
   PublishedEvidence,
   ScatterPoint,
 } from "../../data/releases/js-1.0-source";
+import { downloadCsv, downloadSvg, toCsv } from "../explorer/export";
 
 interface EvidenceScatterProps {
   title: string;
   points: ScatterPoint[];
   xLabel: string;
-  xUnit: "percentage-points" | "usd";
+  xUnit: "percentage-points" | "usd" | "tokens" | "seconds";
   yLabel: string;
   interpretation: string;
   caveat: string;
   provenance: PublishedEvidence["provenance"];
+  exportFilename?: string;
 }
 
 const configurationStyles: Record<
@@ -64,9 +66,10 @@ function pointStyle(name: string, index: number) {
 }
 
 function formatX(value: number, unit: EvidenceScatterProps["xUnit"]) {
-  return unit === "usd"
-    ? `$${value.toFixed(3)}`
-    : `${(value * 100).toFixed(1)} pp`;
+  if (unit === "usd") return `$${value.toFixed(3)}`;
+  if (unit === "tokens") return Math.round(value).toLocaleString("en-US");
+  if (unit === "seconds") return `${value.toFixed(1)} s`;
+  return `${(value * 100).toFixed(1)} pp`;
 }
 
 function scale(
@@ -96,7 +99,9 @@ export function EvidenceScatter({
   interpretation,
   caveat,
   provenance,
+  exportFilename,
 }: EvidenceScatterProps) {
+  const svgRef = useRef<SVGSVGElement>(null);
   const [activeName, setActiveName] = useState(points[0]?.name ?? "");
   const active = points.find(({ name }) => name === activeName) ?? points[0];
 
@@ -113,7 +118,13 @@ export function EvidenceScatter({
   const xTicks = ticks(xMinimum, xMaximum);
   const yTicks = ticks(yMinimum, yMaximum);
   const xAxisLabel =
-    xUnit === "usd" ? `${xLabel} (USD)` : `${xLabel} (percentage points)`;
+    xUnit === "usd"
+      ? `${xLabel} (USD)`
+      : xUnit === "tokens"
+        ? `${xLabel} (tokens)`
+        : xUnit === "seconds"
+          ? `${xLabel} (seconds)`
+          : `${xLabel} (percentage points)`;
   const yAxisLabel = `${yLabel} (%)`;
 
   return (
@@ -122,6 +133,7 @@ export function EvidenceScatter({
         aria-label={title}
         className="evidence-scatter__plot"
         role="img"
+        ref={svgRef}
         viewBox="0 0 720 420"
       >
         <title>{title}</title>
@@ -189,6 +201,35 @@ export function EvidenceScatter({
           {yAxisLabel}
         </text>
       </svg>
+
+      {exportFilename && (
+        <div className="evidence-scatter__exports">
+          <button
+            onClick={() =>
+              downloadCsv(
+                `${exportFilename}.csv`,
+                toCsv(
+                  ["Configuration", xLabel, yLabel],
+                  points.map((point) => [point.name, point.x, point.y]),
+                ),
+              )
+            }
+            type="button"
+          >
+            Export CSV
+          </button>
+          <button
+            onClick={() => {
+              if (svgRef.current) {
+                downloadSvg(`${exportFilename}.svg`, svgRef.current);
+              }
+            }}
+            type="button"
+          >
+            Export SVG
+          </button>
+        </div>
+      )}
 
       <ul className="evidence-scatter__legend" aria-label={`${title} legend`}>
         {points.map((point, index) => {
@@ -313,6 +354,23 @@ export function EvidenceScatter({
           border-inline: 1px solid var(--rule-strong);
           list-style: none;
           grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        }
+
+        .evidence-scatter__exports {
+          display: flex;
+          padding: 0.55rem;
+          border-inline: 1px solid var(--rule-strong);
+          background: var(--paper-muted);
+          gap: 0.5rem;
+        }
+
+        .evidence-scatter__exports button {
+          min-height: 2.2rem;
+          padding: 0.35rem 0.55rem;
+          border: 1px solid var(--ink);
+          background: var(--paper-raised);
+          font-size: 0.72rem;
+          font-weight: 700;
         }
 
         .evidence-scatter__legend li {
