@@ -1,0 +1,149 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+html[data-design-theme="snyk-2026"],
+html[data-design-theme="snyk-2026"][data-theme="light"] {
+  background: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);
+  color-scheme: dark;
+
+  --theme-paper: #030328;
+  --theme-paper-raised: #030328;
+  --theme-paper-muted: #2B0250;
+  --theme-ink: #FFFFFF;
+  --theme-ink-soft: rgba(255, 255, 255, 0.78);
+  --theme-ink-faint: rgba(255, 255, 255, 0.65);
+  --theme-rule: rgba(255, 255, 255, 0.12);
+  --theme-rule-strong: rgba(255, 255, 255, 0.24);
+  --theme-purple: #6F00DD;
+  --theme-purple-dark: #FF00FF;
+  --theme-purple-soft: #2B0250;
+  --theme-matched: #FF00FF;
+  --theme-matched-soft: #2B0250;
+  --theme-unmatched: #F3552E;
+  --theme-unmatched-soft: #2B0250;
+  --theme-warning: #FE9104;
+  --theme-warning-soft: #2B0250;
+  --theme-inverse-text: #030328;
+  --theme-evidence-surface: #030328;
+  --theme-evidence-text: #FFFFFF;
+  --theme-evidence-muted: rgba(255, 255, 255, 0.65);
+  --theme-evidence-rule: rgba(255, 255, 255, 0.12);
+  --theme-evidence-hover: #2B0250;
+  --theme-evidence-accent: #FF00FF;
+  --theme-evidence-matched: #FF00FF;
+  --theme-evidence-unmatched: #F3552E;
+  --theme-heatmap-0: rgba(255, 255, 255, 0.04);
+  --theme-heatmap-1: rgba(255, 255, 255, 0.08);
+  --theme-heatmap-2: rgba(255, 255, 255, 0.12);
+  --theme-heatmap-3: rgba(255, 255, 255, 0.18);
+  --theme-heatmap-4: rgba(255, 255, 255, 0.24);
+  --theme-heatmap-text-strong: #FFFFFF;
+  --theme-series-1: #6F00DD;
+  --theme-series-2: #FF00FF;
+  --theme-series-3: #F3552E;
+  --theme-series-4: #FE9104;
+  --theme-series-5: #2B0250;
+  --theme-series-6: #FFFFFF;
+  --theme-series-fallback: rgba(255, 255, 255, 0.65);
+  --font-sans: "Geist Variable", sans-serif;
+  --font-mono: "Geist Mono Variable", monospace;
+  --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #FF00FF;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] {
+  background: #030328;
+  color-scheme: dark;
+
+  --theme-paper: #030328;
+  --theme-paper-raised: #030328;
+  --theme-paper-muted: #2B0250;
+  --theme-ink: #FFFFFF;
+  --theme-ink-soft: rgba(255, 255, 255, 0.78);
+  --theme-ink-faint: rgba(255, 255, 255, 0.65);
+  --theme-rule: rgba(255, 255, 255, 0.12);
+  --theme-rule-strong: rgba(255, 255, 255, 0.24);
+  --theme-purple: #6F00DD;
+  --theme-purple-dark: #FF00FF;
+  --theme-purple-soft: #2B0250;
+  --theme-matched: #FF00FF;
+  --theme-matched-soft: #2B0250;
+  --theme-unmatched: #F3552E;
+  --theme-unmatched-soft: #2B0250;
+  --theme-warning: #FE9104;
+  --theme-warning-soft: #2B0250;
+  --theme-inverse-text: #030328;
+  --theme-evidence-surface: #030328;
+  --theme-evidence-text: #FFFFFF;
+  --theme-evidence-muted: rgba(255, 255, 255, 0.65);
+  --theme-evidence-rule: rgba(255, 255, 255, 0.12);
+  --theme-evidence-hover: #2B0250;
+  --theme-evidence-accent: #FF00FF;
+  --theme-evidence-matched: #FF00FF;
+  --theme-evidence-unmatched: #F3552E;
+  --theme-heatmap-0: rgba(255, 255, 255, 0.04);
+  --theme-heatmap-1: rgba(255, 255, 255, 0.08);
+  --theme-heatmap-2: rgba(255, 255, 255, 0.12);
+  --theme-heatmap-3: rgba(255, 255, 255, 0.18);
+  --theme-heatmap-4: rgba(255, 255, 255, 0.24);
+  --theme-heatmap-text-strong: #FFFFFF;
+  --theme-series-1: #6F00DD;
+  --theme-series-2: #FF00FF;
+  --theme-series-3: #F3552E;
+  --theme-series-4: #FE9104;
+  --theme-series-5: #2B0250;
+  --theme-series-6: #FFFFFF;
+  --theme-series-fallback: rgba(255, 255, 255, 0.65);
+  --font-sans: "Geist Variable", sans-serif;
+  --font-mono: "Geist Mono Variable", monospace;
+  --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #FF00FF;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-design-theme="snyk-2026"]:not([data-theme]) {
+    background: #030328;
+    color-scheme: dark;
+
+    --theme-paper: #030328;
+    --theme-paper-raised: #030328;
+    --theme-paper-muted: #2B0250;
+    --theme-ink: #FFFFFF;
+    --theme-ink-soft: rgba(255, 255, 255, 0.78);
+    --theme-ink-faint: rgba(255, 255, 255, 0.65);
+    --theme-rule: rgba(255, 255, 255, 0.12);
+    --theme-rule-strong: rgba(255, 255, 255, 0.24);
+    --theme-purple: #6F00DD;
+    --theme-purple-dark: #FF00FF;
+    --theme-purple-soft: #2B0250;
+    --theme-matched: #FF00FF;
+    --theme-matched-soft: #2B0250;
+    --theme-unmatched: #F3552E;
+    --theme-unmatched-soft: #2B0250;
+    --theme-warning: #FE9104;
+    --theme-warning-soft: #2B0250;
+    --theme-inverse-text: #030328;
+    --theme-evidence-surface: #030328;
+    --theme-evidence-text: #FFFFFF;
+    --theme-evidence-muted: rgba(255, 255, 255, 0.65);
+    --theme-evidence-rule: rgba(255, 255, 255, 0.12);
+    --theme-evidence-hover: #2B0250;
+    --theme-evidence-accent: #FF00FF;
+    --theme-evidence-matched: #FF00FF;
+    --theme-evidence-unmatched: #F3552E;
+    --theme-heatmap-0: rgba(255, 255, 255, 0.04);
+    --theme-heatmap-1: rgba(255, 255, 255, 0.08);
+    --theme-heatmap-2: rgba(255, 255, 255, 0.12);
+    --theme-heatmap-3: rgba(255, 255, 255, 0.18);
+    --theme-heatmap-4: rgba(255, 255, 255, 0.24);
+    --theme-heatmap-text-strong: #FFFFFF;
+    --theme-series-1: #6F00DD;
+    --theme-series-2: #FF00FF;
+    --theme-series-3: #F3552E;
+    --theme-series-4: #FE9104;
+    --theme-series-5: #2B0250;
+    --theme-series-6: #FFFFFF;
+    --theme-series-fallback: rgba(255, 255, 255, 0.65);
+    --font-sans: "Geist Variable", sans-serif;
+    --font-mono: "Geist Mono Variable", monospace;
+    --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #FF00FF;
+  }
+}

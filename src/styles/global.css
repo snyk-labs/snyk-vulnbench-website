@@ -1,4 +1,5 @@
 @import "./tokens.css";
+@import "./tokens-snyk-2026.css";
 
 *,
 *::before,
@@ -125,6 +126,35 @@ ol {
 .metric {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+}
+
+.coverage-cell--not-applicable {
+  background-color: var(--paper-muted);
+}
+
+.coverage-cell--heatmap-0 {
+  background-color: var(--heatmap-0);
+  color: var(--heatmap-text-strong);
+}
+
+.coverage-cell--heatmap-1 {
+  background-color: var(--heatmap-1);
+  color: var(--heatmap-text-strong);
+}
+
+.coverage-cell--heatmap-2 {
+  background-color: var(--heatmap-2);
+  color: var(--heatmap-text-strong);
+}
+
+.coverage-cell--heatmap-3 {
+  background-color: var(--heatmap-3);
+  color: var(--heatmap-text-strong);
+}
+
+.coverage-cell--heatmap-4 {
+  background-color: var(--heatmap-4);
+  color: var(--heatmap-text-strong);
 }
 
 .button-row {
