@@ -148,6 +148,25 @@ logo, primary headline, navigation, and footer.
 
 The Classic design keeps the current VulnBench wordmark and assets unchanged.
 
+### Favicons and social assets
+
+Static identity assets follow the build-selected design theme rather than the
+visitor's color mode:
+
+- Classic builds keep the current favicon, default Open Graph image, and
+  generated chart share cards unchanged.
+- Snyk 2026 builds select a local branded favicon, branded default Open Graph
+  image, and branded generated share-card palette and typography.
+- Snyk 2026 social assets use a canonical Midnight or Brand-Gradient
+  composition with solid white text. They do not attempt to infer the
+  recipient's Light or Dark preference.
+- Social assets preserve the same release title, metric context, dataset
+  version, provenance, and scientific caveats as Classic assets.
+
+The asset choice is resolved during static generation. A Classic deployment
+does not publish links to the branded variants, and a branded deployment does
+not rely on runtime theme state for external previews.
+
 ## Content and component treatment
 
 The homepage receives the strongest branded composition:
@@ -270,9 +289,12 @@ until corrected.
 
 The README documents the optional build variable and keeps Classic as the
 unconfigured behavior. Contributor documentation records the local branded
-verification command and asset provenance. The original dark-mode design
-remains the source of truth for Classic; this design supersedes its visual rules
-only when `data-design-theme="snyk-2026"`.
+verification command and asset provenance. `AGENTS.md`, `CLAUDE.md`, and
+`docs/CONVENTIONS.md` explicitly scope the existing warm-neutral and
+no-gradient rules to Classic and identify this specification as the governing
+visual source for Snyk 2026. The original dark-mode design remains the source of
+truth for Classic; this design supersedes its visual rules only when
+`data-design-theme="snyk-2026"`.
 
 Example deployment commands:
 
