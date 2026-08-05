@@ -148,3 +148,6 @@ vite.config.ts.timestamp-*
 # Browser test output
 test-results/
 playwright-report/
+
+# Isolated agent worktrees
+.worktrees/
