@@ -8,6 +8,8 @@ the whole repository unless a more specific nested `AGENTS.md` overrides it.
 Before making changes, read the documents relevant to the task:
 
 - `README.md` for the public project overview.
+- `docs/CONVENTIONS.md` for durable implementation lessons established through
+  accepted product feedback and code review.
 - `docs/superpowers/specs/2026-08-04-vulnbench-website-design.md` for the
   approved product, content, visual, architecture, accessibility, and delivery
   requirements.
@@ -169,6 +171,8 @@ full verification suite.
   workflows, architecture, configuration, or scientific assumptions.
 - Put durable project details in `docs/`; keep the root README focused on public
   project discovery.
+- When accepted feedback establishes a reusable implementation principle,
+  capture its essence and verification guidance in `docs/CONVENTIONS.md`.
 - Prefer linking to the source of truth over duplicating long requirements.
 
 ## Git and Review
