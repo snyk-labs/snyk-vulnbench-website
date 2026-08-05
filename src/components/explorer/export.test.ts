@@ -4,6 +4,7 @@ import { barChartSvg, serializeSvg, toCsv } from "./export";
 describe("explorer exports", () => {
   afterEach(() => {
     document.documentElement.removeAttribute("style");
+    document.documentElement.removeAttribute("data-design-theme");
     document.body.innerHTML = "";
   });
 
@@ -104,5 +105,37 @@ describe("explorer exports", () => {
     expect(svg).toContain(
       'font-family="&quot;Export Mono&quot;, monospace"',
     );
+  });
+
+  it("inlines computed Snyk 2026 colors and fonts without Classic fallbacks", () => {
+    document.documentElement.dataset.designTheme = "snyk-2026";
+    document.body.innerHTML = `
+      <style>
+        html[data-design-theme="snyk-2026"] {
+          --paper-raised: #030328;
+          --ink: #FFFFFF;
+          --matched: #FF00FF;
+          --unmatched: #F3552E;
+          --series-fallback: #6F00DD;
+          --font-sans: "Geist Variable", sans-serif;
+          --font-mono: "Geist Mono Variable", monospace;
+        }
+      </style>`;
+
+    const svg = barChartSvg("Snyk reference agreement", [
+      { label: "Reference-matched", value: 134, maximum: 158, tone: "matched" },
+      { label: "Unmatched", value: 80, maximum: 161, tone: "unmatched" },
+      { label: "All signatures", value: 314, maximum: 319 },
+    ]);
+
+    expect(svg).toContain('fill="#030328"');
+    expect(svg).toContain('fill="#FFFFFF"');
+    expect(svg).toContain('fill="#FF00FF"');
+    expect(svg).toContain('fill="#F3552E"');
+    expect(svg).toContain('fill="#6F00DD"');
+    expect(svg).toContain("Geist Variable");
+    expect(svg).toContain("Geist Mono Variable");
+    expect(svg).not.toContain("var(--");
+    expect(svg).not.toMatch(/Inter|#087c71|#b54c31|#fffdf8/i);
   });
 });
