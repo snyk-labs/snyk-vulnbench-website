@@ -9,14 +9,19 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "build": "astro build",
+    "build:snyk-2026": "VULNBENCH_DESIGN_THEME=snyk-2026 astro build",
     "preview": "astro preview --host 0.0.0.0",
     "check": "astro check",
     "test": "npm run test:unit",
     "test:unit": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
+    "test:e2e:snyk-2026": "playwright test --config=playwright.snyk-2026.config.ts",
     "check:budget": "node scripts/check-build-budget.mjs",
+    "check:brand": "node scripts/check-snyk-brand.mjs",
     "check:releases": "node scripts/check-release-isolation.mjs",
-    "verify": "npm run check && npm run test:unit && npm run build && npm run check:releases && npm run check:budget && npm run test:e2e"
+    "verify:classic": "npm run check && npm run test:unit && npm run build && npm run check:releases && npm run check:budget && npm run test:e2e",
+    "verify:snyk-2026": "npm run check && npm run test:unit && npm run build:snyk-2026 && npm run check:releases && npm run check:budget && npm run check:brand && npm run test:e2e:snyk-2026",
+    "verify": "npm run verify:classic && npm run verify:snyk-2026"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",

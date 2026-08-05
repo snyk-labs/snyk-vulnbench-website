@@ -5,7 +5,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  testMatch: "design-theme-mobile.spec.ts",
+  testMatch: "design-theme*.spec.ts",
   fullyParallel: true,
   forbidOnly: true,
   retries: 0,

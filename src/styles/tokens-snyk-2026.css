@@ -2,6 +2,11 @@
 @import "@fontsource-variable/geist-mono";
 
 html[data-design-theme="snyk-2026"],
+html[data-design-theme="snyk-2026"] body {
+  overflow-x: hidden;
+}
+
+html[data-design-theme="snyk-2026"],
 html[data-design-theme="snyk-2026"][data-theme="light"] {
   background: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);
   color-scheme: dark;

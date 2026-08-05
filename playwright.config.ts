@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  testIgnore: "**/design-theme-mobile.spec.ts",
+  testIgnore: "**/design-theme*.spec.ts",
   fullyParallel: true,
   forbidOnly: true,
   retries: 0,

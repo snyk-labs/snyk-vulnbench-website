@@ -1,48 +1,13 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import {
+  expectTheme,
+  prepareTheme,
+  THEME_KEY,
+  themeToggle,
+} from "./support/theme";
 
 const LIGHT_THEME_COLOR = "#f7f4ed";
 const DARK_THEME_COLOR = "#211e24";
-const THEME_KEY = "vulnbench-theme";
-
-async function prepareTheme(
-  page: Page,
-  colorScheme: "light" | "dark",
-  storedPreference: string | null = null,
-) {
-  await page.emulateMedia({ colorScheme });
-  await page.addInitScript(
-    ({ preference }) => {
-      localStorage.clear();
-      if (preference !== null) {
-        localStorage.setItem("vulnbench-theme", preference);
-      }
-    },
-    { preference: storedPreference },
-  );
-}
-
-async function expectTheme(
-  page: Page,
-  theme: "light" | "dark",
-  themeColor: string,
-) {
-  await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-  await expect(page.locator("html")).toHaveAttribute("style", /color-scheme/);
-  expect(
-    await page.locator("html").evaluate((element) => element.style.colorScheme),
-  ).toBe(theme);
-  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
-    "content",
-    themeColor,
-  );
-}
-
-function themeToggle(page: Page, name: "light" | "dark") {
-  return page.getByRole("button", {
-    name: `Switch to ${name} theme`,
-    exact: true,
-  });
-}
 
 test("initializes the light theme from a light system preference", async ({
   page,

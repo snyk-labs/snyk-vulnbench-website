@@ -1,17 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { prepareTheme } from "./support/theme";
 
 test.describe("Snyk 2026 mobile shell", () => {
   test.use({ viewport: { width: 320, height: 900 } });
 
   for (const colorMode of ["light", "dark"] as const) {
     test(`fits the homepage at 320px in ${colorMode} mode`, async ({ page }) => {
-      await page.emulateMedia({ colorScheme: colorMode });
-      await page.addInitScript(
-        ({ mode }) => {
-          localStorage.setItem("vulnbench-theme", mode);
-        },
-        { mode: colorMode },
-      );
+      await prepareTheme(page, colorMode, colorMode);
       await page.goto("/");
 
       await expect(page.locator("html")).toHaveAttribute(
