@@ -180,6 +180,7 @@ export function EvidenceScatter({
           const y = scale(point.y, yMinimum, yMaximum, 320, 66);
           return (
             <text
+              className="configuration-plot-marker"
               data-configuration={point.name}
               data-testid="configuration-plot-marker"
               fill={style.color}
@@ -187,9 +188,6 @@ export function EvidenceScatter({
               fontWeight="800"
               key={point.name}
               paintOrder="stroke fill"
-              stroke="var(--ink)"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
               textAnchor="middle"
               x={x}
               y={y}
@@ -254,10 +252,20 @@ export function EvidenceScatter({
                 onMouseEnter={() => setActiveName(point.name)}
                 type="button"
               >
+                <span
+                  aria-hidden="true"
+                  className="evidence-scatter__legend-marker--classic"
+                  data-shape={style.shape}
+                  data-testid="configuration-marker-classic"
+                  style={{ color: style.color }}
+                >
+                  {style.symbol}
+                </span>
                 <svg
                   aria-hidden="true"
+                  className="evidence-scatter__legend-marker--snyk"
                   data-shape={style.shape}
-                  data-testid="configuration-marker"
+                  data-testid="configuration-marker-snyk"
                   focusable="false"
                   viewBox="0 0 24 24"
                 >
@@ -372,6 +380,14 @@ export function EvidenceScatter({
           font-size: 10px;
         }
 
+        html[data-design-theme="snyk-2026"]
+          .evidence-scatter__plot
+          .configuration-plot-marker {
+          stroke: var(--ink);
+          stroke-linejoin: round;
+          stroke-width: 1.5;
+        }
+
         .evidence-scatter__legend {
           display: grid;
           padding: 0;
@@ -423,10 +439,28 @@ export function EvidenceScatter({
           background: var(--purple-soft);
         }
 
-        .evidence-scatter__legend button svg {
+        .evidence-scatter__legend-marker--classic {
+          width: 1rem;
+          flex: 0 0 1rem;
+          font-size: 1rem;
+          text-align: center;
+        }
+
+        .evidence-scatter__legend-marker--snyk {
+          display: none;
           width: 1.25rem;
           height: 1.25rem;
           flex: 0 0 1.25rem;
+        }
+
+        html[data-design-theme="snyk-2026"]
+          .evidence-scatter__legend-marker--classic {
+          display: none;
+        }
+
+        html[data-design-theme="snyk-2026"]
+          .evidence-scatter__legend-marker--snyk {
+          display: block;
         }
 
         .evidence-scatter__status {
