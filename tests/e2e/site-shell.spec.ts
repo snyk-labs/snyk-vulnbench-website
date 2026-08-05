@@ -49,6 +49,34 @@ test("exposes the sparse global navigation at every breakpoint", async ({
   }
 });
 
+test("keeps exactly one top-level navigation item active", async ({ page }) => {
+  await page.goto("/releases");
+
+  const navigation = page.getByRole("navigation", { name: "Primary" });
+  const menu = page
+    .getByRole("banner")
+    .locator("summary")
+    .filter({ hasText: /^Menu$/ });
+  if (await menu.isVisible()) {
+    await menu.click();
+  }
+
+  await expect(
+    navigation.locator('a[aria-current="page"]'),
+  ).toHaveAccessibleName("Releases");
+
+  await navigation.getByRole("link", { name: "Explore", exact: true }).click();
+
+  await expect(page).toHaveURL(/\/releases\/js-1\.0\/explore/);
+  if (await menu.isVisible()) {
+    await menu.click();
+  }
+  await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
+  await expect(
+    navigation.locator('a[aria-current="page"]'),
+  ).toHaveAccessibleName("Explore");
+});
+
 test("keeps the header actions usable without horizontal overflow at 320px", async ({
   page,
 }) => {

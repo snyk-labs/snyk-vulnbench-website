@@ -13,8 +13,20 @@ const links = [
   { label: "GitHub", href: currentRelease.links.github, external: true },
 ];
 
-const isCurrent = (href: string) =>
-  href === "/" ? path === "/" : path.startsWith(href);
+const activeLink = links
+  .filter(({ external }) => !external)
+  .map((link) => ({
+    ...link,
+    pathname: new URL(link.href, Astro.url).pathname,
+  }))
+  .filter(({ pathname }) =>
+    pathname === "/"
+      ? path === "/"
+      : path === pathname || path.startsWith(`${pathname}/`),
+  )
+  .sort((left, right) => right.pathname.length - left.pathname.length)[0];
+
+const isCurrent = (href: string) => href === activeLink?.href;
 ---
 
 <header class="site-header">
