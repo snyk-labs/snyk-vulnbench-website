@@ -6,7 +6,7 @@ import {
   toCsv,
 } from "../export";
 import type { ExplorerSelection } from "../selectors";
-import type { ExplorerState } from "../state";
+import { serializeExplorerState, type ExplorerState } from "../state";
 
 interface CoverageViewProps {
   dataset: ExplorerDataset;
@@ -360,16 +360,25 @@ export function CoverageView({
                             ({ key }) => key === classId,
                           ),
                         );
+                  const cellReturn = `/releases/js-1.0/explore?${serializeExplorerState({
+                    ...state,
+                    configurations: [id],
+                    projects: [project.id],
+                  })}`;
                   return (
                     <td className="metric" key={id}>
-                      {task
-                        ? projectValue(
-                            task,
-                            state.metric,
-                            pairRuns,
-                            unmatchedClassIds,
-                          )
-                        : "Missing"}
+                      <a
+                        href={`/releases/js-1.0/cases/${project.id}?return=${encodeURIComponent(cellReturn)}`}
+                      >
+                        {task
+                          ? projectValue(
+                              task,
+                              state.metric,
+                              pairRuns,
+                              unmatchedClassIds,
+                            )
+                          : "Missing"}
+                      </a>
                     </td>
                   );
                 })}

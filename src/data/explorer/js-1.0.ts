@@ -259,6 +259,7 @@ export async function loadJs10ExplorerDataset(
       id: "snyk-vulnbench-js-1.0",
       slug: "js-1.0",
       datasetVersion: "1.0.0",
+      findingEvidenceUrl: "/data/js-1.0/finding-evidence.json",
     },
     configurations,
     configurationMetrics: publishedEvidence.configurations,

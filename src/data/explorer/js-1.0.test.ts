@@ -9,6 +9,7 @@ describe("JS 1.0 explorer dataset", () => {
       id: "snyk-vulnbench-js-1.0",
       slug: "js-1.0",
       datasetVersion: "1.0.0",
+      findingEvidenceUrl: "/data/js-1.0/finding-evidence.json",
     });
     expect(dataset.configurations).toHaveLength(6);
     expect(dataset.projects).toHaveLength(10);

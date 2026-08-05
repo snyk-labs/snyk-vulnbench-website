@@ -1,10 +1,18 @@
 ---
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { js10CorrectionHistory } from "../../../data/releases/corrections";
 import { currentRelease } from "../../../data/releases";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
 const downloads = [
+  {
+    name: "Normalized finding evidence",
+    format: "JSON",
+    description:
+      "Public-safe matched and unmatched normalized signatures with recurrence, source location, and project context.",
+    href: "/data/js-1.0/finding-evidence.json",
+  },
   {
     name: "Website published evidence",
     format: "JSON",
@@ -158,12 +166,49 @@ const downloads = [
   <section class="section corrections" id="corrections">
     <div class="container">
       <p class="eyebrow">Corrections</p>
-      <h2>No silent rewrites</h2>
-      <p>
-        If published data changes, VulnBench will issue a new dataset patch
-        version, preserve the prior snapshot, document affected values, and
-        keep stable release URLs valid.
-      </p>
+      <h2>
+        {
+          js10CorrectionHistory.corrections.length === 0
+            ? "No corrections published"
+            : "Published corrections"
+        }
+      </h2>
+      {
+        js10CorrectionHistory.corrections.length === 0 ? (
+          <p>
+            Dataset{" "}
+            <span class="metric">{js10CorrectionHistory.datasetVersion}</span>{" "}
+            has no correction entries. If published data changes, VulnBench
+            will issue a new dataset patch version, preserve the prior
+            snapshot, document affected values, and keep stable release URLs
+            valid.
+          </p>
+        ) : (
+          <p>
+            The entries below document each patch version, publication date,
+            reason, and affected evidence identifiers. Prior snapshots remain
+            available.
+          </p>
+        )
+      }
+      {
+        js10CorrectionHistory.corrections.length > 0 && (
+          <ol class="correction-list">
+            {js10CorrectionHistory.corrections.map((correction) => (
+              <li>
+                <strong>Dataset {correction.version}</strong>
+                <time datetime={correction.publishedAt}>
+                  {correction.publishedAt}
+                </time>
+                <p>{correction.reason}</p>
+                <span class="metric">
+                  {correction.affectedValues.join(", ")}
+                </span>
+              </li>
+            ))}
+          </ol>
+        )
+      }
     </div>
   </section>
 </BaseLayout>
@@ -261,6 +306,22 @@ const downloads = [
   .corrections p:last-child {
     max-width: 48rem;
     margin-top: var(--space-3);
+  }
+
+  .correction-list {
+    display: grid;
+    max-width: 48rem;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    border-top: 1px solid var(--warning);
+    list-style: none;
+  }
+
+  .correction-list li {
+    display: grid;
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--warning);
+    gap: var(--space-1);
   }
 
   @media (min-width: 58rem) {

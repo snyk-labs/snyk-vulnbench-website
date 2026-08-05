@@ -1,0 +1,240 @@
+---
+import type {
+  FindingSignature,
+  ProjectEvidence,
+} from "../../data/evidence/schema";
+
+interface Props {
+  project: ProjectEvidence;
+  findings: FindingSignature[];
+  returnPath: string;
+}
+
+const { project, findings, returnPath } = Astro.props;
+const matched = findings.filter(({ status }) => status === "matched");
+const unmatched = findings.filter(({ status }) => status === "unmatched");
+const configurationRows = [
+  ...new Map(
+    findings.map((finding) => [
+      finding.configurationId,
+      {
+        id: finding.configurationId,
+        name: finding.configurationName,
+        matched: matched.filter(
+          ({ configurationId }) => configurationId === finding.configurationId,
+        ).length,
+        unmatched: unmatched.filter(
+          ({ configurationId }) => configurationId === finding.configurationId,
+        ).length,
+        stableMatched: matched.filter(
+          ({ configurationId, occurrences }) =>
+            configurationId === finding.configurationId && occurrences === 5,
+        ).length,
+        stableUnmatched: unmatched.filter(
+          ({ configurationId, occurrences }) =>
+            configurationId === finding.configurationId && occurrences === 5,
+        ).length,
+      },
+    ]),
+  ).values(),
+].sort((left, right) => left.name.localeCompare(right.name));
+---
+
+<div class="case-detail">
+  <section class="case-summary">
+    <div>
+      <p class="eyebrow">Project purpose and scale</p>
+      <h2>{project.name}</h2>
+      <p>{project.description}</p>
+    </div>
+    <dl>
+      <div><dt>Source files</dt><dd class="metric">{project.sourceFiles.length}</dd></div>
+      <div><dt>Reference findings</dt><dd class="metric">{project.referenceFindings.length}</dd></div>
+      <div><dt>Matched signatures</dt><dd class="metric">{matched.length}</dd></div>
+      <div><dt>Unmatched signatures</dt><dd class="metric">{unmatched.length}</dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <p class="eyebrow">Reference context</p>
+      <h2>Deterministic reference findings</h2>
+      <p class="lede">
+        These findings define the project reference set for JS 1.0. Their
+        presence does not establish exhaustive ground truth.
+      </p>
+    </div>
+    <div class="case-table" tabindex="0">
+      <table aria-label={`${project.name} reference findings`}>
+        <thead><tr><th scope="col">Class</th><th scope="col">Severity</th><th scope="col">Location</th><th scope="col">Reference ID</th></tr></thead>
+        <tbody>
+          {project.referenceFindings.map((finding) => (
+            <tr>
+              <th scope="row">{finding.type}</th>
+              <td>{finding.severity}</td>
+              <td class="metric">{finding.file}:{finding.line}</td>
+              <td class="metric">{finding.id}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {
+    [
+      {
+        id: "matched",
+        title: "Reference-matched normalized signatures",
+        findings: matched,
+        caveat:
+          "Matched means agreement with the Snyk Code reference set, not independent ground-truth adjudication.",
+      },
+      {
+        id: "unmatched",
+        title: "Unmatched normalized signatures",
+        findings: unmatched,
+        caveat:
+          "Unmatched reports may be false-positive-shaped, adjacent, or likely product-gap candidates.",
+      },
+    ].map((group) => (
+      <section id={group.id}>
+        <div class="section-heading">
+          <p class="eyebrow">Finding evidence</p>
+          <h2>{group.title}</h2>
+          <p class="lede">{group.caveat}</p>
+          <p>
+            Severity and description show the deterministic most-frequent
+            metadata variant; the final column records how many variants were
+            observed across repetitions.
+          </p>
+        </div>
+        <div class="case-table" tabindex="0">
+          <table aria-label={`${project.name} ${group.id} normalized signatures`}>
+            <thead>
+              <tr>
+                <th scope="col">Configuration</th>
+                <th scope="col">Class</th>
+                <th scope="col">Representative severity</th>
+                <th scope="col">Location</th>
+                <th scope="col">Recurrence</th>
+                <th scope="col">Representative description</th>
+                <th scope="col">Metadata variants</th>
+              </tr>
+            </thead>
+            <tbody>
+              {group.findings.map((finding) => (
+                <tr>
+                  <th scope="row">{finding.configurationName}</th>
+                  <td>{finding.vulnerabilityClass}</td>
+                  <td>{finding.severity}</td>
+                  <td class="metric">
+                    {finding.file ?? "N/A"}
+                    {finding.line === null ? "" : `:${finding.line}`}
+                  </td>
+                  <td class="metric">{finding.occurrences} of 5</td>
+                  <td>{finding.description ?? "No description published"}</td>
+                  <td class="metric">{finding.metadataVariants.length}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    ))
+  }
+
+  <section>
+    <div class="section-heading">
+      <p class="eyebrow">Model behavior</p>
+      <h2>Recurrence by configuration</h2>
+      <p class="lede">
+        Stable recurrence measures repeated behavior, not independent validity.
+      </p>
+    </div>
+    <div class="case-table" tabindex="0">
+      <table aria-label={`${project.name} recurrence by configuration`}>
+        <thead><tr><th scope="col">Configuration</th><th scope="col">Matched signatures</th><th scope="col">Matched all five</th><th scope="col">Unmatched signatures</th><th scope="col">Unmatched all five</th></tr></thead>
+        <tbody>
+          {configurationRows.map((row) => (
+            <tr>
+              <th scope="row">{row.name}</th>
+              <td class="metric">{row.matched}</td>
+              <td class="metric">{row.stableMatched}</td>
+              <td class="metric">{row.unmatched}</td>
+              <td class="metric">{row.stableUnmatched}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-heading">
+      <p class="eyebrow">Inspectable source context</p>
+      <h2>Reference locations</h2>
+      <p class="lede">
+        Apache-licensed fixture excerpts are shown around declared reference
+        lines. They are evidence, not runnable examples.
+      </p>
+    </div>
+    <div class="source-contexts">
+      {project.sourceContexts.map((context) => (
+        <article>
+          <header>
+            <strong>{context.file}:{context.line}</strong>
+            <span class="metric">{context.findingId}</span>
+          </header>
+          <pre><code>{context.snippet}</code></pre>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="case-interpretation">
+    <p class="eyebrow">Interpretation boundary</p>
+    <h2>Inspect divergence before classifying it</h2>
+    <p>
+      Unmatched reports may be false-positive-shaped, adjacent to the release
+      reference scope, or likely valid product-gap candidates. Missed reference
+      findings may expose representative-versus-systematic coverage behavior.
+    </p>
+    <a class="button" data-return-link href={returnPath}
+      >Return to explorer evidence</a
+    >
+  </section>
+</div>
+
+<style>
+  .case-detail {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .case-summary {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+  }
+  .case-summary h2 { margin-top: var(--space-2); }
+  .case-summary p:not(.eyebrow) { margin-top: var(--space-3); color: var(--ink-soft); }
+  .case-summary dl {
+    display: grid; margin: 0; padding: var(--space-4);
+    border-top: .3rem solid var(--purple); background: var(--paper-muted);
+    grid-template-columns: repeat(2, 1fr); gap: var(--space-3);
+  }
+  .case-summary dl div { display: grid; }
+  .case-summary dt { color: var(--ink-faint); font: .68rem var(--font-mono); text-transform: uppercase; }
+  .case-summary dd { margin: 0; font-weight: 750; }
+  .case-table { overflow-x: auto; border: 1px solid var(--rule-strong); }
+  table { width: 100%; min-width: 48rem; border-collapse: collapse; background: var(--paper-raised); text-align: left; }
+  th, td { padding: .7rem .8rem; border-bottom: 1px solid var(--rule); }
+  .source-contexts { display: grid; gap: var(--space-4); }
+  .source-contexts article { min-width: 0; border: 1px solid var(--rule-strong); background: var(--paper-raised); }
+  .source-contexts header { display: flex; padding: .65rem .8rem; border-bottom: 1px solid var(--rule); justify-content: space-between; gap: var(--space-3); }
+  pre { padding: var(--space-4); margin: 0; overflow-x: auto; background: var(--ink); color: var(--paper-raised); font: var(--step--1)/1.55 var(--font-mono); }
+  .case-interpretation { padding: var(--space-5); border-top: .3rem solid var(--warning); background: var(--warning-soft); }
+  .case-interpretation h2, .case-interpretation p:not(.eyebrow), .case-interpretation .button { margin-top: var(--space-3); }
+  .case-interpretation p { max-width: 52rem; }
+  @media(max-width: 48rem) { .case-summary { grid-template-columns: minmax(0,1fr); } }
+</style>

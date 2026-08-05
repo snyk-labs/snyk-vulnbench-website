@@ -13,6 +13,15 @@ const efficiencyMetric = {
 } as const;
 
 function viewGuide(state: ExplorerState) {
+  if (state.view === "findings") {
+    return {
+      interpretation:
+        "Inspect normalized signatures, recurrence, source location, and the project/configuration context behind aggregate evidence.",
+      metric: "Normalized finding signatures",
+      caveat:
+        "Matched means agreement with the reference set; unmatched findings still require case-level interpretation.",
+    };
+  }
   if (state.view === "repeatability") {
     return {
       interpretation:

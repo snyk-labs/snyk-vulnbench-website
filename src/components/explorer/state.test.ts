@@ -99,4 +99,25 @@ describe("explorer URL state", () => {
       "sonnet-4-6-high",
     ]);
   });
+
+  it("serializes stable finding selection for the Findings view", () => {
+    const finding = "0123456789abcdefabcd";
+    const parsed = parseExplorerState(
+      `v=1&view=findings&finding=${finding}`,
+      dataset,
+    );
+
+    expect(parsed.state.view).toBe("findings");
+    expect(parsed.state.selectedFinding).toBe(finding);
+    expect(serializeExplorerState(parsed.state)).toBe(
+      `v=1&view=findings&finding=${finding}`,
+    );
+
+    const invalid = parseExplorerState(
+      "v=1&view=findings&finding=not-stable",
+      dataset,
+    );
+    expect(invalid.state.selectedFinding).toBeNull();
+    expect(invalid.ignored).toContain("finding=not-stable");
+  });
 });

@@ -1,0 +1,66 @@
+---
+import ProjectCaseDetail from "../../../../components/evidence/ProjectCaseDetail.astro";
+import PageHero from "../../../../components/site/PageHero.astro";
+import ReleaseMeta from "../../../../components/site/ReleaseMeta.astro";
+import { loadJs10EvidenceDepth } from "../../../../data/evidence/js-1.0";
+import { currentRelease } from "../../../../data/releases";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const evidence = await loadJs10EvidenceDepth();
+  return evidence.projects.map((project) => ({
+    params: { project: project.id },
+    props: {
+      project,
+      findings: evidence.findings.filter(
+        ({ projectId }) => projectId === project.id,
+      ),
+    },
+  }));
+}
+
+const { project, findings } = Astro.props;
+const returnPath = `/releases/js-1.0/explore?v=1&view=findings&projects=${project.id}`;
+---
+
+<BaseLayout
+  title={`${project.name} case evidence`}
+  description={`Reference findings, model matches, unmatched reports, recurrence, and source context for ${project.name}.`}
+  release={currentRelease}
+>
+  <PageHero
+    eyebrow="JS 1.0 · Project evidence"
+    title={project.name}
+    description={project.description}
+  >
+    <div slot="actions" class="button-row">
+      <a class="button" href={returnPath}>Open filtered findings</a>
+      <a class="button secondary" href="/releases/js-1.0/cases"
+        >All representative cases</a
+      >
+    </div>
+    <ReleaseMeta slot="aside" release={currentRelease} />
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <ProjectCaseDetail
+        project={project}
+        findings={findings}
+        returnPath={returnPath}
+      />
+    </div>
+  </section>
+  <script is:inline>
+    const requestedReturn = new URLSearchParams(window.location.search).get(
+      "return",
+    );
+    if (
+      requestedReturn?.startsWith("/releases/js-1.0/explore?") &&
+      !requestedReturn.includes("\n")
+    ) {
+      const link = document.querySelector("[data-return-link]");
+      if (link instanceof HTMLAnchorElement) link.href = requestedReturn;
+    }
+  </script>
+</BaseLayout>

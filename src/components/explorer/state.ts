@@ -4,7 +4,8 @@ export type ExplorerView =
   | "summary"
   | "repeatability"
   | "coverage"
-  | "efficiency";
+  | "efficiency"
+  | "findings";
 export type FindingStatus = "matched" | "unmatched" | "combined";
 export type EfficiencyMetric = "cost" | "tokens" | "duration";
 export type ExplorerMetric =
@@ -20,7 +21,12 @@ export type ExplorerSort =
   | "recall-desc"
   | "precision-desc"
   | "duration-asc"
-  | "cost-asc";
+  | "cost-asc"
+  | "recurrence-desc"
+  | "recurrence-asc"
+  | "project-asc"
+  | "configuration-asc"
+  | "class-asc";
 
 export interface ExplorerState {
   version: 1;
@@ -38,6 +44,7 @@ export interface ExplorerState {
   sort: ExplorerSort;
   pins: string[];
   baseline: string | null;
+  selectedFinding: string | null;
 }
 
 const views = new Set<ExplorerView>([
@@ -45,6 +52,7 @@ const views = new Set<ExplorerView>([
   "repeatability",
   "coverage",
   "efficiency",
+  "findings",
 ]);
 const findingStatuses = new Set<FindingStatus>([
   "matched",
@@ -76,6 +84,11 @@ const sorts = new Set<ExplorerSort>([
   "precision-desc",
   "duration-asc",
   "cost-asc",
+  "recurrence-desc",
+  "recurrence-asc",
+  "project-asc",
+  "configuration-asc",
+  "class-asc",
 ]);
 const knownKeys = new Set([
   "v",
@@ -93,6 +106,7 @@ const knownKeys = new Set([
   "sort",
   "pins",
   "baseline",
+  "finding",
 ]);
 
 export function defaultExplorerState(): ExplorerState {
@@ -112,6 +126,7 @@ export function defaultExplorerState(): ExplorerState {
     sort: "f1-desc",
     pins: [],
     baseline: null,
+    selectedFinding: null,
   };
 }
 
@@ -196,6 +211,16 @@ export function parseExplorerState(
       baseline = baselineValue;
     } else {
       ignored.push(`baseline=${baselineValue}`);
+    }
+  }
+
+  const findingValue = params.get("finding");
+  let selectedFinding: string | null = null;
+  if (findingValue !== null) {
+    if (/^[a-f0-9]{20}$/.test(findingValue)) {
+      selectedFinding = findingValue;
+    } else {
+      ignored.push(`finding=${findingValue}`);
     }
   }
 
@@ -284,6 +309,7 @@ export function parseExplorerState(
       ),
       pins: limitedPins,
       baseline,
+      selectedFinding,
     },
     ignored,
   };
@@ -327,6 +353,9 @@ export function serializeExplorerState(state: ExplorerState): string {
   }
   if (state.baseline !== null && state.pins.includes(state.baseline)) {
     params.set("baseline", state.baseline);
+  }
+  if (state.selectedFinding !== null) {
+    params.set("finding", state.selectedFinding);
   }
 
   return params.toString();

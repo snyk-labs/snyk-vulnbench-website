@@ -3,9 +3,10 @@ interface ExplorerHeaderProps {
   aggregation: string;
   metric: string;
   representedRuns: number;
+  shareCardUrl: string | null;
   viewLabel: string;
   ignored: string[];
-  onExport: () => void;
+  onExport: (() => void) | null;
   onReset: () => void;
   onShare: () => void;
 }
@@ -15,6 +16,7 @@ export function ExplorerHeader({
   aggregation,
   metric,
   representedRuns,
+  shareCardUrl,
   viewLabel,
   ignored,
   onExport,
@@ -63,9 +65,12 @@ export function ExplorerHeader({
         <button onClick={onShare} type="button">
           Copy share link
         </button>
-        <button onClick={onExport} type="button">
-          Export filtered CSV
-        </button>
+        {onExport && (
+          <button onClick={onExport} type="button">
+            Export filtered CSV
+          </button>
+        )}
+        {shareCardUrl && <a href={shareCardUrl}>View share card</a>}
         <a href="/releases/js-1.0/data">Data</a>
         <a href="/releases/js-1.0/methodology">Methodology</a>
       </div>

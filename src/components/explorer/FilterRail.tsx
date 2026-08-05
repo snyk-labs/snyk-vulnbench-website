@@ -29,12 +29,16 @@ export function FilterRail({
   onChange,
   onClose,
 }: FilterRailProps) {
-  const configurationIds = dataset.configurations.map(({ id }) => id);
-  const projectIds = dataset.projects.map(({ id }) => id);
-  const classIds = dataset.vulnerabilityClasses.map(({ id }) => id);
   const releaseWideRepeatability = state.view === "repeatability";
   const coverageView = state.view === "coverage";
   const efficiencyView = state.view === "efficiency";
+  const findingView = state.view === "findings";
+  const availableConfigurations = dataset.configurations.filter(
+    ({ type }) => !findingView || type === "model",
+  );
+  const configurationIds = availableConfigurations.map(({ id }) => id);
+  const projectIds = dataset.projects.map(({ id }) => id);
+  const classIds = dataset.vulnerabilityClasses.map(({ id }) => id);
 
   return (
     <aside
@@ -59,7 +63,7 @@ export function FilterRail({
         </p>
       )}
 
-      {!releaseWideRepeatability && <fieldset>
+      {!releaseWideRepeatability && !findingView && <fieldset>
         <legend>Reference</legend>
         <label>
           <input
@@ -78,7 +82,7 @@ export function FilterRail({
 
       {!releaseWideRepeatability && <fieldset>
         <legend>Configurations</legend>
-        {dataset.configurations.map(({ id, name }) => (
+        {availableConfigurations.map(({ id, name }) => (
           <label key={id}>
             <input
               checked={
@@ -99,7 +103,7 @@ export function FilterRail({
             />
             {name}
           </label>
-        ))}
+          ))}
       </fieldset>}
 
       {!releaseWideRepeatability && <details>
@@ -130,7 +134,7 @@ export function FilterRail({
         </fieldset>
       </details>}
 
-      {coverageView && <details>
+      {(coverageView || findingView) && <details>
         <summary>
           Vulnerability classes ({dataset.vulnerabilityClasses.length})
         </summary>
@@ -161,7 +165,7 @@ export function FilterRail({
         </fieldset>
       </details>}
 
-      {releaseWideRepeatability && <fieldset>
+      {(releaseWideRepeatability || findingView) && <fieldset>
         <legend>Finding status</legend>
         {(["combined", "matched", "unmatched"] as const).map((status) => (
           <label key={status}>
@@ -177,7 +181,7 @@ export function FilterRail({
         ))}
       </fieldset>}
 
-      {releaseWideRepeatability && <label className="filter-rail__select">
+      {(releaseWideRepeatability || findingView) && <label className="filter-rail__select">
         Recurrence threshold
         <select
           onChange={(event) =>
@@ -263,7 +267,7 @@ export function FilterRail({
         </select>
       </label>}
 
-      {!releaseWideRepeatability && <label className="filter-rail__select">
+      {!releaseWideRepeatability && !findingView && <label className="filter-rail__select">
         Sort scorecard
         <select
           onChange={(event) =>
@@ -280,6 +284,25 @@ export function FilterRail({
           <option value="precision-desc">Precision: high to low</option>
           <option value="duration-asc">Duration: low to high</option>
           <option value="cost-asc">Cost: low to high</option>
+        </select>
+      </label>}
+
+      {findingView && <label className="filter-rail__select">
+        Sort findings
+        <select
+          onChange={(event) =>
+            onChange({
+              ...state,
+              sort: event.currentTarget.value as ExplorerState["sort"],
+            })
+          }
+          value={state.sort}
+        >
+          <option value="recurrence-desc">Recurrence: high to low</option>
+          <option value="recurrence-asc">Recurrence: low to high</option>
+          <option value="project-asc">Project</option>
+          <option value="configuration-asc">Configuration</option>
+          <option value="class-asc">Vulnerability class</option>
         </select>
       </label>}
     </aside>

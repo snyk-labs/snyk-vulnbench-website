@@ -22,6 +22,8 @@ Before making changes, read the documents relevant to the task:
 - `docs/superpowers/specs/2026-08-05-explorer-three-column-layout-design.md`
   and `docs/superpowers/plans/2026-08-05-explorer-three-column-layout.md` for
   the approved wide-screen explorer layout and responsive behavior.
+- `docs/superpowers/plans/2026-08-05-evidence-depth.md` for Phase 3 normalized
+  findings, project detail, share-card, and correction-history requirements.
 - `snyk-vulnbench-js-1.0/UPSTREAM-PROVENANCE.md` for the imported research
   source revision and immutability policy.
 
@@ -54,6 +56,8 @@ The implemented foundation includes:
 - `src/components/explorer/` — Phase 2 URL state, selectors, controls,
   comparison, exports, and guided explorer views.
 - `src/data/explorer/` — validated browser-safe explorer dataset.
+- `src/data/evidence/` — normalized finding signatures, fixture references,
+  and licensed project source context.
 - `src/data/releases/` — release schema, manifests, selectors, and contract
   tests.
 - `src/styles/` — global design tokens and shared styles.

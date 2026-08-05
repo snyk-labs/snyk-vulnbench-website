@@ -54,13 +54,18 @@ function activeFilterCount(state: ExplorerState) {
     state.configurations.length +
     state.projects.length +
     state.vulnerabilityClasses.length +
-    (state.includeReference || state.view === "repeatability" ? 0 : 1) +
+    (state.includeReference ||
+    state.view === "repeatability" ||
+    state.view === "findings"
+      ? 0
+      : 1) +
     (state.findingStatus === defaults.findingStatus ? 0 : 1) +
     (state.recurrenceThreshold === defaults.recurrenceThreshold ? 0 : 1) +
     (state.valueMode === defaults.valueMode ? 0 : 1) +
     (state.efficiencyMetric === defaults.efficiencyMetric ? 0 : 1) +
     (state.metric === defaults.metric ? 0 : 1) +
-    (state.aggregation === defaults.aggregation ? 0 : 1)
+    (state.aggregation === defaults.aggregation ? 0 : 1) +
+    (state.selectedFinding === null ? 0 : 1)
   );
 }
 

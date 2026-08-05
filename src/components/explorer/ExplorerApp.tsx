@@ -19,6 +19,7 @@ import {
 } from "./state";
 import { CoverageView } from "./views/CoverageView";
 import { EfficiencyView } from "./views/EfficiencyView";
+import { FindingsView } from "./views/FindingsView";
 import { RepeatabilityView } from "./views/RepeatabilityView";
 import { SummaryView } from "./views/SummaryView";
 
@@ -32,10 +33,20 @@ const views: Array<{ id: ExplorerView; label: string }> = [
   { id: "repeatability", label: "Repeatability" },
   { id: "coverage", label: "Coverage" },
   { id: "efficiency", label: "Efficiency" },
+  { id: "findings", label: "Findings" },
 ];
 
 function stateForView(state: ExplorerState, view: ExplorerView): ExplorerState {
   const defaults = defaultExplorerState();
+  const scoreSort =
+    state.sort === "f1-desc" ||
+    state.sort === "f1-asc" ||
+    state.sort === "recall-desc" ||
+    state.sort === "precision-desc" ||
+    state.sort === "duration-asc" ||
+    state.sort === "cost-asc"
+      ? state.sort
+      : defaults.sort;
   if (view === "repeatability") {
     return {
       ...state,
@@ -48,6 +59,7 @@ function stateForView(state: ExplorerState, view: ExplorerView): ExplorerState {
       metric: defaults.metric,
       aggregation: defaults.aggregation,
       sort: defaults.sort,
+      selectedFinding: null,
     };
   }
   if (view === "coverage") {
@@ -59,6 +71,8 @@ function stateForView(state: ExplorerState, view: ExplorerView): ExplorerState {
       valueMode: defaults.valueMode,
       efficiencyMetric: defaults.efficiencyMetric,
       aggregation: defaults.aggregation,
+      sort: scoreSort,
+      selectedFinding: null,
     };
   }
   if (view === "efficiency") {
@@ -71,6 +85,27 @@ function stateForView(state: ExplorerState, view: ExplorerView): ExplorerState {
       valueMode: defaults.valueMode,
       metric: defaults.metric,
       aggregation: defaults.aggregation,
+      sort: scoreSort,
+      selectedFinding: null,
+    };
+  }
+  if (view === "findings") {
+    return {
+      ...state,
+      view,
+      includeReference: false,
+      efficiencyMetric: defaults.efficiencyMetric,
+      metric: defaults.metric,
+      aggregation: defaults.aggregation,
+      sort:
+        state.view === "findings" &&
+        (state.sort === "recurrence-desc" ||
+          state.sort === "recurrence-asc" ||
+          state.sort === "project-asc" ||
+          state.sort === "configuration-asc" ||
+          state.sort === "class-asc")
+          ? state.sort
+          : "recurrence-desc",
     };
   }
   return {
@@ -83,6 +118,8 @@ function stateForView(state: ExplorerState, view: ExplorerView): ExplorerState {
     efficiencyMetric: defaults.efficiencyMetric,
     metric: defaults.metric,
     aggregation: defaults.aggregation,
+    sort: scoreSort,
+    selectedFinding: null,
   };
 }
 
@@ -540,7 +577,9 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
   const viewLabel =
     views.find(({ id }) => id === state.view)?.label ?? "Summary";
   const activeMetric =
-    state.view === "repeatability"
+    state.view === "findings"
+      ? "Normalized finding signatures"
+      : state.view === "repeatability"
       ? "Finding recurrence"
       : state.view === "efficiency"
         ? state.efficiencyMetric
@@ -555,10 +594,15 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         aggregation={state.aggregation}
         ignored={ignored}
         metric={activeMetric}
-        onExport={exportFilteredCsv}
+        onExport={state.view === "findings" ? null : exportFilteredCsv}
         onReset={reset}
         onShare={share}
         representedRuns={selection.representedRuns}
+        shareCardUrl={
+          state.view === "findings"
+            ? null
+            : `/social/js-1.0/${state.view}.svg`
+        }
         viewLabel={viewLabel}
       />
       {shareMessage && (
@@ -616,6 +660,13 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
                 Reset all filters
               </button>
             </section>
+          ) : state.view === "findings" ? (
+            <FindingsView
+              evidenceUrl={dataset.release.findingEvidenceUrl}
+              onChange={updateState}
+              onPin={togglePin}
+              state={state}
+            />
           ) : state.view === "repeatability" ? (
             <RepeatabilityView
               dataset={dataset}
@@ -991,6 +1042,64 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           background: var(--paper-raised);
           color: var(--ink);
           font-weight: 700;
+        }
+
+        .finding-detail {
+          display: grid;
+          padding: var(--space-4);
+          border-top: 0.3rem solid var(--purple);
+          background: var(--purple-soft);
+          gap: var(--space-3);
+        }
+
+        .finding-detail dl {
+          display: grid;
+          margin: 0;
+          gap: var(--space-3);
+          grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        }
+
+        .finding-detail dl div {
+          display: grid;
+        }
+
+        .finding-detail dt {
+          color: var(--ink-faint);
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          text-transform: uppercase;
+        }
+
+        .finding-detail dd {
+          margin: 0;
+          font-size: var(--step--1);
+          font-weight: 700;
+          overflow-wrap: anywhere;
+        }
+
+        .finding-detail > p {
+          max-width: 55rem;
+          color: var(--ink-soft);
+        }
+
+        .finding-detail__actions {
+          display: flex;
+          gap: var(--space-2);
+          flex-wrap: wrap;
+        }
+
+        .finding-detail__actions button,
+        .finding-detail__actions a {
+          display: inline-flex;
+          min-height: 2.5rem;
+          padding: 0.45rem 0.7rem;
+          border: 1px solid var(--ink);
+          background: var(--paper-raised);
+          color: var(--ink);
+          align-items: center;
+          font-size: var(--step--1);
+          font-weight: 700;
+          text-decoration: none;
         }
 
         .recurrence-visual,

@@ -68,7 +68,7 @@ test("supports arrow-key navigation across explorer tabs", async ({ page }) => {
   ).toBeFocused();
   await page.keyboard.press("End");
   await expect(
-    page.getByRole("tab", { name: "Efficiency", selected: true }),
+    page.getByRole("tab", { name: "Findings", selected: true }),
   ).toBeFocused();
 });
 
