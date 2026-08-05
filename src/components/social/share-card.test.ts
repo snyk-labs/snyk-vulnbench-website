@@ -47,6 +47,36 @@ describe("social share-card renderers", () => {
     ).toBe(classicSummarySvg);
   });
 
+  it("keeps one wordmark-height of clearance inside the dark region", () => {
+    const brandedCards = [
+      renderDefaultSocialCard(brandAssets),
+      renderReleaseShareCard(summaryCard, {
+        designTheme: "snyk-2026",
+        assets: brandAssets,
+      }),
+    ];
+
+    for (const svg of brandedCards) {
+      const document = new DOMParser().parseFromString(svg, "image/svg+xml");
+      const canvas = document.documentElement;
+      const copyRegion = document.querySelector("[data-copy-region]");
+      const logo = document.querySelector("image");
+      if (!copyRegion || !logo) throw new Error("Branded geometry is missing");
+
+      const canvasHeight = Number(canvas.getAttribute("height"));
+      const darkRegionWidth = Number(copyRegion.getAttribute("width"));
+      const x = Number(logo.getAttribute("x"));
+      const y = Number(logo.getAttribute("y"));
+      const width = Number(logo.getAttribute("width"));
+      const height = Number(logo.getAttribute("height"));
+
+      expect(x).toBeGreaterThanOrEqual(height);
+      expect(y).toBeGreaterThanOrEqual(height);
+      expect(darkRegionWidth - (x + width)).toBeGreaterThanOrEqual(height);
+      expect(canvasHeight - (y + height)).toBeGreaterThanOrEqual(height);
+    }
+  });
+
   it("renders a canonical branded release card with isolated copy", () => {
     const svg = renderReleaseShareCard(summaryCard, {
       designTheme: "snyk-2026",

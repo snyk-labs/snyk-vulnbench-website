@@ -101,7 +101,7 @@ function brandCanvas(assets: BrandSocialAssets) {
   <rect data-brand-background="" width="1200" height="630" fill="url(#brand-gradient)"/>
   <rect data-copy-region="" width="1000" height="630" fill="#030328"/>
   <line x1="999" y1="0" x2="999" y2="630" stroke="#FFFFFF" stroke-opacity="0.24"/>
-  <image href="${escapeXml(assets.wordmarkUrl)}" x="800" y="48" width="140" height="72" preserveAspectRatio="xMidYMid meet"/>`;
+  <image href="${escapeXml(assets.wordmarkUrl)}" x="780" y="72" width="140" height="72" preserveAspectRatio="xMidYMid meet"/>`;
 }
 
 function renderBrandedReleaseCard(
