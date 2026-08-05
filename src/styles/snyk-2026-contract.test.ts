@@ -68,6 +68,43 @@ function selectorBody(source: string, selector: string) {
   return match?.[1] ?? "";
 }
 
+function declarationValue(body: string, property: string) {
+  const escapedProperty = property.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = body.match(new RegExp(`${escapedProperty}\\s*:\\s*([^;]+)`));
+  const value = match?.[1];
+  if (!value) throw new Error(`Missing declaration ${property}`);
+  return value.trim();
+}
+
+function relativeLuminance([red, green, blue]: [number, number, number]) {
+  const linearize = (channel: number) => {
+    const value = channel / 255;
+    return value <= 0.04045
+      ? value / 12.92
+      : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  return (
+    linearize(red) * 0.2126 +
+    linearize(green) * 0.7152 +
+    linearize(blue) * 0.0722
+  );
+}
+
+function contrastRatio(
+  foreground: [number, number, number],
+  background: [number, number, number],
+) {
+  const lighter = Math.max(
+    relativeLuminance(foreground),
+    relativeLuminance(background),
+  );
+  const darker = Math.min(
+    relativeLuminance(foreground),
+    relativeLuminance(background),
+  );
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 describe("Snyk 2026 design contract", () => {
   it("loads the isolated token layer after Classic tokens", async () => {
     const [globalCss, tokenCss] = await Promise.all([
@@ -121,6 +158,37 @@ describe("Snyk 2026 design contract", () => {
     expect(source).not.toMatch(
       /color-mix|radial-gradient|mask-image|mask-composite|background-clip|text-fill-color|backdrop-filter/i,
     );
+  });
+
+  it("uses compliant control boundaries and opaque Family B panels", async () => {
+    const source = await readFile(tokenPath, "utf8");
+    const light = selectorBody(
+      source,
+      'html[data-design-theme="snyk-2026"][data-theme="light"]',
+    );
+
+    expect(declarationValue(light, "--theme-paper-muted")).toBe("#030328");
+
+    for (const selector of [
+      'html[data-design-theme="snyk-2026"][data-theme="light"]',
+      'html[data-design-theme="snyk-2026"][data-theme="dark"]',
+      'html[data-design-theme="snyk-2026"]:not([data-theme])',
+    ]) {
+      const value = declarationValue(
+        selectorBody(source, selector),
+        "--theme-rule-strong",
+      );
+      const match = value.match(
+        /^rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*(0(?:\.\d+)?|1(?:\.0+)?)\s*\)$/,
+      );
+      expect(match, `${selector} must use white alpha`).not.toBeNull();
+      const alpha = Number(match?.[1]);
+      const midnight: [number, number, number] = [3, 3, 40];
+      const composited = midnight.map((channel) =>
+        Math.round(channel + (255 - channel) * alpha),
+      ) as [number, number, number];
+      expect(contrastRatio(composited, midnight)).toBeGreaterThanOrEqual(3);
+    }
   });
 
   it("declares local font packages and byte-identical approved assets", async () => {

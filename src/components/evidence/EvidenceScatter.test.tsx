@@ -55,13 +55,27 @@ describe("EvidenceScatter", () => {
       ["Claude Sonnet 4.6 Medium", "var(--series-5)"],
       ["Claude Sonnet 4.6 High", "var(--series-6)"],
     ]);
+    const plotMarkers = within(plot).getAllByTestId(
+      "configuration-plot-marker",
+    );
+    expect(plotMarkers).toHaveLength(6);
     for (const [name, color] of expectedSeries) {
+      const plotMarker = plotMarkers.find(
+        (marker) => marker.getAttribute("data-configuration") === name,
+      );
+      expect(plotMarker).toHaveAttribute("fill", color);
+      expect(plotMarker).toHaveAttribute("stroke", "var(--ink)");
+      expect(plotMarker).toHaveAttribute("paint-order", "stroke fill");
+
       const button = screen.getByRole("button", {
         name: `Show details for ${name}`,
       });
-      expect(within(button).getByTestId("configuration-marker")).toHaveStyle({
-        color,
-      });
+      const legendMarker = within(button).getByTestId("configuration-marker");
+      expect(legendMarker.tagName).toBe("svg");
+      const legendGlyph = legendMarker.querySelector("text");
+      expect(legendGlyph).toHaveAttribute("fill", color);
+      expect(legendGlyph).toHaveAttribute("stroke", "var(--ink)");
+      expect(legendGlyph).toHaveAttribute("paint-order", "stroke fill");
     }
 
     const table = screen.getByRole("table", {

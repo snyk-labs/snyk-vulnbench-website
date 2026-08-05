@@ -180,10 +180,16 @@ export function EvidenceScatter({
           const y = scale(point.y, yMinimum, yMaximum, 320, 66);
           return (
             <text
+              data-configuration={point.name}
+              data-testid="configuration-plot-marker"
               fill={style.color}
               fontSize="24"
               fontWeight="800"
               key={point.name}
+              paintOrder="stroke fill"
+              stroke="var(--ink)"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
               textAnchor="middle"
               x={x}
               y={y}
@@ -248,14 +254,29 @@ export function EvidenceScatter({
                 onMouseEnter={() => setActiveName(point.name)}
                 type="button"
               >
-                <span
+                <svg
                   aria-hidden="true"
                   data-shape={style.shape}
                   data-testid="configuration-marker"
-                  style={{ color: style.color }}
+                  focusable="false"
+                  viewBox="0 0 24 24"
                 >
-                  {style.symbol}
-                </span>
+                  <text
+                    dominantBaseline="middle"
+                    fill={style.color}
+                    fontSize="18"
+                    fontWeight="800"
+                    paintOrder="stroke fill"
+                    stroke="var(--ink)"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    textAnchor="middle"
+                    x="12"
+                    y="12"
+                  >
+                    {style.symbol}
+                  </text>
+                </svg>
                 {point.name}
               </button>
             </li>
@@ -402,11 +423,10 @@ export function EvidenceScatter({
           background: var(--purple-soft);
         }
 
-        .evidence-scatter__legend button span {
-          width: 1rem;
-          flex: 0 0 1rem;
-          font-size: 1rem;
-          text-align: center;
+        .evidence-scatter__legend button svg {
+          width: 1.25rem;
+          height: 1.25rem;
+          flex: 0 0 1.25rem;
         }
 
         .evidence-scatter__status {

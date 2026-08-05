@@ -8,12 +8,12 @@ html[data-design-theme="snyk-2026"][data-theme="light"] {
 
   --theme-paper: #030328;
   --theme-paper-raised: #030328;
-  --theme-paper-muted: #2B0250;
+  --theme-paper-muted: #030328;
   --theme-ink: #FFFFFF;
   --theme-ink-soft: rgba(255, 255, 255, 0.78);
   --theme-ink-faint: rgba(255, 255, 255, 0.65);
   --theme-rule: rgba(255, 255, 255, 0.12);
-  --theme-rule-strong: rgba(255, 255, 255, 0.24);
+  --theme-rule-strong: rgba(255, 255, 255, 0.4);
   --theme-purple: #6F00DD;
   --theme-purple-dark: #FF00FF;
   --theme-purple-soft: #2B0250;
@@ -61,7 +61,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
   --theme-ink-soft: rgba(255, 255, 255, 0.78);
   --theme-ink-faint: rgba(255, 255, 255, 0.65);
   --theme-rule: rgba(255, 255, 255, 0.12);
-  --theme-rule-strong: rgba(255, 255, 255, 0.24);
+  --theme-rule-strong: rgba(255, 255, 255, 0.4);
   --theme-purple: #6F00DD;
   --theme-purple-dark: #FF00FF;
   --theme-purple-soft: #2B0250;
@@ -110,7 +110,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
     --theme-ink-soft: rgba(255, 255, 255, 0.78);
     --theme-ink-faint: rgba(255, 255, 255, 0.65);
     --theme-rule: rgba(255, 255, 255, 0.12);
-    --theme-rule-strong: rgba(255, 255, 255, 0.24);
+    --theme-rule-strong: rgba(255, 255, 255, 0.4);
     --theme-purple: #6F00DD;
     --theme-purple-dark: #FF00FF;
     --theme-purple-soft: #2B0250;
