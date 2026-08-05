@@ -56,6 +56,16 @@ describe("build-selected branded shell contract", () => {
       source("src/components/site/BrandFabric.astro"),
       source("src/components/home/Hero.astro"),
     ]);
+    const defaultFabric = selectorBody(fabric, ".brand-fabric");
+    const lightFabric = fabric.match(
+      /\[data-theme="light"\]\)[\s\S]*?\.brand-fabric\s*\{([^}]+)\}/,
+    )?.[1];
+    const darkFabric = fabric.match(
+      /\[data-theme="dark"\]\)[\s\S]*?\.brand-fabric\s*\{([^}]+)\}/,
+    )?.[1];
+    const noJavaScriptDarkFabric = fabric.match(
+      /:not\(\[data-theme\]\)\)[\s\S]*?\.brand-fabric\s*\{([^}]+)\}/,
+    )?.[1];
 
     expect(fabric.match(/class="brand-fabric"/g)).toHaveLength(1);
     expect(fabric).toContain('aria-hidden="true"');
@@ -72,6 +82,10 @@ describe("build-selected branded shell contract", () => {
     expect(fabric).toContain("background-position: right bottom");
     expect(fabric).toMatch(/right:\s*0/);
     expect(fabric).toMatch(/bottom:\s*0/);
+    expect(defaultFabric).toContain("opacity: 0.48;");
+    expect(lightFabric).toContain("opacity: 0.48;");
+    expect(darkFabric).toContain("opacity: 1;");
+    expect(noJavaScriptDarkFabric).toContain("opacity: 1;");
     expect(fabric).not.toMatch(
       /mask|::before|::after|transform|rotate|background-size:\s*100%\s+100%/i,
     );
