@@ -1,9 +1,13 @@
 ---
+import { isSnyk2026Design } from "../../config/design-theme";
 import { currentRelease } from "../../data/releases";
+import BrandFabric from "../site/BrandFabric.astro";
 import EvidenceStrip from "./EvidenceStrip.astro";
 ---
 
 <section class="hero">
+  {isSnyk2026Design && <BrandFabric />}
+
   <div class="hero-grid container">
     <div class="hero-copy">
       <div class="release-line">
@@ -61,6 +65,40 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   .hero-grid {
     display: grid;
     gap: var(--space-6);
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .hero {
+    position: relative;
+    isolation: isolate;
+    padding-bottom: clamp(6rem, 12vw, 10rem);
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .hero-grid {
+    position: relative;
+    z-index: 1;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .hero-copy {
+    max-width: 40rem;
+    text-align: left;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .hero h1 {
+    max-width: 13ch;
+    font-size: clamp(2.25rem, 5.4vw, 4.75rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    overflow-wrap: break-word;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .hero-visual {
+    border-top: 1px solid #6F00DD;
+    border-right: 1px solid #FE9104;
+    border-bottom: 1px solid #F3552E;
+    border-left: 1px solid #FF00FF;
+    background: #030328;
+    color: #FFFFFF;
   }
 
   .hero-copy {

@@ -1,6 +1,8 @@
 ---
 import type { BrowserThemeColors } from "../../config/theme-colors";
+import { isSnyk2026Design } from "../../config/design-theme";
 import { currentRelease } from "../../data/releases";
+import SnykLogo from "./SnykLogo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import Wordmark from "./Wordmark.astro";
 
@@ -37,7 +39,7 @@ const isCurrent = (href: string) => href === activeLink?.href;
 
 <header class="site-header">
   <div class="header-inner container">
-    <Wordmark />
+    {isSnyk2026Design ? <SnykLogo /> : <Wordmark />}
 
     <div class="header-actions">
       <nav class="desktop-nav" aria-label="Primary">
@@ -90,6 +92,11 @@ const isCurrent = (href: string) => href === activeLink?.href;
     z-index: 20;
     border-bottom: 1px solid var(--rule);
     background: color-mix(in srgb, var(--paper) 94%, transparent);
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .site-header {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+    background: #030328;
   }
 
   .header-inner {

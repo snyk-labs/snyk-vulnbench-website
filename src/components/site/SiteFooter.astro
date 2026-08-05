@@ -45,6 +45,27 @@ import { currentRelease } from "../../data/releases";
     background: var(--paper-muted);
   }
 
+  :global(html[data-design-theme="snyk-2026"]) .site-footer {
+    border-top-color: rgba(255, 255, 255, 0.4);
+    background: #030328;
+    color: #FFFFFF;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .site-footer a {
+    color: #FFFFFF;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .site-footer .eyebrow,
+  :global(html[data-design-theme="snyk-2026"]) .initiative p + p,
+  :global(html[data-design-theme="snyk-2026"]) .release-meta,
+  :global(html[data-design-theme="snyk-2026"]) .legal {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .legal {
+    border-top-color: rgba(255, 255, 255, 0.12);
+  }
+
   .footer-grid {
     display: grid;
     gap: var(--space-6);

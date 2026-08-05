@@ -35,3 +35,5 @@ export function resolveDesignTheme(value: string | undefined): DesignTheme {
 export const designTheme = resolveDesignTheme(
   process.env.VULNBENCH_DESIGN_THEME,
 );
+
+export const isSnyk2026Design = designTheme === "snyk-2026";
