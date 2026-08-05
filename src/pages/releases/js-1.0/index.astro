@@ -1,0 +1,245 @@
+---
+import { RecurrenceContrast } from "../../../components/charts/RecurrenceContrast";
+import EvidenceStrip from "../../../components/home/EvidenceStrip.astro";
+import PageHero from "../../../components/site/PageHero.astro";
+import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { currentRelease } from "../../../data/releases";
+import { getHeadlineEvidence } from "../../../data/releases/headline";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const evidence = getHeadlineEvidence("js-1.0");
+---
+
+<BaseLayout
+  title={currentRelease.name}
+  description="Can LLMs find the same bugs twice? Explore the Snyk VulnBench JS 1.0 repeatability and reference-agreement study."
+  release={currentRelease}
+>
+  <PageHero
+    eyebrow="Current release · JS 1.0"
+    title={currentRelease.researchQuestion}
+    description={currentRelease.description}
+  >
+    <div slot="actions" class="button-row">
+      <a class="button" href={currentRelease.links.explore}>Explore evidence</a>
+      <a class="button secondary" href={currentRelease.links.paper}
+        >Read the paper</a
+      >
+    </div>
+    <ReleaseMeta slot="aside" release={currentRelease} />
+  </PageHero>
+
+  <div class="release-scope container">
+    <EvidenceStrip evidence={currentRelease.evidence} />
+  </div>
+
+  <article>
+    <section class="section">
+      <div class="container editorial-grid">
+        <div>
+          <p class="eyebrow">Research question</p>
+          <h2>Reliability starts with recurrence</h2>
+        </div>
+        <div class="prose">
+          <p class="lede">
+            If the same agent sees the same vulnerable code twice, does it
+            report the same security issues twice?
+          </p>
+          <p>
+            JS 1.0 measures repeated behavior under controlled conditions. Ten
+            inspectable JavaScript projects were reviewed by six
+            configurations, five times each, using unchanged code, prompts,
+            and harness settings.
+          </p>
+          <p>
+            Snyk Code supplies the deterministic reference set. The resulting
+            Snyk-reference metrics describe agreement with that set; they do
+            not claim exhaustive vulnerability-detection accuracy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section result-section" id="repeatability">
+      <div class="container result-grid">
+        <div class="section-heading">
+          <p class="eyebrow">Central result</p>
+          <h2>Matched findings were stable. Extra reports varied.</h2>
+          <p class="lede">
+            The recurrence distribution shows a clear contrast between
+            findings that aligned with the Snyk Code reference set and reports
+            outside it.
+          </p>
+          <p class="caveat">
+            Unmatched findings can include false-positive-shaped reports,
+            adjacent comments, or valid product-gap candidates. They require
+            inspection.
+          </p>
+        </div>
+        <RecurrenceContrast evidence={evidence} client:visible />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container editorial-grid">
+        <div>
+          <p class="eyebrow">Complementarity</p>
+          <h2>Different systems exposed different strengths</h2>
+        </div>
+        <div class="prose">
+          <p>
+            Agentic LLM review consistently recognized familiar, high-signal
+            exploit shapes and surfaced one likely Snyk Code product gap.
+            Deterministic SAST was stronger at systematically enumerating
+            repeated data-flow sinks.
+          </p>
+          <p>
+            The practical implication is not replacement. The evidence supports
+            combining reasoning-oriented review with deterministic coverage,
+            then triaging where their reports diverge.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section efficiency">
+      <div class="container editorial-grid">
+        <div>
+          <p class="eyebrow">Efficiency</p>
+          <h2>More expensive sessions did not automatically agree more</h2>
+        </div>
+        <div class="prose">
+          <p>
+            The model-only cost-quality comparison did not produce a simple
+            spend-more, score-higher pattern. Cost, token usage, duration,
+            agreement, and recurrence therefore remain separate measures.
+          </p>
+          <p class="caveat">
+            Published cost estimates reflect small fixtures and the model-session
+            assumptions documented for this release.
+          </p>
+          <a class="text-link" href={`${currentRelease.links.explore}?view=efficiency`}
+            >Inspect efficiency evidence</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="section limitations">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">What this does not prove</p>
+          <h2>Keep the protocol boundary visible</h2>
+        </div>
+        <ul>
+          {
+            currentRelease.caveats.map((caveat) => (
+              <li>{caveat}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="section release-cta">
+      <div class="container">
+        <p class="eyebrow">Continue the research trail</p>
+        <h2>Inspect the evidence behind the narrative</h2>
+        <nav aria-label="Release resources">
+          <a class="button" href={currentRelease.links.explore}>Explore results</a>
+          <a class="button secondary" href={currentRelease.links.methodology}
+            >Methodology</a
+          >
+          <a class="button secondary" href={currentRelease.links.data}>Data</a>
+          <a class="button secondary" href={currentRelease.links.github}
+            >GitHub</a
+          >
+        </nav>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .release-scope {
+    padding-block: var(--space-5);
+  }
+
+  .editorial-grid,
+  .result-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .editorial-grid h2 {
+    max-width: 15ch;
+    margin-top: var(--space-2);
+  }
+
+  .caveat {
+    padding-left: var(--space-3);
+    border-left: 0.2rem solid var(--warning);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .result-section {
+    background: var(--paper-muted);
+  }
+
+  .result-section .section-heading {
+    margin: 0;
+    align-content: start;
+  }
+
+  .efficiency {
+    background: var(--purple-soft);
+  }
+
+  .limitations ul {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .limitations li {
+    padding: var(--space-3) 0 var(--space-3) 2rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+
+  .limitations li::before {
+    content: "—";
+    display: inline-block;
+    width: 2rem;
+    margin-left: -2rem;
+    color: var(--purple-dark);
+  }
+
+  .release-cta nav {
+    display: flex;
+    margin-top: var(--space-5);
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .release-cta h2 {
+    max-width: 20ch;
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 58rem) {
+    .editorial-grid {
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: var(--space-8);
+    }
+
+    .result-grid {
+      grid-template-columns: 0.72fr 1.28fr;
+      align-items: start;
+      gap: var(--space-7);
+    }
+  }
+</style>

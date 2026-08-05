@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Snyk VulnBench</title>
+  <desc id="desc">Can LLMs find the same bugs twice? Snyk VulnBench JS 1.0.</desc>
+  <rect width="1200" height="630" fill="#f7f4ed"/>
+  <rect x="0" y="0" width="28" height="630" fill="#4b2be3"/>
+  <rect x="76" y="66" width="52" height="52" rx="6" fill="#e8e1ff" stroke="#4b2be3" stroke-width="3"/>
+  <circle cx="92" cy="82" r="5" fill="#4b2be3"/>
+  <circle cx="108" cy="98" r="5" fill="#4b2be3"/>
+  <circle cx="92" cy="114" r="5" fill="#4b2be3"/>
+  <circle cx="116" cy="114" r="5" fill="#4b2be3"/>
+  <text x="148" y="104" fill="#17141f" font-family="Arial, sans-serif" font-size="34" font-weight="700">VulnBench</text>
+  <text x="76" y="206" fill="#4b2be3" font-family="monospace" font-size="22" font-weight="700" letter-spacing="2">SNYK VULNBENCH JS 1.0</text>
+  <text x="76" y="292" fill="#17141f" font-family="Arial, sans-serif" font-size="66" font-weight="700">Can LLMs find the</text>
+  <text x="76" y="368" fill="#17141f" font-family="Arial, sans-serif" font-size="66" font-weight="700">same bugs twice?</text>
+  <text x="76" y="432" fill="#55515f" font-family="Arial, sans-serif" font-size="27">A repeatability and Snyk-reference agreement study</text>
+  <line x1="76" y1="492" x2="1124" y2="492" stroke="#aaa1b0" stroke-width="2"/>
+  <text x="76" y="546" fill="#17141f" font-family="monospace" font-size="22" font-weight="700">300 SCANS</text>
+  <text x="288" y="546" fill="#17141f" font-family="monospace" font-size="22" font-weight="700">10 PROJECTS</text>
+  <text x="530" y="546" fill="#17141f" font-family="monospace" font-size="22" font-weight="700">6 CONFIGURATIONS</text>
+  <text x="866" y="546" fill="#17141f" font-family="monospace" font-size="22" font-weight="700">5 REPETITIONS</text>
+  <text x="76" y="592" fill="#625d68" font-family="Arial, sans-serif" font-size="20">A Snyk benchmark initiative · vulnbench.com</text>
+</svg>

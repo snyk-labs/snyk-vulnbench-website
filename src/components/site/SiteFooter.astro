@@ -1,0 +1,104 @@
+---
+import { currentRelease } from "../../data/releases";
+---
+
+<footer class="site-footer">
+  <div class="footer-grid container">
+    <div class="initiative">
+      <p class="eyebrow">A Snyk benchmark initiative</p>
+      <p>
+        Transparent, versioned evidence about how reliably AI systems find
+        vulnerabilities.
+      </p>
+    </div>
+
+    <div>
+      <h2>Current release</h2>
+      <a href={currentRelease.links.overview}>{currentRelease.name}</a>
+      <p class="release-meta">
+        Published <time datetime={currentRelease.publishedAt}>11 June 2026</time>
+        · Dataset <span class="metric">{currentRelease.datasetVersion}</span>
+      </p>
+    </div>
+
+    <nav aria-label="Research resources">
+      <h2>Research</h2>
+      <ul>
+        <li><a href={currentRelease.links.paper}>Paper</a></li>
+        <li><a href={currentRelease.links.methodology}>Methodology</a></li>
+        <li><a href={currentRelease.links.data}>Data</a></li>
+        <li><a href={currentRelease.links.github}>GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="legal container">
+    <p>© 2026 Snyk Limited. Research artifacts are provided under Apache 2.0.</p>
+    <a href="/about">About VulnBench</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-top: var(--space-7);
+    border-top: 1px solid var(--ink);
+    background: var(--paper-muted);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .initiative {
+    max-width: 30rem;
+  }
+
+  .initiative p + p,
+  .release-meta {
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+  }
+
+  h2 {
+    margin-bottom: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: grid;
+    padding: 0;
+    gap: var(--space-1);
+    list-style: none;
+  }
+
+  .release-meta {
+    font-size: var(--step--1);
+  }
+
+  .legal {
+    display: flex;
+    padding-block: var(--space-5);
+    margin-top: var(--space-6);
+    border-top: 1px solid var(--rule-strong);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    gap: var(--space-3);
+    justify-content: space-between;
+  }
+
+  @media (min-width: 48rem) {
+    .footer-grid {
+      grid-template-columns: 1.5fr 1fr 0.7fr;
+    }
+  }
+
+  @media (max-width: 35rem) {
+    .legal {
+      display: grid;
+    }
+  }
+</style>

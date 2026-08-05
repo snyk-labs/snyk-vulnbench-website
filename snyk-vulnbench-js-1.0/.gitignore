@@ -141,10 +141,3 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
-
-# Astro generated files
-.astro/
-
-# Browser test output
-test-results/
-playwright-report/

@@ -1,0 +1,105 @@
+---
+import PageHero from "../../components/site/PageHero.astro";
+import ReleaseMeta from "../../components/site/ReleaseMeta.astro";
+import { releases } from "../../data/releases";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Releases"
+  description="Versioned Snyk VulnBench benchmark releases, research questions, datasets, and publication status."
+>
+  <PageHero
+    eyebrow="Release catalog"
+    title="Versioned evidence, preserved over time"
+    description="Each VulnBench release defines its own protocol, reference model, metrics, dataset version, and compatibility boundary."
+  />
+
+  <section class="section">
+    <div class="container">
+      <ol class="release-list">
+        {
+          releases.map((release) => (
+            <li>
+              <div>
+                <p class="eyebrow">Current release</p>
+                <h2>
+                  <a href={release.links.overview}>{release.name}</a>
+                </h2>
+                <p class="question">{release.researchQuestion}</p>
+                <p>{release.description}</p>
+                <div class="release-links">
+                  <a href={release.links.overview}>Release overview</a>
+                  <a href={release.links.explore}>Explore evidence</a>
+                  <a href={release.links.data}>Data and provenance</a>
+                </div>
+              </div>
+              <ReleaseMeta release={release} />
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="future-note">
+        Further VulnBench releases are planned. No unpublished results or
+        speculative rankings are shown here.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .release-list {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .release-list li {
+    display: grid;
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-5);
+  }
+
+  h2 {
+    margin-top: var(--space-2);
+  }
+
+  .question {
+    margin-top: var(--space-3);
+    font-size: var(--step-1);
+    font-weight: 650;
+  }
+
+  .question + p {
+    max-width: 48rem;
+    margin-top: var(--space-3);
+    color: var(--ink-soft);
+  }
+
+  .release-links {
+    display: flex;
+    margin-top: var(--space-4);
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    font-size: var(--step--1);
+    font-weight: 700;
+  }
+
+  .future-note {
+    max-width: 45rem;
+    padding-left: var(--space-3);
+    margin-top: var(--space-6);
+    border-left: 0.2rem solid var(--purple);
+    color: var(--ink-soft);
+  }
+
+  @media (min-width: 54rem) {
+    .release-list li {
+      grid-template-columns: 1fr 20rem;
+      align-items: start;
+    }
+  }
+</style>

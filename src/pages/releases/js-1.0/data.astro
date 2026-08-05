@@ -1,0 +1,274 @@
+---
+import PageHero from "../../../components/site/PageHero.astro";
+import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { currentRelease } from "../../../data/releases";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const downloads = [
+  {
+    name: "Benchmark run results",
+    format: "JSONL",
+    description:
+      "Published run-level results for all 300 benchmark scans, including model and deterministic reference runs.",
+    href: "/data/js-1.0/benchmark-results.jsonl",
+  },
+  {
+    name: "Chart data manifest",
+    format: "JSON",
+    description:
+      "Published aggregate values and chart definitions used by the upstream research visualizations.",
+    href: "/data/js-1.0/chart-manifest.json",
+  },
+  {
+    name: "Complete source snapshot",
+    format: "GitHub",
+    description:
+      "Fixture projects, reference findings, generated visualizations, article notes, and Apache 2.0 license.",
+    href: currentRelease.links.github,
+  },
+];
+---
+
+<BaseLayout
+  title="JS 1.0 Data"
+  description="Download Snyk VulnBench JS 1.0 data and inspect its schema, provenance, source snapshot, and correction policy."
+>
+  <PageHero
+    eyebrow="JS 1.0 · Data"
+    title="Versioned evidence with traceable provenance"
+    description="The release data is shipped as immutable static assets. Every published value remains tied to the JS 1.0 protocol, source revision, and dataset version."
+  >
+    <ReleaseMeta slot="aside" release={currentRelease} />
+  </PageHero>
+
+  <section class="section">
+    <div class="container data-grid">
+      <div>
+        <p class="eyebrow">Downloads</p>
+        <h2>Published release assets</h2>
+      </div>
+      <div class="downloads">
+        {
+          downloads.map(({ name, format, description, href }) => (
+            <article>
+              <div>
+                <span class="format metric">{format}</span>
+                <h3>{name}</h3>
+                <p>{description}</p>
+              </div>
+              <a class="button secondary" href={href} download={!href.startsWith("http")}
+                >Download</a
+              >
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section provenance">
+    <div class="container data-grid">
+      <div>
+        <p class="eyebrow">Provenance</p>
+        <h2>Exact upstream source</h2>
+      </div>
+      <div class="prose">
+        <p>
+          The website vendors the complete contents of
+          <a href={currentRelease.links.github}
+            >snyk-labs/snyk-vulnbench-js-1.0</a
+          >
+          at the published commit below. Upstream files are verified against
+          their Git blob hashes during the website test suite.
+        </p>
+        <dl class="provenance-list">
+          <div>
+            <dt>Dataset version</dt>
+            <dd class="metric">1.0.0</dd>
+          </div>
+          <div>
+            <dt>Upstream commit</dt>
+            <dd class="metric">
+              7c944ea438a31ea4cbd6803f1bb9560d01f932e5
+            </dd>
+          </div>
+          <div>
+            <dt>Upstream tree</dt>
+            <dd class="metric">
+              e1490c821be5be869b91e482eb037e3f2672f432
+            </dd>
+          </div>
+          <div>
+            <dt>Commit timestamp</dt>
+            <dd class="metric">2026-06-09T06:39:46Z</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container data-grid">
+      <div>
+        <p class="eyebrow">Data dictionary</p>
+        <h2>Core concepts</h2>
+      </div>
+      <dl class="dictionary">
+        <div>
+          <dt>Run</dt>
+          <dd>One configuration executing one benchmark task once.</dd>
+        </div>
+        <div>
+          <dt>Reference finding</dt>
+          <dd>A deterministic Snyk Code finding declared for a fixture.</dd>
+        </div>
+        <div>
+          <dt>Reference match</dt>
+          <dd>
+            A model report credited for the same vulnerability type under the
+            JS 1.0 scorer.
+          </dd>
+        </div>
+        <div>
+          <dt>Unmatched report</dt>
+          <dd>
+            A model report outside the reference match; not an automatic false
+            positive.
+          </dd>
+        </div>
+        <div>
+          <dt>Normalized signature</dt>
+          <dd>
+            The documented grouping identity used to measure recurrence across
+            repeated runs.
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section corrections">
+    <div class="container">
+      <p class="eyebrow">Corrections</p>
+      <h2>No silent rewrites</h2>
+      <p>
+        If published data changes, VulnBench will issue a new dataset patch
+        version, preserve the prior snapshot, document affected values, and
+        keep stable release URLs valid.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .data-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .data-grid > div:first-child h2 {
+    max-width: 13ch;
+    margin-top: var(--space-2);
+  }
+
+  .downloads {
+    border-top: 1px solid var(--ink);
+  }
+
+  .downloads article {
+    display: grid;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-4);
+  }
+
+  .format {
+    display: inline-block;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--purple);
+    color: var(--purple-dark);
+    font-size: 0.68rem;
+  }
+
+  .downloads h3 {
+    margin-top: var(--space-2);
+  }
+
+  .downloads p {
+    max-width: 44rem;
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+  }
+
+  .downloads .button {
+    width: fit-content;
+  }
+
+  .provenance {
+    background: var(--paper-muted);
+  }
+
+  .provenance-list {
+    display: grid;
+    margin-top: var(--space-5);
+    border-top: 1px solid var(--ink);
+  }
+
+  .provenance-list div,
+  .dictionary div {
+    display: grid;
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--rule-strong);
+    gap: var(--space-2);
+  }
+
+  .provenance-list dt,
+  .dictionary dt {
+    font-weight: 750;
+  }
+
+  .provenance-list dd,
+  .dictionary dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .dictionary {
+    margin: 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .dictionary dd {
+    color: var(--ink-soft);
+  }
+
+  .corrections {
+    background: var(--warning-soft);
+  }
+
+  .corrections h2 {
+    margin-top: var(--space-2);
+  }
+
+  .corrections p:last-child {
+    max-width: 48rem;
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 58rem) {
+    .data-grid {
+      grid-template-columns: 0.55fr 1.45fr;
+      gap: var(--space-8);
+    }
+
+    .downloads article {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+
+    .provenance-list div,
+    .dictionary div {
+      grid-template-columns: 12rem 1fr;
+    }
+  }
+</style>

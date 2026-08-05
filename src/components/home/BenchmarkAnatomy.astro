@@ -1,0 +1,124 @@
+---
+const steps = [
+  {
+    title: "Select inspectable projects",
+    text: "Ten small JavaScript and Express fixtures make every run and reference finding reviewable.",
+  },
+  {
+    title: "Repeat the same task",
+    text: "Each configuration sees the same code, prompt, harness, and task five times.",
+  },
+  {
+    title: "Normalize findings",
+    text: "Reported issues become documented signatures suitable for recurrence analysis.",
+  },
+  {
+    title: "Match the reference set",
+    text: "The scorer compares vulnerability type against deterministic Snyk Code findings.",
+  },
+  {
+    title: "Measure behavior",
+    text: "Agreement, recurrence, variance, coverage, cost, tokens, and duration stay distinct.",
+  },
+  {
+    title: "Inspect divergence",
+    text: "Unmatched reports remain evidence to investigate—not automatic false positives.",
+  },
+];
+---
+
+<section class="section anatomy" aria-labelledby="anatomy-title">
+  <div class="container anatomy-grid">
+    <div class="section-heading">
+      <p class="eyebrow">Benchmark anatomy</p>
+      <h2 id="anatomy-title">How VulnBench measures behavior</h2>
+      <p class="lede">
+        Repeat the conditions, preserve the evidence, and separate observed
+        agreement from claims the protocol cannot support.
+      </p>
+      <a class="text-link" href="/releases/js-1.0/methodology"
+        >Read the full methodology</a
+      >
+    </div>
+
+    <ol class="steps">
+      {
+        steps.map(({ title, text }, index) => (
+          <li data-anatomy-step>
+            <span class="step metric">{index + 1}</span>
+            <div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .anatomy {
+    background: var(--paper-muted);
+  }
+
+  .anatomy-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .section-heading {
+    align-content: start;
+    margin-bottom: 0;
+  }
+
+  .text-link {
+    width: fit-content;
+    margin-top: var(--space-2);
+  }
+
+  .steps {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .steps li {
+    display: grid;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--rule-strong);
+    gap: var(--space-3);
+    grid-template-columns: 2.3rem minmax(0, 1fr);
+  }
+
+  .step {
+    display: grid;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid var(--purple);
+    border-radius: 50%;
+    color: var(--purple-dark);
+    font-size: 0.75rem;
+    font-weight: 750;
+    place-items: center;
+  }
+
+  .steps h3 {
+    font-size: var(--step-0);
+    letter-spacing: -0.015em;
+  }
+
+  .steps p {
+    margin-top: var(--space-1);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  @media (min-width: 56rem) {
+    .anatomy-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

@@ -1,0 +1,135 @@
+---
+import SiteFooter from "../components/site/SiteFooter.astro";
+import SiteHeader from "../components/site/SiteHeader.astro";
+import type { Release } from "../data/releases/schema";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  image?: string;
+  release?: Release;
+}
+
+const {
+  title,
+  description,
+  canonicalPath = Astro.url.pathname,
+  image = "/social/vulnbench-default.svg",
+  release,
+} = Astro.props;
+const site = Astro.site ?? new URL("https://vulnbench.com");
+const canonicalUrl = new URL(canonicalPath, site);
+const imageUrl = new URL(image, site);
+const documentTitle =
+  title === "Snyk VulnBench" ? title : `${title} | Snyk VulnBench`;
+const articleStructuredData = release
+  ? {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      headline: release.citation.title,
+      datePublished: release.publishedAt,
+      dateModified: release.updatedAt,
+      author: release.citation.authors.map((name) => ({
+        "@type": "Person",
+        name,
+        affiliation: { "@type": "Organization", name: "Snyk" },
+      })),
+      url: release.citation.url,
+      mainEntityOfPage: canonicalUrl.toString(),
+      isAccessibleForFree: true,
+      publisher: { "@type": "Organization", name: "Snyk" },
+    }
+  : undefined;
+const datasetStructuredData = release
+  ? {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      name: `${release.name} dataset`,
+      description: release.description,
+      version: release.datasetVersion,
+      datePublished: release.publishedAt,
+      dateModified: release.updatedAt,
+      license: "https://www.apache.org/licenses/LICENSE-2.0",
+      creator: { "@type": "Organization", name: "Snyk" },
+      isAccessibleForFree: true,
+      distribution: [
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/x-ndjson",
+          contentUrl: new URL(
+            "/data/js-1.0/benchmark-results.jsonl",
+            site,
+          ).toString(),
+        },
+        {
+          "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: new URL(
+            "/data/js-1.0/chart-manifest.json",
+            site,
+          ).toString(),
+        },
+      ],
+    }
+  : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f7f4ed" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>{documentTitle}</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Snyk VulnBench" />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={documentTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    {
+      release && (
+        <>
+          <meta name="citation_title" content={release.citation.title} />
+          {release.citation.authors.map((author) => (
+            <meta name="citation_author" content={author} />
+          ))}
+          <meta
+            name="citation_publication_date"
+            content={release.publishedAt}
+          />
+          <meta name="citation_pdf_url" content={release.links.paper} />
+          <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(articleStructuredData)}
+          />
+          <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(datasetStructuredData)}
+          />
+        </>
+      )
+    }
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <SiteHeader />
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

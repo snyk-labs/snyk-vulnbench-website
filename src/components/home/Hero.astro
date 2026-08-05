@@ -1,0 +1,152 @@
+---
+import { currentRelease } from "../../data/releases";
+import EvidenceStrip from "./EvidenceStrip.astro";
+---
+
+<section class="hero">
+  <div class="hero-grid container">
+    <div class="hero-copy">
+      <div class="release-line">
+        <span class="release-kicker">Current release</span>
+        <span>{currentRelease.name}</span>
+      </div>
+
+      <p class="eyebrow">A Snyk benchmark initiative</p>
+      <h1>{currentRelease.researchQuestion}</h1>
+      <p class="study-label">
+        A repeatability and Snyk-reference agreement study
+      </p>
+      <p class="lede">
+        We ran the same agentic security review five times against inspectable
+        JavaScript projects to measure what recurs, what varies, and how model
+        findings align with a deterministic Snyk Code reference set.
+      </p>
+
+      <div class="button-row">
+        <a class="button" href={currentRelease.links.explore}
+          >Explore the results</a
+        >
+        <a class="button secondary" href={currentRelease.links.paper}
+          >Read the paper</a
+        >
+      </div>
+
+      <div class="secondary-links">
+        <a href={currentRelease.links.methodology}>View methodology</a>
+        <a href={currentRelease.links.data}>Download data</a>
+      </div>
+
+      <EvidenceStrip evidence={currentRelease.evidence} />
+    </div>
+
+    <div class="hero-visual">
+      <div class="visual-heading">
+        <div>
+          <p class="eyebrow">Headline evidence</p>
+          <h2>Stable matches. Variable extras.</h2>
+        </div>
+        <span class="metric">JS 1.0</span>
+      </div>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-5) var(--space-7);
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .hero-copy {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+
+  .release-line {
+    display: flex;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    gap: var(--space-3);
+    justify-content: space-between;
+  }
+
+  .release-kicker {
+    color: var(--purple-dark);
+    font-weight: 700;
+  }
+
+  h1 {
+    max-width: 13ch;
+  }
+
+  .study-label {
+    width: fit-content;
+    padding: 0.35rem 0.6rem;
+    border-left: 0.25rem solid var(--purple);
+    background: var(--purple-soft);
+    color: var(--purple-dark);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 700;
+  }
+
+  .secondary-links {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    font-size: var(--step--1);
+    font-weight: 700;
+  }
+
+  .hero-visual {
+    padding: var(--space-4);
+    border: 1px solid var(--ink);
+    background: var(--paper-muted);
+  }
+
+  .visual-heading {
+    display: flex;
+    padding-bottom: var(--space-4);
+    gap: var(--space-3);
+    align-items: start;
+    justify-content: space-between;
+  }
+
+  .visual-heading h2 {
+    margin-top: 0.25rem;
+    font-size: var(--step-2);
+  }
+
+  .visual-heading > .metric {
+    padding: 0.25rem 0.45rem;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper-raised);
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 62rem) {
+    .hero {
+      padding-block: var(--space-6) var(--space-8);
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 0.92fr) minmax(29rem, 1.08fr);
+      align-items: start;
+    }
+
+    .hero-visual {
+      margin-top: var(--space-5);
+    }
+  }
+</style>

@@ -1,0 +1,184 @@
+---
+import PageHero from "../components/site/PageHero.astro";
+import { currentRelease } from "../data/releases";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const citation = `${currentRelease.citation.authors.join(", ")}. “${currentRelease.citation.title}.” arXiv, ${currentRelease.citation.year}.`;
+---
+
+<BaseLayout
+  title="About"
+  description="The scope, principles, team, version policy, and citation guidance for the Snyk VulnBench benchmark initiative."
+>
+  <PageHero
+    eyebrow="About VulnBench"
+    title="A durable home for inspectable benchmark evidence"
+    description="Snyk VulnBench publishes versioned studies of vulnerability-finding behavior, their methods, datasets, cases, and interpretation boundaries."
+  />
+
+  <section class="section">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">Product promise</p>
+        <h2>Explore the result. Inspect the evidence.</h2>
+      </div>
+      <div class="prose">
+        <p class="lede">
+          Explore how reliably AI systems find vulnerabilities—and inspect the
+          evidence behind every conclusion.
+        </p>
+        <p>
+          VulnBench is not a universal leaderboard, a live scanner, or the home
+          for all Snyk AI security research. It is one benchmark initiative
+          spanning versioned protocols and stable public releases.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section principles">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">Initiative principles</p>
+        <h2>Scientific framing stays in the interface</h2>
+      </div>
+      <ol>
+        <li><strong>Evidence before ranking.</strong> Lead with measured behavior.</li>
+        <li>
+          <strong>Precise language.</strong> Reference agreement is not renamed
+          accuracy.
+        </li>
+        <li>
+          <strong>Every value has provenance.</strong> Release, dataset, metric,
+          aggregation, and sample size travel together.
+        </li>
+        <li>
+          <strong>Version boundaries are explicit.</strong> Incompatible
+          protocols do not produce false comparisons.
+        </li>
+        <li>
+          <strong>Immutable releases.</strong> Corrections are documented rather
+          than silently rewritten.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">Team</p>
+        <h2>Researchers and authors</h2>
+      </div>
+      <ul class="team">
+        {
+          currentRelease.citation.authors.map((author) => (
+            <li>
+              <strong>{author}</strong>
+              <span>Snyk</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section citation-section">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">Citation guidance</p>
+        <h2>Cite the release, not an unversioned score</h2>
+      </div>
+      <div>
+        <blockquote>{citation}</blockquote>
+        <p>
+          Include the release name and dataset version
+          <span class="metric">{currentRelease.datasetVersion}</span> when
+          reproducing a chart or filtered result.
+        </p>
+        <a class="text-link" href={currentRelease.links.paper}
+          >Open the canonical paper</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .about-grid h2 {
+    max-width: 15ch;
+    margin-top: var(--space-2);
+  }
+
+  .principles {
+    background: var(--paper-muted);
+  }
+
+  .principles ol {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .principles li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  .team {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+
+  .team li {
+    display: grid;
+    padding: var(--space-4);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .team span {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .citation-section {
+    background: var(--purple-soft);
+  }
+
+  blockquote {
+    padding: var(--space-4);
+    margin: 0;
+    border: 1px solid var(--purple);
+    background: var(--paper-raised);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  blockquote + p {
+    margin-top: var(--space-3);
+    color: var(--ink-soft);
+  }
+
+  .citation-section .text-link {
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 56rem) {
+    .about-grid {
+      grid-template-columns: 0.65fr 1.35fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

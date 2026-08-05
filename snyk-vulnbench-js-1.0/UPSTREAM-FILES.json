@@ -1,0 +1,325 @@
+{
+  "upstreamTree": "e1490c821be5be869b91e482eb037e3f2672f432",
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha": "872d5f6c6f29794f4d9c1f40acd6a65fb9c39d6d",
+      "size": 2165
+    },
+    {
+      "path": "2026-05-25-5n2q9/article-visuals.md",
+      "sha": "00efd62792a91c13fc48c33e9eb3950db2f9bb14",
+      "size": 32495
+    },
+    {
+      "path": "2026-05-25-5n2q9/chart-manifest.json",
+      "sha": "217c4fbedc06b8eb4556e90694afcceb88a35a47",
+      "size": 129221
+    },
+    {
+      "path": "2026-05-25-5n2q9/index.html",
+      "sha": "6349e737f1033b05f669d6acde63fc558ca15355",
+      "size": 168793
+    },
+    {
+      "path": "2026-05-27-sql-mock/article-visuals.md",
+      "sha": "9944997a04b97ae126bf2519002c99a5af8f7255",
+      "size": 1648
+    },
+    {
+      "path": "2026-05-27-sql-mock/chart-manifest.json",
+      "sha": "18681f6dc02cf27c20eb4dc2a2bbe9fc415ca8f3",
+      "size": 4996
+    },
+    {
+      "path": "2026-05-27-sql-mock/index.html",
+      "sha": "376f019941b408b5a87ecdfa3c2343d2ddbecf3b",
+      "size": 18198
+    },
+    {
+      "path": "2026-05-28-llm-repeatability/article-visuals.md",
+      "sha": "2422c5fa8d4bf41d71749269c02356eaca50a469",
+      "size": 6726
+    },
+    {
+      "path": "2026-05-28-llm-repeatability/chart-manifest.json",
+      "sha": "4552853f21a3b51f1eec17d6483a0aff52da8bba",
+      "size": 18478
+    },
+    {
+      "path": "2026-05-28-llm-repeatability/index.html",
+      "sha": "162d63240964e3b575a2b2f2f7ed1dfadecd41fe",
+      "size": 69085
+    },
+    {
+      "path": "2026-05-28-model-callouts/article-visuals.md",
+      "sha": "a3626aa2dec2072500a6b84ebc4631bcbec2a5c8",
+      "size": 6896
+    },
+    {
+      "path": "2026-05-28-model-callouts/chart-manifest.json",
+      "sha": "2c9ccaaa83d00bd43b107cc84a4aa2468850530e",
+      "size": 26798
+    },
+    {
+      "path": "2026-05-28-model-callouts/index.html",
+      "sha": "29d10d873d65f6e1dc23b2c7269931660c0c588d",
+      "size": 75995
+    },
+    {
+      "path": "article-visuals.md",
+      "sha": "00efd62792a91c13fc48c33e9eb3950db2f9bb14",
+      "size": 32495
+    },
+    {
+      "path": "benchmark-2026-05-20T23-06-29-348Z.jsonl",
+      "sha": "c619536363b706ed4e5f9f29d08bf7aa87751b8e",
+      "size": 1305842
+    },
+    {
+      "path": "chart-manifest.json",
+      "sha": "217c4fbedc06b8eb4556e90694afcceb88a35a47",
+      "size": 129221
+    },
+    {
+      "path": "fixtures/js-project-copperline/findings.json",
+      "sha": "72e6346f9e3099ac702db83b530dde7b7c3902f8",
+      "size": 1134
+    },
+    {
+      "path": "fixtures/js-project-copperline/project/app.js",
+      "sha": "dc39cd6cb638cc6a8872724a58e15fa7e5bc2506",
+      "size": 1251
+    },
+    {
+      "path": "fixtures/js-project-copperline/project/package.json",
+      "sha": "7e95d67e43462b0670147e061e43c650c3f26db4",
+      "size": 313
+    },
+    {
+      "path": "fixtures/js-project-goldleaf/findings.json",
+      "sha": "4bb17d06585374cb253ab6c115766ea487480884",
+      "size": 873
+    },
+    {
+      "path": "fixtures/js-project-goldleaf/project/app.js",
+      "sha": "34def5ae7c373e44baf22d096db9e3b552b183e2",
+      "size": 722
+    },
+    {
+      "path": "fixtures/js-project-goldleaf/project/package.json",
+      "sha": "5c89975eeafee9307a8dcfa59f75a33b0915f8bd",
+      "size": 310
+    },
+    {
+      "path": "fixtures/js-project-ironclad/findings.json",
+      "sha": "4df117300b64f195fa6a69452a0a2f97ae7dc4aa",
+      "size": 1139
+    },
+    {
+      "path": "fixtures/js-project-ironclad/project/app.js",
+      "sha": "b8673bc93b856d3ba29fa0890723d9515a2bc802",
+      "size": 734
+    },
+    {
+      "path": "fixtures/js-project-ironclad/project/package.json",
+      "sha": "d06ba33b9f7b2d32b718a50e7b4cfb01a234985f",
+      "size": 148
+    },
+    {
+      "path": "fixtures/js-project-ironclad/project/pnpm-lock.yaml",
+      "sha": "cd13d143a9a5c00206597a753ab32cc240cb3074",
+      "size": 26136
+    },
+    {
+      "path": "fixtures/js-project-ironclad/project/userMode.js",
+      "sha": "b80edf9b233688915014ef4f0efca42d94e83cc6",
+      "size": 163
+    },
+    {
+      "path": "fixtures/js-project-nightowl/findings.json",
+      "sha": "9f7c819533604a145798c43c46c6d4446d4c1d2e",
+      "size": 3220
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/.gitignore",
+      "sha": "2d32aa939eedacd441b2a4515e902b3cf65936cf",
+      "size": 213
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/db.js",
+      "sha": "61ebe90c3de0a647b3c04f934e2534b48abd3240",
+      "size": 823
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/package.json",
+      "sha": "e7606107b58347df8f86804316eb36743a3b8feb",
+      "size": 427
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/pnpm-lock.yaml",
+      "sha": "04dea507a9213acfd3cab2df9c3f245fd8e86a6b",
+      "size": 29443
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/public/app.js",
+      "sha": "7423e9951b1cb697d1fd41ee04132718489a9ede",
+      "size": 4936
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/public/index.html",
+      "sha": "ab612d0fd60d1e34d8f81224b9f4b0541ad97b86",
+      "size": 1812
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/public/styles.css",
+      "sha": "3f4a1836f7f7781ff22130df4b012414a0519b4f",
+      "size": 2363
+    },
+    {
+      "path": "fixtures/js-project-nightowl/project/server.js",
+      "sha": "35a7af211433b4b900cef22400478148abfdcd59",
+      "size": 6561
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/findings.json",
+      "sha": "c0f5ec5c0cf6c8bd75d07c1507003c4047c1cf43",
+      "size": 4662
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/.gitignore",
+      "sha": "02f7246f4c8e7bce5c155ef432f574f1b1fd9410",
+      "size": 294
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/package.json",
+      "sha": "fadbecf4eaa1f77bf46ac733b37aa4a99ad711e2",
+      "size": 438
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/pnpm-lock.yaml",
+      "sha": "296afbf21f97a3f1752921f03f61d66a15f9d373",
+      "size": 22261
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/server.js",
+      "sha": "9996af1d5017b9b14370be91d0f93a92998baa2c",
+      "size": 6975
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/views/account.hbs",
+      "sha": "f2f87be635d8dc0a27d2ada1a3c8b61d506999de",
+      "size": 1072
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/views/index.hbs",
+      "sha": "36077ec045de229cd4ff4d93432c3b63c4c2264d",
+      "size": 871
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/views/layouts/main.hbs",
+      "sha": "45ea985e701a7f3ccf1725c5532fafe7940e3eca",
+      "size": 1881
+    },
+    {
+      "path": "fixtures/js-project-purplehaze/project/views/results.hbs",
+      "sha": "af607e798ef69ba1f4207e1d272bfb1ce33ae746",
+      "size": 1455
+    },
+    {
+      "path": "fixtures/js-project-riverbend/findings.json",
+      "sha": "99346af600662768e5e2e40d67a5a6a93c617a37",
+      "size": 588
+    },
+    {
+      "path": "fixtures/js-project-riverbend/project/app.js",
+      "sha": "6d800f25cd46b47b95ad9be4d36d5db5ebb4ba14",
+      "size": 701
+    },
+    {
+      "path": "fixtures/js-project-riverbend/project/package.json",
+      "sha": "5bd8f96bfdc9b15b0e5ff4e95c538b6363717fa4",
+      "size": 292
+    },
+    {
+      "path": "fixtures/js-project-shadowfox/findings.json",
+      "sha": "0e88d47150ac166ffc65e0a3b9442dbc1a9a78f2",
+      "size": 1127
+    },
+    {
+      "path": "fixtures/js-project-shadowfox/project/app.js",
+      "sha": "330d2ff582615fa129019783334fd4ddf79163d1",
+      "size": 684
+    },
+    {
+      "path": "fixtures/js-project-shadowfox/project/package.json",
+      "sha": "9a92d38d234b04e9c4a40df389e49fb97d0d6ee0",
+      "size": 149
+    },
+    {
+      "path": "fixtures/js-project-shadowfox/project/pnpm-lock.yaml",
+      "sha": "cd13d143a9a5c00206597a753ab32cc240cb3074",
+      "size": 26136
+    },
+    {
+      "path": "fixtures/js-project-silvergate/findings.json",
+      "sha": "a327697e9b151f7dac3f7ef4f621b5745c8044f8",
+      "size": 1337
+    },
+    {
+      "path": "fixtures/js-project-silvergate/project/app.js",
+      "sha": "3ee44cb249c83b081c713c0b91f950971f0d7e47",
+      "size": 788
+    },
+    {
+      "path": "fixtures/js-project-silvergate/project/package.json",
+      "sha": "6d265b0456f56673f911af0d4f2a4070dff5cf68",
+      "size": 313
+    },
+    {
+      "path": "fixtures/js-project-skylark/findings.json",
+      "sha": "14916b3b6d80c6a248a50b2f9bf6f3268c165261",
+      "size": 1096
+    },
+    {
+      "path": "fixtures/js-project-skylark/project/app.js",
+      "sha": "4eecf9b90c9c187a531750f204d0d96508c0e67d",
+      "size": 623
+    },
+    {
+      "path": "fixtures/js-project-skylark/project/package.json",
+      "sha": "4d3c9836eea825ad1c3b42f397aacdd37c88bc5a",
+      "size": 313
+    },
+    {
+      "path": "fixtures/js-project-skylark/project/public/dashboard.js",
+      "sha": "2117c23ec9d4582da0bb84d5ff33da3dda19b5b0",
+      "size": 821
+    },
+    {
+      "path": "fixtures/js-project-skylark/project/public/index.html",
+      "sha": "e9ee76ddd4329a33a31a55228848854b21fc5efa",
+      "size": 559
+    },
+    {
+      "path": "fixtures/js-project-tigerteam/findings.json",
+      "sha": "650a8410c3f09b10fb7025a86d507e6e3be97016",
+      "size": 2521
+    },
+    {
+      "path": "fixtures/js-project-tigerteam/project/app.js",
+      "sha": "ff2be759d1787cb5d1ce5154272d0db8af5a8024",
+      "size": 1461
+    },
+    {
+      "path": "index.html",
+      "sha": "6349e737f1033b05f669d6acde63fc558ca15355",
+      "size": 168793
+    },
+    {
+      "path": "LICENSE",
+      "sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "size": 11357
+    }
+  ]
+}

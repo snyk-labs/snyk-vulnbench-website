@@ -1,0 +1,27 @@
+---
+import { RecurrenceContrast } from "../components/charts/RecurrenceContrast";
+import BenchmarkAnatomy from "../components/home/BenchmarkAnatomy.astro";
+import Hero from "../components/home/Hero.astro";
+import KeyFindings from "../components/home/KeyFindings.astro";
+import LatestEvidence from "../components/home/LatestEvidence.astro";
+import PublicationBlock from "../components/home/PublicationBlock.astro";
+import ResearchPrinciples from "../components/home/ResearchPrinciples.astro";
+import { getHeadlineEvidence } from "../data/releases/headline";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const headlineEvidence = getHeadlineEvidence("js-1.0");
+---
+
+<BaseLayout
+  title="Snyk VulnBench"
+  description="Explore how reliably AI systems find vulnerabilities—and inspect the evidence behind every conclusion."
+>
+  <Hero>
+    <RecurrenceContrast evidence={headlineEvidence} client:visible />
+  </Hero>
+  <LatestEvidence />
+  <KeyFindings />
+  <BenchmarkAnatomy />
+  <ResearchPrinciples />
+  <PublicationBlock />
+</BaseLayout>

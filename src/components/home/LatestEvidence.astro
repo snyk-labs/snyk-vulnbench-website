@@ -1,0 +1,133 @@
+---
+import { getHeadlineEvidence } from "../../data/releases/headline";
+
+const evidence = getHeadlineEvidence("js-1.0");
+const observations = [
+  {
+    value: `${evidence.matchedAllFive.numerator} of ${evidence.matchedAllFive.denominator}`,
+    label: "reference-matched findings appeared in all five repetitions",
+    href: evidence.matchedAllFive.explorerPath,
+    tone: "matched",
+  },
+  {
+    value: `${evidence.unmatchedOnce.numerator} of ${evidence.unmatchedOnce.denominator}`,
+    label: "unmatched findings appeared in only one repetition",
+    href: evidence.unmatchedOnce.explorerPath,
+    tone: "unmatched",
+  },
+  {
+    value: `${evidence.unmatchedAllFive.numerator} of ${evidence.unmatchedAllFive.denominator}`,
+    label: "unmatched findings appeared in all five repetitions",
+    href: evidence.unmatchedAllFive.explorerPath,
+    tone: "unmatched-outline",
+  },
+];
+---
+
+<section class="evidence-band" aria-labelledby="latest-evidence-title">
+  <div class="container">
+    <div class="band-heading">
+      <p class="eyebrow">Latest evidence · JS 1.0</p>
+      <h2 id="latest-evidence-title">Repeatability separated signal from noise.</h2>
+      <p>
+        Reference-matched findings were markedly more stable across identical
+        runs. Unmatched does not mean false positive; it identifies evidence
+        that needs inspection.
+      </p>
+    </div>
+
+    <div class="observations">
+      {
+        observations.map(({ value, label, href, tone }) => (
+          <a class={`observation ${tone}`} href={href}>
+            <span class="metric">{value}</span>
+            <span>{label}</span>
+            <small>Inspect evidence →</small>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .evidence-band {
+    padding-block: var(--space-7);
+    background: var(--ink);
+    color: var(--paper-raised);
+  }
+
+  .band-heading {
+    display: grid;
+    max-width: 55rem;
+    margin-bottom: var(--space-6);
+    gap: var(--space-3);
+  }
+
+  .band-heading .eyebrow {
+    color: #bdafff;
+  }
+
+  .band-heading p:last-child {
+    max-width: 48rem;
+    color: #c9c3cf;
+  }
+
+  .observations {
+    display: grid;
+    border-block: 1px solid #4c4654;
+  }
+
+  .observation {
+    display: grid;
+    padding: var(--space-4);
+    border-bottom: 1px solid #4c4654;
+    color: inherit;
+    gap: var(--space-2);
+    text-decoration: none;
+  }
+
+  .observation:last-child {
+    border-bottom: 0;
+  }
+
+  .observation:hover {
+    background: #24202b;
+  }
+
+  .observation .metric {
+    font-size: var(--step-2);
+    font-weight: 750;
+  }
+
+  .observation.matched .metric {
+    color: #6ed4c5;
+  }
+
+  .observation.unmatched .metric,
+  .observation.unmatched-outline .metric {
+    color: #f29c82;
+  }
+
+  .observation small {
+    color: #aaa2b0;
+    font-weight: 700;
+  }
+
+  @media (min-width: 48rem) {
+    .observations {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .observation {
+      min-height: 13rem;
+      border-right: 1px solid #4c4654;
+      border-bottom: 0;
+      align-content: space-between;
+    }
+
+    .observation:last-child {
+      border-right: 0;
+    }
+  }
+</style>

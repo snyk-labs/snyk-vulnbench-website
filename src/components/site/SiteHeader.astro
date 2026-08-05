@@ -1,0 +1,164 @@
+---
+import { currentRelease } from "../../data/releases";
+import Wordmark from "./Wordmark.astro";
+
+const path = Astro.url.pathname;
+const links = [
+  { label: "Overview", href: "/" },
+  { label: "Releases", href: "/releases" },
+  { label: "Explore", href: currentRelease.links.explore },
+  { label: "Methodology", href: "/methodology" },
+  { label: "Data", href: "/data" },
+  { label: "GitHub", href: currentRelease.links.github, external: true },
+];
+
+const isCurrent = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="header-inner container">
+    <Wordmark />
+
+    <nav class="desktop-nav" aria-label="Primary">
+      <ul>
+        {
+          links.map(({ label, href, external }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={isCurrent(href) ? "page" : undefined}
+                rel={external ? "noreferrer" : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <details class="mobile-menu">
+      <summary>Menu</summary>
+      <nav aria-label="Primary">
+        <ul>
+          {
+            links.map(({ label, href, external }) => (
+              <li>
+                <a
+                  href={href}
+                  aria-current={isCurrent(href) ? "page" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                >
+                  {label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 20;
+    border-bottom: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
+  }
+
+  .header-inner {
+    display: flex;
+    min-height: 4.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    gap: clamp(0.75rem, 2vw, 1.55rem);
+    align-items: center;
+    list-style: none;
+  }
+
+  nav a,
+  summary {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  nav a:hover,
+  nav a[aria-current="page"] {
+    color: var(--ink);
+  }
+
+  nav a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-color: var(--purple);
+    text-decoration-thickness: 0.18rem;
+    text-underline-offset: 0.5rem;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (max-width: 47.99rem) {
+    .desktop-nav {
+      display: none;
+    }
+
+    .mobile-menu {
+      position: relative;
+      display: block;
+    }
+
+    summary {
+      padding: 0.4rem 0.55rem;
+      border: 1px solid var(--rule-strong);
+      border-radius: var(--radius);
+      cursor: pointer;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .mobile-menu nav {
+      position: absolute;
+      top: calc(100% + 0.55rem);
+      right: 0;
+      width: min(17rem, calc(100vw - 2rem));
+      padding: var(--space-3);
+      border: 1px solid var(--ink);
+      background: var(--paper-raised);
+    }
+
+    .mobile-menu ul {
+      display: grid;
+      gap: 0;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 0.65rem 0.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .mobile-menu li:last-child a {
+      border-bottom: 0;
+    }
+
+    nav a[aria-current="page"] {
+      text-underline-offset: 0.2rem;
+    }
+  }
+</style>

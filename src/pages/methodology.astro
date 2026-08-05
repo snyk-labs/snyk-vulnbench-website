@@ -1,0 +1,128 @@
+---
+import PageHero from "../components/site/PageHero.astro";
+import { currentRelease } from "../data/releases";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const principles = [
+  {
+    title: "Define the protocol before reading the result",
+    text: "Every release declares its task, repeated conditions, reference or ground-truth model, scorer, metrics, and limitations.",
+  },
+  {
+    title: "Preserve uncertainty and recurrence",
+    text: "Repeated-run spread remains visible wherever an aggregate could hide variable behavior.",
+  },
+  {
+    title: "Keep values traceable",
+    text: "Published charts identify release, dataset version, aggregation, units, sample size, and source assets.",
+  },
+  {
+    title: "Block incompatible comparisons",
+    text: "Metrics only compare across releases when their definitions and protocols explicitly declare compatibility.",
+  },
+  {
+    title: "Publish corrections, never silent rewrites",
+    text: "Corrected data receives a new patch version and a visible record of affected values and reasons.",
+  },
+];
+---
+
+<BaseLayout
+  title="Methodology"
+  description="Initiative-level methodology principles and release-specific benchmark protocols for Snyk VulnBench."
+>
+  <PageHero
+    eyebrow="Initiative methodology"
+    title="Comparable evidence requires explicit boundaries"
+    description="VulnBench releases share principles for transparent measurement and provenance while preserving protocol-specific definitions."
+  />
+
+  <section class="section">
+    <div class="container">
+      <ol class="principles">
+        {
+          principles.map(({ title, text }, index) => (
+            <li>
+              <span class="metric">{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h2>{title}</h2>
+                <p>{text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section release-method">
+    <div class="container">
+      <p class="eyebrow">Current protocol</p>
+      <h2>{currentRelease.name}</h2>
+      <p class="lede">{currentRelease.studyType}</p>
+      <p>
+        Read the benchmark design, matching rules, metric definitions,
+        limitations, and source-reproduction notes for the current release.
+      </p>
+      <a class="button" href={currentRelease.links.methodology}
+        >Open JS 1.0 methodology</a
+      >
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .principles {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .principles li {
+    display: grid;
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-3);
+  }
+
+  .principles > li > .metric {
+    color: var(--purple-dark);
+    font-size: var(--step--1);
+    font-weight: 700;
+  }
+
+  .principles h2 {
+    font-size: var(--step-2);
+  }
+
+  .principles p {
+    max-width: 48rem;
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+  }
+
+  .release-method {
+    background: var(--purple-soft);
+  }
+
+  .release-method h2 {
+    margin-top: var(--space-2);
+  }
+
+  .release-method .lede,
+  .release-method p:not(.eyebrow) {
+    max-width: 48rem;
+    margin-top: var(--space-3);
+  }
+
+  .release-method .button {
+    margin-top: var(--space-5);
+  }
+
+  @media (min-width: 48rem) {
+    .principles li {
+      grid-template-columns: 4rem 1fr;
+    }
+  }
+</style>

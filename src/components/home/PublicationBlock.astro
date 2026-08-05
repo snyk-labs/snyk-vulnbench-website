@@ -1,0 +1,95 @@
+---
+import { currentRelease } from "../../data/releases";
+
+const authors = currentRelease.citation.authors.join(", ");
+const citation = `${authors}. “${currentRelease.citation.title}.” arXiv, 2026.`;
+---
+
+<section class="publication" aria-labelledby="publication-title">
+  <div class="container publication-grid">
+    <div>
+      <p class="eyebrow">Publication</p>
+      <h2 id="publication-title">Read, reproduce, and cite the work</h2>
+      <p class="lede">
+        The paper, reviewed methodology, source snapshot, and release data use
+        stable public links.
+      </p>
+    </div>
+
+    <div class="citation">
+      <p class="eyebrow">Preferred citation</p>
+      <blockquote>{citation}</blockquote>
+      <p class="authors">
+        Liran Tal · Johannes Kloos · Arsenii Rudich · Stephen Thoemmes · Manoj
+        Nair
+      </p>
+    </div>
+
+    <nav aria-label="Publication links">
+      <a class="button" href={currentRelease.links.paper}>Read the paper</a>
+      <a class="button secondary" href={currentRelease.links.publication}
+        >Snyk publication</a
+      >
+      <a class="button secondary" href={currentRelease.links.github}
+        >View GitHub</a
+      >
+      <a class="button secondary" href={currentRelease.links.data}
+        >Download data</a
+      >
+    </nav>
+  </div>
+</section>
+
+<style>
+  .publication {
+    padding-block: var(--space-7);
+    border-top: 1px solid var(--ink);
+    background: var(--purple-soft);
+  }
+
+  .publication-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .publication h2 {
+    max-width: 18ch;
+    margin-top: var(--space-2);
+  }
+
+  .publication .lede {
+    max-width: 42rem;
+    margin-top: var(--space-3);
+  }
+
+  .citation {
+    padding: var(--space-4);
+    border: 1px solid var(--purple);
+    background: var(--paper-raised);
+  }
+
+  blockquote {
+    margin: var(--space-3) 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.6;
+  }
+
+  .authors {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  nav {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+
+  @media (min-width: 60rem) {
+    .publication-grid {
+      grid-template-columns: 1.1fr 1fr 0.6fr;
+      align-items: start;
+    }
+  }
+</style>

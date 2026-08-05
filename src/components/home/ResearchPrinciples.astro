@@ -1,0 +1,108 @@
+---
+const principles = [
+  ["Transparent reference sets", "Definitions and limitations stay visible."],
+  ["Repeated measurement", "Variance is a result, not a footnote."],
+  ["Inspectable cases", "Headline claims link toward underlying evidence."],
+  ["Reproducible data", "Versioned source artifacts remain downloadable."],
+  ["Explicit limitations", "Agreement is never relabeled as accuracy."],
+];
+---
+
+<section class="section" aria-labelledby="principles-title">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Research principles</p>
+      <h2 id="principles-title">Evidence before ranking</h2>
+      <p class="lede">
+        VulnBench is a versioned research initiative, not a universal
+        leaderboard. Every release defines what it measured and what it did
+        not prove.
+      </p>
+    </div>
+
+    <dl class="principles">
+      {
+        principles.map(([term, description]) => (
+          <div>
+            <dt>{term}</dt>
+            <dd>{description}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="release-note">
+      <p class="eyebrow">Release history</p>
+      <div>
+        <strong>Snyk VulnBench JS 1.0</strong>
+        <span>Published 11 June 2026 · Current</span>
+      </div>
+      <p>
+        Further releases are planned. Unpublished results will not appear as
+        speculative rankings or empty release cards.
+      </p>
+      <a class="text-link" href="/releases">View release catalog</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .principles {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-block: 1px solid var(--ink);
+  }
+
+  .principles div {
+    display: grid;
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-2);
+  }
+
+  .principles div:last-child {
+    border-bottom: 0;
+  }
+
+  dt {
+    font-weight: 750;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .release-note {
+    display: grid;
+    padding-top: var(--space-6);
+    margin-top: var(--space-6);
+    border-top: 0.3rem solid var(--purple);
+    gap: var(--space-3);
+  }
+
+  .release-note div {
+    display: grid;
+  }
+
+  .release-note span,
+  .release-note > p:not(.eyebrow) {
+    color: var(--ink-soft);
+  }
+
+  .release-note .text-link {
+    width: fit-content;
+  }
+
+  @media (min-width: 48rem) {
+    .principles div {
+      grid-template-columns: minmax(13rem, 0.75fr) 1.25fr;
+    }
+
+    .release-note {
+      grid-template-columns: 0.55fr 1fr 1.3fr auto;
+      align-items: start;
+    }
+  }
+</style>

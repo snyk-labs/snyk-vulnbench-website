@@ -1,0 +1,93 @@
+---
+import { currentRelease } from "../../data/releases";
+---
+
+<section class="section" aria-labelledby="findings-title">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">Observed results</p>
+      <h2 id="findings-title">What the data show</h2>
+      <p class="lede">
+        Three findings define this release. Each one links to the measured view
+        and keeps its interpretation boundary attached.
+      </p>
+    </div>
+
+    <ol class="findings">
+      {
+        currentRelease.featuredFindings.map(
+          ({ title, summary, explorerPath, caveat }, index) => (
+            <li>
+              <span class="finding-number metric">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3>{title}</h3>
+                <p>{summary}</p>
+                <p class="caveat">
+                  <strong>Interpret with care:</strong> {caveat}
+                </p>
+              </div>
+              <a class="text-link" href={explorerPath}>
+                Open the evidence
+              </a>
+            </li>
+          ),
+        )
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .findings {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .findings li {
+    display: grid;
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-3);
+  }
+
+  .finding-number {
+    color: var(--purple-dark);
+    font-size: var(--step--1);
+    font-weight: 700;
+  }
+
+  h3 {
+    max-width: 39rem;
+    font-size: var(--step-2);
+  }
+
+  h3 + p {
+    max-width: 47rem;
+    margin-top: var(--space-3);
+    color: var(--ink-soft);
+  }
+
+  .caveat {
+    max-width: 47rem;
+    padding-left: var(--space-3);
+    margin-top: var(--space-3);
+    border-left: 2px solid var(--warning);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .text-link {
+    width: fit-content;
+  }
+
+  @media (min-width: 48rem) {
+    .findings li {
+      grid-template-columns: 3rem minmax(0, 1fr) auto;
+      align-items: start;
+    }
+  }
+</style>

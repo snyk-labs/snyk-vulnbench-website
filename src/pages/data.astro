@@ -1,0 +1,141 @@
+---
+import PageHero from "../components/site/PageHero.astro";
+import ReleaseMeta from "../components/site/ReleaseMeta.astro";
+import { releases } from "../data/releases";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Data"
+  description="Versioned VulnBench datasets, source provenance, schemas, correction histories, and static downloads."
+>
+  <PageHero
+    eyebrow="Dataset catalog"
+    title="Reconstruct the evidence"
+    description="Every public VulnBench release links its narrative to immutable source artifacts, documented metrics, and downloadable static data."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">Published datasets</p>
+        <h2>Release-scoped and versioned</h2>
+        <p class="lede">
+          Dataset versions remain attached to their release protocol. A
+          correction creates a new patch version instead of silently replacing
+          the historical source.
+        </p>
+      </div>
+
+      <ol class="datasets">
+        {
+          releases.map((release) => (
+            <li>
+              <div>
+                <p class="eyebrow">Dataset {release.datasetVersion}</p>
+                <h3>{release.name}</h3>
+                <p>{release.description}</p>
+                <div class="actions">
+                  <a class="button" href={release.links.data}>
+                    Data and provenance
+                  </a>
+                  <a class="button secondary" href={release.links.methodology}>
+                    Metric definitions
+                  </a>
+                </div>
+              </div>
+              <ReleaseMeta release={release} />
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section policy">
+    <div class="container policy-grid">
+      <div>
+        <p class="eyebrow">Data policy</p>
+        <h2>Durable by design</h2>
+      </div>
+      <ul>
+        <li>Static assets require no runtime API or account.</li>
+        <li>Published source revisions remain immutable.</li>
+        <li>Zero, missing, and not-applicable values stay distinct.</li>
+        <li>Metric definitions include units, aggregation, and caveats.</li>
+        <li>Corrections preserve stable release URLs and prior versions.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .datasets {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .datasets li {
+    display: grid;
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-5);
+  }
+
+  .datasets h3 {
+    margin-top: var(--space-2);
+    font-size: var(--step-2);
+  }
+
+  .datasets h3 + p {
+    max-width: 46rem;
+    margin-top: var(--space-3);
+    color: var(--ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    margin-top: var(--space-4);
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .policy {
+    background: var(--paper-muted);
+  }
+
+  .policy-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .policy h2 {
+    margin-top: var(--space-2);
+  }
+
+  .policy ul {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .policy li {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  @media (min-width: 56rem) {
+    .datasets li {
+      grid-template-columns: 1fr 20rem;
+    }
+
+    .policy-grid {
+      grid-template-columns: 0.6fr 1.4fr;
+      gap: var(--space-8);
+    }
+  }
+</style>
