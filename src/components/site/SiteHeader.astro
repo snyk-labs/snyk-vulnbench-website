@@ -1,8 +1,14 @@
 ---
+import type { BrowserThemeColors } from "../../config/theme-colors";
 import { currentRelease } from "../../data/releases";
 import ThemeToggle from "./ThemeToggle.astro";
 import Wordmark from "./Wordmark.astro";
 
+interface Props {
+  themeColors: BrowserThemeColors;
+}
+
+const { themeColors } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
   { label: "Overview", href: "/" },
@@ -52,7 +58,7 @@ const isCurrent = (href: string) => href === activeLink?.href;
         </ul>
       </nav>
 
-      <ThemeToggle />
+      <ThemeToggle themeColors={themeColors} />
 
       <details class="mobile-menu">
         <summary>Menu</summary>

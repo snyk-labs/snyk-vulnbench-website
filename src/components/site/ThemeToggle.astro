@@ -1,3 +1,13 @@
+---
+import type { BrowserThemeColors } from "../../config/theme-colors";
+
+interface Props {
+  themeColors: BrowserThemeColors;
+}
+
+const { themeColors } = Astro.props;
+---
+
 <button
   class="theme-toggle"
   type="button"
@@ -39,16 +49,12 @@
   </svg>
 </button>
 
-<script is:inline>
+<script is:inline define:vars={{ themeColors }}>
   (() => {
     const button = document.querySelector("[data-theme-toggle]");
     if (!button) return;
 
     const storageKey = "vulnbench-theme";
-    const themeColors = {
-      light: "#f7f4ed",
-      dark: "#211e24",
-    };
     const isTheme = (value) => value === "light" || value === "dark";
     let mediaQuery = null;
 
