@@ -36,11 +36,16 @@ export function RecurrenceContrast({ evidence }: RecurrenceContrastProps) {
         aria-label="Finding recurrence contrast. Reference-matched findings were more likely to recur in all five runs than unmatched findings."
       >
         {observations.map((observation) => (
-          <div
-            className={`recurrence-plot__bar recurrence-plot__bar--${observation.key}`}
-            key={observation.key}
-            style={{ width: `${percentage(observation)}%` }}
-          />
+          <div className="recurrence-plot__item" key={observation.key}>
+            <div className="recurrence-plot__label">
+              <span>{observation.label}</span>
+              <strong>{percentage(observation).toFixed(1)}%</strong>
+            </div>
+            <div
+              className={`recurrence-plot__bar recurrence-plot__bar--${observation.key}`}
+              style={{ width: `${percentage(observation)}%` }}
+            />
+          </div>
         ))}
       </div>
 
@@ -114,9 +119,28 @@ export function RecurrenceContrast({ evidence }: RecurrenceContrastProps) {
           background: var(--paper-raised);
         }
 
+        .recurrence-plot__item {
+          display: grid;
+          gap: 0.4rem;
+        }
+
+        .recurrence-plot__label {
+          display: grid;
+          color: var(--ink);
+          font-size: var(--step--1);
+          gap: 1rem;
+          grid-template-columns: minmax(0, 1fr) auto;
+          line-height: 1.25;
+        }
+
+        .recurrence-plot__label strong {
+          font-family: var(--font-mono);
+          font-variant-numeric: tabular-nums;
+        }
+
         .recurrence-plot__bar {
           min-width: 0.35rem;
-          height: 1.65rem;
+          height: 1.35rem;
           border: 2px solid currentColor;
           background: currentColor;
         }

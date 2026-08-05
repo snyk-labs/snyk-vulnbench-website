@@ -9,9 +9,19 @@ describe("RecurrenceContrast", () => {
   it("gives pointer and keyboard users the same exact values", () => {
     render(<RecurrenceContrast evidence={evidence} />);
 
-    expect(
-      screen.getByRole("img", { name: /finding recurrence contrast/i }),
-    ).toBeVisible();
+    const plot = screen.getByRole("img", {
+      name: /finding recurrence contrast/i,
+    });
+
+    expect(plot).toBeVisible();
+    expect(plot).toHaveTextContent(
+      "Reference-matched findings seen in all five runs",
+    );
+    expect(plot).toHaveTextContent("84.8%");
+    expect(plot).toHaveTextContent("Unmatched findings seen in only one run");
+    expect(plot).toHaveTextContent("49.7%");
+    expect(plot).toHaveTextContent("Unmatched findings seen in all five runs");
+    expect(plot).toHaveTextContent("13.7%");
     expect(
       screen.getByRole("table", { name: /exact recurrence values/i }),
     ).toHaveTextContent("134 of 158");
