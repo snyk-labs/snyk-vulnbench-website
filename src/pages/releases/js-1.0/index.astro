@@ -1,13 +1,20 @@
 ---
 import { RecurrenceContrast } from "../../../components/charts/RecurrenceContrast";
+import { ConfigurationScorecard } from "../../../components/evidence/ConfigurationScorecard";
+import { EvidenceScatter } from "../../../components/evidence/EvidenceScatter";
+import LargerFixtureEvidence from "../../../components/evidence/LargerFixtureEvidence.astro";
+import RepresentativeCases from "../../../components/evidence/RepresentativeCases.astro";
+import VulnerabilityCoverage from "../../../components/evidence/VulnerabilityCoverage.astro";
 import EvidenceStrip from "../../../components/home/EvidenceStrip.astro";
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
 import { currentRelease } from "../../../data/releases";
 import { getHeadlineEvidence } from "../../../data/releases/headline";
+import { loadJs10PublishedEvidence } from "../../../data/releases/js-1.0-source";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
 const evidence = getHeadlineEvidence("js-1.0");
+const publishedEvidence = await loadJs10PublishedEvidence();
 ---
 
 <BaseLayout
@@ -60,6 +67,24 @@ const evidence = getHeadlineEvidence("js-1.0");
       </div>
     </section>
 
+    <section class="section configurations" id="configurations">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Benchmark design and configurations</p>
+          <h2>Six configurations, repeated under the same conditions</h2>
+          <p class="lede">
+            Five Claude configurations ran through the same agentic harness.
+            Snyk Code supplied deterministic reference reproduction. Each
+            configuration ran every one of the ten projects five times.
+          </p>
+        </div>
+        <ConfigurationScorecard
+          configurations={publishedEvidence.configurations}
+          client:load
+        />
+      </div>
+    </section>
+
     <section class="section result-section" id="repeatability">
       <div class="container result-grid">
         <div class="section-heading">
@@ -77,6 +102,30 @@ const evidence = getHeadlineEvidence("js-1.0");
           </p>
         </div>
         <RecurrenceContrast evidence={evidence} client:visible />
+      </div>
+    </section>
+
+    <section class="section stability-section">
+      <div class="container result-grid">
+        <div class="section-heading">
+          <p class="eyebrow">Agreement and repeated-run variance</p>
+          <h2>Higher agreement did not require higher variance</h2>
+          <p class="lede">
+            The stronger model configurations sit toward the upper-left:
+            higher Snyk-reference F1 with less repeated-run spread.
+          </p>
+        </div>
+        <EvidenceScatter
+          caveat="Reference agreement measures alignment with the Snyk Code reference set, not universal vulnerability-detection accuracy."
+          interpretation="Upper-left means higher Snyk-reference agreement and lower repeated-run variance."
+          points={publishedEvidence.agreementVariance}
+          provenance={publishedEvidence.provenance}
+          title="Agreement versus repeated-run variance"
+          xLabel="F1 standard deviation"
+          xUnit="percentage-points"
+          yLabel="Snyk-reference F1"
+          client:visible
+        />
       </div>
     </section>
 
@@ -102,13 +151,47 @@ const evidence = getHeadlineEvidence("js-1.0");
       </div>
     </section>
 
-    <section class="section efficiency">
-      <div class="container editorial-grid">
-        <div>
+    <section class="section coverage-section" id="coverage">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Vulnerability-class behavior</p>
+          <h2>High-signal exploit shapes were easier to recover consistently</h2>
+          <p class="lede">
+            The published class-level view separates familiar exploit patterns
+            from systematic classes where agentic review agreed less often
+            with the Snyk Code reference set.
+          </p>
+        </div>
+        <VulnerabilityCoverage
+          coverage={publishedEvidence.coverage}
+          provenance={publishedEvidence.provenance}
+        />
+      </div>
+    </section>
+
+    <section class="section project-section" id="project-behavior">
+      <div class="container result-grid">
+        <div class="section-heading">
+          <p class="eyebrow">Project-level behavior</p>
+          <h2>The larger app-like fixture exposed stable incompleteness</h2>
+          <p class="lede">
+            Nightowl adds routes, uploads, attachment handling, database state,
+            and frontend JavaScript. It is one project-level stress point, not
+            a substitute for the full benchmark.
+          </p>
+        </div>
+        <LargerFixtureEvidence
+          evidence={publishedEvidence.largerFixture}
+          provenance={publishedEvidence.provenance}
+        />
+      </div>
+    </section>
+
+    <section class="section efficiency" id="efficiency">
+      <div class="container result-grid">
+        <div class="section-heading">
           <p class="eyebrow">Efficiency</p>
           <h2>More expensive sessions did not automatically agree more</h2>
-        </div>
-        <div class="prose">
           <p>
             The model-only cost-quality comparison did not produce a simple
             spend-more, score-higher pattern. Cost, token usage, duration,
@@ -122,6 +205,76 @@ const evidence = getHeadlineEvidence("js-1.0");
             >Inspect efficiency evidence</a
           >
         </div>
+        <EvidenceScatter
+          caveat="Cost values reflect the tested small fixtures and the publication’s model-session pricing assumptions."
+          interpretation="Upper-left means higher Snyk-reference agreement at lower estimated model-session cost."
+          points={publishedEvidence.costQuality}
+          provenance={publishedEvidence.provenance}
+          title="Cost versus Snyk-reference F1"
+          xLabel="Estimated model-session cost"
+          xUnit="usd"
+          yLabel="Snyk-reference F1"
+          client:visible
+        />
+      </div>
+    </section>
+
+    <section class="section implications">
+      <div class="container editorial-grid">
+        <div>
+          <p class="eyebrow">Operational meaning</p>
+          <h2>Practical implications for security teams</h2>
+        </div>
+        <div class="implication-list">
+          <article>
+            <span class="metric">01</span>
+            <div>
+              <h3>Combine reasoning with deterministic coverage</h3>
+              <p>
+                Use agentic review to surface contextual and unfamiliar
+                patterns, while deterministic SAST systematically enumerates
+                known data-flow sinks.
+              </p>
+            </div>
+          </article>
+          <article>
+            <span class="metric">02</span>
+            <div>
+              <h3>Measure recurrence before trusting queue shape</h3>
+              <p>
+                Repeated-run stability helps separate durable reports from
+                one-run observations without treating recurrence as proof of
+                validity.
+              </p>
+            </div>
+          </article>
+          <article>
+            <span class="metric">03</span>
+            <div>
+              <h3>Inspect unmatched findings instead of bulk-dismissal</h3>
+              <p>
+                Unmatched findings can be false-positive-shaped, adjacent to
+                the reference scope, or evidence of a deterministic product
+                gap.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cases-section" id="cases">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Representative cases</p>
+          <h2>Two SQL-shaped reports, opposite conclusions</h2>
+          <p class="lede">
+            Case inspection is necessary because the same unmatched label can
+            describe non-executable vulnerability-shaped code or a likely
+            reference-set gap.
+          </p>
+        </div>
+        <RepresentativeCases cases={publishedEvidence.cases} />
       </div>
     </section>
 
@@ -151,8 +304,15 @@ const evidence = getHeadlineEvidence("js-1.0");
             >Methodology</a
           >
           <a class="button secondary" href={currentRelease.links.data}>Data</a>
+          <a class="button secondary" href="/releases/js-1.0/cases">Cases</a>
           <a class="button secondary" href={currentRelease.links.github}
             >GitHub</a
+          >
+          <a class="button secondary" href={currentRelease.links.publication}
+            >Snyk publication</a
+          >
+          <a class="button secondary" href="/about#citation"
+            >Cite this release</a
           >
         </nav>
       </div>
@@ -169,6 +329,12 @@ const evidence = getHeadlineEvidence("js-1.0");
   .result-grid {
     display: grid;
     gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .editorial-grid > *,
+  .result-grid > * {
+    min-width: 0;
   }
 
   .editorial-grid h2 {
@@ -183,6 +349,10 @@ const evidence = getHeadlineEvidence("js-1.0");
     font-size: var(--step--1);
   }
 
+  .configurations {
+    background: var(--paper-muted);
+  }
+
   .result-section {
     background: var(--paper-muted);
   }
@@ -192,8 +362,52 @@ const evidence = getHeadlineEvidence("js-1.0");
     align-content: start;
   }
 
+  .stability-section .section-heading,
+  .project-section .section-heading,
+  .efficiency .section-heading {
+    margin: 0;
+    align-content: start;
+  }
+
+  .coverage-section {
+    background: var(--paper-muted);
+  }
+
   .efficiency {
     background: var(--purple-soft);
+  }
+
+  .implication-list {
+    display: grid;
+    border-top: 1px solid var(--ink);
+  }
+
+  .implication-list article {
+    display: grid;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-3);
+    grid-template-columns: 2.5rem 1fr;
+  }
+
+  .implication-list article > .metric {
+    color: var(--purple-dark);
+    font-size: var(--step--1);
+    font-weight: 750;
+  }
+
+  .implication-list h3 {
+    font-size: var(--step-1);
+  }
+
+  .implication-list p {
+    max-width: 45rem;
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+  }
+
+  .cases-section {
+    background: var(--paper-muted);
   }
 
   .limitations ul {

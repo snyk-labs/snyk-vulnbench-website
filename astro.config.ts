@@ -8,6 +8,12 @@ export default defineConfig({
   output: "static",
   integrations: [mdx(), react(), sitemap()],
   vite: {
+    oxc: {
+      jsx: {
+        runtime: "automatic",
+        development: false,
+      },
+    },
     build: {
       cssMinify: true,
     },

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getHeadlineEvidence } from "./headline";
+import { loadJs10PublishedEvidence } from "./js-1.0-source";
 
 describe("JS 1.0 headline evidence", () => {
   it("reconstructs the published recurrence values", () => {
@@ -19,6 +20,24 @@ describe("JS 1.0 headline evidence", () => {
       expect(observation.unit).toBe("unique normalized finding signatures");
       expect(observation.source).toMatch(/2606\.15762/);
     }
+  });
+
+  it("matches the published recurrence source", async () => {
+    const headline = getHeadlineEvidence("js-1.0");
+    const source = await loadJs10PublishedEvidence();
+
+    expect(headline.matchedAllFive).toMatchObject({
+      numerator: source.recurrence.matched.counts[4],
+      denominator: source.recurrence.matched.total,
+    });
+    expect(headline.unmatchedOnce).toMatchObject({
+      numerator: source.recurrence.unmatched.counts[0],
+      denominator: source.recurrence.unmatched.total,
+    });
+    expect(headline.unmatchedAllFive).toMatchObject({
+      numerator: source.recurrence.unmatched.counts[4],
+      denominator: source.recurrence.unmatched.total,
+    });
   });
 
   it("rejects unknown release slugs", () => {

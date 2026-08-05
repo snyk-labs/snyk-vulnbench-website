@@ -33,6 +33,16 @@ async function expectHomepageEvidence(page: import("@playwright/test").Page) {
   await expect(
     page.getByRole("heading", { name: "What the data show" }),
   ).toBeVisible();
+  const findingTargets = await page
+    .locator(".findings .text-link")
+    .evaluateAll((links) =>
+      links.map((link) => (link as HTMLAnchorElement).getAttribute("href")),
+    );
+  expect(findingTargets).toEqual([
+    "/releases/js-1.0#repeatability",
+    "/releases/js-1.0#coverage",
+    "/releases/js-1.0#efficiency",
+  ]);
   await expect(
     page.getByRole("heading", { name: "How VulnBench measures behavior" }),
   ).toBeVisible();

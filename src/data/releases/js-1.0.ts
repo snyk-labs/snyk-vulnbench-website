@@ -168,8 +168,7 @@ export const js10Release = releaseSchema.parse({
       title: "Reference-matched findings were substantially more repeatable",
       summary:
         "134 of 158 unique reference-matched findings appeared in all five repetitions.",
-      explorerPath:
-        "/releases/js-1.0/explore?view=repeatability&status=matched&recurrence=5",
+      explorerPath: "/releases/js-1.0#repeatability",
       caveat:
         "A reference match measures agreement with Snyk Code, not independent ground-truth accuracy.",
     },
@@ -177,7 +176,7 @@ export const js10Release = releaseSchema.parse({
       title: "LLM review and deterministic SAST showed complementary behavior",
       summary:
         "Models identified high-signal exploit shapes while deterministic SAST systematically enumerated repeated data-flow sinks.",
-      explorerPath: "/releases/js-1.0/explore?view=coverage",
+      explorerPath: "/releases/js-1.0#coverage",
       caveat:
         "Unmatched findings require case-level inspection before they can be classified.",
     },
@@ -185,8 +184,7 @@ export const js10Release = releaseSchema.parse({
       title: "Higher session cost did not guarantee higher reference agreement",
       summary:
         "The published cost-quality comparison does not show a monotonic relationship between spend and Snyk-reference F1.",
-      explorerPath:
-        "/releases/js-1.0/explore?view=efficiency&metric=model-session-cost",
+      explorerPath: "/releases/js-1.0#efficiency",
       caveat:
         "Cost estimates reflect the tested small fixtures and publication assumptions.",
     },

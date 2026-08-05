@@ -6,11 +6,13 @@ The initial release will showcase [Snyk VulnBench JS 1.0](https://snyk.io/blog/s
 
 ## Project status
 
-The project is currently in the planning and initial setup stage. Website implementation has not started.
+The Phase 1 static foundation and JS 1.0 research narrative are implemented.
+The next delivery phase is the configurable benchmark explorer.
 
 ## Project documentation
 
 - [Product requirements and design](docs/superpowers/specs/2026-08-04-vulnbench-website-design.md)
+- [Coding-agent and development guidance](AGENTS.md)
 - [Published VulnBench JS 1.0 paper](https://arxiv.org/abs/2606.15762)
 
 ## License

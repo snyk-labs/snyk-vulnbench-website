@@ -5,6 +5,7 @@ const routes = [
   "/releases",
   "/releases/js-1.0",
   "/releases/js-1.0/explore",
+  "/releases/js-1.0/cases",
   "/releases/js-1.0/methodology",
   "/releases/js-1.0/data",
   "/methodology",
@@ -56,4 +57,26 @@ test("serves immutable JS 1.0 source downloads as static assets", async ({
   const manifest = await request.get("/data/js-1.0/chart-manifest.json");
   expect(manifest.status()).toBe(200);
   expect(manifest.headers()["content-type"]).toContain("application/json");
+
+  const publishedEvidence = await request.get(
+    "/data/js-1.0/published-evidence.json",
+  );
+  expect(publishedEvidence.status()).toBe(200);
+  expect(publishedEvidence.headers()["content-type"]).toContain(
+    "application/json",
+  );
+  expect((await publishedEvidence.json()).configurations).toHaveLength(6);
+});
+
+test("publishes inspectable representative cases", async ({ page }) => {
+  await page.goto("/releases/js-1.0/cases");
+
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Inspect representative JS 1.0 cases",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText(/25 of 25 model runs reported the SQL-shaped decoy/)).toBeVisible();
+  await expect(page.getByText(/25 of 25 model runs reported the likely SQL injection gap/)).toBeVisible();
 });

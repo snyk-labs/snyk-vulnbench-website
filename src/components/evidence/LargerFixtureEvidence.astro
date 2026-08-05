@@ -1,0 +1,170 @@
+---
+import type { PublishedEvidence } from "../../data/releases/js-1.0-source";
+
+interface Props {
+  evidence: PublishedEvidence["largerFixture"];
+  provenance: PublishedEvidence["provenance"];
+}
+
+const { evidence, provenance } = Astro.props;
+const percent = new Intl.NumberFormat("en-US", {
+  style: "percent",
+  minimumFractionDigits: 1,
+  maximumFractionDigits: 1,
+});
+---
+
+<figure class="fixture-evidence">
+  <div
+    class="fixture-evidence__plot"
+    role="img"
+    aria-label="Larger multi-file fixture Snyk-reference F1 by configuration"
+  >
+    {
+      evidence.rows.map((row) => (
+        <div class="fixture-row">
+          <span>{row.name}</span>
+          <div class="bar-track" aria-hidden="true">
+            <i style={`width: ${row.f1 * 100}%`}></i>
+          </div>
+          <strong class="metric">{percent.format(row.f1)}</strong>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="fixture-evidence__table" tabindex="0">
+    <table aria-label="Larger multi-file fixture scores">
+      <thead>
+        <tr>
+          <th scope="col">Configuration</th>
+          <th scope="col">Snyk-reference F1</th>
+          <th scope="col">F1 spread</th>
+          <th scope="col">Repetitions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          evidence.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.name}</th>
+              <td class="metric">{percent.format(row.f1)}</td>
+              <td class="metric">{(row.stdDev * 100).toFixed(1)} pp</td>
+              <td class="metric">{row.repetitions}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <figcaption>
+    <p>
+      <strong>Observed result:</strong> Claude Opus 4.6 High was the strongest
+      model on {evidence.name} at 40.0% Snyk-reference F1 and 0.0
+      percentage-point spread across five runs.
+    </p>
+    <p>
+      <strong>Boundary:</strong> This is one larger app-like project result, not
+      the complete benchmark. Snyk Code’s 100% row is deterministic reference
+      reproduction.
+    </p>
+    <p class="fixture-evidence__provenance">
+      {provenance.release} · Dataset {provenance.datasetVersion} · Mean across
+      5 repetitions · Source {provenance.source}
+    </p>
+  </figcaption>
+</figure>
+
+<style>
+  .fixture-evidence {
+    margin: 0;
+  }
+
+  .fixture-evidence__plot {
+    display: grid;
+    padding: var(--space-4);
+    border: 1px solid var(--rule-strong);
+    background: var(--paper-raised);
+    gap: var(--space-3);
+  }
+
+  .fixture-row {
+    display: grid;
+    gap: 0.4rem var(--space-3);
+    grid-template-columns: minmax(12rem, 1fr) minmax(8rem, 2fr) 4.5rem;
+    align-items: center;
+    font-size: var(--step--1);
+  }
+
+  .bar-track {
+    height: 0.8rem;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper-muted);
+  }
+
+  .bar-track i {
+    display: block;
+    height: 100%;
+    background: var(--matched);
+  }
+
+  .fixture-row strong {
+    text-align: right;
+  }
+
+  .fixture-evidence__table {
+    overflow-x: auto;
+    border: 1px solid var(--rule-strong);
+    border-top: 0;
+  }
+
+  table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    background: var(--paper-raised);
+    font-size: var(--step--1);
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: 0.65rem 0.8rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  td {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  figcaption {
+    display: grid;
+    padding-top: var(--space-3);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    gap: var(--space-2);
+  }
+
+  .fixture-evidence__provenance {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  @media (max-width: 40rem) {
+    .fixture-row {
+      grid-template-columns: 1fr 4rem;
+    }
+
+    .bar-track {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+</style>

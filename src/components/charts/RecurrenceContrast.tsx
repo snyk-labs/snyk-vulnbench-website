@@ -96,6 +96,7 @@ export function RecurrenceContrast({ evidence }: RecurrenceContrastProps) {
         <span>Dataset {active.datasetVersion}</span>
         <span>{active.release}</span>
         <span>Unique signatures · recurrence across 5 identical runs</span>
+        <a href={active.source}>Source: published JS 1.0 paper</a>
       </figcaption>
 
       <style>{`

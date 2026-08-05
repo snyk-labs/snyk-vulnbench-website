@@ -55,6 +55,38 @@ test("publishes scholarly article, dataset, and citation metadata", async ({
   expect(graph.some((entry) => entry["@type"] === "Dataset")).toBe(true);
 });
 
+for (const path of [
+  "/releases/js-1.0",
+  "/releases/js-1.0/explore",
+  "/releases/js-1.0/methodology",
+  "/releases/js-1.0/data",
+  "/releases/js-1.0/cases",
+]) {
+  test(`${path} exposes the complete release metadata contract`, async ({
+    page,
+  }) => {
+    await page.goto(path);
+
+    await expect(page.locator('meta[name="citation_title"]')).toHaveAttribute(
+      "content",
+      "Snyk VulnBench JS 1.0: Can LLMs Find the Same Bugs Twice?",
+    );
+    const metadata = page.locator(".release-meta-panel");
+    await expect(metadata).toContainText("Last updated");
+    await expect(metadata.getByText("Dataset", { exact: true })).toBeVisible();
+    await expect(metadata.getByText("1.0.0", { exact: true })).toBeVisible();
+    for (const name of [
+      "Paper",
+      "Snyk publication",
+      "GitHub",
+      "Correction history",
+      "Cite this release",
+    ]) {
+      await expect(metadata.getByRole("link", { name })).toBeVisible();
+    }
+  });
+}
+
 test("publishes crawl policy", async ({ request }) => {
   const robots = await request.get("/robots.txt");
 

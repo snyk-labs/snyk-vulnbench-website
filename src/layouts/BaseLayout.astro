@@ -57,6 +57,14 @@ const datasetStructuredData = release
       distribution: [
         {
           "@type": "DataDownload",
+          encodingFormat: "application/json",
+          contentUrl: new URL(
+            "/data/js-1.0/published-evidence.json",
+            site,
+          ).toString(),
+        },
+        {
+          "@type": "DataDownload",
           encodingFormat: "application/x-ndjson",
           contentUrl: new URL(
             "/data/js-1.0/benchmark-results.jsonl",

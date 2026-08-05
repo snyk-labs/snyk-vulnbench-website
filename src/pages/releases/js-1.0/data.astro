@@ -6,6 +6,13 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 
 const downloads = [
   {
+    name: "Website published evidence",
+    format: "JSON",
+    description:
+      "Validated composite values used by the Phase 1 scorecard, charts, coverage matrix, and representative cases.",
+    href: "/data/js-1.0/published-evidence.json",
+  },
+  {
     name: "Benchmark run results",
     format: "JSONL",
     description:
@@ -32,6 +39,7 @@ const downloads = [
 <BaseLayout
   title="JS 1.0 Data"
   description="Download Snyk VulnBench JS 1.0 data and inspect its schema, provenance, source snapshot, and correction policy."
+  release={currentRelease}
 >
   <PageHero
     eyebrow="JS 1.0 · Data"
@@ -147,7 +155,7 @@ const downloads = [
     </div>
   </section>
 
-  <section class="section corrections">
+  <section class="section corrections" id="corrections">
     <div class="container">
       <p class="eyebrow">Corrections</p>
       <h2>No silent rewrites</h2>

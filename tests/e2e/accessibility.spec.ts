@@ -6,6 +6,7 @@ const routes = [
   "/releases",
   "/releases/js-1.0",
   "/releases/js-1.0/explore",
+  "/releases/js-1.0/cases",
   "/releases/js-1.0/methodology",
   "/releases/js-1.0/data",
   "/methodology",
@@ -38,6 +39,41 @@ test("honors reduced motion and keeps content within a narrow viewport", async (
     (element) => getComputedStyle(element).scrollBehavior,
   );
   expect(scrollBehavior).toBe("auto");
+
+  const viewport = await page.evaluate(() => ({
+    body: document.body.scrollWidth,
+    viewport: document.documentElement.clientWidth,
+  }));
+  expect(viewport.body).toBeLessThanOrEqual(viewport.viewport);
+});
+
+test("keeps dense evidence operable at narrow widths", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/releases/js-1.0");
+
+  await page
+    .locator(
+      'astro-island[component-export="ConfigurationScorecard"]:not([ssr])',
+    )
+    .waitFor({ state: "attached" });
+  const scoreSort = page.getByRole("button", {
+    name: "Sort by Snyk-reference F1",
+  });
+  await scoreSort.focus();
+  await page.keyboard.press("Enter");
+  await expect(scoreSort).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page
+      .getByRole("table", { name: /Published configuration scorecard/ })
+      .getByRole("columnheader", { name: "Sort by Snyk-reference F1" }),
+  ).toHaveAttribute("aria-sort", "descending");
+
+  const scorecardScroll = page.locator(".configuration-scorecard__scroll");
+  const scorecardWidths = await scorecardScroll.evaluate((element) => ({
+    client: element.clientWidth,
+    scroll: element.scrollWidth,
+  }));
+  expect(scorecardWidths.scroll).toBeGreaterThan(scorecardWidths.client);
 
   const viewport = await page.evaluate(() => ({
     body: document.body.scrollWidth,

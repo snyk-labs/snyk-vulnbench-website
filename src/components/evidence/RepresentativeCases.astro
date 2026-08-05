@@ -1,0 +1,154 @@
+---
+import type { PublishedEvidence } from "../../data/releases/js-1.0-source";
+
+interface Props {
+  cases: PublishedEvidence["cases"];
+}
+
+const { cases } = Astro.props;
+---
+
+<div class="cases">
+  <article>
+    <header>
+      <span class="case-tag">False-positive-shaped report</span>
+      <h3>Tigerteam: SQL-shaped code without an executable sink</h3>
+    </header>
+    <p class="case-result">
+      <strong>{cases.tigerteamSqlDecoyRuns} of 25 model runs reported the SQL-shaped decoy.</strong>
+      The helper logs a string and returns an empty array; it never sends the
+      constructed query to a database.
+    </p>
+    <pre><code>{`function dbQuery(sql) {
+  console.log("Query:", sql);
+  return [];
+}`}</code></pre>
+    <p>
+      This is the kind of vulnerability-shaped pattern an LLM can describe
+      plausibly even when the required execution sink is absent.
+    </p>
+  </article>
+
+  <article>
+    <header>
+      <span class="case-tag likely-gap">Likely product-gap candidate</span>
+      <h3>Nightowl: unmatched SQL injection with a real database sink</h3>
+    </header>
+    <p class="case-result">
+      <strong>{cases.nightowlSqlGapRuns} of 25 model runs reported the likely SQL injection gap.</strong>
+      Unlike Tigerteam, this helper concatenates an identifier into an
+      executable SQLite statement.
+    </p>
+    <pre><code>{`deleteTodo: (id) =>
+  db.prepare("DELETE FROM todos WHERE id = " + id).all()`}</code></pre>
+    <p>
+      It remained unmatched because it was outside the Snyk Code reference
+      set. That status should trigger investigation, not automatic dismissal.
+    </p>
+  </article>
+
+  <article>
+    <header>
+      <span class="case-tag systematic-gap">Systematic coverage gap</span>
+      <h3>Nightowl: stable output can still be incomplete</h3>
+    </header>
+    <p class="case-result">
+      Claude Opus 4.6 High held a stable 40.0% Snyk-reference F1 while missing
+      <strong>{cases.nightowlPathTraversalMisses} of 15 path-traversal opportunities</strong>
+      and <strong>{cases.nightowlResourceLimitMisses} of 15 resource-limit opportunities</strong>.
+    </p>
+    <p>
+      The model recognized representative high-signal issues but did not
+      enumerate repeated vulnerable sinks as systematically as deterministic
+      SAST.
+    </p>
+  </article>
+</div>
+
+<style>
+  .cases {
+    border-top: 1px solid var(--ink);
+  }
+
+  article {
+    display: grid;
+    padding-block: var(--space-5);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-3);
+  }
+
+  header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .case-tag {
+    width: fit-content;
+    padding: 0.25rem 0.45rem;
+    border: 1px solid var(--unmatched);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .case-tag.likely-gap {
+    border-color: var(--matched);
+  }
+
+  .case-tag.systematic-gap {
+    border-color: var(--warning);
+  }
+
+  h3 {
+    max-width: 34rem;
+    font-size: var(--step-2);
+  }
+
+  p {
+    max-width: 50rem;
+    color: var(--ink-soft);
+  }
+
+  .case-result {
+    color: var(--ink);
+  }
+
+  .case-result strong {
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  pre {
+    max-width: 100%;
+    padding: var(--space-3);
+    margin: 0;
+    overflow-x: auto;
+    border-left: 0.25rem solid var(--purple);
+    background: var(--ink);
+    color: var(--paper-raised);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.55;
+  }
+
+  @media (min-width: 58rem) {
+    article {
+      grid-template-columns: 0.8fr 1.2fr;
+      column-gap: var(--space-7);
+    }
+
+    article > :not(header) {
+      grid-column: 2;
+    }
+
+    article header {
+      grid-column: 1;
+      grid-row: 1 / span 4;
+      align-content: start;
+    }
+  }
+</style>
