@@ -13,8 +13,9 @@ describe("JS 1.0 headline evidence", () => {
 
   it("includes provenance for every displayed value", () => {
     const evidence = getHeadlineEvidence("js-1.0");
+    const { kind: _kind, ...observations } = evidence;
 
-    for (const observation of Object.values(evidence)) {
+    for (const observation of Object.values(observations)) {
       expect(observation.release).toBe("Snyk VulnBench JS 1.0");
       expect(observation.datasetVersion).toBe("1.0.0");
       expect(observation.unit).toBe("unique normalized finding signatures");

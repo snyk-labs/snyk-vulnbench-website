@@ -15,7 +15,8 @@
     "test:unit": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
     "check:budget": "node scripts/check-build-budget.mjs",
-    "verify": "npm run check && npm run test:unit && npm run build && npm run check:budget && npm run test:e2e"
+    "check:releases": "node scripts/check-release-isolation.mjs",
+    "verify": "npm run check && npm run test:unit && npm run build && npm run check:releases && npm run check:budget && npm run test:e2e"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",

@@ -2,7 +2,12 @@ import { js10Release } from "./js-1.0";
 import { releaseCatalogSchema } from "./schema";
 import type { Release } from "./schema";
 
-export const releases = releaseCatalogSchema.parse([js10Release]);
+const validatedReleases = releaseCatalogSchema.parse([js10Release]);
+
+export const publicReleases = validatedReleases.filter(
+  ({ publicationState }) => publicationState === "public",
+);
+export const releases = publicReleases;
 
 function requireCurrentRelease(): Release {
   const release = releases.find(({ status }) => status === "current");

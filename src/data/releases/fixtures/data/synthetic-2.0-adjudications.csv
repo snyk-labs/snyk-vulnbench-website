@@ -1,0 +1,4 @@
+finding_id,project_id,adjudication_status,vulnerability_class
+synthetic-finding-1,synthetic-project-small,confirmed,command-injection
+synthetic-finding-2,synthetic-project-medium,rejected,path-traversal
+synthetic-finding-3,synthetic-project-large,confirmed,business-logic

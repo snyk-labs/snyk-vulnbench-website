@@ -7,6 +7,9 @@ export function getHeadlineEvidence(releaseSlug: string): HeadlineEvidence {
   if (!release) {
     throw new Error(`Unknown release: ${releaseSlug}`);
   }
+  if (release.headlineEvidence.kind !== "repeatability") {
+    throw new Error(`Release does not expose repeatability headlines: ${releaseSlug}`);
+  }
 
   return release.headlineEvidence;
 }

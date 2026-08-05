@@ -7,8 +7,8 @@ The initial release will showcase [Snyk VulnBench JS 1.0](https://snyk.io/blog/s
 ## Project status
 
 The Phase 1 static research narrative, Phase 2 configurable benchmark explorer,
-and Phase 3 finding/project evidence depth are implemented. The next delivery
-phase validates the release system with a synthetic second release.
+and Phase 3 finding/project evidence depth are implemented. Phase 4 validates
+the release system with a non-public synthetic second release fixture.
 
 ## Project documentation
 

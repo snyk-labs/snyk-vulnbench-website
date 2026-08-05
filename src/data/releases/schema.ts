@@ -21,6 +21,28 @@ export const headlineObservationSchema = z
     message: "Headline numerator cannot exceed its denominator",
   });
 
+const repeatabilityHeadlineSchema = z.object({
+  kind: z.literal("repeatability"),
+  matchedAllFive: headlineObservationSchema,
+  unmatchedOnce: headlineObservationSchema,
+  unmatchedAllFive: headlineObservationSchema,
+});
+
+const genericHeadlineSchema = z.object({
+  kind: z.literal("generic"),
+  observations: z.array(
+    z.object({
+      id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+      label: nonEmptyString,
+      value: z.number(),
+      unit: nonEmptyString,
+      source: z.url(),
+      explorerPath: z.string().startsWith("/releases/"),
+      caveat: nonEmptyString,
+    }),
+  ).min(1),
+});
+
 export const metricDefinitionSchema = z.object({
   id: z.string().regex(/^[a-z][a-z0-9-]*$/),
   label: nonEmptyString,
@@ -35,6 +57,7 @@ export const releaseSchema = z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/),
   name: nonEmptyString,
   shortName: nonEmptyString,
+  publicationState: z.enum(["public", "internal-fixture"]),
   status: z.enum(["current", "archived", "superseded"]),
   publishedAt: dateSchema,
   updatedAt: dateSchema,
@@ -74,13 +97,31 @@ export const releaseSchema = z.object({
       ]),
     )
     .min(1),
+  dimensions: z
+    .array(
+      z.object({
+        id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+        label: nonEmptyString,
+        scope: z.enum(["shared", "release"]),
+      }),
+    )
+    .min(1),
+  assets: z
+    .array(
+      z.object({
+        id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+        path: z.string().startsWith("/"),
+        format: z.enum(["json", "jsonl", "csv"]),
+        datasetVersion: nonEmptyString,
+      }),
+    )
+    .min(1),
   metrics: z.array(metricDefinitionSchema).min(1),
   caveats: z.array(nonEmptyString).min(1),
-  headlineEvidence: z.object({
-    matchedAllFive: headlineObservationSchema,
-    unmatchedOnce: headlineObservationSchema,
-    unmatchedAllFive: headlineObservationSchema,
-  }),
+  headlineEvidence: z.discriminatedUnion("kind", [
+    repeatabilityHeadlineSchema,
+    genericHeadlineSchema,
+  ]),
   featuredFindings: z.array(
     z.object({
       title: nonEmptyString,
@@ -92,9 +133,62 @@ export const releaseSchema = z.object({
   compatibility: z.object({
     scoringProtocol: nonEmptyString,
     referenceSetType: nonEmptyString,
-    compatibleMetrics: z.array(nonEmptyString),
-    incompatibleMetrics: z.array(nonEmptyString),
+    metricLineage: z.array(
+      z.object({
+        metricId: z.string().regex(/^[a-z][a-z0-9-]*$/),
+        lineageId: z.string().regex(/^[a-z][a-z0-9-]*$/),
+        compatibleWith: z.array(nonEmptyString),
+        incompatibleWith: z.array(nonEmptyString),
+      }),
+    ),
   }),
+}).superRefine((release, context) => {
+  const unique = (
+    values: string[],
+    message: string,
+  ) => {
+    if (new Set(values).size !== values.length) {
+      context.addIssue({ code: "custom", message });
+    }
+  };
+  unique(
+    release.dimensions.map(({ id }) => id),
+    "Dimension IDs must be unique",
+  );
+  unique(release.assets.map(({ id }) => id), "Asset IDs must be unique");
+  unique(
+    release.compatibility.metricLineage.map(({ metricId }) => metricId),
+    "Metric lineage entries must be unique",
+  );
+  if (
+    release.assets.some(
+      ({ datasetVersion }) => datasetVersion !== release.datasetVersion,
+    )
+  ) {
+    context.addIssue({
+      code: "custom",
+      message: "Asset versions must match the release dataset version",
+    });
+  }
+  const metricIds = new Set(release.metrics.map(({ id }) => id));
+  for (const lineage of release.compatibility.metricLineage) {
+    if (!metricIds.has(lineage.metricId)) {
+      context.addIssue({
+        code: "custom",
+        message: `Metric lineage references unknown metric: ${lineage.metricId}`,
+      });
+    }
+    const overlap = lineage.compatibleWith.filter((id) =>
+      lineage.incompatibleWith.includes(id),
+    );
+    if (overlap.length > 0) {
+      context.addIssue({
+        code: "custom",
+        message:
+          "Metric lineage cannot be both compatible and incompatible",
+      });
+    }
+  }
 });
 
 export const releaseCatalogSchema = z
@@ -113,5 +207,5 @@ export const releaseCatalogSchema = z
   });
 
 export type Release = z.infer<typeof releaseSchema>;
-export type HeadlineEvidence = Release["headlineEvidence"];
+export type HeadlineEvidence = z.infer<typeof repeatabilityHeadlineSchema>;
 export type HeadlineObservation = z.infer<typeof headlineObservationSchema>;

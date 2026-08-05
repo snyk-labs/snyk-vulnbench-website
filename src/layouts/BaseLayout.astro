@@ -54,32 +54,16 @@ const datasetStructuredData = release
       license: "https://www.apache.org/licenses/LICENSE-2.0",
       creator: { "@type": "Organization", name: "Snyk" },
       isAccessibleForFree: true,
-      distribution: [
-        {
-          "@type": "DataDownload",
-          encodingFormat: "application/json",
-          contentUrl: new URL(
-            "/data/js-1.0/published-evidence.json",
-            site,
-          ).toString(),
-        },
-        {
-          "@type": "DataDownload",
-          encodingFormat: "application/x-ndjson",
-          contentUrl: new URL(
-            "/data/js-1.0/benchmark-results.jsonl",
-            site,
-          ).toString(),
-        },
-        {
-          "@type": "DataDownload",
-          encodingFormat: "application/json",
-          contentUrl: new URL(
-            "/data/js-1.0/chart-manifest.json",
-            site,
-          ).toString(),
-        },
-      ],
+      distribution: release.assets.map((asset) => ({
+        "@type": "DataDownload",
+        encodingFormat:
+          asset.format === "jsonl"
+            ? "application/x-ndjson"
+            : asset.format === "csv"
+              ? "text/csv"
+              : "application/json",
+        contentUrl: new URL(asset.path, site).toString(),
+      })),
     }
   : undefined;
 ---

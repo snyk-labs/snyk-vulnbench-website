@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "snyk-vulnbench-synthetic-2.0",
+  "datasetVersion": "2.0.0",
+  "repositoryScale": ["small", "medium", "large"],
+  "observations": [
+    {
+      "configurationId": "synthetic-model-a",
+      "independentGroundTruthF1": 0.81,
+      "groundTruthRecall": 0.78,
+      "sessionDurationSeconds": 91.2,
+      "repositoryRiskScore": 64
+    },
+    {
+      "configurationId": "synthetic-model-b",
+      "independentGroundTruthF1": 0.76,
+      "groundTruthRecall": 0.84,
+      "sessionDurationSeconds": 73.5,
+      "repositoryRiskScore": 59
+    },
+    {
+      "configurationId": "synthetic-tool-reference",
+      "independentGroundTruthF1": 0.88,
+      "groundTruthRecall": 0.86,
+      "sessionDurationSeconds": 44.1,
+      "repositoryRiskScore": 71
+    }
+  ]
+}

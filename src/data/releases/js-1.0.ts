@@ -28,6 +28,7 @@ export const js10Release = releaseSchema.parse({
   slug: "js-1.0",
   name: releaseName,
   shortName: "JS 1.0",
+  publicationState: "public",
   status: "current",
   publishedAt: "2026-06-11",
   updatedAt: "2026-06-11",
@@ -70,6 +71,53 @@ export const js10Release = releaseSchema.parse({
     "coverage",
     "efficiency",
     "findings",
+  ],
+  dimensions: [
+    { id: "configuration", label: "Configuration", scope: "shared" },
+    { id: "project", label: "Benchmark project", scope: "shared" },
+    { id: "run", label: "Repeated run", scope: "shared" },
+    { id: "finding", label: "Finding", scope: "shared" },
+    {
+      id: "normalized-signature",
+      label: "Normalized finding signature",
+      scope: "shared",
+    },
+    {
+      id: "reference-match",
+      label: "Snyk Code reference match",
+      scope: "release",
+    },
+    {
+      id: "vulnerability-class",
+      label: "Vulnerability class",
+      scope: "shared",
+    },
+  ],
+  assets: [
+    {
+      id: "published-evidence",
+      path: "/data/js-1.0/published-evidence.json",
+      format: "json",
+      datasetVersion,
+    },
+    {
+      id: "finding-evidence",
+      path: "/data/js-1.0/finding-evidence.json",
+      format: "json",
+      datasetVersion,
+    },
+    {
+      id: "benchmark-results",
+      path: "/data/js-1.0/benchmark-results.jsonl",
+      format: "jsonl",
+      datasetVersion,
+    },
+    {
+      id: "chart-manifest",
+      path: "/data/js-1.0/chart-manifest.json",
+      format: "json",
+      datasetVersion,
+    },
   ],
   metrics: [
     {
@@ -141,6 +189,7 @@ export const js10Release = releaseSchema.parse({
     "Cost values reflect small fixtures and the publication's model-session assumptions.",
   ],
   headlineEvidence: {
+    kind: "repeatability",
     matchedAllFive: observation(
       "Reference-matched findings seen in all five runs",
       134,
@@ -192,7 +241,43 @@ export const js10Release = releaseSchema.parse({
   compatibility: {
     scoringProtocol: "JS 1.0 vulnerability-type reference matcher",
     referenceSetType: "Deterministic Snyk Code reference set",
-    compatibleMetrics: [],
-    incompatibleMetrics: [],
+    metricLineage: [
+      {
+        metricId: "finding-recurrence",
+        lineageId: "normalized-finding-recurrence-js1",
+        compatibleWith: [],
+        incompatibleWith: ["adjudicated-finding-recurrence-v2"],
+      },
+      {
+        metricId: "snyk-reference-f1",
+        lineageId: "reference-agreement-f1",
+        compatibleWith: [],
+        incompatibleWith: ["independent-ground-truth-f1"],
+      },
+      {
+        metricId: "reference-recall",
+        lineageId: "reference-recall",
+        compatibleWith: [],
+        incompatibleWith: ["ground-truth-recall"],
+      },
+      {
+        metricId: "reference-precision",
+        lineageId: "reference-precision",
+        compatibleWith: [],
+        incompatibleWith: ["ground-truth-precision"],
+      },
+      {
+        metricId: "session-duration",
+        lineageId: "session-duration-seconds",
+        compatibleWith: ["session-duration-seconds"],
+        incompatibleWith: [],
+      },
+      {
+        metricId: "model-session-cost",
+        lineageId: "model-session-cost-usd",
+        compatibleWith: ["model-session-cost-usd"],
+        incompatibleWith: [],
+      },
+    ],
   },
 });

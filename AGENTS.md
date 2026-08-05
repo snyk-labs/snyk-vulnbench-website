@@ -24,6 +24,8 @@ Before making changes, read the documents relevant to the task:
   the approved wide-screen explorer layout and responsive behavior.
 - `docs/superpowers/plans/2026-08-05-evidence-depth.md` for Phase 3 normalized
   findings, project detail, share-card, and correction-history requirements.
+- `docs/superpowers/plans/2026-08-05-release-system-validation.md` for Phase 4
+  internal fixtures, metric compatibility, and public-release isolation.
 - `snyk-vulnbench-js-1.0/UPSTREAM-PROVENANCE.md` for the imported research
   source revision and immutability policy.
 
@@ -60,6 +62,8 @@ The implemented foundation includes:
   and licensed project source context.
 - `src/data/releases/` — release schema, manifests, selectors, and contract
   tests.
+- `src/data/releases/fixtures/` — non-public release-system validation
+  fixtures; never expose these through public registries or routes.
 - `src/styles/` — global design tokens and shared styles.
 - `public/` — static crawl, favicon, and social assets.
 - `scripts/` — source-integrity and build-budget checks.
