@@ -184,7 +184,7 @@ ol {
   left: var(--space-3);
   padding: var(--space-2) var(--space-3);
   background: var(--ink);
-  color: white;
+  color: var(--inverse-text);
   transform: translateY(-180%);
 }
 

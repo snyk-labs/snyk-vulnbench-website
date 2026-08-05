@@ -21,29 +21,33 @@ const configurationStyles: Record<
   string,
   { color: string; shape: string; symbol: string }
 > = {
-  "Snyk Code SAST": { color: "#4b2be3", shape: "circle", symbol: "●" },
+  "Snyk Code SAST": {
+    color: "var(--series-1)",
+    shape: "circle",
+    symbol: "●",
+  },
   "Claude Opus 4.6 Medium": {
-    color: "#087c71",
+    color: "var(--series-2)",
     shape: "square",
     symbol: "■",
   },
   "Claude Opus 4.6 High": {
-    color: "#0f5f9a",
+    color: "var(--series-3)",
     shape: "diamond",
     symbol: "◆",
   },
   "Claude Opus 4.7 Max": {
-    color: "#8a4f08",
+    color: "var(--series-4)",
     shape: "triangle",
     symbol: "▲",
   },
   "Claude Sonnet 4.6 Medium": {
-    color: "#b54c31",
+    color: "var(--series-5)",
     shape: "hexagon",
     symbol: "⬟",
   },
   "Claude Sonnet 4.6 High": {
-    color: "#7a3d86",
+    color: "var(--series-6)",
     shape: "cross",
     symbol: "✚",
   },
@@ -58,7 +62,7 @@ const percentage = new Intl.NumberFormat("en-US", {
 function pointStyle(name: string, index: number) {
   return (
     configurationStyles[name] ?? {
-      color: "#55515f",
+      color: "var(--series-fallback)",
       shape: `marker-${index + 1}`,
       symbol: "●",
     }
@@ -409,7 +413,7 @@ export function EvidenceScatter({
           display: flex;
           padding: 0.7rem 0.9rem;
           background: var(--ink);
-          color: var(--paper-raised);
+          color: var(--inverse-text);
           gap: 0.35rem 1rem;
           flex-wrap: wrap;
           font-family: var(--font-mono);

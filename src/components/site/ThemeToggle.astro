@@ -1,0 +1,177 @@
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="Switch to dark theme"
+  title="Switch to dark theme"
+  data-theme="light"
+  data-theme-toggle
+  hidden
+>
+  <svg
+    class="moon-icon"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.6 8.6 0 1 0 20.2 15.1Z"></path>
+  </svg>
+  <svg
+    class="sun-icon"
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    width="20"
+    height="20"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  >
+    <circle cx="12" cy="12" r="3.5"></circle>
+    <path
+      d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"
+    ></path>
+  </svg>
+</button>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector("[data-theme-toggle]");
+    if (!button) return;
+
+    const storageKey = "vulnbench-theme";
+    const themeColors = {
+      light: "#f7f4ed",
+      dark: "#211e24",
+    };
+    const isTheme = (value) => value === "light" || value === "dark";
+    let mediaQuery = null;
+
+    try {
+      if (typeof window.matchMedia === "function") {
+        mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      }
+    } catch {}
+
+    const getSystemTheme = () =>
+      mediaQuery?.matches === true ? "dark" : "light";
+
+    const getStoredTheme = () => {
+      try {
+        const storedTheme = localStorage.getItem(storageKey);
+        return isTheme(storedTheme) ? storedTheme : null;
+      } catch {
+        return null;
+      }
+    };
+
+    let hasExplicitChoice = getStoredTheme() !== null;
+
+    const applyTheme = (theme) => {
+      const nextTheme = isTheme(theme) ? theme : "light";
+      const action = nextTheme === "dark" ? "light" : "dark";
+      const label = `Switch to ${action} theme`;
+
+      document.documentElement.dataset.theme = nextTheme;
+      document.documentElement.style.colorScheme = nextTheme;
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute("content", themeColors[nextTheme]);
+
+      button.dataset.theme = nextTheme;
+      button.setAttribute("aria-label", label);
+      button.setAttribute("title", label);
+    };
+
+    button.addEventListener("click", () => {
+      const currentTheme = document.documentElement.dataset.theme;
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+      hasExplicitChoice = true;
+      try {
+        localStorage.setItem(storageKey, nextTheme);
+      } catch {}
+      applyTheme(nextTheme);
+    });
+
+    const handleSystemChange = () => {
+      if (!hasExplicitChoice) {
+        applyTheme(getSystemTheme());
+      }
+    };
+
+    try {
+      mediaQuery?.addEventListener("change", handleSystemChange);
+    } catch {}
+
+    window.addEventListener("storage", (event) => {
+      if (event.key !== storageKey && event.key !== null) return;
+
+      const storedTheme = getStoredTheme();
+      if (storedTheme !== null) {
+        hasExplicitChoice = true;
+        applyTheme(storedTheme);
+      } else {
+        hasExplicitChoice = false;
+        applyTheme(getSystemTheme());
+      }
+    });
+
+    applyTheme(getStoredTheme() ?? getSystemTheme());
+    button.hidden = false;
+  })();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: 0 0 2.5rem;
+    padding: 0;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    place-items: center;
+    background: var(--paper-raised);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--ink);
+    background: var(--paper-muted);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: 1px;
+    box-shadow: var(--focus-ring);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  .theme-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    pointer-events: none;
+  }
+
+  .sun-icon {
+    display: none;
+  }
+
+  .theme-toggle[data-theme="dark"] .moon-icon {
+    display: none;
+  }
+
+  .theme-toggle[data-theme="dark"] .sun-icon {
+    display: block;
+  }
+</style>

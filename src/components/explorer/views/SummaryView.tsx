@@ -171,11 +171,13 @@ export function SummaryView({
                       label: "Reference-matched, all five",
                       value: dataset.recurrence.matched.counts[4] ?? 0,
                       maximum: dataset.recurrence.matched.total,
+                      tone: "matched",
                     },
                     {
                       label: "Unmatched, only once",
                       value: dataset.recurrence.unmatched.counts[0] ?? 0,
                       maximum: dataset.recurrence.unmatched.total,
+                      tone: "unmatched",
                     },
                   ]),
                 )

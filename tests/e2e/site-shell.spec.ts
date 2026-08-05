@@ -48,3 +48,27 @@ test("exposes the sparse global navigation at every breakpoint", async ({
     ).toBeVisible();
   }
 });
+
+test("keeps the header actions usable without horizontal overflow at 320px", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto("/");
+
+  const headerActions = page.locator(".header-actions");
+  const menu = headerActions
+    .locator("summary")
+    .filter({ hasText: /^Menu$/ });
+  const toggle = headerActions.getByRole("button", {
+    name: /^Switch to (light|dark) theme$/,
+  });
+
+  await expect(menu).toBeVisible();
+  await expect(toggle).toBeVisible();
+  await expect(page.locator(".desktop-nav")).toBeHidden();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+});

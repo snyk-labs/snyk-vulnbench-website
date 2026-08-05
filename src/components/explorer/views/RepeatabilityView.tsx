@@ -27,10 +27,12 @@ export function RepeatabilityView({
   const rows = [
     {
       status: "Reference-matched",
+      tone: "matched" as const,
       ...dataset.recurrence.matched,
     },
     {
       status: "Unmatched",
+      tone: "unmatched" as const,
       ...dataset.recurrence.unmatched,
     },
   ].filter(({ status }) => {
@@ -135,6 +137,7 @@ export function RepeatabilityView({
                         ? count
                         : count / row.total,
                     maximum: state.valueMode === "count" ? row.total : 1,
+                    tone: row.tone,
                     displayValue:
                       state.valueMode === "count"
                         ? `${count}/${row.total}`
@@ -307,21 +310,25 @@ export function RepeatabilityView({
                       label: "unique unmatched",
                       value: row.uniqueUnmatched,
                       total: row.uniqueUnmatched,
+                      tone: "unmatched" as const,
                     },
                     {
                       label: "unmatched once",
                       value: row.unmatchedOnce,
                       total: row.uniqueUnmatched,
+                      tone: "unmatched" as const,
                     },
                     {
                       label: "unmatched all five",
                       value: row.unmatchedAllFive,
                       total: row.uniqueUnmatched,
+                      tone: "unmatched" as const,
                     },
                     {
                       label: "matched all five",
                       value: row.matchedAllFive,
                       total: row.matchedTotal,
+                      tone: "matched" as const,
                     },
                   ].map((measure) => ({
                     label: `${row.configurationName} · ${measure.label}`,
@@ -331,6 +338,7 @@ export function RepeatabilityView({
                         : measure.value / measure.total,
                     maximum:
                       state.valueMode === "count" ? measure.total : 1,
+                    tone: measure.tone,
                     displayValue:
                       state.valueMode === "count"
                         ? `${measure.value}/${measure.total}`

@@ -13,6 +13,7 @@ the release system with a non-public synthetic second release fixture.
 ## Project documentation
 
 - [Product requirements and design](docs/superpowers/specs/2026-08-04-vulnbench-website-design.md)
+- [Dark mode theme design](docs/superpowers/specs/2026-08-05-dark-mode-theme-design.md)
 - [Coding-agent and development guidance](AGENTS.md)
 - [Published VulnBench JS 1.0 paper](https://arxiv.org/abs/2606.15762)
 

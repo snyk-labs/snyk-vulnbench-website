@@ -72,9 +72,45 @@ const datasetStructuredData = release
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="theme-color" content="#f7f4ed" />
+    <script is:inline>
+      (() => {
+        const storageKey = "vulnbench-theme";
+        const themeColors = {
+          light: "#f7f4ed",
+          dark: "#211e24",
+        };
+        let theme;
+
+        try {
+          const savedTheme = localStorage.getItem(storageKey);
+          if (savedTheme === "light" || savedTheme === "dark") {
+            theme = savedTheme;
+          }
+        } catch {}
+
+        if (!theme) {
+          try {
+            theme = matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+          } catch {
+            theme = "light";
+          }
+        }
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+
+        try {
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute("content", themeColors[theme]);
+        } catch {}
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#f7f4ed" />
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={canonicalUrl} />

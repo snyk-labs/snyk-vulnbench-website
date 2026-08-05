@@ -302,6 +302,7 @@ export function CoverageView({
                       label: `${configuration.name} · ${column.label}`,
                       value: value ?? 0,
                       maximum: 1,
+                      tone: unmatched ? "unmatched" : "matched",
                       displayValue:
                         value === null
                           ? "N/A"

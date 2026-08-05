@@ -53,8 +53,8 @@ const observations = [
 <style>
   .evidence-band {
     padding-block: var(--space-7);
-    background: var(--ink);
-    color: var(--paper-raised);
+    background: var(--evidence-surface);
+    color: var(--evidence-text);
   }
 
   .band-heading {
@@ -65,23 +65,23 @@ const observations = [
   }
 
   .band-heading .eyebrow {
-    color: #bdafff;
+    color: var(--evidence-accent);
   }
 
   .band-heading p:last-child {
     max-width: 48rem;
-    color: #c9c3cf;
+    color: var(--evidence-muted);
   }
 
   .observations {
     display: grid;
-    border-block: 1px solid #4c4654;
+    border-block: 1px solid var(--evidence-rule);
   }
 
   .observation {
     display: grid;
     padding: var(--space-4);
-    border-bottom: 1px solid #4c4654;
+    border-bottom: 1px solid var(--evidence-rule);
     color: inherit;
     gap: var(--space-2);
     text-decoration: none;
@@ -92,7 +92,7 @@ const observations = [
   }
 
   .observation:hover {
-    background: #24202b;
+    background: var(--evidence-hover);
   }
 
   .observation .metric {
@@ -101,16 +101,16 @@ const observations = [
   }
 
   .observation.matched .metric {
-    color: #6ed4c5;
+    color: var(--evidence-matched);
   }
 
   .observation.unmatched .metric,
   .observation.unmatched-outline .metric {
-    color: #f29c82;
+    color: var(--evidence-unmatched);
   }
 
   .observation small {
-    color: #aaa2b0;
+    color: var(--evidence-muted);
     font-weight: 700;
   }
 
@@ -121,7 +121,7 @@ const observations = [
 
     .observation {
       min-height: 13rem;
-      border-right: 1px solid #4c4654;
+      border-right: 1px solid var(--evidence-rule);
       border-bottom: 0;
       align-content: space-between;
     }

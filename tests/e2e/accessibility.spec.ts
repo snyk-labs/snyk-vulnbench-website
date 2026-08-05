@@ -19,18 +19,31 @@ const routes = [
   "/about",
 ];
 
-for (const path of routes) {
-  test(`${path} has no detectable WCAG A or AA violations`, async ({
-    page,
-  }) => {
-    await page.goto(path);
+for (const theme of ["default", "dark"] as const) {
+  for (const path of routes) {
+    test(`${path} has no detectable WCAG A or AA violations in ${theme} theme`, async ({
+      page,
+    }) => {
+      if (theme === "dark") {
+        await page.addInitScript(() => {
+          localStorage.clear();
+          localStorage.setItem("vulnbench-theme", "dark");
+        });
+      }
 
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
-      .analyze();
+      await page.goto(path);
 
-    expect(results.violations).toEqual([]);
-  });
+      if (theme === "dark") {
+        await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+      }
+
+      const results = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+        .analyze();
+
+      expect(results.violations).toEqual([]);
+    });
+  }
 }
 
 test("honors reduced motion and keeps content within a narrow viewport", async ({

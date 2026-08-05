@@ -47,6 +47,22 @@ describe("EvidenceScatter", () => {
           .map((marker) => marker.getAttribute("data-shape")),
       ).size,
     ).toBe(6);
+    const expectedSeries = new Map([
+      ["Snyk Code SAST", "var(--series-1)"],
+      ["Claude Opus 4.6 Medium", "var(--series-2)"],
+      ["Claude Opus 4.6 High", "var(--series-3)"],
+      ["Claude Opus 4.7 Max", "var(--series-4)"],
+      ["Claude Sonnet 4.6 Medium", "var(--series-5)"],
+      ["Claude Sonnet 4.6 High", "var(--series-6)"],
+    ]);
+    for (const [name, color] of expectedSeries) {
+      const button = screen.getByRole("button", {
+        name: `Show details for ${name}`,
+      });
+      expect(within(button).getByTestId("configuration-marker")).toHaveStyle({
+        color,
+      });
+    }
 
     const table = screen.getByRole("table", {
       name: "Agreement versus repeated-run variance exact values",

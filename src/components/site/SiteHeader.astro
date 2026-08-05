@@ -1,5 +1,6 @@
 ---
 import { currentRelease } from "../../data/releases";
+import ThemeToggle from "./ThemeToggle.astro";
 import Wordmark from "./Wordmark.astro";
 
 const path = Astro.url.pathname;
@@ -20,27 +21,8 @@ const isCurrent = (href: string) =>
   <div class="header-inner container">
     <Wordmark />
 
-    <nav class="desktop-nav" aria-label="Primary">
-      <ul>
-        {
-          links.map(({ label, href, external }) => (
-            <li>
-              <a
-                href={href}
-                aria-current={isCurrent(href) ? "page" : undefined}
-                rel={external ? "noreferrer" : undefined}
-              >
-                {label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-
-    <details class="mobile-menu">
-      <summary>Menu</summary>
-      <nav aria-label="Primary">
+    <div class="header-actions">
+      <nav class="desktop-nav" aria-label="Primary">
         <ul>
           {
             links.map(({ label, href, external }) => (
@@ -57,7 +39,30 @@ const isCurrent = (href: string) =>
           }
         </ul>
       </nav>
-    </details>
+
+      <ThemeToggle />
+
+      <details class="mobile-menu">
+        <summary>Menu</summary>
+        <nav aria-label="Primary">
+          <ul>
+            {
+              links.map(({ label, href, external }) => (
+                <li>
+                  <a
+                    href={href}
+                    aria-current={isCurrent(href) ? "page" : undefined}
+                    rel={external ? "noreferrer" : undefined}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </details>
+    </div>
   </div>
 </header>
 
@@ -75,6 +80,14 @@ const isCurrent = (href: string) =>
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
+  }
+
+  .header-actions {
+    display: flex;
+    min-width: 0;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: flex-end;
   }
 
   ul {
@@ -111,6 +124,14 @@ const isCurrent = (href: string) =>
   }
 
   @media (max-width: 47.99rem) {
+    .header-inner {
+      gap: var(--space-2);
+    }
+
+    .header-actions {
+      gap: var(--space-2);
+    }
+
     .desktop-nav {
       display: none;
     }

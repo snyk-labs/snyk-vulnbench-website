@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 async function expectHomepageEvidence(page: import("@playwright/test").Page) {
-  await expect(page.locator("h1")).toHaveCount(1);
+  await expect(page.locator("main h1")).toHaveCount(1);
   await expect(
     page.getByRole("heading", {
       level: 1,
