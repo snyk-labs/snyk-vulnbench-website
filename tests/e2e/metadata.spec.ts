@@ -15,10 +15,22 @@ test("publishes canonical social metadata", async ({ page, request }) => {
     "content",
     /https:\/\/vulnbench\.com\/social\/vulnbench-default\.svg/,
   );
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
+    "href",
+    "/favicon.svg",
+  );
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
+    "type",
+    "image/svg+xml",
+  );
 
   const socialImage = await request.get("/social/vulnbench-default.svg");
   expect(socialImage.status()).toBe(200);
   expect(socialImage.headers()["content-type"]).toContain("image/svg+xml");
+
+  const favicon = await request.get("/favicon.svg");
+  expect(favicon.status()).toBe(200);
+  expect(favicon.headers()["content-type"]).toContain("image/svg+xml");
 });
 
 test("publishes scholarly article, dataset, and citation metadata", async ({
