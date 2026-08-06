@@ -9,7 +9,7 @@ import {
 const LIGHT_THEME_COLOR = "#f7f4ed";
 const DARK_THEME_COLOR = "#211e24";
 
-test("initializes the light theme from a light system preference", async ({
+test("defaults to the light theme with a light system preference", async ({
   page,
 }) => {
   await prepareTheme(page, "light");
@@ -25,16 +25,16 @@ test("initializes the light theme from a light system preference", async ({
   await expect(themeToggle(page, "dark")).not.toHaveAttribute("aria-pressed");
 });
 
-test("initializes the dark theme from a dark system preference", async ({
+test("defaults to the light theme with a dark system preference", async ({
   page,
 }) => {
   await prepareTheme(page, "dark");
   await page.goto("/");
 
-  await expectTheme(page, "dark", DARK_THEME_COLOR);
-  await expect(themeToggle(page, "light")).toBeVisible();
-  await expect(themeToggle(page, "light")).toHaveAttribute("data-theme", "dark");
-  await expect(themeToggle(page, "light")).not.toHaveAttribute("aria-pressed");
+  await expectTheme(page, "light", LIGHT_THEME_COLOR);
+  await expect(themeToggle(page, "dark")).toBeVisible();
+  await expect(themeToggle(page, "dark")).toHaveAttribute("data-theme", "light");
+  await expect(themeToggle(page, "dark")).not.toHaveAttribute("aria-pressed");
 });
 
 test("applies dark semantic surfaces to evidence and analytical views", async ({
@@ -109,20 +109,37 @@ test("keeps Classic coverage cells on a continuous heatmap", async ({ page }) =>
   ).toBeVisible();
 });
 
-test("uses a valid saved preference instead of the system preference", async ({
-  page,
-}) => {
-  await prepareTheme(page, "dark", "light");
-  await page.goto("/");
+for (const {
+  systemTheme,
+  savedTheme,
+  expectedColor,
+} of [
+  {
+    systemTheme: "dark",
+    savedTheme: "light",
+    expectedColor: LIGHT_THEME_COLOR,
+  },
+  {
+    systemTheme: "light",
+    savedTheme: "dark",
+    expectedColor: DARK_THEME_COLOR,
+  },
+] as const) {
+  test(`uses a saved ${savedTheme} preference instead of system ${systemTheme}`, async ({
+    page,
+  }) => {
+    await prepareTheme(page, systemTheme, savedTheme);
+    await page.goto("/");
 
-  await expectTheme(page, "light", LIGHT_THEME_COLOR);
-});
+    await expectTheme(page, savedTheme, expectedColor);
+  });
+}
 
 test("ignores an invalid saved preference", async ({ page }) => {
   await prepareTheme(page, "dark", "sepia");
   await page.goto("/");
 
-  await expectTheme(page, "dark", DARK_THEME_COLOR);
+  await expectTheme(page, "light", LIGHT_THEME_COLOR);
 });
 
 test("switches theme with a mouse click and persists the explicit choice", async ({
@@ -145,11 +162,11 @@ test("switches theme with keyboard button activation", async ({ page }) => {
   await prepareTheme(page, "dark");
   await page.goto("/");
 
-  await themeToggle(page, "light").focus();
+  await themeToggle(page, "dark").focus();
   await page.keyboard.press("Enter");
 
-  await expectTheme(page, "light", LIGHT_THEME_COLOR);
-  await expect(themeToggle(page, "dark")).toBeFocused();
+  await expectTheme(page, "dark", DARK_THEME_COLOR);
+  await expect(themeToggle(page, "light")).toBeFocused();
 });
 
 test("restores an explicit choice after reload and navigation", async ({
@@ -172,7 +189,7 @@ test("restores an explicit choice after reload and navigation", async ({
   await expect(themeToggle(page, "light")).toBeVisible();
 });
 
-test("follows live system changes until the visitor chooses explicitly", async ({
+test("ignores live system changes before and after an explicit choice", async ({
   page,
 }) => {
   await page.emulateMedia({ colorScheme: "light" });
@@ -182,25 +199,26 @@ test("follows live system changes until the visitor chooses explicitly", async (
   await expectTheme(page, "light", LIGHT_THEME_COLOR);
 
   await page.emulateMedia({ colorScheme: "dark" });
-  await expectTheme(page, "dark", DARK_THEME_COLOR);
-
-  await themeToggle(page, "light").click();
-  await page.emulateMedia({ colorScheme: "dark" });
-  await page.emulateMedia({ colorScheme: "light" });
   await expectTheme(page, "light", LIGHT_THEME_COLOR);
+
+  await themeToggle(page, "dark").click();
+  await expectTheme(page, "dark", DARK_THEME_COLOR);
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expectTheme(page, "dark", DARK_THEME_COLOR);
 });
 
-test("synchronizes valid cross-tab choices and returns to the system theme for invalid or removed preferences", async ({
+test("synchronizes valid cross-tab choices and returns to Light for invalid or removed preferences", async ({
   context,
   page,
 }) => {
-  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
   await page.evaluate((key) => localStorage.removeItem(key), THEME_KEY);
   await page.reload();
 
   const otherPage = await context.newPage();
-  await otherPage.emulateMedia({ colorScheme: "light" });
+  await otherPage.emulateMedia({ colorScheme: "dark" });
   await otherPage.goto("/");
 
   await otherPage.evaluate(
@@ -218,11 +236,11 @@ test("synchronizes valid cross-tab choices and returns to the system theme for i
   await expect(themeToggle(page, "dark")).toBeVisible();
 });
 
-test("returns to the system theme when another tab clears storage", async ({
+test("returns to Light when another tab clears storage", async ({
   context,
   page,
 }) => {
-  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
   await page.evaluate(
     ({ key, value }) => localStorage.setItem(key, value),
@@ -232,7 +250,7 @@ test("returns to the system theme when another tab clears storage", async ({
   await expectTheme(page, "dark", DARK_THEME_COLOR);
 
   const otherPage = await context.newPage();
-  await otherPage.emulateMedia({ colorScheme: "light" });
+  await otherPage.emulateMedia({ colorScheme: "dark" });
   await otherPage.goto("/");
   await otherPage.evaluate(() => localStorage.clear());
 

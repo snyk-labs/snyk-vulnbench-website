@@ -1,3 +1,4 @@
+import { access } from "node:fs/promises";
 import { describe, expect, test } from "vitest";
 import {
   designThemeAssets,
@@ -10,8 +11,8 @@ import {
 
 describe("resolveDesignTheme", () => {
   test.each([
-    [undefined, "classic"],
-    ["", "classic"],
+    [undefined, "snyk-2026"],
+    ["", "snyk-2026"],
     ["classic", "classic"],
     ["snyk-2026", "snyk-2026"],
   ] as const)("resolves %j to %s", (value, expected) => {
@@ -23,6 +24,15 @@ describe("resolveDesignTheme", () => {
       /classic.*snyk-2026/,
     );
   });
+});
+
+describe("obsolete Vercel theme selection", () => {
+  test.each(["vercel.json", "scripts/vercel-build.mjs"])(
+    "removes %s so standard builds use the typed default",
+    async (path) => {
+      await expect(access(path)).rejects.toMatchObject({ code: "ENOENT" });
+    },
+  );
 });
 
 describe("design-theme browser metadata", () => {

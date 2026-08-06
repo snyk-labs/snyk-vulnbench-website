@@ -56,16 +56,6 @@ const { themeColors } = Astro.props;
 
     const storageKey = "vulnbench-theme";
     const isTheme = (value) => value === "light" || value === "dark";
-    let mediaQuery = null;
-
-    try {
-      if (typeof window.matchMedia === "function") {
-        mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      }
-    } catch {}
-
-    const getSystemTheme = () =>
-      mediaQuery?.matches === true ? "dark" : "light";
 
     const getStoredTheme = () => {
       try {
@@ -75,8 +65,6 @@ const { themeColors } = Astro.props;
         return null;
       }
     };
-
-    let hasExplicitChoice = getStoredTheme() !== null;
 
     const applyTheme = (theme) => {
       const nextTheme = isTheme(theme) ? theme : "light";
@@ -98,37 +86,20 @@ const { themeColors } = Astro.props;
       const currentTheme = document.documentElement.dataset.theme;
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
-      hasExplicitChoice = true;
       try {
         localStorage.setItem(storageKey, nextTheme);
       } catch {}
       applyTheme(nextTheme);
     });
 
-    const handleSystemChange = () => {
-      if (!hasExplicitChoice) {
-        applyTheme(getSystemTheme());
-      }
-    };
-
-    try {
-      mediaQuery?.addEventListener("change", handleSystemChange);
-    } catch {}
-
     window.addEventListener("storage", (event) => {
       if (event.key !== storageKey && event.key !== null) return;
 
       const storedTheme = getStoredTheme();
-      if (storedTheme !== null) {
-        hasExplicitChoice = true;
-        applyTheme(storedTheme);
-      } else {
-        hasExplicitChoice = false;
-        applyTheme(getSystemTheme());
-      }
+      applyTheme(storedTheme ?? "light");
     });
 
-    applyTheme(getStoredTheme() ?? getSystemTheme());
+    applyTheme(getStoredTheme() ?? "light");
     button.hidden = false;
   })();
 </script>

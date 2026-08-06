@@ -78,7 +78,7 @@ const datasetStructuredData = release
     <script is:inline define:vars={{ browserThemeColors }}>
       (() => {
         const storageKey = "vulnbench-theme";
-        let theme;
+        let theme = "light";
 
         try {
           const savedTheme = localStorage.getItem(storageKey);
@@ -86,16 +86,6 @@ const datasetStructuredData = release
             theme = savedTheme;
           }
         } catch {}
-
-        if (!theme) {
-          try {
-            theme = matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light";
-          } catch {
-            theme = "light";
-          }
-        }
 
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;

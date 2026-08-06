@@ -4,10 +4,10 @@ export const THEME_KEY = "vulnbench-theme";
 
 export async function prepareTheme(
   page: Page,
-  colorScheme: "light" | "dark",
+  systemColorScheme: "light" | "dark",
   storedPreference: string | null = null,
 ) {
-  await page.emulateMedia({ colorScheme });
+  await page.emulateMedia({ colorScheme: systemColorScheme });
   await page.addInitScript(
     ({ preference, storageKey }) => {
       localStorage.clear();

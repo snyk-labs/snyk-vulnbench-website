@@ -20,7 +20,7 @@ export const designThemeAssets: Record<DesignTheme, DesignThemeAssets> = {
 
 export function resolveDesignTheme(value: string | undefined): DesignTheme {
   if (value === undefined || value === "") {
-    return "classic";
+    return "snyk-2026";
   }
 
   if (value === "classic" || value === "snyk-2026") {

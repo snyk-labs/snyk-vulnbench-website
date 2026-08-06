@@ -130,21 +130,19 @@ async function expectNoHorizontalOverflow(page: import("@playwright/test").Page)
 }
 
 test.describe("Snyk 2026 color mode contract", () => {
-  for (const colorMode of ["light", "dark"] as const) {
-    test(`initializes branded ${colorMode} mode from the system preference`, async ({
+  for (const systemColorMode of ["light", "dark"] as const) {
+    test(`defaults branded mode to Light with system ${systemColorMode}`, async ({
       page,
     }) => {
-      await prepareTheme(page, colorMode);
+      await prepareTheme(page, systemColorMode);
       await page.goto("/");
 
       await expect(page.locator("html")).toHaveAttribute(
         "data-design-theme",
         "snyk-2026",
       );
-      await expectTheme(page, colorMode, BRAND_THEME_COLORS[colorMode]);
-      await expect(
-        themeToggle(page, colorMode === "light" ? "dark" : "light"),
-      ).toBeVisible();
+      await expectTheme(page, "light", BRAND_THEME_COLORS.light);
+      await expect(themeToggle(page, "dark")).toBeVisible();
     });
   }
 
