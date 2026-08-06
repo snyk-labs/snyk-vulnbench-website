@@ -40,7 +40,7 @@ test("defaults to the light theme with a dark system preference", async ({
 test("applies dark semantic surfaces to evidence and analytical views", async ({
   page,
 }) => {
-  await prepareTheme(page, "dark");
+  await prepareTheme(page, "dark", "dark");
   await page.goto("/");
 
   const evidenceBand = page.locator(".evidence-band");

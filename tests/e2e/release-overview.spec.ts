@@ -101,12 +101,17 @@ test("publishes the complete Phase 1 evidence narrative", async ({ page }) => {
 });
 
 test("preserves the Phase 1 evidence narrative without JavaScript", async ({
+  baseURL,
   browser,
 }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  if (!baseURL) throw new Error("Playwright baseURL is required");
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+  });
   const page = await context.newPage();
 
-  await page.goto("http://127.0.0.1:4321/releases/js-1.0");
+  await page.goto("/releases/js-1.0");
   await expectCompletedPhaseOne(page);
 
   await context.close();
