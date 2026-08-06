@@ -151,3 +151,6 @@ playwright-report/
 
 # Isolated agent worktrees
 .worktrees/
+
+# Local agent planning, review, and visual artifacts
+.superpowers/
