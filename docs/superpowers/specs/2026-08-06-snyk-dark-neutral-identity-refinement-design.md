@@ -148,7 +148,8 @@ mobile header, footer attribution, and Light/Dark comparison.
 
 ## Delivery boundary
 
-The Vercel branch-preview configuration remains unchanged. This revision is
-part of the existing feature branch and pull request. External publication
+Standard `npm run build` uses Snyk 2026 by default. Explicit
+`VULNBENCH_DESIGN_THEME=classic` retains the deterministic Classic override.
+The temporary Vercel PR-branch build wrapper is removed. External publication
 still requires the documented Jira and `#ask-brand-design` review plus
 `brand-approved` status.

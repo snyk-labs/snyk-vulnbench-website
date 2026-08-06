@@ -29,7 +29,8 @@ history, but they are not the current authority for those areas.
 - Snyk 2026 Dark uses a Midnight editorial base; neutral white-alpha raised
   surfaces replace broad saturated Dark Purple or Purple panels.
 - Softened white text tiers, semantic Purple/Orange-Red/Amber roles, one thin
-  warm gradient edge, and explicit/system Dark parity follow the refinement.
+  warm gradient edge, and its explicit saved Dark mode follow the refinement.
+  Without a saved mode and no-theme output use Light.
 - The approved website-specific Light styling remains unchanged.
 
 ## Terminology
@@ -125,7 +126,7 @@ The design does not rely on CSS gradient text or text shadow.
 
 ### Dark color mode: Family A
 
-Snyk 2026 Dark is the default branded surface:
+Snyk 2026 Dark is the explicit saved color mode:
 
 - Midnight is the page and canvas base.
 - Headings and primary copy are white; secondary copy uses white alpha.

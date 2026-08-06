@@ -234,13 +234,17 @@ describe("Snyk 2026 design-theme documentation", () => {
   });
 
   test("updates historical theme documents for the Snyk and Light defaults", async () => {
-    const [darkModeDesign, snykDesign, snykPlan] = await Promise.all([
+    const [darkModeDesign, snykDesign, snykPlan, darkRefinement] =
+      await Promise.all([
       readDocumentation("docs/superpowers/specs/2026-08-05-dark-mode-theme-design.md"),
       readDocumentation(
         "docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md",
       ),
       readDocumentation(
         "docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md",
+      ),
+      readDocumentation(
+        "docs/superpowers/specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md",
       ),
     ]);
 
@@ -256,11 +260,27 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(snykDesign).toContain(
       "The pre-paint initializer selects saved Light or Dark, otherwise Light",
     );
+    expect(snykDesign).toContain(
+      "explicit saved Dark mode follow the refinement. Without a saved mode and no-theme output use Light.",
+    );
+    expect(snykDesign).toContain(
+      "Snyk 2026 Dark is the explicit saved color mode:",
+    );
+    expect(snykDesign).not.toContain("explicit/system Dark parity");
     expect(snykPlan).toContain(
       "Snyk 2026 and Light are the unconfigured defaults",
     );
     expect(snykPlan).toContain(
       "No-JavaScript output uses Light regardless of system preference.",
+    );
+    expect(darkRefinement).toContain(
+      "Standard `npm run build` uses Snyk 2026 by default",
+    );
+    expect(darkRefinement).toContain(
+      "The temporary Vercel PR-branch build wrapper is removed.",
+    );
+    expect(darkRefinement).not.toContain(
+      "The Vercel branch-preview configuration remains unchanged.",
     );
   });
 });

@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -24,6 +24,16 @@ describe("Snyk 2026 verification gate", () => {
       "VULNBENCH_DESIGN_THEME=snyk-2026 astro build",
     );
     expect(packageJson.scripts.verify).toContain("npm run verify:snyk-2026");
+  });
+
+  it.each([
+    "vercel.json",
+    "scripts/vercel-build.mjs",
+    "tests/vercel-preview-theme.test.ts",
+  ])("removes %s from disk", async (path) => {
+    await expect(access(resolve(process.cwd(), path))).rejects.toMatchObject({
+      code: "ENOENT",
+    });
   });
 
   it.each(["classic", "invalid", undefined])(
