@@ -67,20 +67,24 @@ function renderCoverageValue(value: number | null, omitTask = false) {
 
 describe("CoverageView heatmap", () => {
   it.each([
-    [null, "coverage-cell--not-applicable"],
-    [0, "coverage-cell--heatmap-0"],
-    [0.01, "coverage-cell--heatmap-1"],
-    [0.25, "coverage-cell--heatmap-1"],
-    [0.26, "coverage-cell--heatmap-2"],
-    [0.5, "coverage-cell--heatmap-2"],
-    [0.51, "coverage-cell--heatmap-3"],
-    [0.75, "coverage-cell--heatmap-3"],
-    [0.76, "coverage-cell--heatmap-4"],
-    [1, "coverage-cell--heatmap-4"],
-  ] as const)("maps %s to %s", (value, expectedClass) => {
+    [null, "coverage-cell--not-applicable", null],
+    [0, "coverage-cell--heatmap-0", "0%"],
+    [0.01, "coverage-cell--heatmap-1", "1%"],
+    [0.25, "coverage-cell--heatmap-1", "16%"],
+    [0.26, "coverage-cell--heatmap-2", "17%"],
+    [0.5, "coverage-cell--heatmap-2", "33%"],
+    [0.51, "coverage-cell--heatmap-3", "33%"],
+    [0.75, "coverage-cell--heatmap-3", "49%"],
+    [0.76, "coverage-cell--heatmap-4", "49%"],
+    [1, "coverage-cell--heatmap-4", "65%"],
+  ] as const)("maps %s to %s with Classic mix %s", (value, expectedClass, mix) => {
     const { cell, unmount } = renderCoverageValue(value);
     expect(cell).toHaveClass(expectedClass);
-    expect(cell).not.toHaveAttribute("style");
+    if (mix === null) {
+      expect(cell).not.toHaveAttribute("style");
+    } else {
+      expect(cell.style.getPropertyValue("--coverage-heatmap-mix")).toBe(mix);
+    }
     unmount();
   });
 
@@ -102,12 +106,15 @@ describe("CoverageView heatmap", () => {
     ).toBeVisible();
   });
 
-  it("does not use a continuous color bypass", async () => {
+  it("keeps theme selection out of React while exposing a safe Classic percentage", async () => {
     const source = await readFile(
       `${process.cwd()}/src/components/explorer/views/CoverageView.tsx`,
       { encoding: "utf8" },
     );
 
-    expect(source).not.toContain("color-mix(");
+    expect(source).toContain("--coverage-heatmap-mix");
+    expect(source).not.toMatch(
+      /VULNBENCH_DESIGN_THEME|process\.env|import\.meta\.env/,
+    );
   });
 });

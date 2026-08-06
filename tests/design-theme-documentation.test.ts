@@ -74,6 +74,15 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(conventions).toContain(
       "Approved local branded assets retain documented provenance and checksums.",
     );
+    expect(conventions).toContain(
+      "Verification gates override the design theme for every spawned child process",
+    );
+    expect(conventions).toContain(
+      "one rendered wordmark height on all four sides",
+    );
+    expect(conventions).toContain(
+      "Classic may use continuous analytical scales while Snyk 2026 uses locked discrete bands.",
+    );
   });
 
   test("limits canonical-light static assets to Classic", async () => {

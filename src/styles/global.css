@@ -148,30 +148,41 @@ html[data-design-theme="snyk-2026"][data-theme="light"] .section {
   background-color: var(--paper-muted);
 }
 
-.coverage-cell--heatmap-0 {
-  background-color: var(--heatmap-0);
-  color: var(--heatmap-text-strong);
+html[data-design-theme="classic"] .coverage-cell[class*="coverage-cell--heatmap-"] {
+  background-color: color-mix(
+    in srgb,
+    var(--matched) var(--coverage-heatmap-mix),
+    var(--paper-raised)
+  );
+  color: var(--ink);
 }
 
-.coverage-cell--heatmap-1 {
-  background-color: var(--heatmap-1);
-  color: var(--heatmap-text-strong);
+/* snyk-2026-audit:start */
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-0 {
+  background-color: var(--heatmap-0, rgba(255, 255, 255, 0.04));
+  color: var(--heatmap-text-strong, #FFFFFF);
 }
 
-.coverage-cell--heatmap-2 {
-  background-color: var(--heatmap-2);
-  color: var(--heatmap-text-strong);
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-1 {
+  background-color: var(--heatmap-1, rgba(255, 255, 255, 0.08));
+  color: var(--heatmap-text-strong, #FFFFFF);
 }
 
-.coverage-cell--heatmap-3 {
-  background-color: var(--heatmap-3);
-  color: var(--heatmap-text-strong);
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-2 {
+  background-color: var(--heatmap-2, rgba(255, 255, 255, 0.12));
+  color: var(--heatmap-text-strong, #FFFFFF);
 }
 
-.coverage-cell--heatmap-4 {
-  background-color: var(--heatmap-4);
-  color: var(--heatmap-text-strong);
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-3 {
+  background-color: var(--heatmap-3, rgba(255, 255, 255, 0.18));
+  color: var(--heatmap-text-strong, #FFFFFF);
 }
+
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-4 {
+  background-color: var(--heatmap-4, rgba(255, 255, 255, 0.24));
+  color: var(--heatmap-text-strong, #FFFFFF);
+}
+/* snyk-2026-audit:end */
 
 .button-row {
   display: flex;

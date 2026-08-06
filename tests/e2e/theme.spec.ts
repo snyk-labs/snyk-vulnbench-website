@@ -62,6 +62,53 @@ test("applies dark semantic surfaces to evidence and analytical views", async ({
   );
 });
 
+test("keeps Classic coverage cells on a continuous heatmap", async ({ page }) => {
+  await prepareTheme(page, "light");
+  await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=recall");
+  await page
+    .locator('astro-island[component-export="ExplorerApp"]')
+    .waitFor({ state: "attached" });
+
+  const coverageCells = page.locator("td.coverage-cell");
+  await coverageCells.first().waitFor();
+  const presentation = await coverageCells.evaluateAll((cells) => {
+      const samples = cells.map((cell) => {
+        const element = cell as HTMLElement;
+        const band = [...element.classList].find((name) =>
+          name.startsWith("coverage-cell--heatmap-"),
+        );
+        return {
+          background: getComputedStyle(element).backgroundColor,
+          band,
+          mix: element.style.getPropertyValue("--coverage-heatmap-mix"),
+          text: element.querySelector("strong")?.textContent?.trim() ?? "",
+        };
+      });
+      const pair = samples.flatMap((left, index) =>
+        samples
+          .slice(index + 1)
+          .filter(
+            (right) =>
+              left.band &&
+              left.band === right.band &&
+              left.mix &&
+              right.mix &&
+              left.mix !== right.mix,
+          )
+          .map((right) => [left, right] as const),
+      )[0];
+      return { pair };
+    });
+
+  expect(presentation.pair).toBeDefined();
+  expect(presentation.pair?.[0].background).not.toBe(
+    presentation.pair?.[1].background,
+  );
+  await expect(
+    page.getByRole("table", { name: "Vulnerability class coverage matrix" }),
+  ).toBeVisible();
+});
+
 test("uses a valid saved preference instead of the system preference", async ({
   page,
 }) => {

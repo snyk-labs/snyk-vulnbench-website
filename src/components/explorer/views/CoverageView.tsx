@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { ExplorerDataset } from "../../../data/explorer/schema";
 import {
   barChartSvg,
@@ -28,6 +29,14 @@ function coverageHeatmapClass(value: number | null) {
   if (value <= 0.5) return "coverage-cell--heatmap-2";
   if (value <= 0.75) return "coverage-cell--heatmap-3";
   return "coverage-cell--heatmap-4";
+}
+
+function coverageHeatmapStyle(value: number | null): CSSProperties | undefined {
+  if (value === null) return undefined;
+  const boundedValue = Math.min(Math.max(value, 0), 1);
+  return {
+    "--coverage-heatmap-mix": `${Math.round(boundedValue * 65)}%`,
+  } as CSSProperties;
 }
 
 function projectValue(
@@ -202,6 +211,7 @@ export function CoverageView({
                       <td
                         className={`metric coverage-cell ${coverageHeatmapClass(details.value)}`}
                         key={key}
+                        style={coverageHeatmapStyle(details.value)}
                       >
                         <strong>
                           {details.value === null

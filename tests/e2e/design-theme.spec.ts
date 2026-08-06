@@ -173,22 +173,122 @@ test("keeps Family B copy on opaque Midnight while exposing one page gradient", 
   await expectNoHorizontalOverflow(page);
 });
 
+test("locks Snyk 2026 coverage cells to discrete heatmap bands", async ({
+  page,
+}) => {
+  await prepareTheme(page, "dark", "dark");
+  await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=recall");
+  await page
+    .locator('astro-island[component-export="ExplorerApp"]')
+    .waitFor({ state: "attached" });
+
+  const coverageCells = page.locator("td.coverage-cell");
+  await coverageCells.first().waitFor();
+  const presentation = await coverageCells.evaluateAll((cells) => {
+      const samples = cells.map((cell) => {
+        const element = cell as HTMLElement;
+        const band = [...element.classList].find((name) =>
+          name.startsWith("coverage-cell--heatmap-"),
+        );
+        return {
+          background: getComputedStyle(element).backgroundColor,
+          band,
+          mix: element.style.getPropertyValue("--coverage-heatmap-mix"),
+          text: element.querySelector("strong")?.textContent?.trim() ?? "",
+        };
+      });
+      const pair = samples.flatMap((left, index) =>
+        samples
+          .slice(index + 1)
+          .filter(
+            (right) =>
+              left.band &&
+              left.band === right.band &&
+              left.mix &&
+              right.mix &&
+              left.mix !== right.mix,
+          )
+          .map((right) => [left, right] as const),
+      )[0];
+      return { pair };
+    });
+
+  expect(presentation.pair).toBeDefined();
+  expect(presentation.pair?.[0].background).toBe(
+    presentation.pair?.[1].background,
+  );
+  await expect(
+    page.getByRole("table", { name: "Vulnerability class coverage matrix" }),
+  ).toBeVisible();
+});
+
 for (const { width, minimum } of [
   { width: 320, minimum: 120 },
   { width: 1440, minimum: 140 },
 ]) {
-  test(`keeps the Snyk wordmark at least ${minimum}px wide at ${width}px`, async ({
+  test(`keeps the Snyk wordmark size and clear space at ${width}px`, async ({
     page,
   }) => {
     await prepareTheme(page, "light", "light");
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
 
-    const wordmark = page.getByRole("link", { name: "Snyk home" }).locator("img");
-    const box = await wordmark.boundingBox();
+    const geometry = await page.evaluate(() => {
+      const link = document.querySelector<HTMLAnchorElement>(".snyk-logo");
+      const image = link?.querySelector("img");
+      const header = link?.closest<HTMLElement>(".site-header");
+      const controls = header?.querySelector<HTMLElement>(".header-actions");
+      if (!link || !image || !header || !controls) {
+        throw new Error("Branded header geometry is incomplete");
+      }
+      const linkRect = link.getBoundingClientRect();
+      const imageRect = image.getBoundingClientRect();
+      const headerRect = header.getBoundingClientRect();
+      const controlsRect = controls.getBoundingClientRect();
+      const separated =
+        linkRect.right <= controlsRect.left ||
+        controlsRect.right <= linkRect.left ||
+        linkRect.bottom <= controlsRect.top ||
+        controlsRect.bottom <= linkRect.top;
+      return {
+        imageWidth: imageRect.width,
+        imageHeight: imageRect.height,
+        clearTop: imageRect.top - linkRect.top,
+        clearLeft: imageRect.left - linkRect.left,
+        clearBottom: linkRect.bottom - imageRect.bottom,
+        clearRight: linkRect.right - imageRect.right,
+        containedTop: linkRect.top - headerRect.top,
+        containedLeft: linkRect.left - headerRect.left,
+        containedBottom: headerRect.bottom - linkRect.bottom,
+        containedRight: headerRect.right - linkRect.right,
+        controlsVisible:
+          controlsRect.width > 0 &&
+          controlsRect.height > 0 &&
+          controlsRect.left >= headerRect.left &&
+          controlsRect.right <= headerRect.right,
+        separated,
+      };
+    });
 
-    expect(box).not.toBeNull();
-    expect(box?.width).toBeGreaterThanOrEqual(minimum);
+    expect(geometry.imageWidth).toBeGreaterThanOrEqual(minimum);
+    for (const clearance of [
+      geometry.clearTop,
+      geometry.clearLeft,
+      geometry.clearBottom,
+      geometry.clearRight,
+    ]) {
+      expect(clearance).toBeGreaterThanOrEqual(geometry.imageHeight - 0.5);
+    }
+    for (const containment of [
+      geometry.containedTop,
+      geometry.containedLeft,
+      geometry.containedBottom,
+      geometry.containedRight,
+    ]) {
+      expect(containment).toBeGreaterThanOrEqual(-0.5);
+    }
+    expect(geometry.controlsVisible).toBe(true);
+    expect(geometry.separated).toBe(true);
     await expectNoHorizontalOverflow(page);
   });
 }

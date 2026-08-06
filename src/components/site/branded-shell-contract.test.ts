@@ -44,7 +44,9 @@ describe("build-selected branded shell contract", () => {
     expect(logo).toContain('height="659"');
     expect(logo).toContain("--snyk-wordmark-width: 7.5rem");
     expect(logo).toContain("--snyk-wordmark-width: 8.75rem");
-    expect(logo).toContain("--snyk-wordmark-clear-space:");
+    expect(logo).toContain(
+      "--snyk-wordmark-clear-space: calc(var(--snyk-wordmark-width) * 659 / 1276)",
+    );
     expect(logo).toContain("padding: var(--snyk-wordmark-clear-space)");
     expect(logo).toContain("width: var(--snyk-wordmark-width)");
     expect(logo).toContain("height: auto");

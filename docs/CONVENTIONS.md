@@ -24,6 +24,10 @@ Design theme is selected at build time; color mode is selected by the visitor or
   the deployment-selected `classic` or `snyk-2026` design.
 - Classic and Snyk 2026 output require separate verification. Run the complete
   `verify:classic` and `verify:snyk-2026` gates before delivery.
+- Verification gates override the design theme for every spawned child process
+  and server. Contract tests must exercise the gate under both supported
+  ambient values so an inherited deployment environment cannot select the
+  wrong design.
 - Branded changes must pass the mechanical brand audit and real visual and Axe
   checks. The audit is additive to, not a substitute for, browser validation.
 - In Snyk 2026 Family B, running copy and dense analytical content must sit on
@@ -31,7 +35,14 @@ Design theme is selected at build time; color mode is selected by the visitor or
   surrounding composition. Verify computed backgrounds in browser tests
   because automated contrast tools do not infer contrast against CSS gradients.
 - Verify official logo minimums from rendered image bounds at mobile and
-  desktop widths, together with a 320-pixel horizontal-overflow assertion.
+  desktop widths. Preserve clear space of at least one rendered wordmark height
+  on all four sides, and measure each side in a real browser together with
+  control visibility and a 320-pixel horizontal-overflow assertion.
+- Shared analytical markup may expose bounded, design-neutral values through
+  CSS custom properties. Classic may use continuous analytical scales while
+  Snyk 2026 uses locked discrete bands. Root-scoped computed-style tests must
+  prove the presentations differ without reading the build environment in
+  React.
 - Approved local branded assets retain documented provenance and checksums.
   This keeps their origin and integrity reviewable.
 

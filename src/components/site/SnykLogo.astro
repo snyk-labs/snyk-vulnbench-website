@@ -10,7 +10,7 @@
 <style>
   .snyk-logo {
     --snyk-wordmark-width: 7.5rem;
-    --snyk-wordmark-clear-space: 1rem;
+    --snyk-wordmark-clear-space: calc(var(--snyk-wordmark-width) * 659 / 1276);
 
     display: inline-flex;
     flex: 0 0 auto;
@@ -27,7 +27,6 @@
   @media (min-width: 48rem) {
     .snyk-logo {
       --snyk-wordmark-width: 8.75rem;
-      --snyk-wordmark-clear-space: clamp(1.25rem, 2vw, 1.75rem);
     }
   }
 </style>

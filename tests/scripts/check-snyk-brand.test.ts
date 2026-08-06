@@ -462,7 +462,7 @@ describe("Task 5 package gates", () => {
       "node scripts/check-snyk-brand.mjs",
     );
     expect(packageJson.scripts["verify:classic"]).toBe(
-      "npm run check && npm run test:unit && npm run build && npm run check:releases && npm run check:budget && npm run test:e2e",
+      "VULNBENCH_DESIGN_THEME=classic node scripts/verify-classic.mjs",
     );
     expect(packageJson.scripts["verify:snyk-2026"]).toBe(
       "npm run check && npm run test:unit && npm run build:snyk-2026 && npm run check:releases && npm run check:budget && npm run check:brand && npm run test:e2e:snyk-2026",
