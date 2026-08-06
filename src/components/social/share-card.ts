@@ -17,7 +17,9 @@ export interface BrandSocialAssets {
 
 type RenderOptions =
   | { designTheme: "classic" }
+  /* snyk-2026-audit:start */
   | { designTheme: "snyk-2026"; assets: BrandSocialAssets };
+/* snyk-2026-audit:end */
 
 const escapeXml = (value: string) =>
   value

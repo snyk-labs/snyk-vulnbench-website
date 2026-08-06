@@ -218,7 +218,7 @@ function approvedWhiteAlpha(alpha) {
   );
 }
 
-function parseRgbLiteral(functionName, body) {
+function parseRgbLiteral(body) {
   if (/\bfrom\b/iu.test(body)) return null;
 
   let channels;
@@ -259,21 +259,18 @@ function parseRgbLiteral(functionName, body) {
     .map((channel) => Math.round(channel).toString(16).padStart(2, "0"))
     .join("")
     .toUpperCase();
-  const hasExplicitAlpha =
-    alpha !== undefined || functionName.toLowerCase() === "rgba";
   return {
-    allowed: hasExplicitAlpha
-      ? hex === "FFFFFF" &&
-        alpha !== undefined &&
-        approvedWhiteAlpha(alpha)
-      : ALLOWED_HEX.has(hex),
+    allowed:
+      alpha === undefined || alpha === 1
+        ? ALLOWED_HEX.has(hex)
+        : hex === "FFFFFF" && approvedWhiteAlpha(alpha),
   };
 }
 
 function auditColorFunctions(source, fileName) {
   const findings = [];
   for (const match of source.matchAll(/\b(rgb|rgba)\(([^)]*)\)/giu)) {
-    const parsed = parseRgbLiteral(match[1], match[2]);
+    const parsed = parseRgbLiteral(match[2]);
     if (!parsed?.allowed) {
       findings.push(
         finding(
@@ -302,18 +299,155 @@ function auditColorFunctions(source, fileName) {
   return findings;
 }
 
+function declarations(source) {
+  return [...source.matchAll(/(--[\w-]+|[\w-]+)\s*:\s*([^;}\n]+)/giu)].map(
+    (match) => ({
+      index: match.index,
+      property: match[1],
+      value: match[2].trim(),
+    }),
+  );
+}
+
+function collectCustomProperties(source, customProperties = new Map()) {
+  for (const declaration of declarations(source)) {
+    if (!declaration.property.startsWith("--")) continue;
+    const values = customProperties.get(declaration.property) ?? [];
+    values.push(declaration.value);
+    customProperties.set(declaration.property, values);
+  }
+  return customProperties;
+}
+
+function findVarCall(value) {
+  const match = /\bvar\(/iu.exec(value);
+  if (!match) return null;
+  const start = match.index;
+  let depth = 1;
+  for (let index = start + match[0].length; index < value.length; index += 1) {
+    if (value[index] === "(") depth += 1;
+    if (value[index] === ")") depth -= 1;
+    if (depth === 0) {
+      const body = value.slice(start + match[0].length, index);
+      let nested = 0;
+      let comma = -1;
+      for (let bodyIndex = 0; bodyIndex < body.length; bodyIndex += 1) {
+        if (body[bodyIndex] === "(") nested += 1;
+        if (body[bodyIndex] === ")") nested -= 1;
+        if (body[bodyIndex] === "," && nested === 0) {
+          comma = bodyIndex;
+          break;
+        }
+      }
+      return {
+        end: index + 1,
+        fallback: comma >= 0 ? body.slice(comma + 1).trim() : undefined,
+        name: (comma >= 0 ? body.slice(0, comma) : body).trim(),
+        start,
+      };
+    }
+  }
+  return {
+    end: value.length,
+    fallback: undefined,
+    name: "<unterminated>",
+    start,
+  };
+}
+
+function resolveCustomValue(value, customProperties, stack = []) {
+  const call = findVarCall(value);
+  if (!call) return { errors: [], values: [value] };
+  if (!/^--[\w-]+$/u.test(call.name)) {
+    return {
+      errors: [
+        {
+          rule: "unresolved-custom-property",
+          message: `Invalid custom-property reference ${call.name}`,
+        },
+      ],
+      values: [],
+    };
+  }
+  if (stack.includes(call.name)) {
+    return {
+      errors: [
+        {
+          rule: "custom-property-cycle",
+          message: `Custom-property cycle: ${[...stack, call.name].join(" -> ")}`,
+        },
+      ],
+      values: [],
+    };
+  }
+
+  const definitions = customProperties.get(call.name);
+  const candidates =
+    definitions && definitions.length > 0
+      ? definitions
+      : call.fallback === undefined
+        ? []
+        : [call.fallback];
+  if (candidates.length === 0) {
+    return {
+      errors: [
+        {
+          rule: "unresolved-custom-property",
+          message: `Unresolved custom property ${call.name}`,
+        },
+      ],
+      values: [],
+    };
+  }
+
+  const errors = [];
+  const values = [];
+  for (const candidate of candidates) {
+    const resolvedCandidate = resolveCustomValue(candidate, customProperties, [
+      ...stack,
+      call.name,
+    ]);
+    errors.push(...resolvedCandidate.errors);
+    for (const replacement of resolvedCandidate.values) {
+      const replaced =
+        value.slice(0, call.start) + replacement + value.slice(call.end);
+      const resolvedRemainder = resolveCustomValue(
+        replaced,
+        customProperties,
+        stack,
+      );
+      errors.push(...resolvedRemainder.errors);
+      values.push(...resolvedRemainder.values);
+    }
+  }
+  return { errors, values };
+}
+
+function customPropertyFindings(
+  resolution,
+  source,
+  fileName,
+  index,
+) {
+  const seen = new Set();
+  return resolution.errors.flatMap((error) => {
+    const key = `${error.rule}:${error.message}`;
+    if (seen.has(key)) return [];
+    seen.add(key);
+    return [finding(fileName, source, index, error.rule, error.message)];
+  });
+}
+
 function colorDeclarationValues(source) {
   const values = [];
-  const declarationPattern =
-    /(--[\w-]+|[\w-]+)\s*:\s*([^;}"'\n]+)/giu;
-  for (const match of source.matchAll(declarationPattern)) {
-    const property = match[1].toLowerCase();
+  for (const declaration of declarations(source)) {
+    const property = declaration.property.toLowerCase();
     const isColorProperty =
       /(?:color|background|border|outline|shadow|fill|stroke|paint|decoration|caret|accent|column-rule|surface|paper|ink|purple|matched|unmatched|warning|heatmap|series|focus|theme)/u.test(
         property,
       );
     if (isColorProperty) {
-      values.push({ index: match.index, value: match[2] });
+      values.push({ index: declaration.index, value: declaration.value });
     }
   }
   for (const match of source.matchAll(
@@ -324,23 +458,56 @@ function colorDeclarationValues(source) {
   return values;
 }
 
-function auditNamedColors(source, fileName) {
+function auditNamedColorValue(value, source, fileName, index) {
   const findings = [];
-  for (const { index, value } of colorDeclarationValues(source)) {
-    for (const token of value.match(/[a-z][a-z-]*/giu) ?? []) {
-      const normalized = token.toLowerCase();
-      if (
-        CSS_NAMED_COLORS.has(normalized) &&
-        !ALLOWED_COLOR_KEYWORDS.has(normalized)
-      ) {
+  for (const token of value.match(/[a-z][a-z-]*/giu) ?? []) {
+    const normalized = token.toLowerCase();
+    if (
+      CSS_NAMED_COLORS.has(normalized) &&
+      !ALLOWED_COLOR_KEYWORDS.has(normalized)
+    ) {
+      findings.push(
+        finding(
+          fileName,
+          source,
+          index,
+          "off-palette",
+          `${token} is a named color outside the locked Snyk 2026 palette`,
+        ),
+      );
+    }
+  }
+  return findings;
+}
+
+function auditResolvedColors(source, fileName, customProperties) {
+  const findings = [];
+  for (const declaration of colorDeclarationValues(source)) {
+    const resolution = resolveCustomValue(
+      declaration.value,
+      customProperties,
+    );
+    findings.push(
+      ...customPropertyFindings(
+        resolution,
+        source,
+        fileName,
+        declaration.index,
+      ),
+    );
+    for (const value of resolution.values) {
+      findings.push(
+        ...auditNamedColorValue(
+          value,
+          source,
+          fileName,
+          declaration.index,
+        ),
+      );
+      if (declaration.value.includes("var(")) {
         findings.push(
-          finding(
-            fileName,
-            source,
-            index,
-            "off-palette",
-            `${token} is a named color outside the locked Snyk 2026 palette`,
-          ),
+          ...auditHexColors(value, fileName),
+          ...auditColorFunctions(value, fileName),
         );
       }
     }
@@ -348,27 +515,48 @@ function auditNamedColors(source, fileName) {
   return findings;
 }
 
-function auditFonts(source, fileName) {
+function fontDeclarationValues(source) {
+  const values = declarations(source)
+    .filter(({ property }) =>
+      /^(?:--font[\w-]*|font-family|font)$/iu.test(property),
+    )
+    .map(({ index, value }) => ({ index, value }));
+  for (const match of source.matchAll(/font-family\s*=\s*["']([^"']*)["']/giu)) {
+    values.push({ index: match.index, value: match[1] });
+  }
+  return values;
+}
+
+function auditFonts(source, fileName, customProperties) {
   const findings = [];
-  const declarations = [
-    ...source.matchAll(
-      /(?:--font[\w-]*|font-family|font)\s*:\s*([^;}\n]+)/giu,
-    ),
-    ...source.matchAll(/font-family\s*=\s*["']([^"']*)["']/giu),
-  ];
-  for (const match of declarations) {
-    const stack = match[1] ?? "";
-    for (const font of OFF_BRAND_FONTS) {
-      if (new RegExp(`\\b${font.replace(" ", "\\s+")}\\b`, "iu").test(stack)) {
-        findings.push(
-          finding(
-            fileName,
-            source,
-            match.index,
-            "off-brand-font",
-            `'${font}' appears in a branded font-family; use Geist or Geist Mono`,
-          ),
-        );
+  for (const declaration of fontDeclarationValues(source)) {
+    const resolution = resolveCustomValue(
+      declaration.value,
+      customProperties,
+    );
+    findings.push(
+      ...customPropertyFindings(
+        resolution,
+        source,
+        fileName,
+        declaration.index,
+      ),
+    );
+    for (const stack of resolution.values) {
+      for (const font of OFF_BRAND_FONTS) {
+        if (
+          new RegExp(`\\b${font.replace(" ", "\\s+")}\\b`, "iu").test(stack)
+        ) {
+          findings.push(
+            finding(
+              fileName,
+              source,
+              declaration.index,
+              "off-brand-font",
+              `'${font}' appears in a branded font-family; use Geist or Geist Mono`,
+            ),
+          );
+        }
       }
     }
   }
@@ -514,11 +702,14 @@ function auditOverflowGuard(source, fileName) {
 export function auditText(
   source,
   {
+    customProperties,
     fileName = "<input>",
     checkGradientCount = true,
     checkOverflowGuard = true,
   } = {},
 ) {
+  const resolvedCustomProperties =
+    customProperties ?? collectCustomProperties(source);
   const gradientAudit = auditGradients(
     source,
     fileName,
@@ -528,8 +719,8 @@ export function auditText(
     ...auditForbiddenCss(source, fileName),
     ...auditHexColors(source, fileName),
     ...auditColorFunctions(source, fileName),
-    ...auditNamedColors(source, fileName),
-    ...auditFonts(source, fileName),
+    ...auditResolvedColors(source, fileName, resolvedCustomProperties),
+    ...auditFonts(source, fileName, resolvedCustomProperties),
     ...gradientAudit.findings,
     ...(checkOverflowGuard ? auditOverflowGuard(source, fileName) : []),
   ];
@@ -541,9 +732,14 @@ export function auditComposition(
 ) {
   const findings = [];
   let sanctionedCount = 0;
+  const customProperties = new Map();
+  for (const fragment of fragments) {
+    collectCustomProperties(fragment.source, customProperties);
+  }
   for (const fragment of fragments) {
     findings.push(
       ...auditText(fragment.source, {
+        customProperties,
         fileName: fragment.fileName,
         checkGradientCount: false,
         checkOverflowGuard: false,
@@ -625,10 +821,12 @@ export function auditGeneratedMetadata(source, fileName = "<html>") {
 }
 
 export function extractSnykAuditBlocks(source, fileName = "<mixed source>") {
-  const startPattern = /\/\*\s*snyk-2026-audit:start\s*\*\//giu;
-  const endPattern = /\/\*\s*snyk-2026-audit:end\s*\*\//giu;
+  const startPattern =
+    /(?:\/\*|<!--)\s*snyk-2026-audit:start\s*(?:\*\/|-->)/giu;
+  const endPattern =
+    /(?:\/\*|<!--)\s*snyk-2026-audit:end\s*(?:\*\/|-->)/giu;
   const blockPattern =
-    /\/\*\s*snyk-2026-audit:start\s*\*\/([\s\S]*?)\/\*\s*snyk-2026-audit:end\s*\*\//giu;
+    /(?:\/\*|<!--)\s*snyk-2026-audit:start\s*(?:\*\/|-->)([\s\S]*?)(?:\/\*|<!--)\s*snyk-2026-audit:end\s*(?:\*\/|-->)/giu;
   const startCount = [...source.matchAll(startPattern)].length;
   const endCount = [...source.matchAll(endPattern)].length;
   const blocks = [...source.matchAll(blockPattern)].map((match) => match[1]);
@@ -639,6 +837,19 @@ export function extractSnykAuditBlocks(source, fileName = "<mixed source>") {
   ) {
     throw new Error(
       `${fileName} is missing snyk-2026 audit blocks or has unbalanced markers`,
+    );
+  }
+  const outside = source.replace(blockPattern, "");
+  if (
+    /data-design-theme\s*=\s*["']snyk-2026["']/iu.test(outside) ||
+    /\bisSnyk2026Design\s*(?:&&|\?)/u.test(outside) ||
+    /\b(?:options\.)?designTheme\s*(?:===|==|:)\s*["']snyk-2026["']/u.test(
+      outside,
+    ) ||
+    /\brenderBranded[\w]*\s*\(/u.test(outside)
+  ) {
+    throw new Error(
+      `${fileName} contains a Snyk-branded construct outside marked audit blocks`,
     );
   }
   return blocks.join("\n");

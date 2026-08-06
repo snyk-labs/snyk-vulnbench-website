@@ -50,6 +50,22 @@ describe("Snyk 2026 mechanical brand audit", () => {
   });
 
   it.each([
+    "rgb(111 0 221)",
+    "rgb(111 0 221 / 1)",
+    "rgb(111 0 221 / 100%)",
+    "rgba(111 0 221)",
+    "rgba(111 0 221 / 1)",
+    "rgba(111, 0, 221, 1)",
+    "rgba(111 0 221 / 100%)",
+  ])("accepts fully opaque locked RGB equivalent %s", (color) => {
+    expect(
+      auditText(`.brand { color: ${color}; }`, {
+        fileName: "fixture.css",
+      }),
+    ).toEqual([]);
+  });
+
+  it.each([
     ["off-palette hex", ".card { color: #123456; }", "off-palette"],
     ["off-palette rgb", ".card { color: rgb(12, 34, 56); }", "off-palette"],
     [
@@ -120,6 +136,21 @@ describe("Snyk 2026 mechanical brand audit", () => {
       ".card { color: rgb(12 34 56 / .5); }",
       "off-palette",
     ],
+    [
+      "near-opaque brand alpha",
+      ".card { color: rgba(111 0 221 / .99999); }",
+      "off-palette",
+    ],
+    [
+      "invalid brand alpha",
+      ".card { color: rgba(111 0 221 / 1.1); }",
+      "off-palette",
+    ],
+    [
+      "invalid brand percentage alpha",
+      ".card { color: rgba(111 0 221 / 101%); }",
+      "off-palette",
+    ],
     ["HSL", ".card { color: hsl(10 90% 50%); }", "off-palette"],
     ["HWB", ".card { color: hwb(10 20% 30%); }", "off-palette"],
     ["Lab", ".card { color: lab(50% 10 20); }", "off-palette"],
@@ -171,6 +202,68 @@ describe("Snyk 2026 mechanical brand audit", () => {
     ],
   ])("rejects off-brand fonts through %s", (_label, source) => {
     expect(findingRules(source)).toContain("off-brand-font");
+  });
+
+  it("resolves arbitrary custom-property chains in color declarations", () => {
+    const direct = findingRules("--tone: red; color: var(--tone);");
+    const recursive = findingRules(
+      "--source: tomato; --tone: var(--source); color: var(--tone);",
+    );
+
+    expect(direct).toContain("off-palette");
+    expect(recursive).toContain("off-palette");
+  });
+
+  it("resolves a locked custom color without treating its name as a color", () => {
+    expect(
+      auditText("--purple: #6F00DD; color: var(--purple);", {
+        fileName: "fixture.css",
+      }),
+    ).toEqual([]);
+    expect(
+      auditText("--purple: #6F00DD; --tone: var(--purple); color: var(--tone);", {
+        fileName: "fixture.css",
+      }),
+    ).toEqual([]);
+  });
+
+  it("accepts a valid custom-property fallback", () => {
+    expect(
+      auditText("color: var(--missing, #6F00DD);", {
+        fileName: "fixture.css",
+      }),
+    ).toEqual([]);
+  });
+
+  it("reports unresolved and cyclic custom colors", () => {
+    expect(findingRules("color: var(--missing);")).toContain(
+      "unresolved-custom-property",
+    );
+    expect(
+      findingRules(
+        "--first: var(--second); --second: var(--first); color: var(--first);",
+      ),
+    ).toContain("custom-property-cycle");
+  });
+
+  it("resolves arbitrary custom-property chains in font declarations", () => {
+    expect(
+      findingRules("--typeface: Arial; font-family: var(--typeface);"),
+    ).toContain("off-brand-font");
+    expect(
+      findingRules(
+        "--source: Arial; --typeface: var(--source); font: 700 1rem var(--typeface);",
+      ),
+    ).toContain("off-brand-font");
+  });
+
+  it("accepts a recursively resolved Geist custom font", () => {
+    expect(
+      auditText(
+        '--source: "Geist"; --typeface: var(--source); font-family: var(--typeface);',
+        { fileName: "fixture.css" },
+      ),
+    ).toEqual([]);
   });
 
   it("rejects more than one sanctioned gradient in one composition", () => {
@@ -227,6 +320,23 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(() =>
       extractSnykAuditBlocks(".classic { color: #123456; }", "mixed.astro"),
     ).toThrow(/missing snyk-2026 audit blocks/i);
+  });
+
+  it.each([
+    ':global(html[data-design-theme="snyk-2026"]) .escaped { color: #FFFFFF; }',
+    "{isSnyk2026Design && <BrandFabric />}",
+    'if (designTheme === "snyk-2026") return renderBrand();',
+  ])("rejects branded constructs outside marked source blocks", (escaped) => {
+    const source = `
+      /* snyk-2026-audit:start */
+      .brand { color: #FFFFFF; }
+      /* snyk-2026-audit:end */
+      ${escaped}
+    `;
+
+    expect(() => extractSnykAuditBlocks(source, "mixed.astro")).toThrow(
+      /snyk-branded construct outside marked audit blocks/i,
+    );
   });
 
   it("accepts the exact sanctioned SVG gradient", () => {
