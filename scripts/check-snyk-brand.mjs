@@ -125,8 +125,6 @@ const FORBIDDEN_CSS = [
   /-webkit-text-fill-color\s*:\s*transparent/giu,
   /(?:-webkit-)?mask-image\s*:/giu,
   /(?:-webkit-)?mask-composite\s*:/giu,
-  /(?:-webkit-)?backdrop-filter\s*:/giu,
-  /(?<!backdrop-)filter\s*:\s*[^;}\n]*\bblur\s*\(/giu,
 ];
 const BRANDED_PAGE_SHARED_TARGETS = [
   { path: "src/styles/tokens-snyk-2026.css" },
@@ -959,46 +957,102 @@ function isApprovedFocusKeyline(value) {
   );
 }
 
-function isGuaranteedNoEffectTextShadow(value) {
+function isGuaranteedNoEffectValue(value) {
   const normalized = value.replace(/\s*!important\s*$/iu, "").trim();
   return /^(?:none|initial)$/iu.test(normalized);
+}
+
+function isApprovedForegroundFilter(value) {
+  const normalized = value.replace(/\s*!important\s*$/iu, "").trim();
+  if (/^(?:none|initial)$/iu.test(normalized)) return true;
+  const remainder = normalized.replace(
+    /\b(?:brightness|contrast|grayscale|hue-rotate|invert|opacity|saturate|sepia)\([^()]*\)/giu,
+    "",
+  );
+  return remainder.trim().length === 0;
 }
 
 function auditDecorativeShadows(source, fileName, customProperties) {
   const findings = [];
   const seen = new Set();
-  const addFinding = (index, message) => {
-    const key = `${index}:${message}`;
+  const addFinding = (index, rule, message) => {
+    const key = `${index}:${rule}:${message}`;
     if (seen.has(key)) return;
     seen.add(key);
-    findings.push(
-      finding(fileName, source, index, "decorative-shadow", message),
-    );
+    findings.push(finding(fileName, source, index, rule, message));
   };
 
   for (const declaration of declarations(source)) {
+    const property = declaration.property.toLowerCase();
     const resolution = resolveCustomValue(
       stripQuotedContent(declaration.value),
       customProperties,
     );
-    if (
-      resolution.values.some((value) => /\bdrop-shadow\s*\(/iu.test(value))
-    ) {
-      addFinding(
-        declaration.index,
-        "filter: drop-shadow() is forbidden in branded output",
+    const isForegroundFilter = property === "filter";
+    const isBackdropFilter =
+      property === "backdrop-filter" || property === "-webkit-backdrop-filter";
+    if (isForegroundFilter || isBackdropFilter) {
+      findings.push(
+        ...customPropertyFindings(
+          resolution,
+          source,
+          fileName,
+          declaration.index,
+        ),
       );
+      if (resolution.errors.length === 0 && resolution.values.length === 0) {
+        addFinding(
+          declaration.index,
+          "forbidden-css",
+          `${declaration.property} has no auditable resolved value`,
+        );
+      }
+      for (const value of resolution.values) {
+        if (/\bdrop-shadow\s*\(/iu.test(value)) {
+          addFinding(
+            declaration.index,
+            "decorative-shadow",
+            `${declaration.property}: drop-shadow() is forbidden in branded output`,
+          );
+          continue;
+        }
+        if (/\bblur\s*\(/iu.test(value)) {
+          addFinding(
+            declaration.index,
+            "forbidden-css",
+            `${declaration.property}: blur() is forbidden in branded output`,
+          );
+          continue;
+        }
+        if (
+          isBackdropFilter &&
+          !isGuaranteedNoEffectValue(value)
+        ) {
+          addFinding(
+            declaration.index,
+            "forbidden-css",
+            `${declaration.property} is limited to guaranteed no-effect values none and initial`,
+          );
+          continue;
+        }
+        if (isForegroundFilter && !isApprovedForegroundFilter(value)) {
+          addFinding(
+            declaration.index,
+            "forbidden-css",
+            `${declaration.property} uses a filter outside the approved non-blur function set`,
+          );
+        }
+      }
     }
     if (
-      declaration.property.toLowerCase() === "text-shadow" &&
+      property === "text-shadow" &&
       (resolution.errors.length > 0 ||
         resolution.values.length === 0 ||
-        resolution.values.some(
-          (value) => !isGuaranteedNoEffectTextShadow(value),
-        ))
+        resolution.values.some((value) => !isGuaranteedNoEffectValue(value)))
     ) {
       addFinding(
         declaration.index,
+        "decorative-shadow",
         "text-shadow is limited to guaranteed no-effect values none and initial",
       );
     }
@@ -1014,6 +1068,7 @@ function auditDecorativeShadows(source, fileName, customProperties) {
     ) {
       addFinding(
         declaration.index,
+        "decorative-shadow",
         `${declaration.property} is not an approved zero-blur focus keyline`,
       );
     }
@@ -1047,6 +1102,7 @@ function auditDecorativeShadows(source, fileName, customProperties) {
       if (!approved) {
         addFinding(
           bodyOffset + declaration.index,
+          "decorative-shadow",
           "box-shadow is limited to the approved zero-blur :focus-visible keyline",
         );
       }

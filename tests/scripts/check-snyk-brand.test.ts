@@ -674,6 +674,104 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(findingRules(source)).toContain("forbidden-css");
   });
 
+  it.each([
+    [
+      "direct filter variable",
+      "--effect: blur(2px); .panel { filter: var(--effect); }",
+      "forbidden-css",
+    ],
+    [
+      "multi-hop filter variable",
+      "--source: blur(2px); --middle: var(--source); --effect: var(--middle); .panel { filter: var(--effect); }",
+      "forbidden-css",
+    ],
+    [
+      "nested filter fallback",
+      "--fallback: blur(2px); .panel { filter: var(--missing, var(--fallback)); }",
+      "forbidden-css",
+    ],
+    [
+      "resolved filter drop-shadow",
+      "--effect: drop-shadow(0 0 4px #6F00DD); .panel { filter: var(--effect); }",
+      "decorative-shadow",
+    ],
+    [
+      "resolved backdrop blur",
+      "--effect: blur(2px); .panel { backdrop-filter: var(--effect); }",
+      "forbidden-css",
+    ],
+    [
+      "prefixed resolved backdrop blur",
+      "--effect: blur(2px); .panel { -webkit-backdrop-filter: var(--effect); }",
+      "forbidden-css",
+    ],
+    [
+      "non-blur backdrop effect",
+      "--effect: contrast(1.1); .panel { backdrop-filter: var(--effect); }",
+      "forbidden-css",
+    ],
+    [
+      "unapproved foreground filter",
+      "--effect: url(#effect); .panel { filter: var(--effect); }",
+      "forbidden-css",
+    ],
+    [
+      "potentially effectful filter control",
+      ".panel { filter: inherit; }",
+      "forbidden-css",
+    ],
+  ])(
+    "rejects %s after custom-property resolution",
+    (_label, source, expectedRule) => {
+      expect(findingRules(source)).toContain(expectedRule);
+    },
+  );
+
+  it.each([
+    [
+      "unresolved filter",
+      ".panel { filter: var(--missing-effect); }",
+      "unresolved-custom-property",
+    ],
+    [
+      "unresolved backdrop filter",
+      ".panel { backdrop-filter: var(--missing-effect); }",
+      "unresolved-custom-property",
+    ],
+    [
+      "cyclic filter",
+      "--first: var(--second); --second: var(--first); .panel { filter: var(--first); }",
+      "custom-property-cycle",
+    ],
+    [
+      "cyclic backdrop filter",
+      "--first: var(--second); --second: var(--first); .panel { backdrop-filter: var(--first); }",
+      "custom-property-cycle",
+    ],
+  ])("rejects %s resolution", (_label, source, expectedRule) => {
+    expect(findingRules(source)).toContain(expectedRule);
+  });
+
+  it.each([
+    "--effect: none; .panel { filter: var(--effect); }",
+    "--source: none; --effect: var(--source); .panel { filter: var(--effect); }",
+    ".panel { filter: var(--missing-effect, none); }",
+    "--effect: none; .panel { backdrop-filter: var(--effect); }",
+    "--source: none; --effect: var(--source); .panel { -webkit-backdrop-filter: var(--effect); }",
+    ".panel { backdrop-filter: var(--missing-effect, none); }",
+    ".panel { filter: initial; }",
+    ".panel { backdrop-filter: initial; }",
+  ])("accepts guaranteed no-effect resolved filter %s", (source) => {
+    expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
+  });
+
+  it.each([
+    ".panel { filter: contrast(1.1); }",
+    "--effect: grayscale(100%) saturate(80%); .panel { filter: var(--effect); }",
+  ])("preserves approved non-blur foreground filter %s", (source) => {
+    expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
+  });
+
   it("accepts only the approved zero-blur focus keyline", () => {
     expect(
       auditText(

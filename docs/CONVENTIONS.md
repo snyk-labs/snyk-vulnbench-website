@@ -39,7 +39,9 @@ The current Snyk 2026 identity and Dark rules are defined by the
   belongs to a page composition in the audit; balanced markers must exclude
   Classic-only rules without hiding branded violations. Reject every visible
   `text-shadow` and every backdrop/filter blur; only guaranteed no-effect
-  `text-shadow` values are valid.
+  `text-shadow` values are valid. Resolve custom-property chains and fallbacks
+  before auditing filters: backdrop filters are no-effect only, while
+  foreground filters may use the explicit non-blur function allowlist.
 - VulnBench remains the primary header identity in both designs. Keep the
   shared header compact at `4.25rem`. The official Snyk wordmark appears only
   in the Snyk 2026 footer attribution, spatially separate from the initiative
