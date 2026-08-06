@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
+import classicPlaywrightConfig from "../playwright.config";
 
 const expectedCommands = [
   "check",
@@ -22,13 +23,11 @@ describe("Classic verification gate", () => {
     );
   });
 
-  it("runs Playwright against an isolated explicit Classic server", async () => {
-    const { default: config } = await import("../playwright.config");
-
-    expect(config.use).toMatchObject({
+  it("runs Playwright against an isolated explicit Classic server", () => {
+    expect(classicPlaywrightConfig.use).toMatchObject({
       baseURL: "http://127.0.0.1:4323",
     });
-    expect(config.webServer).toMatchObject({
+    expect(classicPlaywrightConfig.webServer).toMatchObject({
       command:
         "VULNBENCH_DESIGN_THEME=classic npm run dev -- --port 4323",
       url: "http://127.0.0.1:4323",
