@@ -89,6 +89,8 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   }
 
   :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .hero-copy,
+  :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
     .hero-copy {
     padding: var(--space-5);
     background: #030328;

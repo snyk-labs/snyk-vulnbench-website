@@ -287,6 +287,80 @@ test("keeps representative explorer layouts usable without page overflow", async
   ).toBe(true);
 });
 
+test.describe("Snyk 2026 without JavaScript in system Light", () => {
+  test.use({
+    colorScheme: "light",
+    javaScriptEnabled: false,
+  });
+
+  test("keeps complete copy and analysis on Midnight over Family B", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+    await expect(page.locator("html")).toHaveCSS(
+      "background-image",
+      /linear-gradient\(90deg,/,
+    );
+    await expect(page.locator(".hero-copy")).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(page.locator(".section").first()).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(page.locator("[data-theme-toggle]")).toBeHidden();
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Can LLMs find the same bugs twice?",
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Explore the results" }),
+    ).toBeVisible();
+    await expect(page.locator(".evidence-strip")).toContainText("300");
+    await expect(page.locator(".evidence-strip")).toContainText("scans");
+    await expectNoHorizontalOverflow(page);
+
+    await page.goto("/releases/js-1.0/explore");
+
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+    await expect(page.locator("html")).toHaveCSS(
+      "background-image",
+      /linear-gradient\(90deg,/,
+    );
+    await expect(page.locator(".page-hero__copy")).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(page.locator(".explorer-app")).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(page.locator(".explorer-canvas")).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Test the published conclusions against the evidence",
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "JS 1.0 explorer" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Configuration summary" }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+});
+
 test.describe("Snyk 2026 without JavaScript", () => {
   test.use({
     colorScheme: "dark",
