@@ -27,7 +27,9 @@ before paint and resolves the active theme in this order:
 2. Light.
 
 The initializer also synchronizes the browser `color-scheme` and
-`theme-color`. Storage and media-query access must fail safely.
+`theme-color`. Storage access must fail safely.
+[Snyk Design and Light Mode Defaults](2026-08-06-snyk-light-defaults-design.md)
+defines the current fallback and default behavior.
 
 Without JavaScript, the site uses Light tokens regardless of
 `prefers-color-scheme`. The complete narrative, navigation, tables, and static

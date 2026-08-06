@@ -254,6 +254,13 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(darkModeDesign).toContain(
       "the site uses Light tokens regardless of `prefers-color-scheme`",
     );
+    expect(darkModeDesign).toContain("Storage access must fail safely.");
+    expect(darkModeDesign).toContain(
+      "[Snyk Design and Light Mode Defaults](2026-08-06-snyk-light-defaults-design.md) defines the current fallback and default behavior.",
+    );
+    expect(darkModeDesign).not.toContain(
+      "Storage and media-query access must fail safely.",
+    );
     expect(snykDesign).toContain(
       "| unset or empty | Build the `snyk-2026` design |",
     );
