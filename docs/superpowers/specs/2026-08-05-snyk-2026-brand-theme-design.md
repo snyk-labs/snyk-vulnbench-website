@@ -198,8 +198,11 @@ visitor's color mode:
 - The Snyk 2026 default Open Graph asset is an explicit website-specific Light
   analytical composition: a 1200 × 630 PNG with a white canvas, Midnight copy,
   one thin Brand Gradient accent, a chart-led Agreement versus repeated-run
-  variance visual, dataset context, and the scientific caveat. It is
-  build-selected and does not infer the recipient's Light or Dark preference.
+  variance visual, an interest-led 49.7% unmatched-finding callout with its
+  80-of-161 denominator, and the scientific caveat. Its bottom metadata bar
+  uses black to blend with the official white-wordmark asset's source
+  background. It is build-selected and does not infer the recipient's Light or
+  Dark preference.
 - The branded SVG source remains available for inspection and generated
   release-card routes, while the PNG is the canonical external-preview format
   for X, LinkedIn, WhatsApp, Slack, and other unfurlers.

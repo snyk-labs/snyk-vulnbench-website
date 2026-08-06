@@ -337,17 +337,17 @@ export function renderDefaultSocialCard(
   <text fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="20">${textLines("A repeatability and Snyk-reference agreement study", 70, 300, 27, 32)}</text>
   <rect x="70" y="350" width="455" height="132" fill="#FFFFFF" stroke="#030328" stroke-opacity="0.2"/>
   <text x="96" y="386" fill="#6F00DD" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1">SCIENTIFIC SCOPE</text>
-  <text x="96" y="430" fill="#030328" font-family="Geist" font-size="34" font-weight="700">134 of 158</text>
-  <text x="306" y="430" fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="18">matched signatures</text>
-  <text x="96" y="449" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="13">appeared in all five runs</text>
-  <text x="96" y="474" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="13">Best model Snyk-reference F1: 75.4%</text>
+  <text x="96" y="430" fill="#030328" font-family="Geist" font-size="34" font-weight="700">49.7%</text>
+  <text x="250" y="430" fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="18">unmatched findings</text>
+  <text x="96" y="449" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="13">appeared in only one of five runs</text>
+  <text x="96" y="474" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="13">80 of 161 unique unmatched signatures</text>
   <text x="70" y="506" fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="17">Reference agreement is not universal accuracy.</text>
   <text x="70" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">300 scans</text>
   <text x="190" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">10 projects</text>
   <text x="325" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">6 configurations</text>
   <text x="488" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">5 repetitions</text>
   ${renderLightAgreementChart(data?.agreementVariance ?? defaultAgreementVariance)}
-  <rect x="0" y="532" width="1200" height="98" fill="#030328"/>
+  <rect data-footer-background="" x="0" y="532" width="1200" height="98" fill="#000000"/>
   <image href="${escapeXml(assets.wordmarkUrl)}" x="70" y="540" width="108" height="43" preserveAspectRatio="xMidYMid meet"/>
   <text x="220" y="568" fill="#FFFFFF" fill-opacity="0.68" font-family="Geist Mono" font-size="12">Dataset 1.0.0 · deterministic Snyk Code reference set</text>
   <text x="220" y="592" fill="#FFFFFF" font-family="Geist Mono" font-size="12">Source: published benchmark evidence · vulnbench.com</text>
