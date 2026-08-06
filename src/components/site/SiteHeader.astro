@@ -94,10 +94,12 @@ const isCurrent = (href: string) => href === activeLink?.href;
     background: color-mix(in srgb, var(--paper) 94%, transparent);
   }
 
+  /* snyk-2026-audit:start */
   :global(html[data-design-theme="snyk-2026"]) .site-header {
     border-bottom-color: rgba(255, 255, 255, 0.12);
     background: #030328;
   }
+  /* snyk-2026-audit:end */
 
   .header-inner {
     display: flex;

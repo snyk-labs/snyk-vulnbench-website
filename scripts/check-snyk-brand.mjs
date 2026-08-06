@@ -53,6 +53,53 @@ const OFF_BRAND_FONTS = [
   "Arial",
   "Helvetica",
 ];
+const CSS_NAMED_COLORS = new Set(
+  `aliceblue antiquewhite aqua aquamarine azure beige bisque blanchedalmond
+  blue blueviolet brown burlywood cadetblue chartreuse chocolate coral
+  cornflowerblue cornsilk crimson cyan darkblue darkcyan darkgoldenrod
+  darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange
+  darkorchid darkred darksalmon darkseagreen darkslateblue darkslategray
+  darkslategrey darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey
+  dodgerblue firebrick floralwhite forestgreen fuchsia gainsboro ghostwhite
+  gold goldenrod gray green greenyellow grey honeydew hotpink indianred indigo
+  ivory khaki lavender lavenderblush lawngreen lemonchiffon lightblue
+  lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey
+  lightpink lightsalmon lightseagreen lightskyblue lightslategray
+  lightslategrey lightsteelblue lightyellow lime limegreen linen magenta
+  maroon mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen
+  mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue
+  mintcream mistyrose moccasin navajowhite navy oldlace olive olivedrab orange
+  orangered orchid palegoldenrod palegreen paleturquoise palevioletred
+  papayawhip peachpuff peru pink plum powderblue purple rebeccapurple red
+  rosybrown royalblue saddlebrown salmon sandybrown seagreen seashell sienna
+  silver skyblue slateblue slategray slategrey snow springgreen steelblue tan
+  teal thistle tomato turquoise violet wheat whitesmoke yellow yellowgreen`
+    .split(/\s+/u)
+    .filter(Boolean),
+);
+for (const systemColor of `accentcolor accentcolortext activetext buttonborder
+  buttonface buttontext canvas canvastext field fieldtext graytext highlight
+  highlighttext linktext mark marktext selecteditem selecteditemtext visitedtext
+  activeborder activecaption appworkspace background buttonhighlight
+  buttonshadow captiontext inactiveborder inactivecaption inactivecaptiontext
+  infobackground infotext menu menutext scrollbar threedarkshadow threedface
+  threedhighlight threedlightshadow threedshadow window windowframe windowtext`
+  .split(/\s+/u)
+  .filter(Boolean)) {
+  CSS_NAMED_COLORS.add(systemColor);
+}
+const ALLOWED_COLOR_KEYWORDS = new Set([
+  "black",
+  "white",
+  "transparent",
+  "currentcolor",
+  "inherit",
+  "initial",
+  "unset",
+  "revert",
+  "revert-layer",
+  "none",
+]);
 const FORBIDDEN_CSS = [
   /-webkit-background-clip\s*:\s*text/giu,
   /(?<!-)background-clip\s*:\s*text/giu,
@@ -60,18 +107,31 @@ const FORBIDDEN_CSS = [
   /(?:-webkit-)?mask-image\s*:/giu,
   /(?:-webkit-)?mask-composite\s*:/giu,
 ];
-const SOURCE_TARGETS = [
-  "src/styles/tokens-snyk-2026.css",
-  "src/layouts/BaseLayout.astro",
-  "src/components/home/Hero.astro",
-  "src/components/site/BrandFabric.astro",
-  "src/components/site/SiteFooter.astro",
-  "src/components/site/SiteHeader.astro",
-  "src/components/site/SnykLogo.astro",
-  "src/components/social/share-card.ts",
-  "src/pages/brand/snyk-2026/social.svg.ts",
-  "src/pages/social/js-1.0/[view].svg.ts",
-  "public/brand/snyk-2026/favicon.svg",
+const SOURCE_COMPOSITIONS = [
+  {
+    name: "branded page source",
+    targets: [
+      { path: "src/styles/tokens-snyk-2026.css" },
+      { path: "src/layouts/BaseLayout.astro" },
+      { path: "src/components/home/Hero.astro", marked: true },
+      { path: "src/components/site/BrandFabric.astro" },
+      { path: "src/components/site/SiteFooter.astro", marked: true },
+      { path: "src/components/site/SiteHeader.astro", marked: true },
+      { path: "src/components/site/SnykLogo.astro" },
+    ],
+  },
+  {
+    name: "branded social source",
+    targets: [
+      { path: "src/components/social/share-card.ts", marked: true },
+      { path: "src/pages/brand/snyk-2026/social.svg.ts" },
+      { path: "src/pages/social/js-1.0/[view].svg.ts" },
+    ],
+  },
+  {
+    name: "branded favicon source",
+    targets: [{ path: "public/brand/snyk-2026/favicon.svg" }],
+  },
 ];
 const GENERATED_SVG_TARGETS = [
   "dist/brand/snyk-2026/social.svg",
@@ -133,23 +193,88 @@ function auditHexColors(source, fileName) {
   return findings;
 }
 
-function auditRgbColors(source, fileName) {
+function parseRgbChannel(value) {
+  if (/^-?(?:\d+|\d*\.\d+)%$/u.test(value)) {
+    return (Number.parseFloat(value) / 100) * 255;
+  }
+  return /^-?(?:\d+|\d*\.\d+)$/u.test(value)
+    ? Number.parseFloat(value)
+    : Number.NaN;
+}
+
+function parseAlpha(value) {
+  if (value === undefined) return undefined;
+  if (/^(?:\d+|\d*\.\d+)%$/u.test(value)) {
+    return Number.parseFloat(value) / 100;
+  }
+  return /^(?:\d+|\d*\.\d+)$/u.test(value)
+    ? Number.parseFloat(value)
+    : Number.NaN;
+}
+
+function approvedWhiteAlpha(alpha) {
+  return [...ALLOWED_WHITE_ALPHA].some(
+    (allowed) => Math.abs(Number(allowed) - alpha) < 0.0001,
+  );
+}
+
+function parseRgbLiteral(functionName, body) {
+  if (/\bfrom\b/iu.test(body)) return null;
+
+  let channels;
+  let alphaValue;
+  const slashParts = body.split(/\s*\/\s*/u);
+  if (slashParts.length > 2) return null;
+
+  if (slashParts[0].includes(",")) {
+    const parts = slashParts[0].split(/\s*,\s*/u);
+    if (parts.length === 4 && slashParts.length === 1) {
+      alphaValue = parts.pop();
+    }
+    if (parts.length !== 3) return null;
+    channels = parts;
+  } else {
+    channels = slashParts[0].trim().split(/\s+/u);
+    if (channels.length !== 3) return null;
+  }
+  if (slashParts.length === 2) alphaValue = slashParts[1].trim();
+
+  const rgb = channels.map(parseRgbChannel);
+  const alpha = parseAlpha(alphaValue);
+  if (
+    rgb.some(
+      (channel) =>
+        !Number.isFinite(channel) ||
+        channel < 0 ||
+        channel > 255 ||
+        Math.abs(channel - Math.round(channel)) > 0.000001,
+    ) ||
+    (alpha !== undefined &&
+      (!Number.isFinite(alpha) || alpha < 0 || alpha > 1))
+  ) {
+    return null;
+  }
+
+  const hex = rgb
+    .map((channel) => Math.round(channel).toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
+  const hasExplicitAlpha =
+    alpha !== undefined || functionName.toLowerCase() === "rgba";
+  return {
+    allowed: hasExplicitAlpha
+      ? hex === "FFFFFF" &&
+        alpha !== undefined &&
+        approvedWhiteAlpha(alpha)
+      : ALLOWED_HEX.has(hex),
+  };
+}
+
+function auditColorFunctions(source, fileName) {
   const findings = [];
-  for (const match of source.matchAll(
-    /\brgb(a)?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*([0-9.]+))?\s*\)/giu,
-  )) {
-    const channels = match.slice(2, 5).map(Number);
-    const alpha = match[5];
-    const hex = channels
-      .map((channel) => channel.toString(16).padStart(2, "0"))
-      .join("")
-      .toUpperCase();
-    const allowed =
-      channels.every((channel) => channel <= 255) &&
-      (alpha === undefined
-        ? ALLOWED_HEX.has(hex)
-        : hex === "FFFFFF" && ALLOWED_WHITE_ALPHA.has(alpha));
-    if (!allowed) {
+  for (const match of source.matchAll(/\b(rgb|rgba)\(([^)]*)\)/giu)) {
+    const parsed = parseRgbLiteral(match[1], match[2]);
+    if (!parsed?.allowed) {
       findings.push(
         finding(
           fileName,
@@ -161,7 +286,9 @@ function auditRgbColors(source, fileName) {
       );
     }
   }
-  for (const match of source.matchAll(/\b(?:hsl|hsla|lab|lch|oklab|oklch)\(/giu)) {
+  for (const match of source.matchAll(
+    /\b(?:hsl|hsla|hwb|lab|lch|oklab|oklch|color|device-cmyk)\(/giu,
+  )) {
     findings.push(
       finding(
         fileName,
@@ -175,12 +302,62 @@ function auditRgbColors(source, fileName) {
   return findings;
 }
 
+function colorDeclarationValues(source) {
+  const values = [];
+  const declarationPattern =
+    /(--[\w-]+|[\w-]+)\s*:\s*([^;}"'\n]+)/giu;
+  for (const match of source.matchAll(declarationPattern)) {
+    const property = match[1].toLowerCase();
+    const isColorProperty =
+      /(?:color|background|border|outline|shadow|fill|stroke|paint|decoration|caret|accent|column-rule|surface|paper|ink|purple|matched|unmatched|warning|heatmap|series|focus|theme)/u.test(
+        property,
+      );
+    if (isColorProperty) {
+      values.push({ index: match.index, value: match[2] });
+    }
+  }
+  for (const match of source.matchAll(
+    /\b(?:fill|stroke|color|stop-color|flood-color|lighting-color)=["']([^"']+)["']/giu,
+  )) {
+    values.push({ index: match.index, value: match[1] });
+  }
+  return values;
+}
+
+function auditNamedColors(source, fileName) {
+  const findings = [];
+  for (const { index, value } of colorDeclarationValues(source)) {
+    for (const token of value.match(/[a-z][a-z-]*/giu) ?? []) {
+      const normalized = token.toLowerCase();
+      if (
+        CSS_NAMED_COLORS.has(normalized) &&
+        !ALLOWED_COLOR_KEYWORDS.has(normalized)
+      ) {
+        findings.push(
+          finding(
+            fileName,
+            source,
+            index,
+            "off-palette",
+            `${token} is a named color outside the locked Snyk 2026 palette`,
+          ),
+        );
+      }
+    }
+  }
+  return findings;
+}
+
 function auditFonts(source, fileName) {
   const findings = [];
-  const fontFamilyPattern =
-    /font-family\s*(?::\s*([^;}\n]+)|=\s*"([^"]*)"|=\s*'([^']*)')/giu;
-  for (const match of source.matchAll(fontFamilyPattern)) {
-    const stack = match.slice(1).find((value) => value !== undefined) ?? "";
+  const declarations = [
+    ...source.matchAll(
+      /(?:--font[\w-]*|font-family|font)\s*:\s*([^;}\n]+)/giu,
+    ),
+    ...source.matchAll(/font-family\s*=\s*["']([^"']*)["']/giu),
+  ];
+  for (const match of declarations) {
+    const stack = match[1] ?? "";
     for (const font of OFF_BRAND_FONTS) {
       if (new RegExp(`\\b${font.replace(" ", "\\s+")}\\b`, "iu").test(stack)) {
         findings.push(
@@ -198,7 +375,7 @@ function auditFonts(source, fileName) {
   return findings;
 }
 
-function auditGradients(source, fileName) {
+function auditGradients(source, fileName, checkGradientCount = true) {
   const findings = [];
   let sanctionedCount = 0;
 
@@ -253,7 +430,7 @@ function auditGradients(source, fileName) {
     }
   }
 
-  if (sanctionedCount > 1) {
+  if (checkGradientCount && sanctionedCount > 1) {
     findings.push(
       finding(
         fileName,
@@ -264,7 +441,7 @@ function auditGradients(source, fileName) {
       ),
     );
   }
-  return findings;
+  return { findings, sanctionedCount };
 }
 
 function auditForbiddenCss(source, fileName) {
@@ -336,16 +513,65 @@ function auditOverflowGuard(source, fileName) {
 
 export function auditText(
   source,
-  { fileName = "<input>", checkOverflowGuard = true } = {},
+  {
+    fileName = "<input>",
+    checkGradientCount = true,
+    checkOverflowGuard = true,
+  } = {},
 ) {
+  const gradientAudit = auditGradients(
+    source,
+    fileName,
+    checkGradientCount,
+  );
   return [
     ...auditForbiddenCss(source, fileName),
     ...auditHexColors(source, fileName),
-    ...auditRgbColors(source, fileName),
+    ...auditColorFunctions(source, fileName),
+    ...auditNamedColors(source, fileName),
     ...auditFonts(source, fileName),
-    ...auditGradients(source, fileName),
+    ...gradientAudit.findings,
     ...(checkOverflowGuard ? auditOverflowGuard(source, fileName) : []),
   ];
+}
+
+export function auditComposition(
+  fragments,
+  { fileName = "branded composition", checkOverflowGuard = false } = {},
+) {
+  const findings = [];
+  let sanctionedCount = 0;
+  for (const fragment of fragments) {
+    findings.push(
+      ...auditText(fragment.source, {
+        fileName: fragment.fileName,
+        checkGradientCount: false,
+        checkOverflowGuard: false,
+      }),
+    );
+    sanctionedCount += auditGradients(
+      fragment.source,
+      fragment.fileName,
+      false,
+    ).sanctionedCount;
+  }
+  if (sanctionedCount > 1) {
+    findings.push({
+      fileName,
+      line: 0,
+      rule: "gradient-count",
+      message: `Found ${sanctionedCount} sanctioned gradients; one is allowed per composition`,
+    });
+  }
+  if (checkOverflowGuard) {
+    findings.push(
+      ...auditOverflowGuard(
+        fragments.map(({ source }) => source).join("\n"),
+        fileName,
+      ),
+    );
+  }
+  return findings;
 }
 
 export function auditGeneratedMetadata(source, fileName = "<html>") {
@@ -398,12 +624,24 @@ export function auditGeneratedMetadata(source, fileName = "<html>") {
   return findings;
 }
 
-function brandedSourceSlice(fileName, source) {
-  if (fileName.endsWith("src/components/social/share-card.ts")) {
-    const marker = source.indexOf("function brandDefinitions");
-    return marker >= 0 ? source.slice(marker) : source;
+export function extractSnykAuditBlocks(source, fileName = "<mixed source>") {
+  const startPattern = /\/\*\s*snyk-2026-audit:start\s*\*\//giu;
+  const endPattern = /\/\*\s*snyk-2026-audit:end\s*\*\//giu;
+  const blockPattern =
+    /\/\*\s*snyk-2026-audit:start\s*\*\/([\s\S]*?)\/\*\s*snyk-2026-audit:end\s*\*\//giu;
+  const startCount = [...source.matchAll(startPattern)].length;
+  const endCount = [...source.matchAll(endPattern)].length;
+  const blocks = [...source.matchAll(blockPattern)].map((match) => match[1]);
+  if (
+    startCount === 0 ||
+    startCount !== endCount ||
+    blocks.length !== startCount
+  ) {
+    throw new Error(
+      `${fileName} is missing snyk-2026 audit blocks or has unbalanced markers`,
+    );
   }
-  return source;
+  return blocks.join("\n");
 }
 
 async function walk(directory) {
@@ -427,24 +665,24 @@ async function readTarget(root, target) {
 
 export async function auditBrandProject(root = process.cwd()) {
   const findings = [];
-  const responsiveSources = [];
-
-  for (const target of SOURCE_TARGETS) {
-    const source = brandedSourceSlice(target, await readTarget(root, target));
-    responsiveSources.push(source);
+  for (const composition of SOURCE_COMPOSITIONS) {
+    const fragments = [];
+    for (const target of composition.targets) {
+      const original = await readTarget(root, target.path);
+      fragments.push({
+        fileName: target.path,
+        source: target.marked
+          ? extractSnykAuditBlocks(original, target.path)
+          : original,
+      });
+    }
     findings.push(
-      ...auditText(source, {
-        fileName: target,
-        checkOverflowGuard: false,
+      ...auditComposition(fragments, {
+        fileName: composition.name,
+        checkOverflowGuard: composition.name === "branded page source",
       }),
     );
   }
-  findings.push(
-    ...auditOverflowGuard(
-      responsiveSources.join("\n"),
-      "Snyk 2026 branded source aggregate",
-    ),
-  );
 
   for (const target of GENERATED_SVG_TARGETS) {
     const source = await readTarget(root, target);

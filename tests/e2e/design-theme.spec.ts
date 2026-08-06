@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { expect, test } from "@playwright/test";
+import { auditText } from "../../scripts/check-snyk-brand.mjs";
 import {
   expectTheme,
   prepareTheme,
@@ -163,29 +164,12 @@ test("exports a self-contained branded chart SVG", async ({ page }) => {
   expect(svg).toContain("Geist Variable");
   expect(svg).toContain("Geist Mono Variable");
   expect(svg).not.toContain("var(--");
-  const colors = new Set(
-    [...svg.matchAll(/#[0-9A-Fa-f]{6}/g)].map((match) =>
-      match[0].toUpperCase(),
-    ),
-  );
-  expect([...colors]).toEqual(
-    expect.arrayContaining([
-      "#6F00DD",
-      "#FFFFFF",
-    ]),
-  );
-  expect([...colors].every((color) =>
-    [
-      "#000000",
-      "#030328",
-      "#2B0250",
-      "#6F00DD",
-      "#FF00FF",
-      "#F3552E",
-      "#FE9104",
-      "#FFFFFF",
-    ].includes(color),
-  )).toBe(true);
+  expect(
+    auditText(svg, {
+      fileName: download.suggestedFilename(),
+      checkOverflowGuard: false,
+    }),
+  ).toEqual([]);
 });
 
 test("keeps representative explorer layouts usable without page overflow", async ({

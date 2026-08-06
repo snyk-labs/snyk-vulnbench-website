@@ -80,6 +80,7 @@ function renderClassicReleaseCard(card: ReleaseShareCard) {
 </svg>`;
 }
 
+/* snyk-2026-audit:start */
 function brandDefinitions(assets: BrandSocialAssets) {
   return `<defs>
     <style>
@@ -154,3 +155,4 @@ export function renderDefaultSocialCard(assets: BrandSocialAssets) {
   <text x="70" y="579" fill="#FFFFFF" font-family="Geist Mono" font-size="16">Dataset 1.0.0 · Deterministic Snyk Code reference set · vulnbench.com</text>
 </svg>`;
 }
+/* snyk-2026-audit:end */
