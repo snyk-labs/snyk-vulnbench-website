@@ -1,12 +1,30 @@
 ---
 import { currentRelease } from "../../data/releases";
+/* snyk-2026-audit:start */
+import { isSnyk2026Design } from "../../config/design-theme";
+import SnykLogo from "./SnykLogo.astro";
+/* snyk-2026-audit:end */
 ---
 
 <footer class="site-footer">
   <div class="footer-grid container">
     <div class="initiative">
-      <p class="eyebrow">A Snyk benchmark initiative</p>
-      <p>
+      <!-- snyk-2026-audit:start -->
+      {
+        isSnyk2026Design && (
+          <div class="snyk-attribution">
+            <SnykLogo />
+            <p class="eyebrow">A Snyk benchmark initiative</p>
+          </div>
+        )
+      }
+      {
+        !isSnyk2026Design && (
+          <p class="eyebrow">A Snyk benchmark initiative</p>
+        )
+      }
+      <!-- snyk-2026-audit:end -->
+      <p class="initiative-copy">
         Transparent, versioned evidence about how reliably AI systems find
         vulnerabilities.
       </p>
@@ -57,7 +75,7 @@ import { currentRelease } from "../../data/releases";
   }
 
   :global(html[data-design-theme="snyk-2026"]) .site-footer .eyebrow,
-  :global(html[data-design-theme="snyk-2026"]) .initiative p + p,
+  :global(html[data-design-theme="snyk-2026"]) .initiative-copy,
   :global(html[data-design-theme="snyk-2026"]) .release-meta,
   :global(html[data-design-theme="snyk-2026"]) .legal {
     color: rgba(255, 255, 255, 0.65);
@@ -77,11 +95,19 @@ import { currentRelease } from "../../data/releases";
     max-width: 30rem;
   }
 
-  .initiative p + p,
+  .initiative-copy,
   .release-meta {
     margin-top: var(--space-2);
     color: var(--ink-soft);
   }
+
+  /* snyk-2026-audit:start */
+  .snyk-attribution {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+  /* snyk-2026-audit:end */
 
   h2 {
     margin-bottom: var(--space-3);

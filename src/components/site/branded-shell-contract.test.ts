@@ -39,26 +39,53 @@ describe("build-selected branded shell contract", () => {
     );
   });
 
-  it("selects the official Snyk identity without changing the Classic wordmark", async () => {
-    const [designTheme, header, logo, classicWordmark] = await Promise.all([
-      source("src/config/design-theme.ts"),
+  it("uses the neutral VulnBench identity in the compact header for both designs", async () => {
+    const [header, wordmark] = await Promise.all([
       source("src/components/site/SiteHeader.astro"),
-      source("src/components/site/SnykLogo.astro"),
       source("src/components/site/Wordmark.astro"),
+    ]);
+    const headerInner = selectorBody(header, ".header-inner");
+
+    expect(header).toContain('import Wordmark from "./Wordmark.astro";');
+    expect(header.match(/<Wordmark\s*\/>/g)).toHaveLength(1);
+    expect(header).not.toContain('import SnykLogo from "./SnykLogo.astro";');
+    expect(header).not.toContain("isSnyk2026Design");
+    expect(headerInner).toContain("min-height: 4.25rem;");
+    expect(header).not.toMatch(
+      /html\[data-design-theme="snyk-2026"\][\s\S]*?\.header-inner\s*\{[^}]*flex-wrap:/,
+    );
+
+    expect(wordmark).toContain('aria-label="VulnBench home"');
+    expect(wordmark.match(/<i><\/i>/g)).toHaveLength(5);
+    expect(wordmark).toContain(
+      ':global(html[data-design-theme="snyk-2026"]) .wordmark',
+    );
+    expect(wordmark).toContain("font-weight: var(--font-weight-control, 700);");
+  });
+
+  it("keeps the official Snyk logo in a separate branded footer attribution", async () => {
+    const [designTheme, footer, logo] = await Promise.all([
+      source("src/config/design-theme.ts"),
+      source("src/components/site/SiteFooter.astro"),
+      source("src/components/site/SnykLogo.astro"),
     ]);
 
     expect(designTheme).toContain(
       'export const isSnyk2026Design = designTheme === "snyk-2026";',
     );
-    expect(header).toContain('import SnykLogo from "./SnykLogo.astro";');
-    expect(header).toContain('import Wordmark from "./Wordmark.astro";');
-    expect(header).toMatch(
-      /isSnyk2026Design\s*\?\s*<SnykLogo\s*\/>\s*:\s*<Wordmark\s*\/>/,
+    expect(designTheme).toContain(
+      'favicon: "/brand/snyk-2026/favicon.svg"',
     );
-    expect(classicWordmark).toContain('aria-label="VulnBench home"');
+    expect(footer).toContain(
+      'import { isSnyk2026Design } from "../../config/design-theme";',
+    );
+    expect(footer).toContain('import SnykLogo from "./SnykLogo.astro";');
+    expect(footer).toMatch(/isSnyk2026Design\s*&&\s*\([\s\S]*?<SnykLogo\s*\/>/);
+    expect(footer).toContain('class="snyk-attribution"');
+    expect(footer).toContain("A Snyk benchmark initiative");
 
     expect(logo.match(/<a\b/g)).toHaveLength(1);
-    expect(logo).toContain('href="/"');
+    expect(logo).toContain('href="https://snyk.io/"');
     expect(logo).toContain('aria-label="Snyk home"');
     expect(logo).toContain(
       'src="/brand/snyk-2026/logo-snyk-white.png"',
@@ -77,6 +104,28 @@ describe("build-selected branded shell contract", () => {
     expect(logo).not.toMatch(
       /filter|box-shadow|transform|rotate|background\s*:|border\s*:/i,
     );
+  });
+
+  it("uses the five-dot VulnBench trace for the branded favicon", async () => {
+    const favicon = await source("public/brand/snyk-2026/favicon.svg");
+
+    expect(favicon).toContain("<title>VulnBench finding trace</title>");
+    expect(favicon.match(/<circle\b/g)).toHaveLength(5);
+    expect(favicon).not.toContain("<path");
+    expect(favicon).toContain('fill="#030328"');
+    expect(favicon).toContain('stroke="#6F00DD"');
+    const lockedPalette = new Set([
+      "#030328",
+      "#2B0250",
+      "#6F00DD",
+      "#FF00FF",
+      "#F3552E",
+      "#FE9104",
+      "#FFFFFF",
+    ]);
+    for (const color of favicon.match(/#[0-9A-Fa-f]{6}/g) ?? []) {
+      expect(lockedPalette.has(color.toUpperCase())).toBe(true);
+    }
   });
 
   it("uses one mode-aware, unmodified bottom-right fabric corner", async () => {

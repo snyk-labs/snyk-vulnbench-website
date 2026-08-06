@@ -233,14 +233,25 @@ test("uses the approved local Geist hierarchy without third-party font requests"
 });
 
 for (const colorMode of ["light", "dark"] as const) {
-  test(`shows one official logo and the ${colorMode} fabric asset`, async ({
+  test(`keeps VulnBench primary and the official logo in the ${colorMode} footer`, async ({
     page,
   }) => {
     await prepareTheme(page, colorMode, colorMode);
     await page.goto("/");
 
-    const logo = page.getByRole("link", { name: "Snyk home" });
+    const header = page.locator(".site-header");
+    await expect(
+      header.getByRole("link", { name: "VulnBench home" }),
+    ).toBeVisible();
+    await expect(
+      header.getByRole("link", { name: "Snyk home" }),
+    ).toHaveCount(0);
+
+    const logo = page
+      .locator(".site-footer")
+      .getByRole("link", { name: "Snyk home" });
     await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute("href", "https://snyk.io/");
     await expect(logo.locator("img")).toHaveAttribute(
       "src",
       "/brand/snyk-2026/logo-snyk-white.png",
@@ -463,7 +474,7 @@ for (const { width, minimum } of [
   { width: 320, minimum: 120 },
   { width: 1440, minimum: 140 },
 ]) {
-  test(`keeps the Snyk wordmark size and clear space at ${width}px`, async ({
+  test(`keeps the footer Snyk wordmark clear and separate at ${width}px`, async ({
     page,
   }) => {
     await prepareTheme(page, "light", "light");
@@ -471,22 +482,25 @@ for (const { width, minimum } of [
     await page.goto("/");
 
     const geometry = await page.evaluate(() => {
-      const link = document.querySelector<HTMLAnchorElement>(".snyk-logo");
+      const link = document.querySelector<HTMLAnchorElement>(
+        ".site-footer .snyk-logo",
+      );
       const image = link?.querySelector("img");
-      const header = link?.closest<HTMLElement>(".site-header");
-      const controls = header?.querySelector<HTMLElement>(".header-actions");
-      if (!link || !image || !header || !controls) {
-        throw new Error("Branded header geometry is incomplete");
+      const attribution = link?.closest<HTMLElement>(".snyk-attribution");
+      const initiativeText =
+        attribution?.querySelector<HTMLElement>(".eyebrow");
+      if (!link || !image || !attribution || !initiativeText) {
+        throw new Error("Branded footer attribution geometry is incomplete");
       }
       const linkRect = link.getBoundingClientRect();
       const imageRect = image.getBoundingClientRect();
-      const headerRect = header.getBoundingClientRect();
-      const controlsRect = controls.getBoundingClientRect();
+      const attributionRect = attribution.getBoundingClientRect();
+      const initiativeRect = initiativeText.getBoundingClientRect();
       const separated =
-        linkRect.right <= controlsRect.left ||
-        controlsRect.right <= linkRect.left ||
-        linkRect.bottom <= controlsRect.top ||
-        controlsRect.bottom <= linkRect.top;
+        linkRect.right <= initiativeRect.left ||
+        initiativeRect.right <= linkRect.left ||
+        linkRect.bottom <= initiativeRect.top ||
+        initiativeRect.bottom <= linkRect.top;
       return {
         imageWidth: imageRect.width,
         imageHeight: imageRect.height,
@@ -494,15 +508,12 @@ for (const { width, minimum } of [
         clearLeft: imageRect.left - linkRect.left,
         clearBottom: linkRect.bottom - imageRect.bottom,
         clearRight: linkRect.right - imageRect.right,
-        containedTop: linkRect.top - headerRect.top,
-        containedLeft: linkRect.left - headerRect.left,
-        containedBottom: headerRect.bottom - linkRect.bottom,
-        containedRight: headerRect.right - linkRect.right,
-        controlsVisible:
-          controlsRect.width > 0 &&
-          controlsRect.height > 0 &&
-          controlsRect.left >= headerRect.left &&
-          controlsRect.right <= headerRect.right,
+        containedTop: linkRect.top - attributionRect.top,
+        containedLeft: linkRect.left - attributionRect.left,
+        containedBottom: attributionRect.bottom - linkRect.bottom,
+        containedRight: attributionRect.right - linkRect.right,
+        initiativeVisible:
+          initiativeRect.width > 0 && initiativeRect.height > 0,
         separated,
       };
     });
@@ -524,7 +535,7 @@ for (const { width, minimum } of [
     ]) {
       expect(containment).toBeGreaterThanOrEqual(-0.5);
     }
-    expect(geometry.controlsVisible).toBe(true);
+    expect(geometry.initiativeVisible).toBe(true);
     expect(geometry.separated).toBe(true);
     await expectNoHorizontalOverflow(page);
   });
@@ -545,8 +556,16 @@ test("publishes branded favicon and default social metadata assets", async ({
     "https://vulnbench.com/brand/snyk-2026/social.svg",
   );
 
-  for (const path of [
+  const faviconResponse = await request.get(
     "/brand/snyk-2026/favicon.svg",
+  );
+  expect(faviconResponse.status()).toBe(200);
+  const favicon = await faviconResponse.text();
+  expect(favicon).toContain("<title>VulnBench finding trace</title>");
+  expect(favicon.match(/<circle\b/g)).toHaveLength(5);
+  expect(favicon).not.toContain("<path");
+
+  for (const path of [
     "/brand/snyk-2026/social.svg",
     "/brand/snyk-2026/logo-snyk-white.png",
     "/brand/snyk-2026/BRC_Fabric_NoGradient.png",

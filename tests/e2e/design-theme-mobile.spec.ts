@@ -17,8 +17,21 @@ test.describe("Snyk 2026 mobile shell", () => {
         "data-theme",
         colorMode,
       );
-      await expect(page.getByRole("link", { name: "Snyk home" })).toBeVisible();
+      const header = page.locator(".site-header");
+      await expect(
+        header.getByRole("link", { name: "VulnBench home" }),
+      ).toBeVisible();
+      await expect(
+        header.getByRole("link", { name: "Snyk home" }),
+      ).toHaveCount(0);
       await expect(page.locator(".header-actions")).toBeVisible();
+      await expect(page.locator(".header-inner")).toHaveCSS(
+        "min-height",
+        "68px",
+      );
+      await expect(
+        page.locator(".site-footer").getByRole("link", { name: "Snyk home" }),
+      ).toBeVisible();
       await expect(page.locator(".hero")).toBeVisible();
 
       const heading = page.getByRole("heading", {
@@ -63,9 +76,28 @@ test.describe("Snyk 2026 mobile shell", () => {
         const rect = h1.getBoundingClientRect();
         const heroRect = hero.getBoundingClientRect();
         const style = getComputedStyle(h1);
+        const headerInner = document.querySelector(".header-inner");
+        const wordmark = headerInner?.querySelector(".wordmark");
+        const actions = headerInner?.querySelector(".header-actions");
+        if (
+          !(headerInner instanceof HTMLElement) ||
+          !(wordmark instanceof HTMLElement) ||
+          !(actions instanceof HTMLElement)
+        ) {
+          throw new Error("Compact header geometry is incomplete");
+        }
+        const headerRect = headerInner.getBoundingClientRect();
+        const wordmarkRect = wordmark.getBoundingClientRect();
+        const actionsRect = actions.getBoundingClientRect();
         return {
           bodyScrollWidth: document.body.scrollWidth,
           documentClientWidth: document.documentElement.clientWidth,
+          headerHeight: headerRect.height,
+          headerFlexWrap: getComputedStyle(headerInner).flexWrap,
+          identityTop: wordmarkRect.top,
+          identityBottom: wordmarkRect.bottom,
+          actionsTop: actionsRect.top,
+          actionsBottom: actionsRect.bottom,
           headingLeft: rect.left,
           headingRight: rect.right,
           headingTop: rect.top,
@@ -82,6 +114,10 @@ test.describe("Snyk 2026 mobile shell", () => {
       expect(layout.bodyScrollWidth).toBeLessThanOrEqual(
         layout.documentClientWidth,
       );
+      expect(layout.headerHeight).toBe(68);
+      expect(layout.headerFlexWrap).toBe("nowrap");
+      expect(layout.identityTop).toBeLessThan(layout.actionsBottom);
+      expect(layout.actionsTop).toBeLessThan(layout.identityBottom);
       expect(layout.headingLeft).toBeGreaterThanOrEqual(0);
       expect(layout.headingRight).toBeLessThanOrEqual(
         layout.documentClientWidth,

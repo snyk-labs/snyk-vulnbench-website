@@ -1,10 +1,6 @@
 ---
 import type { BrowserThemeColors } from "../../config/theme-colors";
-/* snyk-2026-audit:start */
-import { isSnyk2026Design } from "../../config/design-theme";
-/* snyk-2026-audit:end */
 import { currentRelease } from "../../data/releases";
-import SnykLogo from "./SnykLogo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import Wordmark from "./Wordmark.astro";
 
@@ -41,9 +37,7 @@ const isCurrent = (href: string) => href === activeLink?.href;
 
 <header class="site-header">
   <div class="header-inner container">
-    <!-- snyk-2026-audit:start -->
-    {isSnyk2026Design ? <SnykLogo /> : <Wordmark />}
-    <!-- snyk-2026-audit:end -->
+    <Wordmark />
 
     <div class="header-actions">
       <nav class="desktop-nav" aria-label="Primary">
@@ -171,12 +165,6 @@ const isCurrent = (href: string) => href === activeLink?.href;
   }
 
   @media (max-width: 47.99rem) {
-    /* snyk-2026-audit:start */
-    :global(html[data-design-theme="snyk-2026"]) .header-inner {
-      flex-wrap: wrap;
-    }
-    /* snyk-2026-audit:end */
-
     .header-inner {
       gap: var(--space-2);
     }
@@ -186,10 +174,6 @@ const isCurrent = (href: string) => href === activeLink?.href;
     }
 
     /* snyk-2026-audit:start */
-    :global(html[data-design-theme="snyk-2026"]) .header-actions {
-      margin-left: auto;
-    }
-
     :global(html[data-design-theme="snyk-2026"]) .mobile-menu summary {
       border-color: rgba(255, 255, 255, 0.4);
     }
