@@ -12,12 +12,24 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(readme).toContain(
       "[Snyk 2026 brand design](docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md)",
     );
+    expect(readme).toContain(
+      "[Snyk and Light defaults design](docs/superpowers/specs/2026-08-06-snyk-light-defaults-design.md)",
+    );
     expect(readme).toContain("`VULNBENCH_DESIGN_THEME`");
     expect(readme).toContain("`classic` and `snyk-2026`");
-    expect(readme).toContain("Absent or empty defaults to `classic`.");
+    expect(readme).toContain("Absent or empty defaults to `snyk-2026`.");
     expect(readme).toContain("Invalid explicit values fail the build.");
     expect(readme).toContain(
-      "docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run build'",
+      "With no saved choice, Light is the color-mode default regardless of system preference.",
+    );
+    expect(readme).toContain(
+      "Saved Light or Dark choices remain explicit overrides.",
+    );
+    expect(readme).toContain(
+      "No-JavaScript rendering is also Light regardless of system preference.",
+    );
+    expect(readme).toContain(
+      "docker exec vulnbench-dev sh -lc 'npm run build'",
     );
     expect(readme).toContain(
       "docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run verify:classic'",
@@ -26,7 +38,7 @@ describe("Snyk 2026 design-theme documentation", () => {
       "docker exec vulnbench-dev sh -lc 'npm run verify:snyk-2026'",
     );
     expect(readme).toContain(
-      "Visitors control only the Light or Dark color mode within the selected design.",
+      "docker exec vulnbench-dev sh -lc 'npm run verify'",
     );
   });
 
@@ -54,13 +66,28 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(agentsText).toContain("`npm run verify:snyk-2026`");
     expect(agentsText).toContain("`npm run check:brand`");
     expect(agentsText).toContain("`npm run verify`");
+    expect(agentsText).toContain(
+      "Snyk 2026 is the default design theme; explicit `VULNBENCH_DESIGN_THEME=classic` remains the Classic override.",
+    );
+    expect(agentsText).toContain(
+      "Light is the default color mode regardless of system preference; only saved Light or Dark choices override it.",
+    );
   });
 
   test("records durable two-axis and asset-provenance conventions", async () => {
     const conventions = await readDocumentation("docs/CONVENTIONS.md");
 
     expect(conventions).toContain(
-      "Design theme is selected at build time; color mode is selected by the visitor or system preference.",
+      "Snyk 2026 is the default build-selected design theme; explicit `classic` remains a deterministic override.",
+    );
+    expect(conventions).toContain(
+      "Light is the default color mode regardless of system preference; valid saved Light or Dark choices override it.",
+    );
+    expect(conventions).toContain(
+      "No-JavaScript output uses Light tokens regardless of system preference.",
+    );
+    expect(conventions).toContain(
+      "The standard build and full verification gate exercise the Snyk 2026 default",
     );
     expect(conventions).toContain(
       "Shared components consume semantic CSS tokens rather than environment variables.",
@@ -107,7 +134,7 @@ describe("Snyk 2026 design-theme documentation", () => {
       "Snyk 2026 Dark uses Midnight and restrained white-alpha depth",
     );
     expect(conventions).toContain(
-      "Explicit Dark and no-JavaScript system Dark must resolve the same semantic tokens",
+      "Explicit saved Dark must resolve the approved Dark semantic tokens; no-JavaScript output remains Light under either system preference.",
     );
     expect(conventions).toContain(
       "reject saturated Dark panel fills, off-palette literals, excess gradients, decorative shadow or `drop-shadow()` effects",
@@ -203,6 +230,37 @@ describe("Snyk 2026 design-theme documentation", () => {
     );
     expect(darkModeDesign).toContain(
       "Snyk 2026 build-selected assets follow the Snyk 2026 brand design specification.",
+    );
+  });
+
+  test("updates historical theme documents for the Snyk and Light defaults", async () => {
+    const [darkModeDesign, snykDesign, snykPlan] = await Promise.all([
+      readDocumentation("docs/superpowers/specs/2026-08-05-dark-mode-theme-design.md"),
+      readDocumentation(
+        "docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md",
+      ),
+      readDocumentation(
+        "docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md",
+      ),
+    ]);
+
+    expect(darkModeDesign).toContain(
+      "Light is the first-visit default regardless of operating-system preference",
+    );
+    expect(darkModeDesign).toContain(
+      "the site uses Light tokens regardless of `prefers-color-scheme`",
+    );
+    expect(snykDesign).toContain(
+      "| unset or empty | Build the `snyk-2026` design |",
+    );
+    expect(snykDesign).toContain(
+      "The pre-paint initializer selects saved Light or Dark, otherwise Light",
+    );
+    expect(snykPlan).toContain(
+      "Snyk 2026 and Light are the unconfigured defaults",
+    );
+    expect(snykPlan).toContain(
+      "No-JavaScript output uses Light regardless of system preference.",
     );
   });
 });

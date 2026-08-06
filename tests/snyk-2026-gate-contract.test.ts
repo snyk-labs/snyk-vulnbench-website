@@ -14,6 +14,18 @@ const expectedCommands = [
 ];
 
 describe("Snyk 2026 verification gate", () => {
+  it("runs the default build without a Vercel theme wrapper", async () => {
+    const packageJson = JSON.parse(
+      await readFile(`${process.cwd()}/package.json`, "utf8"),
+    ) as { scripts: Record<string, string> };
+
+    expect(packageJson.scripts.build).toBe("astro build");
+    expect(packageJson.scripts["build:snyk-2026"]).toBe(
+      "VULNBENCH_DESIGN_THEME=snyk-2026 astro build",
+    );
+    expect(packageJson.scripts.verify).toContain("npm run verify:snyk-2026");
+  });
+
   it.each(["classic", "invalid", undefined])(
     "forces every child command to Snyk 2026 under ambient %s",
     async (ambientTheme) => {

@@ -37,9 +37,9 @@ history, but they are not the current authority for those areas.
 This design separates two independent concepts:
 
 - **Design theme:** `classic` or `snyk-2026`, selected once at build time.
-- **Color mode:** `light` or `dark`, selected by the existing visitor control,
-  saved under `vulnbench-theme`, and initialized from the operating system when
-  no explicit preference exists.
+- **Color mode:** `light` or `dark`, selected by the existing visitor control
+  and saved under `vulnbench-theme`; it defaults to Light when no explicit
+  preference exists.
 
 User-facing copy may continue to call the color-mode control a theme control
 for familiarity. No user-facing control or query parameter exposes the design
@@ -51,7 +51,7 @@ The environment variable `VULNBENCH_DESIGN_THEME` selects the design:
 
 | Value | Result |
 | --- | --- |
-| unset or empty | Build the existing `classic` design |
+| unset or empty | Build the `snyk-2026` design |
 | `classic` | Build the existing `classic` design |
 | `snyk-2026` | Build the Snyk 2026 design |
 | any other value | Fail the build with the accepted values in the error |
@@ -62,9 +62,10 @@ root. Resolution happens during static generation. The environment variable is
 not serialized as a runtime flag, and the browser receives no design-theme
 switching code.
 
-Classic remains the defensive default so existing deployments retain their
-current appearance without configuration. Invalid explicit values fail instead
-of silently shipping an unintended design.
+Snyk 2026 is the default so standard builds carry the current identity without
+configuration. Classic remains available only through its explicit,
+deterministic override. Invalid explicit values fail instead of silently
+shipping an unintended design.
 
 ## Theme architecture
 
@@ -80,10 +81,11 @@ The implementation adds three focused layers:
 3. Small build-selected shell treatments render the official Snyk logo, local
    brand assets, font resources, and homepage composition only for Snyk 2026.
 
-The existing `data-theme="light|dark"` initialization, localStorage behavior,
-live operating-system updates, storage-event synchronization, and accessible
-color-mode control remain unchanged in purpose. The pre-paint initializer uses
-design-specific `theme-color` values but never decides the design theme.
+The existing `data-theme="light|dark"` localStorage behavior, storage-event
+synchronization, and accessible color-mode control remain unchanged in purpose.
+The pre-paint initializer selects saved Light or Dark, otherwise Light; it
+never follows operating-system changes or decides the design theme. It uses
+design-specific `theme-color` values.
 
 React analytical islands do not read the build variable. They inherit active
 semantic CSS values as they do today. Theme-aware SVG exports continue to
@@ -163,8 +165,8 @@ dense website only; it does not rewrite the general brand guide:
   tricks remain forbidden.
 - The purple-only fabric remains a no-gradient bottom-corner accent at roughly
   `0.12`–`0.20` opacity and clears all copy.
-- Explicit Light and no-JavaScript system Light render the same visual
-  contract. Explicit Dark and no-JavaScript system Dark retain Family A.
+- Explicit Light and no-JavaScript output under either system preference render
+  the same Light visual contract. Explicit saved Dark retains Family A.
 
 ### Brand assets and identity
 
@@ -263,7 +265,7 @@ Both design themes and both color modes preserve:
 - 200% and 400% zoom and a 320-pixel viewport
 - reduced-motion behavior
 - no-JavaScript access to the complete narrative and static evidence
-- system Light/Dark fallback when JavaScript is unavailable
+- Light fallback under either system preference when JavaScript is unavailable
 
 The Snyk 2026 design introduces no required animation. Fabric and logo assets
 are decorative where appropriate and do not add redundant screen-reader
@@ -289,8 +291,8 @@ Automated verification covers:
 - build configuration parsing, defaulting, and invalid-value failure
 - Classic Light and Dark regression behavior
 - Snyk 2026 Light and Dark initialization
-- saved color-mode precedence, reload persistence, keyboard activation, live
-  system changes, and cross-tab synchronization in the branded design
+- saved color-mode precedence, reload persistence, keyboard activation, ignored
+  live system changes, and cross-tab synchronization in the branded design
 - design-specific `theme-color` metadata
 - Snyk 2026 no-JavaScript color-mode fallback and usable content
 - computed Geist and Geist Mono typography
@@ -302,8 +304,8 @@ Automated verification covers:
 - build, release isolation, source integrity, and JavaScript budgets
 
 The branded browser suite runs from a separate Playwright configuration that
-starts Astro with `VULNBENCH_DESIGN_THEME=snyk-2026`. The default suite
-continues to exercise Classic.
+starts Astro with `VULNBENCH_DESIGN_THEME=snyk-2026`. The deterministic Classic
+suite explicitly starts Astro with `VULNBENCH_DESIGN_THEME=classic`.
 
 Manual visual verification renders and reads back at least:
 
@@ -322,25 +324,26 @@ until corrected.
 
 ## Documentation and rollout
 
-The README documents the optional build variable and keeps Classic as the
-unconfigured behavior. Contributor documentation records the local branded
-verification command and asset provenance. `AGENTS.md`, `CLAUDE.md`, and
-`docs/CONVENTIONS.md` explicitly scope the existing warm-neutral and
-no-gradient rules to Classic and identify this specification as the governing
-visual source for Snyk 2026. The original dark-mode design remains the source of
-truth for Classic; this design supersedes its visual rules only when
-`data-design-theme="snyk-2026"`.
+The README documents the optional build variable with Snyk 2026 as the
+unconfigured behavior and Classic as an explicit override. Contributor
+documentation records the default and dedicated verification commands and asset
+provenance. `AGENTS.md`, `CLAUDE.md`, and `docs/CONVENTIONS.md` explicitly
+scope the existing warm-neutral and no-gradient rules to Classic, state that
+Light is the default independently of system preference, and identify this
+specification as the governing visual source for Snyk 2026. The original
+dark-mode design remains the source of truth for Classic; this design
+supersedes its visual rules only when `data-design-theme="snyk-2026"`.
 
 Example deployment commands:
 
 ```sh
-# Existing design
+# Default Snyk 2026 design
 npm run build
 
-# Explicit existing design
+# Explicit Classic override
 VULNBENCH_DESIGN_THEME=classic npm run build
 
-# Snyk 2026 design
+# Explicit Snyk 2026 design
 VULNBENCH_DESIGN_THEME=snyk-2026 npm run build
 ```
 

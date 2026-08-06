@@ -11,6 +11,17 @@ const expectedCommands = [
 ];
 
 describe("Classic verification gate", () => {
+  it("keeps the standard build on the Snyk 2026 default while Classic is explicit", async () => {
+    const packageJson = JSON.parse(
+      await readFile(`${process.cwd()}/package.json`, "utf8"),
+    ) as { scripts: Record<string, string> };
+
+    expect(packageJson.scripts.build).toBe("astro build");
+    expect(packageJson.scripts.verify).toBe(
+      "npm run verify:classic && npm run verify:snyk-2026",
+    );
+  });
+
   it("runs Playwright against an isolated explicit Classic server", async () => {
     const { default: config } = await import("../playwright.config");
 

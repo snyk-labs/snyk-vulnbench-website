@@ -40,7 +40,10 @@ flowchart LR
   ColorMode[Visitor Light or Dark] --> Tokens
 ```
 
-The deployment selects `classic` or `snyk-2026`; the browser continues to select only `light` or `dark`. Classic remains the unconfigured default, while invalid explicit values fail the build.
+The deployment selects `classic` or `snyk-2026`; the browser continues to
+select only `light` or `dark`. Snyk 2026 and Light are the unconfigured
+defaults, while explicit Classic and saved Dark remain overrides. Invalid
+explicit design values fail the build.
 
 ## Approved Light refinement
 
@@ -60,8 +63,9 @@ wherever they conflict. VulnBench returns as the compact primary header
 identity, the official Snyk wordmark is footer-only, and neutral Midnight plus
 white-alpha depth replaces broad saturated Dark panels. Semantic colors remain
 restrained and labeled, the composition keeps one thin warm gradient edge, and
-explicit Dark must stay identical to no-JavaScript system Dark. Approved Snyk
-Light styling remains exactly preserved.
+explicit saved Dark retains its approved Dark contract. No-JavaScript output
+uses Light regardless of system preference. Approved Snyk Light styling remains
+exactly preserved.
 
 ## Implementation
 
@@ -78,7 +82,7 @@ Light styling remains exactly preserved.
 
 3. **Implement the isolated Snyk token and layout layer**
    - Add [`src/styles/tokens-snyk-2026.css`](src/styles/tokens-snyk-2026.css) and import it after [`src/styles/tokens.css`](src/styles/tokens.css) from [`src/styles/global.css`](src/styles/global.css).
-   - Map every existing semantic surface, text, evidence, heatmap, series, focus, and font token under combined `data-design-theme`/`data-theme` selectors; mirror the no-JavaScript dark media fallback.
+   - Map every existing semantic surface, text, evidence, heatmap, series, focus, and font token under combined `data-design-theme`/`data-theme` selectors; keep no-theme selectors unconditionally Light.
    - Family A Dark uses Midnight with gradient fabric. The superseding website Light contract uses white paper/raised surfaces, Midnight copy, restrained Purple/Orange-Red/Amber alpha tints, and one thin exact Brand Gradient accent rather than a full-gradient page. Avoid gradient text, masks, pseudo-element gradient borders, glass, decorative shadows, and radial glow divs.
    - Replace the continuous `color-mix` heatmap in [`src/components/explorer/views/CoverageView.tsx`](src/components/explorer/views/CoverageView.tsx) with tested discrete semantic heatmap bands so branded output remains locked-palette and color-independent.
 
@@ -96,12 +100,21 @@ Light styling remains exactly preserved.
 6. **Add a self-contained branded verification gate**
    - Extract reusable theme helpers from [`tests/e2e/theme.spec.ts`](tests/e2e/theme.spec.ts).
    - Add [`playwright.snyk-2026.config.ts`](playwright.snyk-2026.config.ts) on a separate port with `VULNBENCH_DESIGN_THEME=snyk-2026`, plus [`tests/e2e/design-theme.spec.ts`](tests/e2e/design-theme.spec.ts).
-   - Cover both branded color modes, persisted mode behavior, no-JavaScript fallback, Geist loading, logo/fabric presence and clearance, branded metadata, chart exports, 320px overflow, representative explorer layouts, and Axe across all public routes.
+   - Cover both branded color modes, persisted mode behavior, Light
+     no-JavaScript fallback under both system preferences, Geist loading,
+     logo/fabric presence and clearance, branded metadata, chart exports,
+     320px overflow, representative explorer layouts, and Axe across all public
+     routes.
    - Add [`scripts/check-snyk-brand.mjs`](scripts/check-snyk-brand.mjs), porting the supplied mechanical audit rules to the mandated Node container. Scan branded source/static outputs for off-palette colors, off-brand fonts, forbidden CSS, fixed hero pixels, and unauthorized gradients.
-   - Add `build:snyk-2026`, `test:e2e:snyk-2026`, `check:brand`, and `verify:snyk-2026` scripts; make the full `npm run verify` gate exercise both Classic and branded builds without adding client-side design-theme JavaScript.
+   - Add `build:snyk-2026`, `test:e2e:snyk-2026`, `check:brand`, and
+     `verify:snyk-2026` scripts; make the full `npm run verify` gate exercise
+     the default Snyk build and deterministic Classic override without adding
+     client-side design-theme JavaScript.
 
 7. **Document the deployment and rule boundary**
-   - Update [`README.md`](README.md) with allowed environment values, build examples, and the brand spec link.
+   - Update [`README.md`](README.md) with allowed environment values, Snyk
+     default and Classic override build examples, Light default behavior, and
+     the brand spec link.
    - Update [`AGENTS.md`](AGENTS.md), [`CLAUDE.md`](CLAUDE.md), and [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) so warm-neutral/no-gradient rules remain authoritative for Classic and the Snyk 2026 spec governs only branded builds.
    - Clarify in the prior dark-mode spec that canonical-light social assets apply to Classic, while build-selected Snyk assets follow the newer specification.
 

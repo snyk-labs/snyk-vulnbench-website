@@ -17,7 +17,10 @@ conflict, the approved specification is the source of truth.
 
 ## Build-selected design themes
 
-Design theme is selected at build time; color mode is selected by the visitor or system preference.
+Snyk 2026 is the default build-selected design theme; explicit `classic` remains
+a deterministic override. Light is the default color mode regardless of system
+preference; valid saved Light or Dark choices override it. No-JavaScript output
+uses Light tokens regardless of system preference.
 The current Snyk 2026 identity and Dark rules are defined by the
 [Snyk Dark Neutral Identity Refinement Design](superpowers/specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md).
 
@@ -25,7 +28,9 @@ The current Snyk 2026 identity and Dark rules are defined by the
   variables. This keeps release content and analytical behavior independent of
   the deployment-selected `classic` or `snyk-2026` design.
 - Classic and Snyk 2026 output require separate verification. Run the complete
-  `verify:classic` and `verify:snyk-2026` gates before delivery.
+  `verify:classic` and `verify:snyk-2026` gates before delivery. The standard
+  build and full verification gate exercise the Snyk 2026 default; the full
+  gate also includes the deterministic Classic override.
 - Verification gates override the design theme for every spawned child process
   and server. Contract tests must exercise each gate under Classic, invalid,
   and unset ambient values so an inherited deployment environment cannot
@@ -51,15 +56,15 @@ The current Snyk 2026 identity and Dark rules are defined by the
   saturated colors for semantic marks and small intentional accents rather
   than broad panels. General Dark action links use a dedicated contrast-safe
   near-white semantic rather than Hot Pink; approved Light action treatment is
-  unchanged, and Purple remains available for reference-matched marks.
-  Explicit Dark and no-JavaScript system Dark must resolve the same semantic
-  tokens; verify that parity in source contracts and rendered browser checks.
+  unchanged, and Purple remains available for reference-matched marks. Explicit
+  saved Dark must resolve the approved Dark semantic tokens; no-JavaScript
+  output remains Light under either system preference.
 - Snyk 2026 Light is a website-specific white analytical canvas with Midnight
   copy, restrained locked-color alpha tints, and one contained exact Brand
   Gradient accent per page. Keep header/footer Midnight, keep most narrative
   and explorer surfaces light, and reserve a dark evidence card for a contained
-  analytical focal point. Verify explicit and no-JavaScript system Light in a
-  real browser at desktop and mobile widths.
+  analytical focal point. Verify explicit Light and no-JavaScript system Light
+  and Dark in a real browser at desktop and mobile widths.
 - The exact Brand Gradient is valid only as one objectively bounded edge per
   page. Audit every direct or custom-property `background`,
   `background-image`, `border-image`, and `border-image-source` consumer;

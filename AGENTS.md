@@ -15,6 +15,8 @@ Before making changes, read the documents relevant to the task:
   requirements.
 - `docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md` for the
   approved build-selected Snyk 2026 visual system.
+- `docs/superpowers/specs/2026-08-06-snyk-light-defaults-design.md` for the
+  approved Snyk 2026 and Light default-resolution contract.
 - `docs/superpowers/specs/2026-08-04-js-1.0-source-import-design.md` before
   changing anything related to the vendored JS 1.0 source.
 - `docs/superpowers/plans/2026-08-05-foundation-homepage.md` for the initial
@@ -154,12 +156,23 @@ The development server listens on container port `4321`; publish it to
   verification.
 - `npm run check:brand` — mechanical Snyk 2026 palette, type, asset, and CSS
   audit after a branded build.
-- `npm run verify` — required full local gate; runs both Classic and Snyk 2026
-  verification.
+- `npm run verify` — required full local gate; its standard build uses the
+  Snyk 2026 default and it also runs the deterministic Classic override gate.
 
 Run commands inside the development container. Add a failing test before
 implementing behavior changes, then run the focused test and the proportional
 full verification suite.
+
+## Design and color defaults
+
+- Snyk 2026 is the default design theme; explicit
+  `VULNBENCH_DESIGN_THEME=classic` remains the Classic override.
+- Light is the default color mode regardless of system preference; only saved
+  Light or Dark choices override it. No-JavaScript output is also Light.
+- Use `npm run build` and `npm run verify` for the default Snyk workflow.
+  `npm run verify:classic` remains the deterministic dedicated Classic gate;
+  `npm run verify:snyk-2026` is the dedicated branded gate and includes the
+  brand audit.
 
 ## Implementation Conventions
 
