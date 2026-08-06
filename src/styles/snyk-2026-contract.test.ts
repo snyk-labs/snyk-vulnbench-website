@@ -235,7 +235,7 @@ describe("Snyk 2026 design contract", () => {
       "--theme-rule-strong": "rgba(255, 255, 255, 0.4)",
       "--theme-purple": "#6F00DD",
       "--theme-purple-dark": "rgba(255, 255, 255, 0.78)",
-      "--theme-purple-soft": "rgba(111, 0, 221, 0.18)",
+      "--theme-purple-soft": "rgba(255, 255, 255, 0.08)",
       "--theme-matched": "#6F00DD",
       "--theme-matched-text": "rgba(255, 255, 255, 0.78)",
       "--theme-matched-soft": "rgba(111, 0, 221, 0.18)",

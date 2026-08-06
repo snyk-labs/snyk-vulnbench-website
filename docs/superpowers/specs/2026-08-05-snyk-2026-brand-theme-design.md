@@ -16,6 +16,22 @@ The branded design must preserve the website's static architecture, scientific
 framing, evidence density, accessibility, no-JavaScript behavior, stable URLs,
 chart and table parity, and JavaScript budget.
 
+## Current identity and Dark refinement
+
+The approved
+[Snyk Dark Neutral Identity Refinement Design](2026-08-06-snyk-dark-neutral-identity-refinement-design.md)
+supersedes the original header identity and Dark surface requirements below
+wherever they conflict. The earlier requirements remain useful implementation
+history, but they are not the current authority for those areas.
+
+- VulnBench is the primary compact header identity in both builds.
+- The official white Snyk wordmark is a secondary, footer-only attribution.
+- Snyk 2026 Dark uses a Midnight editorial base; neutral white-alpha raised
+  surfaces replace broad saturated Dark Purple or Purple panels.
+- Softened white text tiers, semantic Purple/Orange-Red/Amber roles, one thin
+  warm gradient edge, and explicit/system Dark parity follow the refinement.
+- The approved website-specific Light styling remains unchanged.
+
 ## Terminology
 
 This design separates two independent concepts:

@@ -23,6 +23,13 @@ const ALLOWED_HEX = new Set([
   "FF00FF",
   "FFFFFF",
 ]);
+const SATURATED_PANEL_HEX = new Set([
+  "2B0250",
+  "6F00DD",
+  "F3552E",
+  "FE9104",
+  "FF00FF",
+]);
 const ALLOWED_ALPHA_BY_HEX = new Map([
   [
     "FFFFFF",
@@ -268,6 +275,8 @@ function parseRgbLiteral(body) {
       alpha === undefined || alpha === 1
         ? ALLOWED_HEX.has(hex)
         : approvedAlpha(hex, alpha),
+    alpha,
+    hex,
   };
 }
 
@@ -586,6 +595,76 @@ function auditResolvedColors(source, fileName, customProperties) {
   return findings;
 }
 
+function containsOpaqueSaturatedColor(value) {
+  const unquoted = stripQuotedContent(value);
+  for (const match of unquoted.matchAll(
+    /#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{4}|[0-9a-f]{3})(?![0-9a-f])/giu,
+  )) {
+    const expanded = expandHex(match[1]).toUpperCase();
+    const color = expanded.slice(0, 6);
+    const alpha = expanded.slice(6);
+    if (
+      SATURATED_PANEL_HEX.has(color) &&
+      (alpha.length === 0 || alpha === "FF")
+    ) {
+      return true;
+    }
+  }
+  for (const match of unquoted.matchAll(/\b(?:rgb|rgba)\(([^)]*)\)/giu)) {
+    const parsed = parseRgbLiteral(match[1]);
+    if (
+      parsed &&
+      SATURATED_PANEL_HEX.has(parsed.hex) &&
+      (parsed.alpha === undefined || parsed.alpha === 1)
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function auditDarkPanelSurfaces(source, fileName, customProperties) {
+  const findings = [];
+  for (const rule of source.matchAll(/([^{}]+)\{([^{}]*)\}/gu)) {
+    const selector = rule[1];
+    const isExplicitDark = /\[data-theme\s*=\s*["']?dark["']?\]/iu.test(
+      selector,
+    );
+    const isSystemDark = /:not\(\s*\[data-theme\]\s*\)/iu.test(selector);
+    if (!isExplicitDark && !isSystemDark) continue;
+
+    const body = rule[2];
+    const bodyOffset = (rule.index ?? 0) + rule[0].indexOf(body);
+    for (const declaration of declarations(body)) {
+      const property = declaration.property.toLowerCase();
+      const isPanelProperty =
+        /^(?:background|background-color)$/u.test(property) ||
+        (property.startsWith("--") &&
+          /(?:background|bg|hover|panel|paper|soft|surface)/u.test(property));
+      if (!isPanelProperty) continue;
+
+      const resolution = resolveCustomValue(
+        stripQuotedContent(declaration.value),
+        customProperties,
+      );
+      if (
+        resolution.values.some((value) => containsOpaqueSaturatedColor(value))
+      ) {
+        findings.push(
+          finding(
+            fileName,
+            source,
+            bodyOffset + declaration.index,
+            "saturated-dark-panel",
+            `${declaration.property} uses a saturated brand fill in Dark; use Midnight or restrained alpha depth`,
+          ),
+        );
+      }
+    }
+  }
+  return findings;
+}
+
 function fontDeclarationValues(source) {
   const values = declarations(source)
     .filter(({ property }) =>
@@ -797,6 +876,7 @@ export function auditText(
       resolvedCustomProperties,
     ),
     ...auditResolvedColors(source, fileName, resolvedCustomProperties),
+    ...auditDarkPanelSurfaces(source, fileName, resolvedCustomProperties),
     ...auditFonts(source, fileName, resolvedCustomProperties),
     ...gradientAudit.findings,
     ...(checkOverflowGuard ? auditOverflowGuard(source, fileName) : []),
@@ -919,7 +999,10 @@ export function extractSnykAuditBlocks(source, fileName = "<mixed source>") {
   const outside = source.replace(blockPattern, "");
   if (
     /snyk-2026/iu.test(outside) ||
-    /\bisSnyk2026Design\b/u.test(outside)
+    /\bisSnyk2026Design\b/u.test(outside) ||
+    /#(?:2B0250|6F00DD|FF00FF|F3552E|FE9104)\b/iu.test(outside) ||
+    /\bGeist(?:\s+Mono)?(?:\s+Variable)?\b/iu.test(outside) ||
+    /<\s*(?:BrandFabric|SnykLogo)\b/u.test(outside)
   ) {
     throw new Error(
       `${fileName} contains a Snyk-branded construct outside marked audit blocks`,

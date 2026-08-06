@@ -457,6 +457,10 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
     "color",
     DARK_PRIMARY,
   );
+  await expect(page.locator(".publication")).toHaveCSS(
+    "background-color",
+    DARK_RAISED,
+  );
   await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
   await expect(page.locator(".brand-gradient-accent")).toHaveCSS("height", "1px");
   const primaryButton = page.locator(".button").first();
@@ -512,6 +516,10 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
   await expect(page.locator(".page-hero aside")).toHaveCSS(
     "background-color",
     DARK_MUTED,
+  );
+  await expect(page.locator(".efficiency")).toHaveCSS(
+    "background-color",
+    DARK_RAISED,
   );
   await expect(page.locator(".release-meta dt").first()).toHaveCSS(
     "color",
@@ -1055,6 +1063,10 @@ test.describe("Snyk 2026 without JavaScript", () => {
       "background-color",
       "rgba(0, 0, 0, 0)",
     );
+    await expect(page.locator(".publication")).toHaveCSS(
+      "background-color",
+      DARK_RAISED,
+    );
     await expect(page.locator("[data-theme-toggle]")).toBeHidden();
     await expect(
       page.getByRole("heading", {
@@ -1077,6 +1089,13 @@ test.describe("Snyk 2026 without JavaScript", () => {
     await expect(page.locator(".evidence-strip")).toContainText("300");
     await expect(page.locator(".evidence-strip")).toContainText("scans");
     await expectNoHorizontalOverflow(page);
+
+    await page.goto("/releases/js-1.0");
+
+    await expect(page.locator(".efficiency")).toHaveCSS(
+      "background-color",
+      DARK_RAISED,
+    );
 
     await page.goto("/releases/js-1.0/explore");
 

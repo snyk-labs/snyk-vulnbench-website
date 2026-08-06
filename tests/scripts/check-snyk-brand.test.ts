@@ -348,6 +348,43 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(findingRules(source)).toContain("gradient-count");
   });
 
+  it.each([
+    [
+      "solid Dark Purple",
+      'html[data-design-theme="snyk-2026"][data-theme="dark"] .panel { background: #2B0250; }',
+    ],
+    [
+      "solid Purple through a custom property",
+      'html[data-design-theme="snyk-2026"][data-theme="dark"] { --panel-fill: #6F00DD; } html[data-design-theme="snyk-2026"][data-theme="dark"] .panel { background-color: var(--panel-fill); }',
+    ],
+    [
+      "solid Orange-Red semantic surface",
+      'html[data-design-theme="snyk-2026"][data-theme="dark"] { --theme-warning-soft: #F3552E; }',
+    ],
+    [
+      "solid Amber system-Dark surface",
+      '@media (prefers-color-scheme: dark) { html[data-design-theme="snyk-2026"]:not([data-theme]) { --theme-evidence-surface: rgb(254 145 4); } }',
+    ],
+  ])("rejects an unauthorized %s panel in Dark", (_label, source) => {
+    expect(findingRules(source)).toContain("saturated-dark-panel");
+  });
+
+  it("accepts restrained alpha and neutral Dark panel surfaces", () => {
+    const source = `
+      html[data-design-theme="snyk-2026"][data-theme="dark"] {
+        --theme-paper: #030328;
+        --theme-paper-raised: rgba(255, 255, 255, 0.08);
+        --theme-paper-muted: rgba(255, 255, 255, 0.04);
+        --theme-warning-soft: rgba(254, 145, 4, 0.12);
+      }
+      html[data-design-theme="snyk-2026"][data-theme="dark"] .panel {
+        background: var(--theme-paper-raised);
+      }
+    `;
+
+    expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
+  });
+
   it("rejects two valid source fragments in one page composition", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
@@ -427,6 +464,25 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(() =>
       extractSnykAuditBlocks(".classic { color: #123456; }", "mixed.astro"),
     ).toThrow(/missing snyk-2026 audit blocks/i);
+  });
+
+  it.each([
+    ".branded-panel { background: #2B0250; }",
+    '.branded-copy { font-family: "Geist", sans-serif; }',
+    "<BrandFabric />",
+    "<SnykLogo />",
+    'background-image: url("/brand/snyk-2026/BRC_Fabric_Gradient.png");',
+  ])("rejects distinctive branded source outside audit markers", (escaped) => {
+    const source = `
+      /* snyk-2026-audit:start */
+      .brand { color: #FFFFFF; }
+      /* snyk-2026-audit:end */
+      ${escaped}
+    `;
+
+    expect(() => extractSnykAuditBlocks(source, "mixed.astro")).toThrow(
+      /snyk-branded construct outside marked audit blocks/i,
+    );
   });
 
   it.each([

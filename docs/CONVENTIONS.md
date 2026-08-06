@@ -18,6 +18,8 @@ conflict, the approved specification is the source of truth.
 ## Build-selected design themes
 
 Design theme is selected at build time; color mode is selected by the visitor or system preference.
+The current Snyk 2026 identity and Dark rules are defined by the
+[Snyk Dark Neutral Identity Refinement Design](superpowers/specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md).
 
 - Shared components consume semantic CSS tokens rather than environment
   variables. This keeps release content and analytical behavior independent of
@@ -30,6 +32,19 @@ Design theme is selected at build time; color mode is selected by the visitor or
   select the wrong design.
 - Branded changes must pass the mechanical brand audit and real visual and Axe
   checks. The audit is additive to, not a substitute for, browser validation.
+  Keep branded constructs inside marked audit blocks in shared sources. The
+  audit must reject saturated Dark panel fills, off-palette literals, excess
+  gradients, and branded source outside marked audit blocks.
+- VulnBench remains the primary header identity in both designs. Keep the
+  shared header compact at `4.25rem`. The official Snyk wordmark appears only
+  in the Snyk 2026 footer attribution, spatially separate from the initiative
+  text and with its required clear space.
+- Snyk 2026 Dark uses Midnight and restrained white-alpha depth for page,
+  narrative, explorer, chart, table, and metadata surfaces. Reserve locked
+  saturated colors for semantic marks and small intentional accents rather
+  than broad panels. Explicit Dark and no-JavaScript system Dark must resolve
+  the same semantic tokens; verify that parity in source contracts and rendered
+  browser checks.
 - Snyk 2026 Light is a website-specific white analytical canvas with Midnight
   copy, restrained locked-color alpha tints, and one contained exact Brand
   Gradient accent per page. Keep header/footer Midnight, keep most narrative

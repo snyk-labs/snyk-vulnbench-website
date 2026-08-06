@@ -51,6 +51,18 @@ and one visible exact Brand Gradient hero or PageHero accent. Header and footer
 remain Midnight; the homepage may retain one contained Midnight analytical
 evidence card. Snyk Dark and Classic retain their prior contracts.
 
+## Approved identity and Dark refinement
+
+The
+[Snyk Dark Neutral Identity Refinement Design](../specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md)
+supersedes the original header and Family A Dark implementation bullets below
+wherever they conflict. VulnBench returns as the compact primary header
+identity, the official Snyk wordmark is footer-only, and neutral Midnight plus
+white-alpha depth replaces broad saturated Dark panels. Semantic colors remain
+restrained and labeled, the composition keeps one thin warm gradient edge, and
+explicit Dark must stay identical to no-JavaScript system Dark. Approved Snyk
+Light styling remains exactly preserved.
+
 ## Implementation
 
 1. **Persist the accepted plan and add the tested build contract**

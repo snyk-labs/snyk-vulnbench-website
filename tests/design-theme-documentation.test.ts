@@ -91,6 +91,66 @@ describe("Snyk 2026 design-theme documentation", () => {
     );
   });
 
+  test("records the neutral identity and Dark refinement as the current branded contract", async () => {
+    const conventions = await readDocumentation("docs/CONVENTIONS.md");
+
+    expect(conventions).toContain(
+      "[Snyk Dark Neutral Identity Refinement Design](superpowers/specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md)",
+    );
+    expect(conventions).toContain(
+      "VulnBench remains the primary header identity in both designs",
+    );
+    expect(conventions).toContain(
+      "The official Snyk wordmark appears only in the Snyk 2026 footer attribution",
+    );
+    expect(conventions).toContain(
+      "Snyk 2026 Dark uses Midnight and restrained white-alpha depth",
+    );
+    expect(conventions).toContain(
+      "Explicit Dark and no-JavaScript system Dark must resolve the same semantic tokens",
+    );
+    expect(conventions).toContain(
+      "reject saturated Dark panel fills, off-palette literals, excess gradients, and branded source outside marked audit blocks",
+    );
+  });
+
+  test("explicitly supersedes stale header and Dark requirements in the original spec and plan", async () => {
+    const [design, plan] = await Promise.all([
+      readDocumentation(
+        "docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md",
+      ),
+      readDocumentation(
+        "docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md",
+      ),
+    ]);
+    const refinementLink =
+      "[Snyk Dark Neutral Identity Refinement Design](2026-08-06-snyk-dark-neutral-identity-refinement-design.md)";
+    const planRefinementLink =
+      "[Snyk Dark Neutral Identity Refinement Design](../specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md)";
+
+    expect(design).toContain(refinementLink);
+    expect(design).toContain(
+      "supersedes the original header identity and Dark surface requirements below wherever they conflict",
+    );
+    expect(design).toContain(
+      "VulnBench is the primary compact header identity",
+    );
+    expect(design).toContain(
+      "neutral white-alpha raised surfaces replace broad saturated Dark Purple or Purple panels",
+    );
+
+    expect(plan).toContain(planRefinementLink);
+    expect(plan).toContain(
+      "supersedes the original header and Family A Dark implementation bullets below wherever they conflict",
+    );
+    expect(plan).toContain(
+      "the official Snyk wordmark is footer-only",
+    );
+    expect(plan).toContain(
+      "Light styling remains exactly preserved",
+    );
+  });
+
   test("records the accepted website-specific Light deviation", async () => {
     const [design, plan] = await Promise.all([
       readDocumentation(
