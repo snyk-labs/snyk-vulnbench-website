@@ -34,6 +34,9 @@ const ALLOWED_WHITE_ALPHA = new Set([
   "0.65",
   "0.78",
 ]);
+const ALLOWED_WHITE_ALPHA_VALUES = new Set(
+  [...ALLOWED_WHITE_ALPHA].map(Number),
+);
 const ALLOWED_WHITE_HEX_ALPHA = new Set([
   "0A",
   "14",
@@ -213,9 +216,7 @@ function parseAlpha(value) {
 }
 
 function approvedWhiteAlpha(alpha) {
-  return [...ALLOWED_WHITE_ALPHA].some(
-    (allowed) => Math.abs(Number(allowed) - alpha) < 0.0001,
-  );
+  return ALLOWED_WHITE_ALPHA_VALUES.has(alpha);
 }
 
 function parseRgbLiteral(body) {
@@ -319,8 +320,41 @@ function collectCustomProperties(source, customProperties = new Map()) {
   return customProperties;
 }
 
+function stripQuotedContent(value) {
+  let quote = null;
+  let escaped = false;
+  return [...value]
+    .map((character) => {
+      if (escaped) {
+        escaped = false;
+        return quote ? " " : character;
+      }
+      if (character === "\\") {
+        escaped = true;
+        return quote ? " " : character;
+      }
+      if (quote) {
+        if (character === quote) quote = null;
+        return " ";
+      }
+      if (character === '"' || character === "'") {
+        quote = character;
+        return " ";
+      }
+      return character;
+    })
+    .join("");
+}
+
+function sanitizeQuotedCustomProperties(source) {
+  return source.replace(
+    /(--[\w-]+\s*:\s*)([^;}\n]+)/giu,
+    (_match, prefix, value) => prefix + stripQuotedContent(value),
+  );
+}
+
 function findVarCall(value) {
-  const match = /\bvar\(/iu.exec(value);
+  const match = /\bvar\(/iu.exec(stripQuotedContent(value));
   if (!match) return null;
   const start = match.index;
   let depth = 1;
@@ -438,6 +472,39 @@ function customPropertyFindings(
   });
 }
 
+function auditCustomPropertyColors(source, fileName, customProperties) {
+  const findings = [];
+  for (const declaration of declarations(source)) {
+    if (!declaration.property.startsWith("--")) continue;
+    const resolution = resolveCustomValue(
+      stripQuotedContent(declaration.value),
+      customProperties,
+    );
+    findings.push(
+      ...customPropertyFindings(
+        resolution,
+        source,
+        fileName,
+        declaration.index,
+      ),
+    );
+    for (const value of resolution.values) {
+      const unquoted = stripQuotedContent(value);
+      findings.push(
+        ...auditHexColors(unquoted, fileName),
+        ...auditColorFunctions(unquoted, fileName),
+        ...auditNamedColorValue(
+          unquoted,
+          source,
+          fileName,
+          declaration.index,
+        ),
+      );
+    }
+  }
+  return findings;
+}
+
 function colorDeclarationValues(source) {
   const values = [];
   for (const declaration of declarations(source)) {
@@ -496,9 +563,10 @@ function auditResolvedColors(source, fileName, customProperties) {
       ),
     );
     for (const value of resolution.values) {
+      const unquoted = stripQuotedContent(value);
       findings.push(
         ...auditNamedColorValue(
-          value,
+          unquoted,
           source,
           fileName,
           declaration.index,
@@ -506,8 +574,8 @@ function auditResolvedColors(source, fileName, customProperties) {
       );
       if (declaration.value.includes("var(")) {
         findings.push(
-          ...auditHexColors(value, fileName),
-          ...auditColorFunctions(value, fileName),
+          ...auditHexColors(unquoted, fileName),
+          ...auditColorFunctions(unquoted, fileName),
         );
       }
     }
@@ -710,6 +778,7 @@ export function auditText(
 ) {
   const resolvedCustomProperties =
     customProperties ?? collectCustomProperties(source);
+  const literalAuditSource = sanitizeQuotedCustomProperties(source);
   const gradientAudit = auditGradients(
     source,
     fileName,
@@ -717,8 +786,13 @@ export function auditText(
   );
   return [
     ...auditForbiddenCss(source, fileName),
-    ...auditHexColors(source, fileName),
-    ...auditColorFunctions(source, fileName),
+    ...auditHexColors(literalAuditSource, fileName),
+    ...auditColorFunctions(literalAuditSource, fileName),
+    ...auditCustomPropertyColors(
+      source,
+      fileName,
+      resolvedCustomProperties,
+    ),
     ...auditResolvedColors(source, fileName, resolvedCustomProperties),
     ...auditFonts(source, fileName, resolvedCustomProperties),
     ...gradientAudit.findings,
@@ -841,12 +915,8 @@ export function extractSnykAuditBlocks(source, fileName = "<mixed source>") {
   }
   const outside = source.replace(blockPattern, "");
   if (
-    /data-design-theme\s*=\s*["']snyk-2026["']/iu.test(outside) ||
-    /\bisSnyk2026Design\s*(?:&&|\?)/u.test(outside) ||
-    /\b(?:options\.)?designTheme\s*(?:===|==|:)\s*["']snyk-2026["']/u.test(
-      outside,
-    ) ||
-    /\brenderBranded[\w]*\s*\(/u.test(outside)
+    /snyk-2026/iu.test(outside) ||
+    /\bisSnyk2026Design\b/u.test(outside)
   ) {
     throw new Error(
       `${fileName} contains a Snyk-branded construct outside marked audit blocks`,

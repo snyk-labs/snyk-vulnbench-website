@@ -66,6 +66,19 @@ describe("Snyk 2026 mechanical brand audit", () => {
   });
 
   it.each([
+    "rgba(255 255 255 / 0.65)",
+    "rgba(255 255 255 / .6500)",
+    "rgba(255 255 255 / 65%)",
+    "rgba(255 255 255 / 65.000%)",
+  ])("accepts exact approved white alpha %s", (color) => {
+    expect(
+      auditText(`.brand { color: ${color}; }`, {
+        fileName: "fixture.css",
+      }),
+    ).toEqual([]);
+  });
+
+  it.each([
     ["off-palette hex", ".card { color: #123456; }", "off-palette"],
     ["off-palette rgb", ".card { color: rgb(12, 34, 56); }", "off-palette"],
     [
@@ -149,6 +162,16 @@ describe("Snyk 2026 mechanical brand audit", () => {
     [
       "invalid brand percentage alpha",
       ".card { color: rgba(111 0 221 / 101%); }",
+      "off-palette",
+    ],
+    [
+      "near approved white decimal alpha",
+      ".card { color: rgba(255 255 255 / 0.65005); }",
+      "off-palette",
+    ],
+    [
+      "near approved white percentage alpha",
+      ".card { color: rgba(255 255 255 / 65.005%); }",
       "off-palette",
     ],
     ["HSL", ".card { color: hsl(10 90% 50%); }", "off-palette"],
@@ -266,6 +289,38 @@ describe("Snyk 2026 mechanical brand audit", () => {
     ).toEqual([]);
   });
 
+  it("audits color storage in every arbitrary custom property", () => {
+    expect(findingRules("--tone: red;")).toContain("off-palette");
+    expect(
+      findingRules(
+        "--tone: red; filter: drop-shadow(0 0 1px var(--tone));",
+      ),
+    ).toContain("off-palette");
+    expect(
+      findingRules(
+        "--source: tomato; --tone: var(--source); filter: drop-shadow(0 0 1px var(--tone));",
+      ),
+    ).toContain("off-palette");
+  });
+
+  it("accepts locked custom storage without inspecting variable names", () => {
+    expect(
+      auditText(
+        "--red: #6F00DD; filter: drop-shadow(0 0 1px var(--red));",
+        { fileName: "fixture.css" },
+      ),
+    ).toEqual([]);
+  });
+
+  it.each([
+    '--label: "red"; content: var(--label);',
+    '--label: "#123456"; content: var(--label);',
+    '--image: url("/assets/red.png"); background-image: var(--image);',
+    '--copy: "var(--missing)"; content: var(--copy);',
+  ])("ignores quoted non-style custom-property content", (source) => {
+    expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
+  });
+
   it("rejects more than one sanctioned gradient in one composition", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
@@ -324,8 +379,12 @@ describe("Snyk 2026 mechanical brand audit", () => {
 
   it.each([
     ':global(html[data-design-theme="snyk-2026"]) .escaped { color: #FFFFFF; }',
+    ":global(html[data-design-theme=snyk-2026]) .escaped { color: #FFFFFF; }",
     "{isSnyk2026Design && <BrandFabric />}",
+    "{isSnyk2026Design}",
     'if (designTheme === "snyk-2026") return renderBrand();',
+    'if ("snyk-2026" === designTheme) return renderBrand();',
+    'switch (designTheme) { case "snyk-2026": return renderBrand(); }',
   ])("rejects branded constructs outside marked source blocks", (escaped) => {
     const source = `
       /* snyk-2026-audit:start */
