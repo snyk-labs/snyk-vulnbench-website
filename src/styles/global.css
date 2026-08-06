@@ -157,7 +157,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"]
   .evidence-band
   .observation.matched
   .metric {
-  color: #FFFFFF;
+  color: var(--theme-matched-text);
 }
 
 html[data-design-theme="snyk-2026"][data-theme="dark"] a {
@@ -239,7 +239,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] .button.secondary:hover {
     .evidence-band
     .observation.matched
     .metric {
-    color: #FFFFFF;
+    color: var(--theme-matched-text);
   }
 
   html[data-design-theme="snyk-2026"]:not([data-theme]) a {

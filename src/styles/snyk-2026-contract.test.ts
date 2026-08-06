@@ -29,6 +29,7 @@ const semanticTokens = [
   "--theme-purple-dark",
   "--theme-purple-soft",
   "--theme-matched",
+  "--theme-matched-text",
   "--theme-matched-soft",
   "--theme-unmatched",
   "--theme-unmatched-soft",
@@ -56,6 +57,8 @@ const semanticTokens = [
   "--theme-series-5",
   "--theme-series-6",
   "--theme-series-fallback",
+  "--theme-export-surface",
+  "--theme-export-text",
   "--font-sans",
   "--font-mono",
   "--font-weight-h1",
@@ -183,6 +186,9 @@ describe("Snyk 2026 design contract", () => {
       "rgba(111, 0, 221, 0.04)",
     );
     expect(declarationValue(light, "--theme-ink")).toBe("#030328");
+    expect(declarationValue(light, "--theme-matched-text")).toBe("#6F00DD");
+    expect(declarationValue(light, "--theme-export-surface")).toBe("#FFFFFF");
+    expect(declarationValue(light, "--theme-export-text")).toBe("#030328");
     expect(declarationValue(light, "--theme-rule-strong")).toBe(
       "rgba(3, 3, 40, 0.48)",
     );
@@ -231,6 +237,7 @@ describe("Snyk 2026 design contract", () => {
       "--theme-purple-dark": "rgba(255, 255, 255, 0.78)",
       "--theme-purple-soft": "rgba(111, 0, 221, 0.18)",
       "--theme-matched": "#6F00DD",
+      "--theme-matched-text": "rgba(255, 255, 255, 0.78)",
       "--theme-matched-soft": "rgba(111, 0, 221, 0.18)",
       "--theme-unmatched": "#F3552E",
       "--theme-unmatched-soft": "rgba(243, 85, 46, 0.12)",
@@ -243,7 +250,9 @@ describe("Snyk 2026 design contract", () => {
       "--theme-evidence-accent": "#6F00DD",
       "--theme-evidence-matched": "#6F00DD",
       "--theme-evidence-unmatched": "#F3552E",
-      "--focus-ring": "0 0 0 3px #030328, 0 0 0 6px #6F00DD",
+      "--theme-export-surface": "#030328",
+      "--theme-export-text": "#FFFFFF",
+      "--focus-ring": "0 0 0 3px #6F00DD, 0 0 0 6px #FFFFFF",
     } as const;
 
     for (const [token, value] of Object.entries(expected)) {

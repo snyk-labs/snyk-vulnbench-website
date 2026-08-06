@@ -23,6 +23,7 @@ html[data-design-theme="snyk-2026"][data-theme="light"] {
   --theme-purple-dark: #6F00DD;
   --theme-purple-soft: rgba(111, 0, 221, 0.08);
   --theme-matched: #6F00DD;
+  --theme-matched-text: #6F00DD;
   --theme-matched-soft: rgba(111, 0, 221, 0.08);
   --theme-unmatched: #F3552E;
   --theme-unmatched-soft: rgba(243, 85, 46, 0.08);
@@ -50,6 +51,8 @@ html[data-design-theme="snyk-2026"][data-theme="light"] {
   --theme-series-5: #FF00FF;
   --theme-series-6: #030328;
   --theme-series-fallback: rgba(3, 3, 40, 0.72);
+  --theme-export-surface: #FFFFFF;
+  --theme-export-text: #030328;
   --font-sans: "Geist Variable", sans-serif;
   --font-mono: "Geist Mono Variable", monospace;
   --font-weight-h1: 700;
@@ -81,6 +84,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
   --theme-purple-dark: rgba(255, 255, 255, 0.78);
   --theme-purple-soft: rgba(111, 0, 221, 0.18);
   --theme-matched: #6F00DD;
+  --theme-matched-text: rgba(255, 255, 255, 0.78);
   --theme-matched-soft: rgba(111, 0, 221, 0.18);
   --theme-unmatched: #F3552E;
   --theme-unmatched-soft: rgba(243, 85, 46, 0.12);
@@ -108,6 +112,8 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
   --theme-series-5: #FF00FF;
   --theme-series-6: #FFFFFF;
   --theme-series-fallback: rgba(255, 255, 255, 0.65);
+  --theme-export-surface: #030328;
+  --theme-export-text: #FFFFFF;
   --font-sans: "Geist Variable", sans-serif;
   --font-mono: "Geist Mono Variable", monospace;
   --font-weight-h1: 700;
@@ -119,7 +125,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
   --font-weight-emphasis: 500;
   --font-weight-metric: 700;
   --font-weight-metric-compact: 700;
-  --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #6F00DD;
+  --focus-ring: 0 0 0 3px #6F00DD, 0 0 0 6px #FFFFFF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -139,6 +145,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
     --theme-purple-dark: rgba(255, 255, 255, 0.78);
     --theme-purple-soft: rgba(111, 0, 221, 0.18);
     --theme-matched: #6F00DD;
+    --theme-matched-text: rgba(255, 255, 255, 0.78);
     --theme-matched-soft: rgba(111, 0, 221, 0.18);
     --theme-unmatched: #F3552E;
     --theme-unmatched-soft: rgba(243, 85, 46, 0.12);
@@ -166,6 +173,8 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
     --theme-series-5: #FF00FF;
     --theme-series-6: #FFFFFF;
     --theme-series-fallback: rgba(255, 255, 255, 0.65);
+    --theme-export-surface: #030328;
+    --theme-export-text: #FFFFFF;
     --font-sans: "Geist Variable", sans-serif;
     --font-mono: "Geist Mono Variable", monospace;
     --font-weight-h1: 700;
@@ -177,6 +186,6 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
     --font-weight-emphasis: 500;
     --font-weight-metric: 700;
     --font-weight-metric-compact: 700;
-    --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #6F00DD;
+    --focus-ring: 0 0 0 3px #6F00DD, 0 0 0 6px #FFFFFF;
   }
 }

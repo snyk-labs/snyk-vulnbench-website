@@ -58,6 +58,37 @@ function contrastOnWhite(color: string) {
   return (1.05) / (foreground + 0.05);
 }
 
+function rgbaChannels(color: string) {
+  const channels = color.match(/[\d.]+/gu)?.map(Number) ?? [];
+  const [red, green, blue, alpha = 1] = channels;
+  if (red === undefined || green === undefined || blue === undefined) {
+    throw new Error(`Unable to parse color ${color}`);
+  }
+  return { alpha, blue, green, red };
+}
+
+function compositeColor(foreground: string, background: string) {
+  const front = rgbaChannels(foreground);
+  const back = rgbaChannels(background);
+  return [front.red, front.green, front.blue].map((channel, index) => {
+    const backChannel = [back.red, back.green, back.blue][index] ?? 0;
+    return Math.round(channel * front.alpha + backChannel * (1 - front.alpha));
+  }) as [number, number, number];
+}
+
+function contrastBetween(foreground: string, background: string) {
+  const backdrop = compositeColor(background, MIDNIGHT);
+  const front = rgbaChannels(foreground);
+  const rendered = [front.red, front.green, front.blue].map((channel, index) =>
+    Math.round(channel * front.alpha + (backdrop[index] ?? 0) * (1 - front.alpha)),
+  ) as [number, number, number];
+  const foregroundLuminance = relativeLuminance(...rendered);
+  const backgroundLuminance = relativeLuminance(...backdrop);
+  const lighter = Math.max(foregroundLuminance, backgroundLuminance);
+  const darker = Math.min(foregroundLuminance, backgroundLuminance);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 async function expectOneVisibleBrandGradient(
   page: import("@playwright/test").Page,
 ) {
@@ -388,9 +419,12 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
         "--ink-faint",
         "--rule-strong",
         "--matched",
+        "--theme-matched-text",
         "--unmatched",
         "--warning",
         "--evidence-hover",
+        "--theme-export-surface",
+        "--theme-export-text",
       ].map((token) => [token, style.getPropertyValue(token).trim()]),
     );
   });
@@ -403,9 +437,12 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
     "--ink-faint": DARK_TERTIARY,
     "--rule-strong": DARK_STRONG_RULE,
     "--matched": "#6F00DD",
+    "--theme-matched-text": DARK_PRIMARY,
     "--unmatched": "#F3552E",
     "--warning": "#FE9104",
     "--evidence-hover": "rgba(255, 255, 255, 0.12)",
+    "--theme-export-surface": "#030328",
+    "--theme-export-text": "#FFFFFF",
   });
   await expect(page.locator(".hero h1")).toHaveCSS("color", WHITE);
   await expect(page.locator("body")).toHaveCSS("font-weight", "400");
@@ -422,6 +459,51 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
   );
   await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
   await expect(page.locator(".brand-gradient-accent")).toHaveCSS("height", "1px");
+  const primaryButton = page.locator(".button").first();
+  await primaryButton.focus();
+  await expect(primaryButton).toBeFocused();
+  await expect(primaryButton).toHaveCSS(
+    "box-shadow",
+    "rgb(111, 0, 221) 0px 0px 0px 3px, rgb(255, 255, 255) 0px 0px 0px 6px",
+  );
+  expect(contrastBetween(WHITE, MIDNIGHT)).toBeGreaterThanOrEqual(3);
+  expect(contrastBetween(WHITE, DARK_RAISED)).toBeGreaterThanOrEqual(3);
+  const evidenceColors = await page.evaluate(() => {
+    const surface = document.querySelector<HTMLElement>(".evidence-band");
+    const matched = document.querySelector<HTMLElement>(
+      ".evidence-band .observation.matched .metric",
+    );
+    const unmatched = document.querySelector<HTMLElement>(
+      ".evidence-band .observation.unmatched .metric",
+    );
+    if (!surface || !matched || !unmatched) {
+      throw new Error("Homepage evidence colors are incomplete");
+    }
+    return {
+      background: getComputedStyle(surface).backgroundColor,
+      matched: getComputedStyle(matched).color,
+      unmatched: getComputedStyle(unmatched).color,
+    };
+  });
+  expect(evidenceColors).toEqual({
+    background: DARK_RAISED,
+    matched: DARK_PRIMARY,
+    unmatched: ORANGE_RED,
+  });
+  expect(
+    contrastBetween(evidenceColors.matched, evidenceColors.background),
+  ).toBeGreaterThanOrEqual(4.5);
+  expect(
+    contrastBetween(evidenceColors.unmatched, evidenceColors.background),
+  ).toBeGreaterThanOrEqual(4.5);
+  await expect(
+    page.locator(".recurrence-plot__bar--matchedAllFive"),
+  ).toHaveCSS("color", PURPLE);
+  await expect(
+    page.getByRole("img", {
+      name: "Finding recurrence contrast. Reference-matched findings were more likely to recur in all five runs than unmatched findings.",
+    }),
+  ).toBeVisible();
   await expectOneVisibleBrandGradient(page);
 
   await page.goto("/releases/js-1.0");
@@ -728,6 +810,7 @@ test("publishes branded favicon and default social metadata assets", async ({
 });
 
 test("exports self-contained audited chart SVGs in explicit Light and Dark", async ({
+  context,
   page,
 }) => {
   await prepareTheme(page, "light", "light");
@@ -756,18 +839,52 @@ test("exports self-contained audited chart SVGs in explicit Light and Dark", asy
       /<rect data-export-background="" width="100%" height="100%" fill="([^"]+)"/u,
     )?.[1];
 
-    expect(background).toBe(mode === "light" ? WHITE : DARK_RAISED);
+    expect(background).toBe(mode === "light" ? "#FFFFFF" : "#030328");
     expect(svg).toContain("#6F00DD");
     expect(svg).toContain(mode === "light" ? MIDNIGHT : "#FFFFFF");
     expect(svg).toContain("Geist Variable");
     expect(svg).toContain("Geist Mono Variable");
     expect(svg).not.toContain("var(--");
+    expect(svg).not.toMatch(/(?:fill|stroke)-opacity="0\./u);
+    const exportedTextTags = svg.match(/<text\b[^>]*>/gu) ?? [];
+    expect(exportedTextTags.length).toBeGreaterThan(0);
+    expect(exportedTextTags.filter((tag) => tag.includes("rgba("))).toEqual([]);
     expect(
       auditText(svg, {
         fileName: `${mode}-${download.suggestedFilename()}`,
         checkOverflowGuard: false,
       }),
     ).toEqual([]);
+
+    const renderPage = await context.newPage();
+    await renderPage.setContent(svg);
+    const readback = await renderPage.evaluate(() => {
+      const backgroundRect = document.querySelector<SVGElement>(
+        "[data-export-background]",
+      );
+      const text = document.querySelector<SVGTextElement>("text");
+      const marker = document.querySelector<SVGTextElement>(
+        "[data-configuration]",
+      );
+      if (!backgroundRect || !text || !marker) {
+        throw new Error("Rendered export is incomplete");
+      }
+      return {
+        background: getComputedStyle(backgroundRect).fill,
+        markerOpacity: getComputedStyle(marker).fillOpacity,
+        text: getComputedStyle(text).fill,
+        textOpacity: getComputedStyle(text).fillOpacity,
+      };
+    });
+    expect(readback.background).toBe(mode === "light" ? WHITE : MIDNIGHT);
+    expect(readback.markerOpacity).toBe("1");
+    expect(readback.textOpacity).toBe("1");
+    expect(
+      mode === "light"
+        ? contrastOnWhite(readback.text)
+        : contrastBetween(readback.text, MIDNIGHT),
+    ).toBeGreaterThanOrEqual(4.5);
+    await renderPage.close();
   }
 });
 
@@ -948,6 +1065,15 @@ test.describe("Snyk 2026 without JavaScript", () => {
     await expect(
       page.getByRole("link", { name: "Explore the results" }),
     ).toBeVisible();
+    const noJsPrimaryControl = page.getByRole("link", {
+      name: "Explore the results",
+    });
+    await noJsPrimaryControl.focus();
+    await expect(noJsPrimaryControl).toBeFocused();
+    await expect(noJsPrimaryControl).toHaveCSS(
+      "box-shadow",
+      "rgb(111, 0, 221) 0px 0px 0px 3px, rgb(255, 255, 255) 0px 0px 0px 6px",
+    );
     await expect(page.locator(".evidence-strip")).toContainText("300");
     await expect(page.locator(".evidence-strip")).toContainText("scans");
     await expectNoHorizontalOverflow(page);
