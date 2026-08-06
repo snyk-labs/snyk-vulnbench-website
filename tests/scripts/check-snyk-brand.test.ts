@@ -617,6 +617,63 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(findingRules(source)).toContain("decorative-shadow");
   });
 
+  it.each([
+    ["direct color", ".copy { text-shadow: 0 1px 2px #6F00DD; }"],
+    ["currentColor", ".copy { text-shadow: 1px 1px currentColor; }"],
+    [
+      "custom property",
+      "--effect: 0 0 6px #FFFFFF; .copy { text-shadow: var(--effect); }",
+    ],
+    [
+      "custom-property fallback",
+      ".copy { text-shadow: var(--missing-effect, 0 0 6px #FFFFFF); }",
+    ],
+    [
+      "recursive custom property",
+      "--effect-source: 0 0 6px currentColor; --effect: var(--effect-source); .copy { text-shadow: var(--effect); }",
+    ],
+    [
+      "multiple custom-property definitions",
+      ":root { --effect: none; } .theme { --effect: 0 0 6px #FFFFFF; } .copy { text-shadow: var(--effect); }",
+    ],
+    [
+      "multiple shadows",
+      ".copy { text-shadow: 1px 1px 0 #6F00DD, 0 0 6px #FFFFFF; }",
+    ],
+    ["zero-offset blur", ".copy { text-shadow: 0 0 8px #FF00FF; }"],
+    ["zero-offset solid", ".copy { text-shadow: 0 0 0 #FFFFFF; }"],
+    ["transparent shadow syntax", ".copy { text-shadow: 0 0 8px transparent; }"],
+  ])("rejects visible text-shadow through %s", (_label, source) => {
+    expect(findingRules(source)).toContain("decorative-shadow");
+  });
+
+  it.each([
+    ".copy { text-shadow: none; }",
+    ".copy { text-shadow: none !important; }",
+    ".copy { text-shadow: initial; }",
+    "--effect: none; .copy { text-shadow: var(--effect); }",
+    ".copy { text-shadow: var(--missing-effect, none); }",
+  ])("accepts guaranteed no-effect text-shadow %s", (source) => {
+    expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
+  });
+
+  it.each(["inherit", "unset", "revert", "revert-layer"])(
+    "rejects potentially effectful text-shadow control value %s",
+    (value) => {
+      expect(findingRules(`.copy { text-shadow: ${value}; }`)).toContain(
+        "decorative-shadow",
+      );
+    },
+  );
+
+  it.each([
+    ".panel { backdrop-filter: blur(12px); }",
+    ".panel { -webkit-backdrop-filter: blur(12px); }",
+    ".panel { filter: blur(12px); }",
+  ])("rejects branded backdrop/filter blur %s", (source) => {
+    expect(findingRules(source)).toContain("forbidden-css");
+  });
+
   it("accepts only the approved zero-blur focus keyline", () => {
     expect(
       auditText(

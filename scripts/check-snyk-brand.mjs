@@ -125,6 +125,8 @@ const FORBIDDEN_CSS = [
   /-webkit-text-fill-color\s*:\s*transparent/giu,
   /(?:-webkit-)?mask-image\s*:/giu,
   /(?:-webkit-)?mask-composite\s*:/giu,
+  /(?:-webkit-)?backdrop-filter\s*:/giu,
+  /(?<!backdrop-)filter\s*:\s*[^;}\n]*\bblur\s*\(/giu,
 ];
 const BRANDED_PAGE_SHARED_TARGETS = [
   { path: "src/styles/tokens-snyk-2026.css" },
@@ -957,6 +959,11 @@ function isApprovedFocusKeyline(value) {
   );
 }
 
+function isGuaranteedNoEffectTextShadow(value) {
+  const normalized = value.replace(/\s*!important\s*$/iu, "").trim();
+  return /^(?:none|initial)$/iu.test(normalized);
+}
+
 function auditDecorativeShadows(source, fileName, customProperties) {
   const findings = [];
   const seen = new Set();
@@ -980,6 +987,19 @@ function auditDecorativeShadows(source, fileName, customProperties) {
       addFinding(
         declaration.index,
         "filter: drop-shadow() is forbidden in branded output",
+      );
+    }
+    if (
+      declaration.property.toLowerCase() === "text-shadow" &&
+      (resolution.errors.length > 0 ||
+        resolution.values.length === 0 ||
+        resolution.values.some(
+          (value) => !isGuaranteedNoEffectTextShadow(value),
+        ))
+    ) {
+      addFinding(
+        declaration.index,
+        "text-shadow is limited to guaranteed no-effect values none and initial",
       );
     }
     if (
