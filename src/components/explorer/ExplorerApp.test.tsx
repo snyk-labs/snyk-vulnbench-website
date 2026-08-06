@@ -112,5 +112,10 @@ describe("ExplorerApp", () => {
     expect(writeText).toHaveBeenCalledWith(
       expect.stringContaining("/releases/js-1.0/explore?v=1"),
     );
+    const status = await screen.findByText("Share link copied.", {
+      selector: '[role="status"]',
+    });
+    expect(status).toHaveClass("explorer-app__share-status");
+    expect(status).toHaveTextContent("Share link copied.");
   });
 });

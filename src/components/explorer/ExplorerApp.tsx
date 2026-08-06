@@ -143,6 +143,12 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
   const filterTriggerRef = useRef<HTMLButtonElement>(null);
   const comparisonTriggerRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    if (!shareMessage) return;
+    const timeout = window.setTimeout(() => setShareMessage(""), 4000);
+    return () => window.clearTimeout(timeout);
+  }, [shareMessage]);
+
   function restoreFocus(ref: React.RefObject<HTMLButtonElement | null>) {
     window.setTimeout(() => ref.current?.focus(), 0);
   }
@@ -828,13 +834,32 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           text-decoration: none;
         }
 
-        .explorer-header__notice,
-        .explorer-app__share-status {
+        .explorer-header__notice {
           padding: 0.7rem 1rem;
           margin: 0;
           background: var(--warning-soft);
           color: var(--ink);
           font-size: var(--step--1);
+        }
+
+        .explorer-app__share-status {
+          position: fixed;
+          z-index: 90;
+          right: max(var(--space-4), env(safe-area-inset-right));
+          bottom: max(var(--space-4), env(safe-area-inset-bottom));
+          width: min(24rem, calc(100vw - 2rem));
+          max-height: min(8rem, calc(100vh - 2rem));
+          padding: 0.7rem 1rem;
+          margin: 0;
+          border: 1px solid var(--rule-strong);
+          border-inline-start: 0.25rem solid var(--matched);
+          border-radius: var(--radius);
+          background: var(--paper-raised);
+          color: var(--ink);
+          font-size: var(--step--1);
+          overflow: auto;
+          overflow-wrap: anywhere;
+          pointer-events: none;
         }
 
         .explorer-tabs {

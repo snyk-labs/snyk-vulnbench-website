@@ -28,6 +28,36 @@ test("renders the published explorer default with static evidence", async ({
   await expect(page.getByRole("tab", { name: "Summary", selected: true })).toBeVisible();
 });
 
+test("shows share confirmation as a compact lower-right toast", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/releases/js-1.0/explore");
+  await page.locator(explorerIsland).waitFor({ state: "attached" });
+
+  await page.getByRole("button", { name: "Copy share link" }).click();
+
+  const toast = page.locator(".explorer-app__share-status");
+  await expect(toast).toBeVisible();
+  const geometry = await toast.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    return {
+      position: style.position,
+      width: rect.width,
+      right: window.innerWidth - rect.right,
+      bottom: window.innerHeight - rect.bottom,
+    };
+  });
+  expect(geometry.position).toBe("fixed");
+  expect(geometry.width).toBeLessThan(400);
+  expect(geometry.right).toBeGreaterThan(15);
+  expect(geometry.right).toBeLessThan(40);
+  expect(geometry.bottom).toBeGreaterThan(15);
+  expect(geometry.bottom).toBeLessThan(40);
+  await expect(toast).toBeHidden({ timeout: 5000 });
+});
+
 test("restores URL state and updates it after filtering", async ({ page }) => {
   await page.goto(
     "/releases/js-1.0/explore?v=1&view=efficiency&ref=0&resource=tokens",
