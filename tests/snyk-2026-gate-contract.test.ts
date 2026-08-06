@@ -1,4 +1,6 @@
 import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
 
 const expectedCommands = [
@@ -7,23 +9,26 @@ const expectedCommands = [
   "build",
   "check:releases",
   "check:budget",
-  "test:e2e",
+  "check:brand",
+  "test:e2e:snyk-2026",
 ];
 
-describe("Classic verification gate", () => {
-  it.each(["classic", "snyk-2026", "invalid", undefined])(
-    "forces every child command to Classic under ambient %s",
+describe("Snyk 2026 verification gate", () => {
+  it.each(["classic", "invalid", undefined])(
+    "forces every child command to Snyk 2026 under ambient %s",
     async (ambientTheme) => {
       const packageJson = JSON.parse(
         await readFile(`${process.cwd()}/package.json`, "utf8"),
       ) as { scripts: Record<string, string> };
 
-      expect(packageJson.scripts["verify:classic"]).toBe(
-        "VULNBENCH_DESIGN_THEME=classic node scripts/verify-classic.mjs",
+      expect(packageJson.scripts["verify:snyk-2026"]).toBe(
+        "VULNBENCH_DESIGN_THEME=snyk-2026 node scripts/verify-snyk-2026.mjs",
       );
 
-      const { inspectClassicGate } = await import(
-        "../scripts/verify-classic.mjs"
+      const { inspectSnyk2026Gate } = await import(
+        pathToFileURL(
+          resolve(process.cwd(), "scripts/verify-snyk-2026.mjs"),
+        ).href
       );
       const environment = { ...process.env };
       if (ambientTheme === undefined) {
@@ -31,12 +36,11 @@ describe("Classic verification gate", () => {
       } else {
         environment.VULNBENCH_DESIGN_THEME = ambientTheme;
       }
-      const observations = inspectClassicGate(environment);
 
-      expect(observations).toEqual(
+      expect(inspectSnyk2026Gate(environment)).toEqual(
         expectedCommands.map((command) => ({
           command,
-          designTheme: "classic",
+          designTheme: "snyk-2026",
         })),
       );
     },

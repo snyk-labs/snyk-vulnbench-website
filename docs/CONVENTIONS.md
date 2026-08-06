@@ -25,9 +25,9 @@ Design theme is selected at build time; color mode is selected by the visitor or
 - Classic and Snyk 2026 output require separate verification. Run the complete
   `verify:classic` and `verify:snyk-2026` gates before delivery.
 - Verification gates override the design theme for every spawned child process
-  and server. Contract tests must exercise the gate under both supported
-  ambient values so an inherited deployment environment cannot select the
-  wrong design.
+  and server. Contract tests must exercise each gate under Classic, invalid,
+  and unset ambient values so an inherited deployment environment cannot
+  select the wrong design.
 - Branded changes must pass the mechanical brand audit and real visual and Axe
   checks. The audit is additive to, not a substitute for, browser validation.
 - In Snyk 2026 Family B, running copy and dense analytical content must sit on
