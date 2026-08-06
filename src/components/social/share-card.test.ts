@@ -40,6 +40,21 @@ const classicSummarySvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" 
   <text x="80" y="592" fill="#625d68" font-family="monospace" font-size="18">Dataset 1.0.0 · Snyk VulnBench JS 1.0 · vulnbench.com</text>
 </svg>`;
 
+function textElement(document: Document, content: string) {
+  const element = [...document.querySelectorAll("text")].find(
+    (candidate) => candidate.textContent === content,
+  );
+  if (!element) throw new Error(`Missing SVG text: ${content}`);
+  return element;
+}
+
+function expectWeight(element: Element, weight: string) {
+  expect(element.getAttribute("font-family")).toBe(
+    weight === "500" ? "Geist Mono" : "Geist",
+  );
+  expect(element.getAttribute("font-weight")).toBe(weight);
+}
+
 describe("social share-card renderers", () => {
   it("preserves the complete Classic SVG output byte for byte", () => {
     expect(
@@ -123,6 +138,27 @@ describe("social share-card renderers", () => {
     expect(new Set(textFills)).toEqual(new Set(["#FFFFFF"]));
   });
 
+  it("uses Medium compact labels while preserving release title and metric hierarchy", () => {
+    const svg = renderReleaseShareCard(summaryCard, {
+      designTheme: "snyk-2026",
+      assets: brandAssets,
+    });
+    const document = new DOMParser().parseFromString(svg, "image/svg+xml");
+
+    for (const label of [
+      summaryCard.eyebrow.toUpperCase(),
+      summaryCard.metric.toUpperCase(),
+      "KEEP IN MIND",
+    ]) {
+      expectWeight(textElement(document, label), "500");
+    }
+    expectWeight(
+      textElement(document, `${summaryCard.value} · ${summaryCard.unit}`),
+      "700",
+    );
+    expectWeight(document.querySelector('text[font-size="48"]')!, "700");
+  });
+
   it("renders the branded default social image with study provenance", () => {
     const svg = renderDefaultSocialCard(brandAssets);
 
@@ -141,5 +177,24 @@ describe("social share-card renderers", () => {
     expect(svg.match(/<linearGradient\b/g)).toHaveLength(1);
     expect(svg).toContain('fill="#030328"');
     expect(svg).toContain('fill="#FFFFFF"');
+  });
+
+  it("uses Medium default-card labels while preserving the title hierarchy", () => {
+    const document = new DOMParser().parseFromString(
+      renderDefaultSocialCard(brandAssets),
+      "image/svg+xml",
+    );
+
+    for (const label of [
+      "SNYK VULNBENCH JS 1.0",
+      "300 scans",
+      "10 projects",
+      "6 configurations",
+      "5 repetitions",
+      "SCIENTIFIC SCOPE",
+    ]) {
+      expectWeight(textElement(document, label), "500");
+    }
+    expectWeight(document.querySelector('text[font-size="55"]')!, "700");
   });
 });

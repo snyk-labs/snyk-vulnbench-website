@@ -115,13 +115,13 @@ function renderBrandedReleaseCard(
   <title id="title">${escapeXml(card.title)}</title>
   <desc id="description">${escapeXml(card.finding)}</desc>
   ${brandCanvas(assets)}
-  <text x="70" y="74" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="600" letter-spacing="1.5">${escapeXml(card.eyebrow.toUpperCase())}</text>
+  <text x="70" y="74" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="500" letter-spacing="1.5">${escapeXml(card.eyebrow.toUpperCase())}</text>
   <text fill="#FFFFFF" font-family="Geist" font-size="48" font-weight="700" letter-spacing="-1">${textLines(card.title, 70, 150, 53, 31)}</text>
   <text x="70" y="282" fill="#FFFFFF" font-family="Geist" font-size="25" font-weight="500">${escapeXml(card.finding)}</text>
-  <text x="70" y="330" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="15" font-weight="600" letter-spacing="1">${escapeXml(card.metric.toUpperCase())}</text>
+  <text x="70" y="330" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1">${escapeXml(card.metric.toUpperCase())}</text>
   <text x="70" y="370" fill="#FFFFFF" font-family="Geist" font-size="28" font-weight="700">${escapeXml(card.value)} · ${escapeXml(card.unit)}</text>
   <rect x="70" y="405" width="860" height="82" fill="#030328" stroke="#FFFFFF" stroke-opacity="0.24"/>
-  <text x="94" y="436" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="14" font-weight="600" letter-spacing="1">KEEP IN MIND</text>
+  <text x="94" y="436" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="14" font-weight="500" letter-spacing="1">KEEP IN MIND</text>
   <text x="94" y="468" fill="#FFFFFF" font-family="Geist" font-size="20">${escapeXml(card.caveat)}</text>
   <text x="70" y="535" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="15">Source: ${escapeXml(card.source)}</text>
   <text x="70" y="575" fill="#FFFFFF" font-family="Geist Mono" font-size="16">Dataset 1.0.0 · Snyk VulnBench JS 1.0 · vulnbench.com</text>
@@ -142,16 +142,16 @@ export function renderDefaultSocialCard(assets: BrandSocialAssets) {
   <title id="title">Snyk VulnBench JS 1.0</title>
   <desc id="description">Can LLMs find the same bugs twice? A repeatability and Snyk-reference agreement study.</desc>
   ${brandCanvas(assets)}
-  <text x="70" y="78" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="600" letter-spacing="1.5">SNYK VULNBENCH JS 1.0</text>
+  <text x="70" y="78" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="500" letter-spacing="1.5">SNYK VULNBENCH JS 1.0</text>
   <text fill="#FFFFFF" font-family="Geist" font-size="55" font-weight="700" letter-spacing="-1.5">${textLines("Can LLMs find the same bugs twice?", 70, 170, 62, 27)}</text>
   <text x="70" y="302" fill="#FFFFFF" font-family="Geist" font-size="24">A repeatability and Snyk-reference agreement study</text>
   <line x1="70" y1="340" x2="930" y2="340" stroke="#FFFFFF" stroke-opacity="0.24"/>
-  <text x="70" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="600">300 scans</text>
-  <text x="250" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="600">10 projects</text>
-  <text x="430" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="600">6 configurations</text>
-  <text x="675" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="600">5 repetitions</text>
+  <text x="70" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">300 scans</text>
+  <text x="250" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">10 projects</text>
+  <text x="430" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">6 configurations</text>
+  <text x="675" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">5 repetitions</text>
   <rect x="70" y="426" width="860" height="74" fill="#030328" stroke="#FFFFFF" stroke-opacity="0.24"/>
-  <text x="94" y="455" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="13" font-weight="600" letter-spacing="1">SCIENTIFIC SCOPE</text>
+  <text x="94" y="455" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="13" font-weight="500" letter-spacing="1">SCIENTIFIC SCOPE</text>
   <text x="94" y="483" fill="#FFFFFF" font-family="Geist" font-size="19">Reference agreement is not universal accuracy.</text>
   <text x="70" y="543" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="14">Source: published benchmark evidence</text>
   <text x="70" y="579" fill="#FFFFFF" font-family="Geist Mono" font-size="16">Dataset 1.0.0 · Deterministic Snyk Code reference set · vulnbench.com</text>
