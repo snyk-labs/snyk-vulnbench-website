@@ -9,17 +9,25 @@
 
 <style>
   .snyk-logo {
-    --snyk-wordmark-height: clamp(2rem, 3vw, 2.75rem);
+    --snyk-wordmark-width: 7.5rem;
+    --snyk-wordmark-clear-space: 1rem;
 
     display: inline-flex;
     flex: 0 0 auto;
-    padding: var(--snyk-wordmark-height);
+    padding: var(--snyk-wordmark-clear-space);
     line-height: 0;
     text-decoration: none;
   }
 
   .snyk-logo img {
-    width: auto;
-    height: var(--snyk-wordmark-height);
+    width: var(--snyk-wordmark-width);
+    height: auto;
+  }
+
+  @media (min-width: 48rem) {
+    .snyk-logo {
+      --snyk-wordmark-width: 8.75rem;
+      --snyk-wordmark-clear-space: clamp(1.25rem, 2vw, 1.75rem);
+    }
   }
 </style>

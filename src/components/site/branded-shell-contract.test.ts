@@ -42,10 +42,12 @@ describe("build-selected branded shell contract", () => {
     expect(logo).toContain('alt=""');
     expect(logo).toContain('width="1276"');
     expect(logo).toContain('height="659"');
-    expect(logo).toContain("--snyk-wordmark-height:");
-    expect(logo).toContain("padding: var(--snyk-wordmark-height)");
-    expect(logo).toContain("height: var(--snyk-wordmark-height)");
-    expect(logo).toContain("width: auto");
+    expect(logo).toContain("--snyk-wordmark-width: 7.5rem");
+    expect(logo).toContain("--snyk-wordmark-width: 8.75rem");
+    expect(logo).toContain("--snyk-wordmark-clear-space:");
+    expect(logo).toContain("padding: var(--snyk-wordmark-clear-space)");
+    expect(logo).toContain("width: var(--snyk-wordmark-width)");
+    expect(logo).toContain("height: auto");
     expect(logo).not.toMatch(
       /filter|box-shadow|transform|rotate|background\s*:|border\s*:/i,
     );

@@ -115,9 +115,12 @@ const SOURCE_COMPOSITIONS = [
     name: "branded page source",
     targets: [
       { path: "src/styles/tokens-snyk-2026.css" },
+      { path: "src/styles/global.css", marked: true },
       { path: "src/layouts/BaseLayout.astro" },
+      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
       { path: "src/components/home/Hero.astro", marked: true },
       { path: "src/components/site/BrandFabric.astro" },
+      { path: "src/components/site/PageHero.astro", marked: true },
       { path: "src/components/site/SiteFooter.astro", marked: true },
       { path: "src/components/site/SiteHeader.astro", marked: true },
       { path: "src/components/site/SnykLogo.astro" },

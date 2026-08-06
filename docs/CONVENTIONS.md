@@ -26,6 +26,12 @@ Design theme is selected at build time; color mode is selected by the visitor or
   `verify:classic` and `verify:snyk-2026` gates before delivery.
 - Branded changes must pass the mechanical brand audit and real visual and Axe
   checks. The audit is additive to, not a substitute for, browser validation.
+- In Snyk 2026 Family B, running copy and dense analytical content must sit on
+  an opaque Midnight surface; preserve the single page gradient only in the
+  surrounding composition. Verify computed backgrounds in browser tests
+  because automated contrast tools do not infer contrast against CSS gradients.
+- Verify official logo minimums from rendered image bounds at mobile and
+  desktop widths, together with a 320-pixel horizontal-overflow assertion.
 - Approved local branded assets retain documented provenance and checksums.
   This keeps their origin and integrity reviewable.
 

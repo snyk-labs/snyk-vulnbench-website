@@ -12,6 +12,15 @@ const BRAND_THEME_COLORS = {
   light: "#2B0250",
   dark: "#030328",
 } as const;
+const MIDNIGHT = "rgb(3, 3, 40)";
+
+async function expectNoHorizontalOverflow(page: import("@playwright/test").Page) {
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+}
 
 test.describe("Snyk 2026 color mode contract", () => {
   for (const colorMode of ["light", "dark"] as const) {
@@ -112,6 +121,75 @@ for (const colorMode of ["light", "dark"] as const) {
           : "BRC_Fabric_Gradient\\.png",
       ),
     );
+  });
+}
+
+test("keeps Family B copy on opaque Midnight while exposing one page gradient", async ({
+  page,
+}) => {
+  await prepareTheme(page, "light", "light");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+
+  await expect(page.locator("html")).toHaveCSS(
+    "background-image",
+    /linear-gradient\(90deg,/,
+  );
+  await expect(page.locator(".hero")).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
+  await expect(page.locator(".hero-copy")).toHaveCSS(
+    "background-color",
+    MIDNIGHT,
+  );
+  await expect(page.locator(".section").first()).toHaveCSS(
+    "background-color",
+    MIDNIGHT,
+  );
+  await expectNoHorizontalOverflow(page);
+
+  await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=unmatched");
+  await page
+    .locator('astro-island[component-export="ExplorerApp"]')
+    .waitFor({ state: "attached" });
+
+  await expect(page.locator(".page-hero")).toHaveCSS(
+    "background-color",
+    "rgba(0, 0, 0, 0)",
+  );
+  await expect(page.locator(".page-hero__copy")).toHaveCSS(
+    "background-color",
+    MIDNIGHT,
+  );
+  await expect(page.locator(".explorer-app")).toHaveCSS(
+    "background-color",
+    MIDNIGHT,
+  );
+  await expect(page.locator(".explorer-canvas")).toHaveCSS(
+    "background-color",
+    MIDNIGHT,
+  );
+  await expectNoHorizontalOverflow(page);
+});
+
+for (const { width, minimum } of [
+  { width: 320, minimum: 120 },
+  { width: 1440, minimum: 140 },
+]) {
+  test(`keeps the Snyk wordmark at least ${minimum}px wide at ${width}px`, async ({
+    page,
+  }) => {
+    await prepareTheme(page, "light", "light");
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+
+    const wordmark = page.getByRole("link", { name: "Snyk home" }).locator("img");
+    const box = await wordmark.boundingBox();
+
+    expect(box).not.toBeNull();
+    expect(box?.width).toBeGreaterThanOrEqual(minimum);
+    await expectNoHorizontalOverflow(page);
   });
 }
 

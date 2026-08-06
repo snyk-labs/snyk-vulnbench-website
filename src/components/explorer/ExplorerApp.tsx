@@ -752,6 +752,14 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
         }
 
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-app,
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas {
+          background: #030328;
+          color: #FFFFFF;
+        }
+        /* snyk-2026-audit:end */
+
         .explorer-header {
           display: grid;
           width: min(100%, 98rem);

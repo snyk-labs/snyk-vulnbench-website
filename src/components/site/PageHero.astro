@@ -10,7 +10,7 @@ const { eyebrow, title, description } = Astro.props;
 
 <header class="page-hero">
   <div class="container page-hero__inner">
-    <div>
+    <div class="page-hero__copy">
       <p class="eyebrow">{eyebrow}</p>
       <h1>{title}</h1>
       <p class="lede">{description}</p>
@@ -34,6 +34,15 @@ const { eyebrow, title, description } = Astro.props;
     display: grid;
     gap: var(--space-6);
   }
+
+  /* snyk-2026-audit:start */
+  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .page-hero__copy {
+    padding: var(--space-5);
+    background: #030328;
+    color: #FFFFFF;
+  }
+  /* snyk-2026-audit:end */
 
   h1 {
     max-width: 18ch;

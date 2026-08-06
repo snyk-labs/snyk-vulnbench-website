@@ -88,6 +88,13 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     text-align: left;
   }
 
+  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .hero-copy {
+    padding: var(--space-5);
+    background: #030328;
+    color: #FFFFFF;
+  }
+
   :global(html[data-design-theme="snyk-2026"]) .hero h1 {
     max-width: 13ch;
     font-size: clamp(2.25rem, 5.4vw, 4.75rem);
