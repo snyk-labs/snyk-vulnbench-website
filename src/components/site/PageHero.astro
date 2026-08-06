@@ -37,12 +37,19 @@ const { eyebrow, title, description } = Astro.props;
 
   /* snyk-2026-audit:start */
   :global(html[data-design-theme="snyk-2026"][data-theme="light"])
-    .page-hero__copy,
-  :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
     .page-hero__copy {
     padding: var(--space-5);
     background: #030328;
     color: #FFFFFF;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
+      .page-hero__copy {
+      padding: var(--space-5);
+      background: #030328;
+      color: #FFFFFF;
+    }
   }
   /* snyk-2026-audit:end */
 

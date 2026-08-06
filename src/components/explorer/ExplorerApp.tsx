@@ -754,11 +754,17 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
 
         /* snyk-2026-audit:start */
         html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-app,
-        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas,
-        html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
-        html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas {
           background: #030328;
           color: #FFFFFF;
+        }
+
+        @media (prefers-color-scheme: light) {
+          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
+          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
+            background: #030328;
+            color: #FFFFFF;
+          }
         }
         /* snyk-2026-audit:end */
 

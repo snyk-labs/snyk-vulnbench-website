@@ -102,10 +102,16 @@ ol {
 }
 
 /* snyk-2026-audit:start */
-html[data-design-theme="snyk-2026"][data-theme="light"] .section,
-html[data-design-theme="snyk-2026"]:not([data-theme]) .section {
+html[data-design-theme="snyk-2026"][data-theme="light"] .section {
   background: #030328;
   color: #FFFFFF;
+}
+
+@media (prefers-color-scheme: light) {
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .section {
+    background: #030328;
+    color: #FFFFFF;
+  }
 }
 /* snyk-2026-audit:end */
 

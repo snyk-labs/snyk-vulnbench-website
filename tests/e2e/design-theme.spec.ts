@@ -370,6 +370,7 @@ test.describe("Snyk 2026 without JavaScript", () => {
   test("uses the system-dark fallback with complete usable content", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
 
     await expect(page.locator("html")).toHaveAttribute(
@@ -381,6 +382,16 @@ test.describe("Snyk 2026 without JavaScript", () => {
     await expect(page.locator("html")).toHaveCSS(
       "background-color",
       "rgb(3, 3, 40)",
+    );
+    await expect(page.locator("html")).toHaveCSS("background-image", "none");
+    await expect(page.locator(".hero-copy")).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(page.locator(".hero-copy")).toHaveCSS("padding", "0px");
+    await expect(page.locator(".section").first()).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
     );
     await expect(page.locator("[data-theme-toggle]")).toBeHidden();
     await expect(
@@ -394,5 +405,42 @@ test.describe("Snyk 2026 without JavaScript", () => {
     ).toBeVisible();
     await expect(page.locator(".evidence-strip")).toContainText("300");
     await expect(page.locator(".evidence-strip")).toContainText("scans");
+    await expectNoHorizontalOverflow(page);
+
+    await page.goto("/releases/js-1.0/explore");
+
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+    await expect(page.locator("html")).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(page.locator("html")).toHaveCSS("background-image", "none");
+    await expect(page.locator(".page-hero__copy")).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(page.locator(".page-hero__copy")).toHaveCSS("padding", "0px");
+    await expect(page.locator(".explorer-app")).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(page.locator(".explorer-canvas")).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
+    await expect(page.locator(".explorer-header")).toHaveCSS(
+      "background-color",
+      MIDNIGHT,
+    );
+    await expect(
+      page.getByRole("heading", {
+        level: 1,
+        name: "Test the published conclusions against the evidence",
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Configuration summary" }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
   });
 });
