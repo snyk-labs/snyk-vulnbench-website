@@ -63,6 +63,15 @@ describe("build-selected branded shell contract", () => {
       ':global(html[data-design-theme="snyk-2026"]) .wordmark',
     );
     expect(wordmark).toContain("font-weight: var(--font-weight-control, 700);");
+    expect(wordmark).toContain(
+      ':global(html[data-design-theme="snyk-2026"]) .trace',
+    );
+    expect(wordmark).toContain("border-color: #4b2be3;");
+    expect(wordmark).toContain("background: #e8e1ff;");
+    expect(wordmark).toContain(
+      ':global(html[data-design-theme="snyk-2026"]) .wordmark-trace-dot',
+    );
+    expect(wordmark).toContain("background: #4b2be3;");
   });
 
   it("keeps the official Snyk logo in a separate branded footer attribution", async () => {
@@ -111,23 +120,15 @@ describe("build-selected branded shell contract", () => {
   it("uses the five-dot VulnBench trace for the branded favicon", async () => {
     const favicon = await source("public/brand/snyk-2026/favicon.svg");
 
-    expect(favicon).toContain("<title>VulnBench finding trace</title>");
     expect(favicon.match(/<circle\b/g)).toHaveLength(5);
     expect(favicon).not.toContain("<path");
-    expect(favicon).toContain('fill="#030328"');
-    expect(favicon).toContain('stroke="#6F00DD"');
-    const lockedPalette = new Set([
-      "#030328",
-      "#2B0250",
-      "#6F00DD",
-      "#FF00FF",
-      "#F3552E",
-      "#FE9104",
-      "#FFFFFF",
-    ]);
-    for (const color of favicon.match(/#[0-9A-Fa-f]{6}/g) ?? []) {
-      expect(lockedPalette.has(color.toUpperCase())).toBe(true);
-    }
+    expect(favicon).toContain(
+      '<rect x="1" y="1" width="26" height="26" rx="3.5" fill="#e8e1ff" stroke="#4b2be3" stroke-width="1.5"/>',
+    );
+    expect(favicon).toContain('<g fill="#4b2be3">');
+    expect(favicon).not.toContain('fill="#030328"');
+    expect(favicon).not.toContain('fill="#2B0250"');
+    expect(favicon).not.toContain('stroke="#6F00DD"');
   });
 
   it("uses one mode-aware, unmodified bottom-right fabric corner", async () => {

@@ -23,6 +23,11 @@ const ALLOWED_HEX = new Set([
   "FF00FF",
   "FFFFFF",
 ]);
+const CLASSIC_TRACE_HEX = new Set(["4B2BE3", "E8E1FF"]);
+const CLASSIC_TRACE_COLOR_SOURCES = new Set([
+  "src/components/site/Wordmark.astro",
+  "public/brand/snyk-2026/favicon.svg",
+]);
 const SATURATED_PANEL_HEX = new Set([
   "2B0250",
   "6F00DD",
@@ -134,7 +139,11 @@ const BRANDED_PAGE_SHARED_TARGETS = [
   { path: "src/components/site/SiteFooter.astro", marked: true },
   { path: "src/components/site/SiteHeader.astro", marked: true },
   { path: "src/components/site/SnykLogo.astro" },
-  { path: "src/components/site/Wordmark.astro", marked: true },
+  {
+    path: "src/components/site/Wordmark.astro",
+    marked: true,
+    allowClassicTraceColors: true,
+  },
 ];
 const SOURCE_COMPOSITIONS = [
   {
@@ -176,7 +185,12 @@ const SOURCE_COMPOSITIONS = [
   },
   {
     name: "branded favicon source",
-    targets: [{ path: "public/brand/snyk-2026/favicon.svg" }],
+    targets: [
+      {
+        path: "public/brand/snyk-2026/favicon.svg",
+        allowClassicTraceColors: true,
+      },
+    ],
   },
 ];
 const GENERATED_SVG_TARGETS = [
@@ -211,7 +225,63 @@ function expandHex(value) {
   return value;
 }
 
-function auditHexColors(source, fileName) {
+function isApprovedClassicTraceDeclaration(source, index, fileName) {
+  if (fileName === "public/brand/snyk-2026/favicon.svg") return true;
+  if (fileName !== "src/components/site/Wordmark.astro") return false;
+
+  const ruleStart = source.lastIndexOf("{", index);
+  if (ruleStart < 0) return false;
+  const selectorStart = source.lastIndexOf("}", ruleStart) + 1;
+  const selector = source.slice(selectorStart, ruleStart).trim();
+  return /(?:^|\s)\.(?:trace|wordmark-trace-dot)\s*$/u.test(selector);
+}
+
+function allowsClassicTraceColor(
+  color,
+  alpha,
+  source,
+  index,
+  fileName,
+  allowClassicTraceColors,
+) {
+  return (
+    allowClassicTraceColors === true &&
+    CLASSIC_TRACE_COLOR_SOURCES.has(fileName) &&
+    isApprovedClassicTraceDeclaration(source, index, fileName) &&
+    CLASSIC_TRACE_HEX.has(color) &&
+    (alpha.length === 0 || alpha === "FF")
+  );
+}
+
+function isAllowedColor(
+  color,
+  alpha,
+  source,
+  index,
+  fileName,
+  allowClassicTraceColors,
+) {
+  return (
+    (ALLOWED_HEX.has(color) &&
+      (!alpha ||
+        alpha === "FF" ||
+        ALLOWED_HEX_ALPHA_BY_HEX.get(color)?.has(alpha) === true)) ||
+    allowsClassicTraceColor(
+      color,
+      alpha,
+      source,
+      index,
+      fileName,
+      allowClassicTraceColors,
+    )
+  );
+}
+
+function auditHexColors(
+  source,
+  fileName,
+  { allowClassicTraceColors = false } = {},
+) {
   const findings = [];
   for (const match of source.matchAll(
     /#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{4}|[0-9a-f]{3})(?![0-9a-f])/giu,
@@ -219,11 +289,14 @@ function auditHexColors(source, fileName) {
     const expanded = expandHex(match[1]).toUpperCase();
     const color = expanded.slice(0, 6);
     const alpha = expanded.slice(6);
-    const allowed =
-      ALLOWED_HEX.has(color) &&
-      (!alpha ||
-        alpha === "FF" ||
-        ALLOWED_HEX_ALPHA_BY_HEX.get(color)?.has(alpha) === true);
+    const allowed = isAllowedColor(
+      color,
+      alpha,
+      source,
+      match.index,
+      fileName,
+      allowClassicTraceColors,
+    );
     if (!allowed) {
       findings.push(
         finding(
@@ -262,7 +335,15 @@ function approvedAlpha(hex, alpha) {
   return ALLOWED_ALPHA_BY_HEX.get(hex)?.has(alpha) === true;
 }
 
-function parseRgbLiteral(body) {
+function parseRgbLiteral(
+  body,
+  {
+    source = body,
+    index = 0,
+    fileName = "<input>",
+    allowClassicTraceColors = false,
+  } = {},
+) {
   if (/\bfrom\b/iu.test(body)) return null;
 
   let channels;
@@ -306,17 +387,34 @@ function parseRgbLiteral(body) {
   return {
     allowed:
       alpha === undefined || alpha === 1
-        ? ALLOWED_HEX.has(hex)
+        ? ALLOWED_HEX.has(hex) ||
+          allowsClassicTraceColor(
+            hex,
+            "",
+            source,
+            index,
+            fileName,
+            allowClassicTraceColors,
+          )
         : approvedAlpha(hex, alpha),
     alpha,
     hex,
   };
 }
 
-function auditColorFunctions(source, fileName) {
+function auditColorFunctions(
+  source,
+  fileName,
+  { allowClassicTraceColors = false } = {},
+) {
   const findings = [];
   for (const match of source.matchAll(/\b(rgb|rgba)\(([^)]*)\)/giu)) {
-    const parsed = parseRgbLiteral(match[2]);
+    const parsed = parseRgbLiteral(match[2], {
+      source,
+      index: match.index,
+      fileName,
+      allowClassicTraceColors,
+    });
     if (!parsed?.allowed) {
       findings.push(
         finding(
@@ -539,7 +637,12 @@ function customPropertyFindings(
   });
 }
 
-function auditCustomPropertyColors(source, fileName, customProperties) {
+function auditCustomPropertyColors(
+  source,
+  fileName,
+  customProperties,
+  { allowClassicTraceColors = false } = {},
+) {
   const findings = [];
   for (const declaration of declarations(source)) {
     if (!declaration.property.startsWith("--")) continue;
@@ -558,8 +661,10 @@ function auditCustomPropertyColors(source, fileName, customProperties) {
     for (const value of resolution.values) {
       const unquoted = stripQuotedContent(value);
       findings.push(
-        ...auditHexColors(unquoted, fileName),
-        ...auditColorFunctions(unquoted, fileName),
+        ...auditHexColors(unquoted, fileName, { allowClassicTraceColors }),
+        ...auditColorFunctions(unquoted, fileName, {
+          allowClassicTraceColors,
+        }),
         ...auditNamedColorValue(
           unquoted,
           source,
@@ -614,7 +719,12 @@ function auditNamedColorValue(value, source, fileName, index) {
   return findings;
 }
 
-function auditResolvedColors(source, fileName, customProperties) {
+function auditResolvedColors(
+  source,
+  fileName,
+  customProperties,
+  { allowClassicTraceColors = false } = {},
+) {
   const findings = [];
   for (const declaration of colorDeclarationValues(source)) {
     const resolution = resolveCustomValue(
@@ -641,8 +751,10 @@ function auditResolvedColors(source, fileName, customProperties) {
       );
       if (declaration.value.includes("var(")) {
         findings.push(
-          ...auditHexColors(unquoted, fileName),
-          ...auditColorFunctions(unquoted, fileName),
+          ...auditHexColors(unquoted, fileName, { allowClassicTraceColors }),
+          ...auditColorFunctions(unquoted, fileName, {
+            allowClassicTraceColors,
+          }),
         );
       }
     }
@@ -1426,6 +1538,7 @@ export function auditText(
     fileName = "<input>",
     checkGradientCount = true,
     checkOverflowGuard = true,
+    allowClassicTraceColors = false,
   } = {},
 ) {
   const resolvedCustomProperties =
@@ -1442,14 +1555,21 @@ export function auditText(
   return [
     ...auditForbiddenCss(source, fileName),
     ...auditDecorativeShadows(source, fileName, resolvedCustomProperties),
-    ...auditHexColors(literalAuditSource, fileName),
-    ...auditColorFunctions(literalAuditSource, fileName),
+    ...auditHexColors(literalAuditSource, fileName, {
+      allowClassicTraceColors,
+    }),
+    ...auditColorFunctions(literalAuditSource, fileName, {
+      allowClassicTraceColors,
+    }),
     ...auditCustomPropertyColors(
       source,
       fileName,
       resolvedCustomProperties,
+      { allowClassicTraceColors },
     ),
-    ...auditResolvedColors(source, fileName, resolvedCustomProperties),
+    ...auditResolvedColors(source, fileName, resolvedCustomProperties, {
+      allowClassicTraceColors,
+    }),
     ...auditDarkPanelSurfaces(
       source,
       fileName,
@@ -1482,6 +1602,7 @@ export function auditComposition(
         fileName: fragment.fileName,
         checkGradientCount: false,
         checkOverflowGuard: false,
+        allowClassicTraceColors: fragment.allowClassicTraceColors,
       }),
     );
     sanctionedCount += auditGradients(
@@ -1624,6 +1745,7 @@ export async function auditBrandProject(root = process.cwd()) {
         source: target.marked
           ? extractSnykAuditBlocks(original, target.path)
           : original,
+        allowClassicTraceColors: target.allowClassicTraceColors,
       });
     }
     findings.push(

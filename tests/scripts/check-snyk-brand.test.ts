@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -14,6 +15,57 @@ const findingRules = (source: string) =>
   );
 
 describe("Snyk 2026 mechanical brand audit", () => {
+  it("accepts Classic trace colors only for approved Wordmark and favicon sources", () => {
+    const approvedTrace = `
+  .trace { border-color: #4b2be3; background: #e8e1ff; }
+  .wordmark-trace-dot { background: #4b2be3; }
+`;
+
+    expect(
+      auditText(approvedTrace, {
+        fileName: "src/components/site/Wordmark.astro",
+        allowClassicTraceColors: true,
+      }),
+    ).toEqual([]);
+    expect(
+      auditText(".other { color: #4b2be3; }", {
+        fileName: "src/components/site/Wordmark.astro",
+        allowClassicTraceColors: true,
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rule: "off-palette" }),
+      ]),
+    );
+    expect(auditText(approvedTrace, { fileName: "fixture.css" })).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rule: "off-palette" }),
+      ]),
+    );
+
+    const classicFavicon = readFileSync(
+      resolve(process.cwd(), "public/favicon.svg"),
+      "utf8",
+    );
+    expect(
+      auditText(classicFavicon, {
+        fileName: "public/brand/snyk-2026/favicon.svg",
+        allowClassicTraceColors: true,
+      }),
+    ).toEqual([]);
+
+    expect(
+      auditText(approvedTrace, {
+        fileName: "fixture.css",
+        allowClassicTraceColors: true,
+      }),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rule: "off-palette" }),
+      ]),
+    );
+  });
+
   it("accepts the locked palette, approved alpha tints, white canvas, and sanctioned gradient", () => {
     const source = `
       <style>
@@ -934,6 +986,17 @@ describe("Snyk 2026 mechanical brand audit", () => {
     );
   });
 
+  it("wires the Classic trace exception to the branded favicon target", async () => {
+    const auditSource = await readFile(
+      resolve(process.cwd(), "scripts/check-snyk-brand.mjs"),
+      "utf8",
+    );
+
+    expect(auditSource).toContain(
+      'path: "public/brand/snyk-2026/favicon.svg",\n        allowClassicTraceColors: true,',
+    );
+  });
+
   it.each([
     ["Wordmark", "src/components/site/Wordmark.astro"],
     ["Explorer guide rail", "src/components/explorer/ExplorerGuideRail.tsx"],
@@ -947,7 +1010,13 @@ describe("Snyk 2026 mechanical brand audit", () => {
         readFile(resolve(process.cwd(), target), "utf8"),
       ]);
 
-      expect(auditSource).toContain(`{ path: "${target}", marked: true }`);
+      if (target === "src/components/site/Wordmark.astro") {
+        expect(auditSource).toContain(
+          `path: "${target}",\n    marked: true,\n    allowClassicTraceColors: true,`,
+        );
+      } else {
+        expect(auditSource).toContain(`{ path: "${target}", marked: true }`);
+      }
       expect(() => extractSnykAuditBlocks(componentSource, target)).not.toThrow();
     },
   );
@@ -1095,7 +1164,7 @@ describe("Snyk 2026 mechanical brand audit", () => {
     const findings = auditGeneratedMetadata(
       `<html data-design-theme="snyk-2026">
         <link rel="icon" href="/brand/snyk-2026/favicon.svg">
-        <meta property="og:image" content="https://vulnbench.com/brand/snyk-2026/social.svg">
+        <meta property="og:image" content="https://vulnbench.com/brand/snyk-2026/social.png">
       </html>`,
       "dist/index.html",
     );

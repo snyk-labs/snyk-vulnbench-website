@@ -829,7 +829,6 @@ test("publishes branded favicon and default social metadata assets", async ({
   );
   expect(faviconResponse.status()).toBe(200);
   const favicon = await faviconResponse.text();
-  expect(favicon).toContain("<title>VulnBench finding trace</title>");
   expect(favicon.match(/<circle\b/g)).toHaveLength(5);
   expect(favicon).not.toContain("<path");
 
