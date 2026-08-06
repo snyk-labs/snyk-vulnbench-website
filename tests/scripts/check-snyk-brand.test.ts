@@ -70,6 +70,7 @@ describe("Snyk 2026 mechanical brand audit", () => {
   });
 
   it.each([
+    "rgba(255 255 255 / 0.5)",
     "rgba(255 255 255 / 0.65)",
     "rgba(255 255 255 / .6500)",
     "rgba(255 255 255 / 65%)",
@@ -106,7 +107,7 @@ describe("Snyk 2026 mechanical brand audit", () => {
     ],
     [
       "unapproved white hex alpha",
-      ".card { color: #FFFFFF80; }",
+      ".card { color: #FFFFFF7F; }",
       "off-palette",
     ],
     [

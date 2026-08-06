@@ -139,6 +139,40 @@ export function ExplorerGuideRail({
           background: var(--paper-raised);
         }
 
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .explorer-guide
+          section,
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .explorer-guide
+          nav {
+          border-top-color: var(--rule-strong);
+          border-left: 0.2rem solid var(--purple);
+        }
+
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .explorer-guide
+          dt {
+          font-weight: var(--font-weight-label);
+        }
+
+        @media (prefers-color-scheme: dark) {
+          html[data-design-theme="snyk-2026"]:not([data-theme])
+            .explorer-guide
+            section,
+          html[data-design-theme="snyk-2026"]:not([data-theme])
+            .explorer-guide
+            nav {
+            border-top-color: var(--rule-strong);
+            border-left: 0.2rem solid var(--purple);
+          }
+
+          html[data-design-theme="snyk-2026"]:not([data-theme])
+            .explorer-guide
+            dt {
+            font-weight: var(--font-weight-label);
+          }
+        }
+
         .explorer-guide p:not(.eyebrow) {
           margin-top: var(--space-2);
           color: var(--ink-soft);

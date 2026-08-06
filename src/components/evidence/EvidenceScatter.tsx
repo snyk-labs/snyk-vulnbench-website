@@ -339,6 +339,18 @@ export function EvidenceScatter({
           margin: 0;
         }
 
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .evidence-scatter {
+          --scatter-selected-surface: var(--evidence-hover);
+        }
+
+        @media (prefers-color-scheme: dark) {
+          html[data-design-theme="snyk-2026"]:not([data-theme])
+            .evidence-scatter {
+            --scatter-selected-surface: var(--evidence-hover);
+          }
+        }
+
         .evidence-scatter__plot {
           width: 100%;
           border: 1px solid var(--rule-strong);
@@ -437,7 +449,7 @@ export function EvidenceScatter({
 
         .evidence-scatter__legend button:hover,
         .evidence-scatter__legend button[aria-pressed="true"] {
-          background: var(--purple-soft);
+          background: var(--scatter-selected-surface, var(--purple-soft));
         }
 
         .evidence-scatter__legend-marker--classic {

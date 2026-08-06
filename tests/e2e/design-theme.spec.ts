@@ -18,6 +18,12 @@ const PURPLE = "rgb(111, 0, 221)";
 const ORANGE_RED = "rgb(243, 85, 46)";
 const AMBER = "rgb(254, 145, 4)";
 const STRONG_RULE = "rgba(3, 3, 40, 0.48)";
+const DARK_RAISED = "rgba(255, 255, 255, 0.08)";
+const DARK_MUTED = "rgba(255, 255, 255, 0.04)";
+const DARK_PRIMARY = "rgba(255, 255, 255, 0.78)";
+const DARK_BODY = "rgba(255, 255, 255, 0.65)";
+const DARK_TERTIARY = "rgba(255, 255, 255, 0.5)";
+const DARK_STRONG_RULE = "rgba(255, 255, 255, 0.4)";
 const BRAND_GRADIENT =
   "linear-gradient(90deg, rgb(43, 2, 80) 0%, rgb(111, 0, 221) 6%, rgb(255, 0, 255) 30%, rgb(243, 85, 46) 66%, rgb(254, 145, 4) 100%)";
 
@@ -289,6 +295,10 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
     "background-image",
     /linear-gradient\(90deg,\s*rgb\(43, 2, 80\) 0%,\s*rgb\(111, 0, 221\) 6%,\s*rgb\(255, 0, 255\) 30%,\s*rgb\(243, 85, 46\) 66%,\s*rgb\(254, 145, 4\) 100%\)/,
   );
+  await expect(page.locator(".brand-gradient-accent")).toHaveCSS(
+    "height",
+    "4.79688px",
+  );
   await expect(page.locator(".hero-copy")).toHaveCSS(
     "background-color",
     WHITE,
@@ -356,6 +366,147 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
     "border-left-color",
     AMBER,
   );
+  await expectNoHorizontalOverflow(page);
+});
+
+test("uses neutral Warm Ink layers and restrained semantic color in explicit Dark", async ({
+  page,
+}) => {
+  await prepareTheme(page, "dark", "dark");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+
+  const tokens = await page.locator("html").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return Object.fromEntries(
+      [
+        "--paper",
+        "--paper-raised",
+        "--paper-muted",
+        "--ink",
+        "--ink-soft",
+        "--ink-faint",
+        "--rule-strong",
+        "--matched",
+        "--unmatched",
+        "--warning",
+        "--evidence-hover",
+      ].map((token) => [token, style.getPropertyValue(token).trim()]),
+    );
+  });
+  expect(tokens).toEqual({
+    "--paper": "#030328",
+    "--paper-raised": DARK_RAISED,
+    "--paper-muted": DARK_MUTED,
+    "--ink": DARK_PRIMARY,
+    "--ink-soft": DARK_BODY,
+    "--ink-faint": DARK_TERTIARY,
+    "--rule-strong": DARK_STRONG_RULE,
+    "--matched": "#6F00DD",
+    "--unmatched": "#F3552E",
+    "--warning": "#FE9104",
+    "--evidence-hover": "rgba(255, 255, 255, 0.12)",
+  });
+  await expect(page.locator(".hero h1")).toHaveCSS("color", WHITE);
+  await expect(page.locator("body")).toHaveCSS("font-weight", "400");
+  await expect(page.locator(".hero-visual h2")).toHaveCSS("font-weight", "500");
+  await expect(page.locator(".button").first()).toHaveCSS("font-weight", "500");
+  await expect(page.locator(".hero .lede")).toHaveCSS("color", DARK_BODY);
+  await expect(page.locator(".hero-visual")).toHaveCSS(
+    "background-color",
+    DARK_RAISED,
+  );
+  await expect(page.locator(".hero-visual h2")).toHaveCSS(
+    "color",
+    DARK_PRIMARY,
+  );
+  await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
+  await expect(page.locator(".brand-gradient-accent")).toHaveCSS("height", "1px");
+  await expectOneVisibleBrandGradient(page);
+
+  await page.goto("/releases/js-1.0");
+  await expect(page.locator(".page-hero h1")).toHaveCSS("color", WHITE);
+  await expect(page.locator(".page-hero .lede")).toHaveCSS("color", DARK_BODY);
+  await expect(page.locator(".page-hero aside")).toHaveCSS(
+    "background-color",
+    DARK_MUTED,
+  );
+  await expect(page.locator(".release-meta dt").first()).toHaveCSS(
+    "color",
+    DARK_TERTIARY,
+  );
+  await expect(page.locator(".release-meta dt").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".release-meta dd:not(.metric)").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".evidence-scatter__plot").first()).toHaveCSS(
+    "background-color",
+    DARK_RAISED,
+  );
+  await expect(
+    page.locator(".evidence-scatter__legend button").nth(1),
+  ).toHaveCSS("background-color", DARK_RAISED);
+  await expect(
+    page.locator(".evidence-scatter__legend button").first(),
+  ).toHaveCSS("font-weight", "500");
+  await expect(page.locator(".evidence-scatter th").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await page
+    .locator(".evidence-scatter__legend button")
+    .nth(1)
+    .hover();
+  await expect(
+    page.locator(".evidence-scatter__legend button").nth(1),
+  ).toHaveCSS("background-color", "rgba(255, 255, 255, 0.12)");
+  await expectOneVisibleBrandGradient(page);
+
+  await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=unmatched");
+  await page
+    .locator('astro-island[component-export="ExplorerApp"]')
+    .waitFor({ state: "attached" });
+  await expect(page.locator(".explorer-header")).toHaveCSS(
+    "background-color",
+    DARK_RAISED,
+  );
+  await expect(page.locator(".explorer-tabs")).toHaveCSS(
+    "background-color",
+    DARK_MUTED,
+  );
+  await expect(page.locator(".filter-rail")).toHaveCSS(
+    "background-color",
+    DARK_MUTED,
+  );
+  await expect(page.locator(".explorer-guide")).toHaveCSS(
+    "background-color",
+    DARK_MUTED,
+  );
+  await expect(page.locator(".explorer-guide section").first()).toHaveCSS(
+    "background-color",
+    DARK_RAISED,
+  );
+  await expect(page.locator(".explorer-guide dt").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".explorer-guide dd").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".explorer-note").first()).toHaveCSS(
+    "border-left-color",
+    AMBER,
+  );
+  await expect(page.locator(".coverage-cell").first()).not.toHaveCSS(
+    "background-color",
+    "rgb(43, 2, 80)",
+  );
+  await expectOneVisibleBrandGradient(page);
   await expectNoHorizontalOverflow(page);
 });
 
@@ -582,7 +733,7 @@ test("exports self-contained audited chart SVGs in explicit Light and Dark", asy
   await prepareTheme(page, "light", "light");
   await page.goto("/releases/js-1.0/explore");
   await page
-    .locator('astro-island[component-export="ExplorerApp"]')
+    .locator('astro-island[component-export="ExplorerApp"]:not([ssr])')
     .waitFor({ state: "attached" });
 
   for (const mode of ["light", "dark"] as const) {
@@ -605,9 +756,9 @@ test("exports self-contained audited chart SVGs in explicit Light and Dark", asy
       /<rect data-export-background="" width="100%" height="100%" fill="([^"]+)"/u,
     )?.[1];
 
-    expect(background).toBe(mode === "light" ? WHITE : MIDNIGHT);
+    expect(background).toBe(mode === "light" ? WHITE : DARK_RAISED);
     expect(svg).toContain("#6F00DD");
-    expect(svg).toContain(mode === "light" ? MIDNIGHT : WHITE);
+    expect(svg).toContain(mode === "light" ? MIDNIGHT : "#FFFFFF");
     expect(svg).toContain("Geist Variable");
     expect(svg).toContain("Geist Mono Variable");
     expect(svg).not.toContain("var(--");
@@ -705,6 +856,11 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
     await expect(page.locator("html")).not.toHaveAttribute("data-theme");
     await expect(page.locator("html")).toHaveCSS("background-color", WHITE);
     await expect(page.locator("html")).toHaveCSS("background-image", "none");
+    await expect(page.locator(".brand-gradient-accent")).toBeVisible();
+    await expect(page.locator(".brand-gradient-accent")).toHaveCSS(
+      "height",
+      "4.79688px",
+    );
     await expect(page.locator(".brand-gradient-accent")).toHaveCount(1);
     await expect(page.locator(".page-hero__copy")).toHaveCSS(
       "background-color",
@@ -761,6 +917,18 @@ test.describe("Snyk 2026 without JavaScript", () => {
       "rgb(3, 3, 40)",
     );
     await expect(page.locator("html")).toHaveCSS("background-image", "none");
+    await expect(page.locator(".brand-gradient-accent")).toBeVisible();
+    await expect(page.locator(".brand-gradient-accent")).toHaveCSS(
+      "height",
+      "1px",
+    );
+    await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
+    await expect(page.locator(".hero h1")).toHaveCSS("color", WHITE);
+    await expect(page.locator(".hero .lede")).toHaveCSS("color", DARK_BODY);
+    await expect(page.locator(".hero-visual")).toHaveCSS(
+      "background-color",
+      DARK_RAISED,
+    );
     await expect(page.locator(".hero-copy")).toHaveCSS(
       "background-color",
       "rgba(0, 0, 0, 0)",
@@ -807,8 +975,17 @@ test.describe("Snyk 2026 without JavaScript", () => {
     );
     await expect(page.locator(".explorer-header")).toHaveCSS(
       "background-color",
-      MIDNIGHT,
+      DARK_RAISED,
     );
+    await expect(page.locator(".explorer-tabs")).toHaveCSS(
+      "background-color",
+      DARK_MUTED,
+    );
+    await expect(page.locator(".explorer-guide section").first()).toHaveCSS(
+      "background-color",
+      DARK_RAISED,
+    );
+    await expectOneVisibleBrandGradient(page);
     await expect(
       page.getByRole("heading", {
         level: 1,

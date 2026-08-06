@@ -115,6 +115,171 @@ html[data-design-theme="snyk-2026"][data-theme="light"] .section {
     color: #030328;
   }
 }
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] body {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  body
+  .hero
+  .brand-fabric[aria-hidden="true"] {
+  opacity: 0.16;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] h1,
+html[data-design-theme="snyk-2026"][data-theme="dark"] .metric {
+  color: #FFFFFF;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] h2,
+html[data-design-theme="snyk-2026"][data-theme="dark"] h3,
+html[data-design-theme="snyk-2026"][data-theme="dark"] .eyebrow,
+html[data-design-theme="snyk-2026"][data-theme="dark"] button,
+html[data-design-theme="snyk-2026"][data-theme="dark"] input,
+html[data-design-theme="snyk-2026"][data-theme="dark"] select,
+html[data-design-theme="snyk-2026"][data-theme="dark"] textarea {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  .evidence-band
+  .band-heading
+  .eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  .evidence-band
+  .observation.matched
+  .metric {
+  color: #FFFFFF;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] a {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration-color: #6F00DD;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] th {
+  font-weight: var(--font-weight-label);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] pre,
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  .recurrence-chart__detail {
+  color: #030328;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button {
+  border-color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.78);
+  color: #030328;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button:hover {
+  border-color: #6F00DD;
+  background: #FFFFFF;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button.secondary {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button.secondary:hover {
+  border-color: #6F00DD;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-design-theme="snyk-2026"]:not([data-theme]) body {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme])
+    body
+    .hero
+    .brand-fabric[aria-hidden="true"] {
+    opacity: 0.16;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) h1,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .metric {
+    color: #FFFFFF;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) h2,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) h3,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .eyebrow,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) button,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) input,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) select,
+  html[data-design-theme="snyk-2026"]:not([data-theme]) textarea {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .eyebrow {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme])
+    .evidence-band
+    .band-heading
+    .eyebrow {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme])
+    .evidence-band
+    .observation.matched
+    .metric {
+    color: #FFFFFF;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) a {
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration-color: #6F00DD;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) th {
+    font-weight: var(--font-weight-label);
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) pre,
+  html[data-design-theme="snyk-2026"]:not([data-theme])
+    .recurrence-chart__detail {
+    color: #030328;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .button {
+    border-color: rgba(255, 255, 255, 0.78);
+    background: rgba(255, 255, 255, 0.78);
+    color: #030328;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .button:hover {
+    border-color: #6F00DD;
+    background: #FFFFFF;
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme]) .button.secondary {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  html[data-design-theme="snyk-2026"]:not([data-theme])
+    .button.secondary:hover {
+    border-color: #6F00DD;
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
 /* snyk-2026-audit:end */
 
 .section-heading {

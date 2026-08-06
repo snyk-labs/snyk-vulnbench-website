@@ -208,6 +208,81 @@ describe("Snyk 2026 design contract", () => {
     }
   });
 
+  it("maps explicit and system Dark to the same neutral editorial tokens", async () => {
+    const source = await readFile(tokenPath, "utf8");
+    const explicitDark = selectorBody(
+      source,
+      'html[data-design-theme="snyk-2026"][data-theme="dark"]',
+    );
+    const systemDark = selectorBody(
+      source,
+      'html[data-design-theme="snyk-2026"]:not([data-theme])',
+    );
+    const expected = {
+      "--theme-paper": "#030328",
+      "--theme-paper-raised": "rgba(255, 255, 255, 0.08)",
+      "--theme-paper-muted": "rgba(255, 255, 255, 0.04)",
+      "--theme-ink": "rgba(255, 255, 255, 0.78)",
+      "--theme-ink-soft": "rgba(255, 255, 255, 0.65)",
+      "--theme-ink-faint": "rgba(255, 255, 255, 0.5)",
+      "--theme-rule": "rgba(255, 255, 255, 0.12)",
+      "--theme-rule-strong": "rgba(255, 255, 255, 0.4)",
+      "--theme-purple": "#6F00DD",
+      "--theme-purple-dark": "rgba(255, 255, 255, 0.78)",
+      "--theme-purple-soft": "rgba(111, 0, 221, 0.18)",
+      "--theme-matched": "#6F00DD",
+      "--theme-matched-soft": "rgba(111, 0, 221, 0.18)",
+      "--theme-unmatched": "#F3552E",
+      "--theme-unmatched-soft": "rgba(243, 85, 46, 0.12)",
+      "--theme-warning": "#FE9104",
+      "--theme-warning-soft": "rgba(254, 145, 4, 0.12)",
+      "--theme-evidence-surface": "rgba(255, 255, 255, 0.08)",
+      "--theme-evidence-text": "rgba(255, 255, 255, 0.78)",
+      "--theme-evidence-muted": "rgba(255, 255, 255, 0.65)",
+      "--theme-evidence-hover": "rgba(255, 255, 255, 0.12)",
+      "--theme-evidence-accent": "#6F00DD",
+      "--theme-evidence-matched": "#6F00DD",
+      "--theme-evidence-unmatched": "#F3552E",
+      "--focus-ring": "0 0 0 3px #030328, 0 0 0 6px #6F00DD",
+    } as const;
+
+    for (const [token, value] of Object.entries(expected)) {
+      expect(declarationValue(explicitDark, token), token).toBe(value);
+      expect(declarationValue(systemDark, token), token).toBe(value);
+    }
+
+    for (const token of semanticTokens) {
+      expect(declarationValue(systemDark, token), token).toBe(
+        declarationValue(explicitDark, token),
+      );
+    }
+  });
+
+  it("keeps Hot Pink rare and Dark Purple out of broad Dark surfaces", async () => {
+    const source = await readFile(tokenPath, "utf8");
+
+    for (const selector of [
+      'html[data-design-theme="snyk-2026"][data-theme="dark"]',
+      'html[data-design-theme="snyk-2026"]:not([data-theme])',
+    ]) {
+      const body = selectorBody(source, selector);
+      expect(body.match(/#FF00FF/g)).toHaveLength(1);
+      expect(declarationValue(body, "--theme-series-5")).toBe("#FF00FF");
+      for (const token of [
+        "--theme-paper-raised",
+        "--theme-paper-muted",
+        "--theme-purple-soft",
+        "--theme-matched-soft",
+        "--theme-unmatched-soft",
+        "--theme-warning-soft",
+        "--theme-evidence-surface",
+        "--theme-evidence-hover",
+      ]) {
+        expect(declarationValue(body, token), token).not.toBe("#2B0250");
+      }
+    }
+  });
+
   it("preserves Classic weight defaults and maps the Snyk hierarchy", async () => {
     const [classic, snyk] = await Promise.all([
       readFile(`${repositoryRoot}/src/styles/tokens.css`, "utf8"),

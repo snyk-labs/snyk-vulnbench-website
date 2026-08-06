@@ -24,7 +24,10 @@ const ALLOWED_HEX = new Set([
   "FFFFFF",
 ]);
 const ALLOWED_ALPHA_BY_HEX = new Map([
-  ["FFFFFF", new Set([0.04, 0.08, 0.12, 0.18, 0.24, 0.4, 0.65, 0.78])],
+  [
+    "FFFFFF",
+    new Set([0.04, 0.08, 0.12, 0.18, 0.24, 0.4, 0.5, 0.65, 0.78]),
+  ],
   ["030328", new Set([0.12, 0.3, 0.48, 0.62, 0.72])],
   ["2B0250", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
   ["6F00DD", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
@@ -33,7 +36,10 @@ const ALLOWED_ALPHA_BY_HEX = new Map([
   ["FE9104", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
 ]);
 const ALLOWED_HEX_ALPHA_BY_HEX = new Map([
-  ["FFFFFF", new Set(["0A", "14", "1F", "2E", "3D", "66", "A6", "C7"])],
+  [
+    "FFFFFF",
+    new Set(["0A", "14", "1F", "2E", "3D", "66", "80", "A6", "C7"]),
+  ],
   ["030328", new Set(["1F", "4D", "7A", "9E", "B8"])],
   ["2B0250", new Set(["0A", "14", "1F", "2E", "3D"])],
   ["6F00DD", new Set(["0A", "14", "1F", "2E", "3D"])],
