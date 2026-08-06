@@ -58,6 +58,15 @@ const semanticTokens = [
   "--theme-series-fallback",
   "--font-sans",
   "--font-mono",
+  "--font-weight-h1",
+  "--font-weight-heading",
+  "--font-weight-control",
+  "--font-weight-control-strong",
+  "--font-weight-label",
+  "--font-weight-label-strong",
+  "--font-weight-emphasis",
+  "--font-weight-metric",
+  "--font-weight-metric-compact",
   "--focus-ring",
 ] as const;
 
@@ -175,7 +184,7 @@ describe("Snyk 2026 design contract", () => {
     );
     expect(declarationValue(light, "--theme-ink")).toBe("#030328");
     expect(declarationValue(light, "--theme-rule-strong")).toBe(
-      "rgba(3, 3, 40, 0.3)",
+      "rgba(3, 3, 40, 0.48)",
     );
 
     for (const selector of [
@@ -197,6 +206,37 @@ describe("Snyk 2026 design contract", () => {
       ) as [number, number, number];
       expect(contrastRatio(composited, midnight)).toBeGreaterThanOrEqual(3);
     }
+  });
+
+  it("preserves Classic weight defaults and maps the Snyk hierarchy", async () => {
+    const [classic, snyk] = await Promise.all([
+      readFile(`${repositoryRoot}/src/styles/tokens.css`, "utf8"),
+      readFile(tokenPath, "utf8"),
+    ]);
+
+    expect(classic).toContain("--font-weight-h1: 720;");
+    expect(classic).toContain("--font-weight-heading: 720;");
+    expect(classic).toContain("--font-weight-control: 700;");
+    expect(classic).toContain("--font-weight-control-strong: 750;");
+    expect(classic).toContain("--font-weight-label: 700;");
+    expect(classic).toContain("--font-weight-label-strong: 750;");
+    expect(classic).toContain("--font-weight-emphasis: 650;");
+    expect(classic).toContain("--font-weight-metric: 750;");
+    expect(classic).toContain("--font-weight-metric-compact: 700;");
+
+    const light = selectorBody(
+      snyk,
+      'html[data-design-theme="snyk-2026"][data-theme="light"]',
+    );
+    expect(declarationValue(light, "--font-weight-h1")).toBe("700");
+    expect(declarationValue(light, "--font-weight-heading")).toBe("500");
+    expect(declarationValue(light, "--font-weight-control")).toBe("500");
+    expect(declarationValue(light, "--font-weight-control-strong")).toBe("500");
+    expect(declarationValue(light, "--font-weight-label")).toBe("500");
+    expect(declarationValue(light, "--font-weight-label-strong")).toBe("500");
+    expect(declarationValue(light, "--font-weight-emphasis")).toBe("500");
+    expect(declarationValue(light, "--font-weight-metric")).toBe("700");
+    expect(declarationValue(light, "--font-weight-metric-compact")).toBe("700");
   });
 
   it("declares local font packages and byte-identical approved assets", async () => {

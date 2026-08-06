@@ -353,7 +353,7 @@ export function EvidenceScatter({
         .evidence-scatter__plot .chart-title {
           fill: var(--ink);
           font-size: 15px;
-          font-weight: 750;
+          font-weight: var(--font-weight-label-strong);
         }
 
         .evidence-scatter__plot .gridline {
@@ -411,7 +411,7 @@ export function EvidenceScatter({
           border: 1px solid var(--ink);
           background: var(--paper-raised);
           font-size: 0.72rem;
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
         }
 
         .evidence-scatter__legend li {
@@ -431,6 +431,7 @@ export function EvidenceScatter({
           gap: 0.6rem;
           align-items: center;
           font-size: var(--step--1);
+          font-weight: var(--font-weight-control);
           text-align: left;
         }
 

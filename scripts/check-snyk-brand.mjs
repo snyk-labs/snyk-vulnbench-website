@@ -25,7 +25,7 @@ const ALLOWED_HEX = new Set([
 ]);
 const ALLOWED_ALPHA_BY_HEX = new Map([
   ["FFFFFF", new Set([0.04, 0.08, 0.12, 0.18, 0.24, 0.4, 0.65, 0.78])],
-  ["030328", new Set([0.12, 0.3, 0.62, 0.72])],
+  ["030328", new Set([0.12, 0.3, 0.48, 0.62, 0.72])],
   ["2B0250", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
   ["6F00DD", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
   ["FF00FF", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
@@ -34,7 +34,7 @@ const ALLOWED_ALPHA_BY_HEX = new Map([
 ]);
 const ALLOWED_HEX_ALPHA_BY_HEX = new Map([
   ["FFFFFF", new Set(["0A", "14", "1F", "2E", "3D", "66", "A6", "C7"])],
-  ["030328", new Set(["1F", "4D", "9E", "B8"])],
+  ["030328", new Set(["1F", "4D", "7A", "9E", "B8"])],
   ["2B0250", new Set(["0A", "14", "1F", "2E", "3D"])],
   ["6F00DD", new Set(["0A", "14", "1F", "2E", "3D"])],
   ["FF00FF", new Set(["0A", "14", "1F", "2E", "3D"])],
@@ -111,6 +111,7 @@ const SOURCE_COMPOSITIONS = [
       { path: "src/styles/tokens-snyk-2026.css" },
       { path: "src/styles/global.css", marked: true },
       { path: "src/layouts/BaseLayout.astro" },
+      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
       { path: "src/components/home/Hero.astro", marked: true },
       { path: "src/components/site/BrandFabric.astro" },
       { path: "src/components/site/PageHero.astro", marked: true },

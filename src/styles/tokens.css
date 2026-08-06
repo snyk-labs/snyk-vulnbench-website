@@ -166,6 +166,15 @@
     sans-serif;
   --font-mono:
     "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
+  --font-weight-h1: 720;
+  --font-weight-heading: 720;
+  --font-weight-control: 700;
+  --font-weight-control-strong: 750;
+  --font-weight-label: 700;
+  --font-weight-label-strong: 750;
+  --font-weight-emphasis: 650;
+  --font-weight-metric: 750;
+  --font-weight-metric-compact: 700;
 
   --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
   --step-0: clamp(0.98rem, 0.94rem + 0.2vw, 1.08rem);

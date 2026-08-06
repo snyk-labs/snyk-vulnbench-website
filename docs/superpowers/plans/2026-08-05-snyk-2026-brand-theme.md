@@ -42,12 +42,21 @@ flowchart LR
 
 The deployment selects `classic` or `snyk-2026`; the browser continues to select only `light` or `dark`. Classic remains the unconfigured default, while invalid explicit values fail the build.
 
+## Approved Light refinement
+
+The approved 2026-08-06 Light refinement supersedes the original Family B
+implementation bullets below wherever they conflict. Snyk Light uses a white
+analytical canvas with Midnight copy, restrained locked-color alpha surfaces,
+and one visible exact Brand Gradient hero or PageHero accent. Header and footer
+remain Midnight; the homepage may retain one contained Midnight analytical
+evidence card. Snyk Dark and Classic retain their prior contracts.
+
 ## Implementation
 
 1. **Persist the accepted plan and add the tested build contract**
    - Save this plan at [`docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md`](docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md).
    - Add [`src/config/design-theme.ts`](src/config/design-theme.ts), [`src/config/theme-colors.ts`](src/config/theme-colors.ts), and Vitest coverage for unset, `classic`, `snyk-2026`, and invalid values.
-   - Resolve from `process.env.VULNBENCH_DESIGN_THEME` only during Astro build/config evaluation; expose typed asset paths and `#2B0250`/`#030328` branded browser colors.
+   - Resolve from `process.env.VULNBENCH_DESIGN_THEME` only during Astro build/config evaluation; expose typed asset paths and `#FFFFFF`/`#030328` branded browser colors.
    - Wire [`astro.config.ts`](astro.config.ts), [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro), and [`src/components/site/ThemeToggle.astro`](src/components/site/ThemeToggle.astro) so `<html>` receives `data-design-theme`, both pre-paint scripts share one color map, and existing `vulnbench-theme` behavior remains unchanged.
 
 2. **Add approved local assets and Geist typography**
@@ -58,14 +67,14 @@ The deployment selects `classic` or `snyk-2026`; the browser continues to select
 3. **Implement the isolated Snyk token and layout layer**
    - Add [`src/styles/tokens-snyk-2026.css`](src/styles/tokens-snyk-2026.css) and import it after [`src/styles/tokens.css`](src/styles/tokens.css) from [`src/styles/global.css`](src/styles/global.css).
    - Map every existing semantic surface, text, evidence, heatmap, series, focus, and font token under combined `data-design-theme`/`data-theme` selectors; mirror the no-JavaScript dark media fallback.
-   - Family A Dark uses Midnight with gradient fabric. Family B Light uses the full Brand Gradient with white copy and opaque Midnight analytical panels. Avoid gradient text, masks, pseudo-element gradient borders, glass, decorative shadows, and radial glow divs.
+   - Family A Dark uses Midnight with gradient fabric. The superseding website Light contract uses white paper/raised surfaces, Midnight copy, restrained Purple/Orange-Red/Amber alpha tints, and one thin exact Brand Gradient accent rather than a full-gradient page. Avoid gradient text, masks, pseudo-element gradient borders, glass, decorative shadows, and radial glow divs.
    - Replace the continuous `color-mix` heatmap in [`src/components/explorer/views/CoverageView.tsx`](src/components/explorer/views/CoverageView.tsx) with tested discrete semantic heatmap bands so branded output remains locked-palette and color-independent.
 
 4. **Apply the branded shell and homepage composition**
    - Add focused [`src/components/site/SnykLogo.astro`](src/components/site/SnykLogo.astro) and [`src/components/site/BrandFabric.astro`](src/components/site/BrandFabric.astro) components.
    - In [`src/components/site/SiteHeader.astro`](src/components/site/SiteHeader.astro), select the official Snyk wordmark for branded builds while keeping VulnBench product identity spatially separate; retain the Classic wordmark unchanged.
    - Give [`src/components/site/SiteFooter.astro`](src/components/site/SiteFooter.astro) an opaque Midnight branded treatment and keep fabric out of the footer.
-   - Scope the strongest composition to [`src/components/home/Hero.astro`](src/components/home/Hero.astro): left-aligned research copy over the dark region, quantitative evidence intact, one contained fabric corner, responsive `clamp()` headings, and no overlap at 320px.
+   - Scope the strongest composition to [`src/components/home/Hero.astro`](src/components/home/Hero.astro): left-aligned Midnight research copy on white, one contained Midnight quantitative evidence card, one thin exact Brand Gradient accent, one subtle no-gradient fabric corner, responsive `clamp()` headings, and no overlap at 320px.
 
 5. **Make exports and static identity build-aware**
    - Extend [`src/components/explorer/export.test.ts`](src/components/explorer/export.test.ts) first, then preserve computed-token export behavior in [`src/components/explorer/export.ts`](src/components/explorer/export.ts) so standalone SVGs inline Geist and locked branded colors without unresolved CSS variables.

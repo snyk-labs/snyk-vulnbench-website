@@ -51,6 +51,20 @@ const { eyebrow, title, description } = Astro.props;
     position: relative;
   }
 
+  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .page-hero__copy {
+    background: #FFFFFF;
+    color: #030328;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
+      .page-hero__copy {
+      background: #FFFFFF;
+      color: #030328;
+    }
+  }
+
   :global(html[data-design-theme="snyk-2026"]) .brand-gradient-accent {
     position: absolute;
     top: 0;

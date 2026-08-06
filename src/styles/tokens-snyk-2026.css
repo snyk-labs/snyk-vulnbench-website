@@ -18,7 +18,7 @@ html[data-design-theme="snyk-2026"][data-theme="light"] {
   --theme-ink-soft: rgba(3, 3, 40, 0.72);
   --theme-ink-faint: rgba(3, 3, 40, 0.62);
   --theme-rule: rgba(3, 3, 40, 0.12);
-  --theme-rule-strong: rgba(3, 3, 40, 0.3);
+  --theme-rule-strong: rgba(3, 3, 40, 0.48);
   --theme-purple: #6F00DD;
   --theme-purple-dark: #6F00DD;
   --theme-purple-soft: rgba(111, 0, 221, 0.08);
@@ -55,7 +55,12 @@ html[data-design-theme="snyk-2026"][data-theme="light"] {
   --font-weight-h1: 700;
   --font-weight-heading: 500;
   --font-weight-control: 500;
+  --font-weight-control-strong: 500;
   --font-weight-label: 500;
+  --font-weight-label-strong: 500;
+  --font-weight-emphasis: 500;
+  --font-weight-metric: 700;
+  --font-weight-metric-compact: 700;
   --focus-ring: 0 0 0 3px #FFFFFF, 0 0 0 6px #6F00DD;
   --brand-gradient: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);
 }
@@ -108,7 +113,12 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
   --font-weight-h1: 700;
   --font-weight-heading: 500;
   --font-weight-control: 500;
+  --font-weight-control-strong: 500;
   --font-weight-label: 500;
+  --font-weight-label-strong: 500;
+  --font-weight-emphasis: 500;
+  --font-weight-metric: 700;
+  --font-weight-metric-compact: 700;
   --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #FF00FF;
 }
 
@@ -161,7 +171,12 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
     --font-weight-h1: 700;
     --font-weight-heading: 500;
     --font-weight-control: 500;
+    --font-weight-control-strong: 500;
     --font-weight-label: 500;
+    --font-weight-label-strong: 500;
+    --font-weight-emphasis: 500;
+    --font-weight-metric: 700;
+    --font-weight-metric-compact: 700;
     --focus-ring: 0 0 0 3px #030328, 0 0 0 6px #FF00FF;
   }
 }

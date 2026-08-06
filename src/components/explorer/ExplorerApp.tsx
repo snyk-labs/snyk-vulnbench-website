@@ -752,6 +752,22 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
         }
 
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-app,
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas {
+          background: #FFFFFF;
+          color: #030328;
+        }
+
+        @media (prefers-color-scheme: light) {
+          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
+          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
+            background: #FFFFFF;
+            color: #030328;
+          }
+        }
+        /* snyk-2026-audit:end */
+
         .explorer-header {
           display: grid;
           width: min(100%, 98rem);
@@ -789,7 +805,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           margin: 0;
           font-family: var(--font-mono);
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-metric-compact);
         }
 
         .explorer-header__actions {
@@ -809,7 +825,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
           align-items: center;
           font-size: var(--step--1);
-          font-weight: var(--font-weight-control, 700);
+          font-weight: var(--font-weight-control);
           text-decoration: none;
         }
 
@@ -839,7 +855,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           border-bottom: 0.25rem solid transparent;
           background: transparent;
           color: var(--ink-soft);
-          font-weight: var(--font-weight-control, 750);
+          font-weight: var(--font-weight-control-strong);
           white-space: nowrap;
         }
 
@@ -901,7 +917,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         .filter-rail summary,
         .filter-rail__select {
           font-size: var(--step--1);
-          font-weight: var(--font-weight-label, 750);
+          font-weight: var(--font-weight-label-strong);
         }
 
         .filter-rail label:not(.filter-rail__select) {
@@ -1041,7 +1057,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           border: 1px solid var(--ink);
           background: var(--paper-raised);
           color: var(--ink);
-          font-weight: var(--font-weight-control, 700);
+          font-weight: var(--font-weight-control);
         }
 
         .finding-detail {
@@ -1073,7 +1089,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         .finding-detail dd {
           margin: 0;
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-label);
           overflow-wrap: anywhere;
         }
 
@@ -1098,7 +1114,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
           align-items: center;
           font-size: var(--step--1);
-          font-weight: var(--font-weight-control, 700);
+          font-weight: var(--font-weight-control);
           text-decoration: none;
         }
 

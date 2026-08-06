@@ -92,9 +92,14 @@ describe("Snyk 2026 design-theme documentation", () => {
   });
 
   test("records the accepted website-specific Light deviation", async () => {
-    const design = await readDocumentation(
-      "docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md",
-    );
+    const [design, plan] = await Promise.all([
+      readDocumentation(
+        "docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md",
+      ),
+      readDocumentation(
+        "docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md",
+      ),
+    ]);
 
     expect(design).toContain(
       "accepted website-specific deviation from the general Snyk 2026 no-light-canvas and Family-B guidance",
@@ -110,6 +115,15 @@ describe("Snyk 2026 design-theme documentation", () => {
     );
     expect(design).toContain(
       "H1 remains Bold 700; H2 and H3 use Medium 500",
+    );
+    expect(plan).toContain(
+      "The approved 2026-08-06 Light refinement supersedes the original Family B implementation bullets",
+    );
+    expect(plan).toContain(
+      "Snyk Light uses a white analytical canvas with Midnight copy",
+    );
+    expect(plan).toContain(
+      "one visible exact Brand Gradient hero or PageHero accent",
     );
   });
 

@@ -83,6 +83,7 @@ describe("Snyk 2026 mechanical brand audit", () => {
   });
 
   it.each([
+    "rgba(3 3 40 / 0.48)",
     "rgba(3 3 40 / 0.72)",
     "rgba(111 0 221 / 0.08)",
     "rgba(243 85 46 / 0.08)",
@@ -386,6 +387,39 @@ describe("Snyk 2026 mechanical brand audit", () => {
       "#654321",
     );
     expect(findings).toHaveLength(1);
+  });
+
+  it("keeps Explorer branded CSS in the audited page composition", async () => {
+    const auditSource = await readFile(
+      resolve(process.cwd(), "scripts/check-snyk-brand.mjs"),
+      "utf8",
+    );
+
+    expect(auditSource).toContain(
+      '{ path: "src/components/explorer/ExplorerApp.tsx", marked: true }',
+    );
+  });
+
+  it("rejects forbidden and off-palette CSS inside an Explorer branded block", () => {
+    const explorerSource = `
+      .explorer-app { color: var(--ink); }
+      /* snyk-2026-audit:start */
+      html[data-design-theme="snyk-2026"] .explorer-app {
+        color: #123456;
+        mask-image: linear-gradient(90deg, #6F00DD, #FF00FF);
+      }
+      /* snyk-2026-audit:end */
+    `;
+    const branded = extractSnykAuditBlocks(
+      explorerSource,
+      "src/components/explorer/ExplorerApp.tsx",
+    );
+    const rules = auditText(branded, {
+      fileName: "src/components/explorer/ExplorerApp.tsx",
+    }).map(({ rule }) => rule);
+
+    expect(rules).toContain("off-palette");
+    expect(rules).toContain("forbidden-css");
   });
 
   it("fails deterministically when an auditable mixed source has no markers", () => {

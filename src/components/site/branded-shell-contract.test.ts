@@ -214,17 +214,17 @@ describe("build-selected branded shell contract", () => {
       source("src/components/explorer/ExplorerApp.tsx"),
     ]);
 
-    expect(global).not.toMatch(
-      /\[data-theme="light"\][\s\S]*?\.section\s*\{[\s\S]*?background:\s*#030328/,
+    expect(global).toMatch(
+      /\[data-theme="light"\][^}]*\.section\s*\{[^}]*background:\s*#FFFFFF/,
     );
-    expect(hero).not.toMatch(
-      /\[data-theme="light"\][\s\S]*?\.hero-copy\s*\{[\s\S]*?background:\s*#030328/,
+    expect(hero).toMatch(
+      /\[data-theme="light"\][^}]*\.hero-copy\s*\{[^}]*background:\s*#FFFFFF/,
     );
-    expect(pageHero).not.toMatch(
-      /\[data-theme="light"\][\s\S]*?\.page-hero__copy\s*\{[\s\S]*?background:\s*#030328/,
+    expect(pageHero).toMatch(
+      /\[data-theme="light"\][^}]*\.page-hero__copy\s*\{[^}]*background:\s*#FFFFFF/,
     );
-    expect(explorer).not.toMatch(
-      /\[data-theme="light"\][\s\S]*?\.explorer-(?:app|canvas)[\s\S]*?background:\s*#030328/,
+    expect(explorer).toMatch(
+      /\[data-theme="light"\][^}]*\.explorer-app,[^}]*\.explorer-canvas\s*\{[^}]*background:\s*#FFFFFF/,
     );
     expect(pageHero).toContain('class="brand-gradient-accent"');
   });

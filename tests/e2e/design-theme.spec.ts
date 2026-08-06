@@ -17,6 +17,71 @@ const WHITE = "rgb(255, 255, 255)";
 const PURPLE = "rgb(111, 0, 221)";
 const ORANGE_RED = "rgb(243, 85, 46)";
 const AMBER = "rgb(254, 145, 4)";
+const STRONG_RULE = "rgba(3, 3, 40, 0.48)";
+const BRAND_GRADIENT =
+  "linear-gradient(90deg, rgb(43, 2, 80) 0%, rgb(111, 0, 221) 6%, rgb(255, 0, 255) 30%, rgb(243, 85, 46) 66%, rgb(254, 145, 4) 100%)";
+
+function relativeLuminance(red: number, green: number, blue: number) {
+  const linearize = (channel: number) => {
+    const value = channel / 255;
+    return value <= 0.04045
+      ? value / 12.92
+      : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  return (
+    linearize(red) * 0.2126 +
+    linearize(green) * 0.7152 +
+    linearize(blue) * 0.0722
+  );
+}
+
+function contrastOnWhite(color: string) {
+  const channels = color.match(/[\d.]+/gu)?.map(Number) ?? [];
+  const [red, green, blue, alpha = 1] = channels;
+  if (red === undefined || green === undefined || blue === undefined) {
+    throw new Error(`Unable to parse color ${color}`);
+  }
+  const composite = [red, green, blue].map((channel) =>
+    Math.round(channel * alpha + 255 * (1 - alpha)),
+  );
+  const foreground = relativeLuminance(
+    composite[0] ?? 0,
+    composite[1] ?? 0,
+    composite[2] ?? 0,
+  );
+  return (1.05) / (foreground + 0.05);
+}
+
+async function expectOneVisibleBrandGradient(
+  page: import("@playwright/test").Page,
+) {
+  const matches = await page.evaluate((gradient) => {
+    return [...document.querySelectorAll<HTMLElement>("body *")]
+      .filter((element) => {
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return (
+          style.backgroundImage === gradient &&
+          style.display !== "none" &&
+          style.visibility !== "hidden" &&
+          Number(style.opacity) > 0 &&
+          rect.width > 0 &&
+          rect.height > 0
+        );
+      })
+      .map((element) => ({
+        className: element.className,
+        gradient: getComputedStyle(element).backgroundImage,
+      }));
+  }, BRAND_GRADIENT);
+
+  expect(matches).toEqual([
+    expect.objectContaining({
+      className: expect.stringContaining("brand-gradient-accent"),
+      gradient: BRAND_GRADIENT,
+    }),
+  ]);
+}
 
 async function expectNoHorizontalOverflow(page: import("@playwright/test").Page) {
   expect(
@@ -120,12 +185,48 @@ test("uses the approved local Geist hierarchy without third-party font requests"
 
   await page.goto("/releases/js-1.0");
   await expect(page.locator("article h3").first()).toHaveCSS("font-weight", "500");
-
+  await expect(page.locator(".release-meta dd:not(.metric)").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".release-meta-panel nav")).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".case-tag").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".evidence-scatter__plot .chart-title").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".evidence-scatter__legend button").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/releases/js-1.0/explore");
   await page
     .locator('astro-island[component-export="ExplorerApp"]')
     .waitFor({ state: "attached" });
   await expect(page.locator(".explorer-tabs button").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".explorer-guide dd").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".explorer-guide nav a").first()).toHaveCSS(
+    "font-weight",
+    "500",
+  );
+  await expect(page.locator(".explorer-header dd").first()).toHaveCSS(
+    "font-weight",
+    "700",
+  );
+  await expect(page.locator(".evidence-scatter__exports button").first()).toHaveCSS(
     "font-weight",
     "500",
   );
@@ -179,7 +280,7 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   );
   await expect(page.locator(".hero-copy")).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
   await expect(page.locator(".hero-copy")).toHaveCSS(
     "color",
@@ -187,7 +288,7 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   );
   await expect(page.locator(".section").first()).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
   await expect(page.locator(".evidence-band")).toHaveCSS(
     "background-color",
@@ -213,12 +314,12 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   await expect(page.locator(".brand-gradient-accent")).toHaveCount(1);
   await expect(page.locator(".page-hero__copy")).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
   await expect(page.locator(".page-hero__copy")).toHaveCSS("color", MIDNIGHT);
   await expect(page.locator(".section").first()).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
 
   await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=unmatched");
@@ -229,15 +330,15 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   await expect(page.locator(".brand-gradient-accent")).toHaveCount(1);
   await expect(page.locator(".page-hero__copy")).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
   await expect(page.locator(".explorer-app")).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
   await expect(page.locator(".explorer-canvas")).toHaveCSS(
     "background-color",
-    "rgba(0, 0, 0, 0)",
+    WHITE,
   );
   await expect(page.locator(".explorer-app")).toHaveCSS("color", MIDNIGHT);
   await expect(page.locator(".explorer-note").first()).toHaveCSS(
@@ -245,6 +346,47 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
     AMBER,
   );
   await expectNoHorizontalOverflow(page);
+});
+
+test("renders exactly one visible exact Brand Gradient accent per Light page", async ({
+  page,
+}) => {
+  await prepareTheme(page, "light", "light");
+
+  for (const path of [
+    "/",
+    "/releases/js-1.0",
+    "/releases/js-1.0/explore?v=1&view=coverage&metric=unmatched",
+  ]) {
+    await page.goto(path);
+    await expectOneVisibleBrandGradient(page);
+  }
+});
+
+test("keeps representative Light control boundaries above 3:1", async ({
+  page,
+}) => {
+  await prepareTheme(page, "light", "light");
+  await page.goto("/releases/js-1.0");
+
+  const token = await page.locator("html").evaluate((element) =>
+    getComputedStyle(element).getPropertyValue("--rule-strong").trim(),
+  );
+  expect(token).toBe(STRONG_RULE);
+  expect(contrastOnWhite(token)).toBeGreaterThanOrEqual(3);
+  await expect(page.locator(".evidence-scatter__plot").first()).toHaveCSS(
+    "border-top-color",
+    STRONG_RULE,
+  );
+
+  await page.goto("/releases/js-1.0/explore?v=1&view=coverage");
+  await page
+    .locator('astro-island[component-export="ExplorerApp"]')
+    .waitFor({ state: "attached" });
+  await expect(page.locator(".explorer-table-scroll").first()).toHaveCSS(
+    "border-top-color",
+    STRONG_RULE,
+  );
 });
 
 test("locks Snyk 2026 Light coverage cells to visible discrete Purple-alpha bands", async ({
@@ -291,11 +433,27 @@ test("locks Snyk 2026 Light coverage cells to visible discrete Purple-alpha band
   expect(presentation.pair?.[0].background).toBe(
     presentation.pair?.[1].background,
   );
-  expect(
-    presentation.samples.every(({ background }) =>
-      /^rgba?\(111, 0, 221(?:, 0\.\d+)?\)$/u.test(background),
-    ),
-  ).toBe(true);
+  const exactBands = await page.evaluate(() => {
+    return [0, 1, 2, 3, 4].map((band) => {
+      const sample = document.createElement("div");
+      sample.className = `coverage-cell--heatmap-${band}`;
+      document.body.append(sample);
+      const style = getComputedStyle(sample);
+      const result = {
+        background: style.backgroundColor,
+        color: style.color,
+      };
+      sample.remove();
+      return result;
+    });
+  });
+  expect(exactBands).toEqual([
+    { background: "rgba(111, 0, 221, 0.04)", color: MIDNIGHT },
+    { background: "rgba(111, 0, 221, 0.08)", color: MIDNIGHT },
+    { background: "rgba(111, 0, 221, 0.12)", color: MIDNIGHT },
+    { background: "rgba(111, 0, 221, 0.18)", color: MIDNIGHT },
+    { background: "rgba(111, 0, 221, 0.24)", color: MIDNIGHT },
+  ]);
   await expect(
     page.getByRole("table", { name: "Vulnerability class coverage matrix" }),
   ).toBeVisible();
@@ -399,34 +557,48 @@ test("publishes branded favicon and default social metadata assets", async ({
   }
 });
 
-test("exports a self-contained branded chart SVG", async ({ page }) => {
-  await prepareTheme(page, "dark", "dark");
+test("exports self-contained audited chart SVGs in explicit Light and Dark", async ({
+  page,
+}) => {
+  await prepareTheme(page, "light", "light");
   await page.goto("/releases/js-1.0/explore");
   await page
     .locator('astro-island[component-export="ExplorerApp"]')
     .waitFor({ state: "attached" });
 
-  const svgDownload = page.waitForEvent("download");
-  await page
-    .getByRole("img", { name: "Agreement versus repeated-run variance" })
-    .locator("..")
-    .getByRole("button", { name: "Export SVG" })
-    .click();
-  const download = await svgDownload;
-  const downloadPath = await download.path();
-  expect(downloadPath).not.toBeNull();
-  const svg = await readFile(downloadPath as string, "utf8");
+  for (const mode of ["light", "dark"] as const) {
+    if (mode === "dark") {
+      await themeToggle(page, "dark").click();
+      await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    }
 
-  expect(svg).toContain("#6F00DD");
-  expect(svg).toContain("Geist Variable");
-  expect(svg).toContain("Geist Mono Variable");
-  expect(svg).not.toContain("var(--");
-  expect(
-    auditText(svg, {
-      fileName: download.suggestedFilename(),
-      checkOverflowGuard: false,
-    }),
-  ).toEqual([]);
+    const svgDownload = page.waitForEvent("download");
+    await page
+      .getByRole("img", { name: "Agreement versus repeated-run variance" })
+      .locator("..")
+      .getByRole("button", { name: "Export SVG" })
+      .click();
+    const download = await svgDownload;
+    const downloadPath = await download.path();
+    expect(downloadPath).not.toBeNull();
+    const svg = await readFile(downloadPath as string, "utf8");
+    const background = svg.match(
+      /<rect data-export-background="" width="100%" height="100%" fill="([^"]+)"/u,
+    )?.[1];
+
+    expect(background).toBe(mode === "light" ? WHITE : MIDNIGHT);
+    expect(svg).toContain("#6F00DD");
+    expect(svg).toContain(mode === "light" ? MIDNIGHT : WHITE);
+    expect(svg).toContain("Geist Variable");
+    expect(svg).toContain("Geist Mono Variable");
+    expect(svg).not.toContain("var(--");
+    expect(
+      auditText(svg, {
+        fileName: `${mode}-${download.suggestedFilename()}`,
+        checkOverflowGuard: false,
+      }),
+    ).toEqual([]);
+  }
 });
 
 test("keeps representative explorer layouts usable without page overflow", async ({
@@ -484,7 +656,7 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
     await expect(page.locator(".brand-gradient-accent")).toHaveCount(1);
     await expect(page.locator(".hero-copy")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(page.locator(".hero-copy")).toHaveCSS(
       "color",
@@ -492,7 +664,7 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
     );
     await expect(page.locator(".section").first()).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
     await expect(page.locator("[data-theme-toggle]")).toBeHidden();
@@ -517,7 +689,7 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
     await expect(page.locator(".brand-gradient-accent")).toHaveCount(1);
     await expect(page.locator(".page-hero__copy")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(page.locator(".page-hero__copy")).toHaveCSS(
       "color",
@@ -525,11 +697,11 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
     );
     await expect(page.locator(".explorer-app")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(page.locator(".explorer-canvas")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(
       page.getByRole("heading", {

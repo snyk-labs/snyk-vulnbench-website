@@ -167,7 +167,7 @@ export function ExplorerGuideRail({
         .explorer-guide dd {
           margin: 0;
           font-size: 0.75rem;
-          font-weight: 750;
+          font-weight: var(--font-weight-label-strong);
           overflow-wrap: anywhere;
         }
 
@@ -181,7 +181,7 @@ export function ExplorerGuideRail({
           min-height: 1.75rem;
           align-items: center;
           font-size: 0.75rem;
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
         }
       `}</style>
     </aside>
