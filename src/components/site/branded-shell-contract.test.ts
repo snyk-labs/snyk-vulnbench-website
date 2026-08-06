@@ -15,6 +15,30 @@ function selectorBody(css: string, selector: string) {
 }
 
 describe("build-selected branded shell contract", () => {
+  it("maps Snyk Light to a white analytical canvas with restrained locked-color semantics", async () => {
+    const tokens = await source("src/styles/tokens-snyk-2026.css");
+
+    expect(tokens).toContain("--theme-paper: #FFFFFF;");
+    expect(tokens).toContain("--theme-paper-raised: #FFFFFF;");
+    expect(tokens).toContain("--theme-paper-muted: rgba(111, 0, 221, 0.04);");
+    expect(tokens).toContain("--theme-ink: #030328;");
+    expect(tokens).toContain("--theme-ink-soft: rgba(3, 3, 40, 0.72);");
+    expect(tokens).toContain("--theme-rule: rgba(3, 3, 40, 0.12);");
+    expect(tokens).toContain("--theme-matched: #6F00DD;");
+    expect(tokens).toContain("--theme-matched-soft: rgba(111, 0, 221, 0.08);");
+    expect(tokens).toContain("--theme-unmatched: #F3552E;");
+    expect(tokens).toContain("--theme-unmatched-soft: rgba(243, 85, 46, 0.08);");
+    expect(tokens).toContain("--theme-warning: #FE9104;");
+    expect(tokens).toContain("--theme-warning-soft: rgba(254, 145, 4, 0.12);");
+    expect(tokens).toContain("--theme-evidence-surface: #FFFFFF;");
+    expect(tokens).toContain("--theme-evidence-text: #030328;");
+    expect(tokens).toContain("--theme-heatmap-4: rgba(111, 0, 221, 0.24);");
+    expect(tokens).toContain("--theme-series-6: #030328;");
+    expect(tokens).toContain(
+      "--brand-gradient: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);",
+    );
+  });
+
   it("selects the official Snyk identity without changing the Classic wordmark", async () => {
     const [designTheme, header, logo, classicWordmark] = await Promise.all([
       source("src/config/design-theme.ts"),
@@ -86,8 +110,8 @@ describe("build-selected branded shell contract", () => {
     expect(fabric).toContain("background-position: right bottom");
     expect(fabric).toMatch(/right:\s*0/);
     expect(fabric).toMatch(/bottom:\s*0/);
-    expect(defaultFabric).toContain("opacity: 0.48;");
-    expect(lightFabric).toContain("opacity: 0.48;");
+    expect(defaultFabric).toContain("opacity: 0.16;");
+    expect(lightFabric).toContain("opacity: 0.16;");
     expect(darkFabric).toContain("opacity: 1;");
     expect(noJavaScriptDarkFabric).toContain("opacity: 1;");
     expect(fabric).not.toMatch(
@@ -175,8 +199,33 @@ describe("build-selected branded shell contract", () => {
     expect(brandedPanel).toContain("border-right:");
     expect(brandedPanel).toContain("border-bottom:");
     expect(brandedPanel).toContain("border-left:");
+    expect(hero).toContain('class="brand-gradient-accent"');
+    expect(hero).toContain("background: var(--brand-gradient);");
     expect(hero).not.toMatch(
       /radial-gradient|mask-image|mask-composite|background-clip|text-fill-color|backdrop-filter|box-shadow|hero-glow|cta-glow|::before|::after/i,
     );
+  });
+
+  it("keeps Snyk Light narrative and explorer copy on white surfaces", async () => {
+    const [global, hero, pageHero, explorer] = await Promise.all([
+      source("src/styles/global.css"),
+      source("src/components/home/Hero.astro"),
+      source("src/components/site/PageHero.astro"),
+      source("src/components/explorer/ExplorerApp.tsx"),
+    ]);
+
+    expect(global).not.toMatch(
+      /\[data-theme="light"\][\s\S]*?\.section\s*\{[\s\S]*?background:\s*#030328/,
+    );
+    expect(hero).not.toMatch(
+      /\[data-theme="light"\][\s\S]*?\.hero-copy\s*\{[\s\S]*?background:\s*#030328/,
+    );
+    expect(pageHero).not.toMatch(
+      /\[data-theme="light"\][\s\S]*?\.page-hero__copy\s*\{[\s\S]*?background:\s*#030328/,
+    );
+    expect(explorer).not.toMatch(
+      /\[data-theme="light"\][\s\S]*?\.explorer-(?:app|canvas)[\s\S]*?background:\s*#030328/,
+    );
+    expect(pageHero).toContain('class="brand-gradient-accent"');
   });
 });

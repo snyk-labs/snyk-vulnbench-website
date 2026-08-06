@@ -30,10 +30,12 @@ Design theme is selected at build time; color mode is selected by the visitor or
   select the wrong design.
 - Branded changes must pass the mechanical brand audit and real visual and Axe
   checks. The audit is additive to, not a substitute for, browser validation.
-- In Snyk 2026 Family B, running copy and dense analytical content must sit on
-  an opaque Midnight surface; preserve the single page gradient only in the
-  surrounding composition. Verify computed backgrounds in browser tests
-  because automated contrast tools do not infer contrast against CSS gradients.
+- Snyk 2026 Light is a website-specific white analytical canvas with Midnight
+  copy, restrained locked-color alpha tints, and one contained exact Brand
+  Gradient accent per page. Keep header/footer Midnight, keep most narrative
+  and explorer surfaces light, and reserve a dark evidence card for a contained
+  analytical focal point. Verify explicit and no-JavaScript system Light in a
+  real browser at desktop and mobile widths.
 - Verify official logo minimums from rendered image bounds at mobile and
   desktop widths. Preserve clear space of at least one rendered wordmark height
   on all four sides, and measure each side in a real browser together with

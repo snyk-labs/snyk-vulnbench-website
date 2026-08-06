@@ -39,7 +39,7 @@ describe("design-theme browser metadata", () => {
 
   test("maps Snyk 2026 browser colors and static identity assets", () => {
     expect(themeColorsByDesignTheme["snyk-2026"]).toEqual<BrowserThemeColors>({
-      light: "#2B0250",
+      light: "#FFFFFF",
       dark: "#030328",
     });
     expect(designThemeAssets["snyk-2026"]).toEqual({

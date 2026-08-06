@@ -23,29 +23,23 @@ const ALLOWED_HEX = new Set([
   "FF00FF",
   "FFFFFF",
 ]);
-const ALLOWED_WHITE_ALPHA = new Set([
-  "0.04",
-  "0.08",
-  "0.12",
-  "0.18",
-  "0.24",
-  "0.4",
-  "0.40",
-  "0.65",
-  "0.78",
+const ALLOWED_ALPHA_BY_HEX = new Map([
+  ["FFFFFF", new Set([0.04, 0.08, 0.12, 0.18, 0.24, 0.4, 0.65, 0.78])],
+  ["030328", new Set([0.12, 0.3, 0.62, 0.72])],
+  ["2B0250", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
+  ["6F00DD", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
+  ["FF00FF", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
+  ["F3552E", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
+  ["FE9104", new Set([0.04, 0.08, 0.12, 0.18, 0.24])],
 ]);
-const ALLOWED_WHITE_ALPHA_VALUES = new Set(
-  [...ALLOWED_WHITE_ALPHA].map(Number),
-);
-const ALLOWED_WHITE_HEX_ALPHA = new Set([
-  "0A",
-  "14",
-  "1F",
-  "2E",
-  "3D",
-  "66",
-  "A6",
-  "C7",
+const ALLOWED_HEX_ALPHA_BY_HEX = new Map([
+  ["FFFFFF", new Set(["0A", "14", "1F", "2E", "3D", "66", "A6", "C7"])],
+  ["030328", new Set(["1F", "4D", "9E", "B8"])],
+  ["2B0250", new Set(["0A", "14", "1F", "2E", "3D"])],
+  ["6F00DD", new Set(["0A", "14", "1F", "2E", "3D"])],
+  ["FF00FF", new Set(["0A", "14", "1F", "2E", "3D"])],
+  ["F3552E", new Set(["0A", "14", "1F", "2E", "3D"])],
+  ["FE9104", new Set(["0A", "14", "1F", "2E", "3D"])],
 ]);
 const OFF_BRAND_FONTS = [
   "Inter",
@@ -117,7 +111,6 @@ const SOURCE_COMPOSITIONS = [
       { path: "src/styles/tokens-snyk-2026.css" },
       { path: "src/styles/global.css", marked: true },
       { path: "src/layouts/BaseLayout.astro" },
-      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
       { path: "src/components/home/Hero.astro", marked: true },
       { path: "src/components/site/BrandFabric.astro" },
       { path: "src/components/site/PageHero.astro", marked: true },
@@ -183,7 +176,7 @@ function auditHexColors(source, fileName) {
       ALLOWED_HEX.has(color) &&
       (!alpha ||
         alpha === "FF" ||
-        (color === "FFFFFF" && ALLOWED_WHITE_HEX_ALPHA.has(alpha)));
+        ALLOWED_HEX_ALPHA_BY_HEX.get(color)?.has(alpha) === true);
     if (!allowed) {
       findings.push(
         finding(
@@ -218,8 +211,8 @@ function parseAlpha(value) {
     : Number.NaN;
 }
 
-function approvedWhiteAlpha(alpha) {
-  return ALLOWED_WHITE_ALPHA_VALUES.has(alpha);
+function approvedAlpha(hex, alpha) {
+  return ALLOWED_ALPHA_BY_HEX.get(hex)?.has(alpha) === true;
 }
 
 function parseRgbLiteral(body) {
@@ -267,7 +260,7 @@ function parseRgbLiteral(body) {
     allowed:
       alpha === undefined || alpha === 1
         ? ALLOWED_HEX.has(hex)
-        : hex === "FFFFFF" && approvedWhiteAlpha(alpha),
+        : approvedAlpha(hex, alpha),
   };
 }
 

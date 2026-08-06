@@ -752,22 +752,6 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
         }
 
-        /* snyk-2026-audit:start */
-        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-app,
-        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas {
-          background: #030328;
-          color: #FFFFFF;
-        }
-
-        @media (prefers-color-scheme: light) {
-          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
-          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
-            background: #030328;
-            color: #FFFFFF;
-          }
-        }
-        /* snyk-2026-audit:end */
-
         .explorer-header {
           display: grid;
           width: min(100%, 98rem);
@@ -825,7 +809,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
           align-items: center;
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-control, 700);
           text-decoration: none;
         }
 
@@ -855,7 +839,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           border-bottom: 0.25rem solid transparent;
           background: transparent;
           color: var(--ink-soft);
-          font-weight: 750;
+          font-weight: var(--font-weight-control, 750);
           white-space: nowrap;
         }
 
@@ -917,7 +901,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         .filter-rail summary,
         .filter-rail__select {
           font-size: var(--step--1);
-          font-weight: 750;
+          font-weight: var(--font-weight-label, 750);
         }
 
         .filter-rail label:not(.filter-rail__select) {
@@ -1057,7 +1041,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           border: 1px solid var(--ink);
           background: var(--paper-raised);
           color: var(--ink);
-          font-weight: 700;
+          font-weight: var(--font-weight-control, 700);
         }
 
         .finding-detail {
@@ -1114,7 +1098,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
           align-items: center;
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-control, 700);
           text-decoration: none;
         }
 

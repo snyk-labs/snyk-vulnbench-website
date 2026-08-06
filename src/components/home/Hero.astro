@@ -10,6 +10,11 @@ import EvidenceStrip from "./EvidenceStrip.astro";
 <section class="hero">
   <!-- snyk-2026-audit:start -->
   {isSnyk2026Design && <BrandFabric />}
+  {
+    isSnyk2026Design && (
+      <div class="brand-gradient-accent" aria-hidden="true" />
+    )
+  }
   <!-- snyk-2026-audit:end -->
 
   <div class="hero-grid container">
@@ -88,19 +93,25 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     text-align: left;
   }
 
-  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
-    .hero-copy {
-    padding: var(--space-5);
-    background: #030328;
-    color: #FFFFFF;
+  :global(html[data-design-theme="snyk-2026"]) .brand-gradient-accent {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 0.3rem;
+    background: var(--brand-gradient);
   }
 
-  @media (prefers-color-scheme: light) {
+  :global(html[data-design-theme="snyk-2026"][data-theme="dark"])
+    .brand-gradient-accent {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
     :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
-      .hero-copy {
-      padding: var(--space-5);
-      background: #030328;
-      color: #FFFFFF;
+      .brand-gradient-accent {
+      display: none;
     }
   }
 
@@ -114,6 +125,14 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   }
 
   :global(html[data-design-theme="snyk-2026"]) .hero-visual {
+    --paper-raised: #030328;
+    --paper-muted: #2B0250;
+    --ink: #FFFFFF;
+    --ink-soft: rgba(255, 255, 255, 0.78);
+    --ink-faint: rgba(255, 255, 255, 0.65);
+    --rule: rgba(255, 255, 255, 0.12);
+    --rule-strong: rgba(255, 255, 255, 0.4);
+    --purple-dark: #FF00FF;
     border-top: 1px solid #6F00DD;
     border-right: 1px solid #FE9104;
     border-bottom: 1px solid #F3552E;
@@ -142,7 +161,7 @@ import EvidenceStrip from "./EvidenceStrip.astro";
 
   .release-kicker {
     color: var(--purple-dark);
-    font-weight: 700;
+    font-weight: var(--font-weight-label, 700);
   }
 
   h1 {
@@ -157,7 +176,7 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     color: var(--purple-dark);
     font-family: var(--font-mono);
     font-size: var(--step--1);
-    font-weight: 700;
+    font-weight: var(--font-weight-label, 700);
   }
 
   .secondary-links {
@@ -165,7 +184,7 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     gap: var(--space-4);
     flex-wrap: wrap;
     font-size: var(--step--1);
-    font-weight: 700;
+    font-weight: var(--font-weight-control, 700);
   }
 
   .hero-visual {

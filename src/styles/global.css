@@ -21,6 +21,7 @@ body {
   min-width: 20rem;
   margin: 0;
   font-size: var(--step-0);
+  font-weight: 400;
   line-height: 1.62;
 }
 
@@ -63,7 +64,7 @@ h1,
 h2,
 h3 {
   margin-block: 0;
-  font-weight: 720;
+  font-weight: var(--font-weight-heading, 720);
   letter-spacing: -0.035em;
   line-height: 1.08;
   text-wrap: balance;
@@ -71,6 +72,7 @@ h3 {
 
 h1 {
   font-size: var(--step-4);
+  font-weight: var(--font-weight-h1, 720);
 }
 
 h2 {
@@ -101,20 +103,6 @@ ol {
   border-top: 1px solid var(--rule);
 }
 
-/* snyk-2026-audit:start */
-html[data-design-theme="snyk-2026"][data-theme="light"] .section {
-  background: #030328;
-  color: #FFFFFF;
-}
-
-@media (prefers-color-scheme: light) {
-  html[data-design-theme="snyk-2026"]:not([data-theme]) .section {
-    background: #030328;
-    color: #FFFFFF;
-  }
-}
-/* snyk-2026-audit:end */
-
 .section-heading {
   display: grid;
   max-width: 55rem;
@@ -126,7 +114,7 @@ html[data-design-theme="snyk-2026"][data-theme="light"] .section {
   color: var(--purple-dark);
   font-family: var(--font-mono);
   font-size: var(--step--1);
-  font-weight: 700;
+  font-weight: var(--font-weight-label, 700);
   letter-spacing: 0.08em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -159,28 +147,28 @@ html[data-design-theme="classic"] .coverage-cell[class*="coverage-cell--heatmap-
 
 /* snyk-2026-audit:start */
 html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-0 {
-  background-color: var(--heatmap-0, rgba(255, 255, 255, 0.04));
-  color: var(--heatmap-text-strong, #FFFFFF);
+  background-color: var(--heatmap-0, rgba(111, 0, 221, 0.04));
+  color: var(--heatmap-text-strong, #030328);
 }
 
 html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-1 {
-  background-color: var(--heatmap-1, rgba(255, 255, 255, 0.08));
-  color: var(--heatmap-text-strong, #FFFFFF);
+  background-color: var(--heatmap-1, rgba(111, 0, 221, 0.08));
+  color: var(--heatmap-text-strong, #030328);
 }
 
 html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-2 {
-  background-color: var(--heatmap-2, rgba(255, 255, 255, 0.12));
-  color: var(--heatmap-text-strong, #FFFFFF);
+  background-color: var(--heatmap-2, rgba(111, 0, 221, 0.12));
+  color: var(--heatmap-text-strong, #030328);
 }
 
 html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-3 {
-  background-color: var(--heatmap-3, rgba(255, 255, 255, 0.18));
-  color: var(--heatmap-text-strong, #FFFFFF);
+  background-color: var(--heatmap-3, rgba(111, 0, 221, 0.18));
+  color: var(--heatmap-text-strong, #030328);
 }
 
 html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-4 {
-  background-color: var(--heatmap-4, rgba(255, 255, 255, 0.24));
-  color: var(--heatmap-text-strong, #FFFFFF);
+  background-color: var(--heatmap-4, rgba(111, 0, 221, 0.24));
+  color: var(--heatmap-text-strong, #030328);
 }
 /* snyk-2026-audit:end */
 
@@ -202,7 +190,7 @@ html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-4 {
   background: var(--ink);
   color: var(--paper-raised);
   font-size: var(--step--1);
-  font-weight: 700;
+  font-weight: var(--font-weight-control, 700);
   text-decoration: none;
 }
 
@@ -225,7 +213,7 @@ html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-4 {
   display: inline-flex;
   gap: 0.4em;
   align-items: baseline;
-  font-weight: 700;
+  font-weight: var(--font-weight-control, 700);
 }
 
 .text-link::after {

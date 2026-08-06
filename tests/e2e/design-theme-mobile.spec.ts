@@ -26,6 +26,29 @@ test.describe("Snyk 2026 mobile shell", () => {
         name: "Can LLMs find the same bugs twice?",
       });
       await expect(heading).toBeVisible();
+      await expect(heading).toHaveCSS("font-weight", "700");
+
+      if (colorMode === "light") {
+        await expect(page.locator("html")).toHaveCSS(
+          "background-color",
+          "rgb(255, 255, 255)",
+        );
+        await expect(page.locator("html")).toHaveCSS("background-image", "none");
+        await expect(page.locator(".hero-copy")).toHaveCSS(
+          "color",
+          "rgb(3, 3, 40)",
+        );
+        await expect(page.locator(".brand-gradient-accent")).toHaveCount(1);
+        await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
+        await expect(page.locator(".eyebrow").first()).toHaveCSS(
+          "font-weight",
+          "500",
+        );
+        await expect(page.locator(".button").first()).toHaveCSS(
+          "font-weight",
+          "500",
+        );
+      }
 
       const layout = await page.evaluate(() => {
         const h1 = document.querySelector("main h1");

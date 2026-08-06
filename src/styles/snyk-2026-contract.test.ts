@@ -136,7 +136,7 @@ describe("Snyk 2026 design contract", () => {
     }
   });
 
-  it("uses only the locked palette, white alpha, and sanctioned gradient", async () => {
+  it("uses only the locked palette, locked-color alpha, and sanctioned gradient", async () => {
     const source = await readFile(tokenPath, "utf8");
     const compactSource = source.replace(/\s+/g, " ");
     const hexColors = source.match(/#[\da-f]{6}/gi) ?? [];
@@ -151,7 +151,7 @@ describe("Snyk 2026 design contract", () => {
     expect(rgbaColors.length).toBeGreaterThan(0);
     for (const color of rgbaColors) {
       expect(color).toMatch(
-        /^rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*(?:0(?:\.\d+)?|1(?:\.0+)?)\s*\)$/i,
+        /^rgba\(\s*(?:3\s*,\s*3\s*,\s*40|111\s*,\s*0\s*,\s*221|243\s*,\s*85\s*,\s*46|254\s*,\s*145\s*,\s*4|255\s*,\s*255\s*,\s*255)\s*,\s*(?:0(?:\.\d+)?|1(?:\.0+)?)\s*\)$/i,
       );
     }
     expect(gradients).toEqual([brandGradient]);
@@ -160,17 +160,25 @@ describe("Snyk 2026 design contract", () => {
     );
   });
 
-  it("uses compliant control boundaries and opaque Family B panels", async () => {
+  it("uses a white Light canvas with Midnight copy and compliant boundaries", async () => {
     const source = await readFile(tokenPath, "utf8");
     const light = selectorBody(
       source,
       'html[data-design-theme="snyk-2026"][data-theme="light"]',
     );
 
-    expect(declarationValue(light, "--theme-paper-muted")).toBe("#030328");
+    expect(declarationValue(light, "background")).toBe("#FFFFFF");
+    expect(declarationValue(light, "--theme-paper")).toBe("#FFFFFF");
+    expect(declarationValue(light, "--theme-paper-raised")).toBe("#FFFFFF");
+    expect(declarationValue(light, "--theme-paper-muted")).toBe(
+      "rgba(111, 0, 221, 0.04)",
+    );
+    expect(declarationValue(light, "--theme-ink")).toBe("#030328");
+    expect(declarationValue(light, "--theme-rule-strong")).toBe(
+      "rgba(3, 3, 40, 0.3)",
+    );
 
     for (const selector of [
-      'html[data-design-theme="snyk-2026"][data-theme="light"]',
       'html[data-design-theme="snyk-2026"][data-theme="dark"]',
       'html[data-design-theme="snyk-2026"]:not([data-theme])',
     ]) {

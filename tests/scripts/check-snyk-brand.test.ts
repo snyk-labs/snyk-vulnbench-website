@@ -14,18 +14,22 @@ const findingRules = (source: string) =>
   );
 
 describe("Snyk 2026 mechanical brand audit", () => {
-  it("accepts the locked palette, approved white alpha, and sanctioned gradient", () => {
+  it("accepts the locked palette, approved alpha tints, white canvas, and sanctioned gradient", () => {
     const source = `
       <style>
         html, body { overflow-x: hidden; }
         h1 {
-          color: #FFFFFF;
+          color: #030328;
           background: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);
-          border-color: rgba(255, 255, 255, 0.12);
+          border-color: rgba(3, 3, 40, 0.12);
           font-family: "Geist", sans-serif;
           font-size: clamp(2.5rem, 6vw, 5rem);
         }
-        .metric { color: #030328; font-family: "Geist Mono", monospace; }
+        .page { background: #FFFFFF; }
+        .matched { background: rgba(111, 0, 221, 0.08); }
+        .unmatched { background: rgba(243, 85, 46, 0.08); }
+        .warning { background: rgba(254, 145, 4, 0.12); }
+        .metric { color: rgba(3, 3, 40, 0.72); font-family: "Geist Mono", monospace; }
       </style>
     `;
 
@@ -71,6 +75,19 @@ describe("Snyk 2026 mechanical brand audit", () => {
     "rgba(255 255 255 / 65%)",
     "rgba(255 255 255 / 65.000%)",
   ])("accepts exact approved white alpha %s", (color) => {
+    expect(
+      auditText(`.brand { color: ${color}; }`, {
+        fileName: "fixture.css",
+      }),
+    ).toEqual([]);
+  });
+
+  it.each([
+    "rgba(3 3 40 / 0.72)",
+    "rgba(111 0 221 / 0.08)",
+    "rgba(243 85 46 / 0.08)",
+    "rgba(254 145 4 / 0.12)",
+  ])("accepts restrained locked-color alpha tint %s", (color) => {
     expect(
       auditText(`.brand { color: ${color}; }`, {
         fileName: "fixture.css",

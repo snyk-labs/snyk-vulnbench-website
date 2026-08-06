@@ -83,6 +83,34 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(conventions).toContain(
       "Classic may use continuous analytical scales while Snyk 2026 uses locked discrete bands.",
     );
+    expect(conventions).toContain(
+      "Snyk 2026 Light is a website-specific white analytical canvas",
+    );
+    expect(conventions).toContain(
+      "one contained exact Brand Gradient accent per page",
+    );
+  });
+
+  test("records the accepted website-specific Light deviation", async () => {
+    const design = await readDocumentation(
+      "docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md",
+    );
+
+    expect(design).toContain(
+      "accepted website-specific deviation from the general Snyk 2026 no-light-canvas and Family-B guidance",
+    );
+    expect(design).toContain(
+      "White `#FFFFFF` is the page, paper, and raised-surface base.",
+    );
+    expect(design).toContain(
+      "Midnight `#030328` is primary text in Light mode.",
+    );
+    expect(design).toContain(
+      "The exact Brand Gradient appears at most once per page",
+    );
+    expect(design).toContain(
+      "H1 remains Bold 700; H2 and H3 use Medium 500",
+    );
   });
 
   test("limits canonical-light static assets to Classic", async () => {

@@ -86,8 +86,8 @@ Snyk 2026 uses only:
 - Hot Pink `#FF00FF`
 - Orange-Red `#F3552E`
 - Amber `#FE9104`
-- white and black text, including white alpha values for secondary text and
-  rules
+- white and black, including restrained alpha derivatives of Midnight, Purple,
+  Orange-Red, Amber, and white for secondary text, rules, and semantic surfaces
 
 The only gradient is:
 
@@ -98,9 +98,12 @@ buttons, signatures, and technical annotations. Both are self-hosted from local
 font files with documented redistribution terms; the site makes no runtime font
 request.
 
-Display headings are bold, tightly tracked, responsive through `clamp()`, and
-limited to a readable measure. Body copy uses open leading and a measure of
-approximately 45–65 characters. The design does not rely on CSS gradient text.
+H1 remains Bold 700; H2 and H3 use Medium 500. H1 stays tightly tracked,
+responsive through `clamp()`, and limited to a readable measure. Navigation, buttons, eyebrows,
+compact labels, and general controls use Medium 500 where hierarchy permits;
+body copy remains Regular 400 with open leading and a measure of approximately
+45–65 characters. Tables and critical metric values may retain stronger weight.
+The design does not rely on CSS gradient text or text shadow.
 
 ### Dark color mode: Family A
 
@@ -116,20 +119,36 @@ Snyk 2026 Dark is the default branded surface:
 - Decorative glow, when present in an approved local image, remains contained
   and never obscures data or copy.
 
-### Light color mode: Family B
+### Light color mode: website analytical Light
 
-Snyk 2026 Light is the sanctioned full Brand-Gradient family, not a white or
-warm-neutral canvas:
+This is an accepted website-specific deviation from the general Snyk 2026
+no-light-canvas and Family-B guidance. The exception applies to this evidence-
+dense website only; it does not rewrite the general brand guide:
 
-- The page background uses the full Brand Gradient once.
-- Primary copy sits over the dark Purple region and is solid white.
-- No gradient text appears on the gradient background.
-- Dense explorer, chart, table, methodology, citation, and case-detail content
-  sits on opaque or near-opaque Midnight panels.
-- A purple-only fabric asset may appear as a restrained same-tone corner
-  accent. It does not introduce a second competing gradient.
-- Responsive layouts preserve a dark region behind copy rather than allowing
-  white text to move onto the Amber edge.
+- White `#FFFFFF` is the page, paper, and raised-surface base.
+- Midnight `#030328` is primary text in Light mode. Secondary copy and
+  structural rules use softer Midnight alpha values.
+- Muted and semantic surfaces may use restrained alpha tints derived only from
+  locked Purple, Orange-Red, Amber, Midnight, or white.
+- Header and footer remain opaque Midnight so the official white wordmark and
+  shell identity remain valid.
+- Homepage hero copy, PageHero copy, shared narrative sections, explorer app,
+  and explorer canvas remain light surfaces with Midnight copy. A contained
+  Midnight evidence card is allowed as an analytical focal surface.
+- Purple identifies reference-matched evidence, Orange-Red identifies
+  unmatched evidence, and Amber identifies warnings. Pale alpha tints use
+  Midnight labels rather than flooding cards with Purple.
+- Light heatmaps use discrete Purple-alpha bands with Midnight text. Light
+  series stay inside the locked palette and use Midnight in place of a white
+  series that would disappear on the canvas.
+- The exact Brand Gradient appears at most once per page, as a thin contained
+  hero or PageHero accent. The page background is never gradient-filled, and
+  gradient text, secondary gradients, glows, masks, and pseudo-element border
+  tricks remain forbidden.
+- The purple-only fabric remains a no-gradient bottom-corner accent at roughly
+  `0.12`–`0.20` opacity and clears all copy.
+- Explicit Light and no-JavaScript system Light render the same visual
+  contract. Explicit Dark and no-JavaScript system Dark retain Family A.
 
 ### Brand assets and identity
 
@@ -178,9 +197,9 @@ The homepage receives the strongest branded composition:
   ornamental hero image.
 - The right-side evidence zone keeps a clean boundary and sufficient contrast.
 
-Narrative pages use restrained Midnight sections, thin rules, generous spacing,
-and a single corner treatment. They remain research publications rather than
-campaign landing pages.
+Narrative pages use white/light sections in Light mode and restrained Midnight
+sections in Dark mode, with thin rules and generous spacing. They remain
+research publications rather than campaign landing pages.
 
 Explorer and evidence pages prioritize analytical density:
 

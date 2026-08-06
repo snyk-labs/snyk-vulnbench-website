@@ -103,6 +103,22 @@ const isCurrent = (href: string) => href === activeLink?.href;
     border-bottom-color: rgba(255, 255, 255, 0.12);
     background: #030328;
   }
+
+  :global(html[data-design-theme="snyk-2026"]) .site-header nav a,
+  :global(html[data-design-theme="snyk-2026"]) .site-header summary {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  :global(html[data-design-theme="snyk-2026"])
+    .site-header
+    nav
+    a:hover,
+  :global(html[data-design-theme="snyk-2026"])
+    .site-header
+    nav
+    a[aria-current="page"] {
+    color: #FFFFFF;
+  }
   /* snyk-2026-audit:end */
 
   .header-inner {
@@ -134,7 +150,7 @@ const isCurrent = (href: string) => href === activeLink?.href;
   summary {
     color: var(--ink-soft);
     font-size: var(--step--1);
-    font-weight: 700;
+    font-weight: var(--font-weight-control, 700);
     text-decoration: none;
   }
 
@@ -172,6 +188,19 @@ const isCurrent = (href: string) => href === activeLink?.href;
     /* snyk-2026-audit:start */
     :global(html[data-design-theme="snyk-2026"]) .header-actions {
       margin-left: auto;
+    }
+
+    :global(html[data-design-theme="snyk-2026"]) .mobile-menu summary {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    :global(html[data-design-theme="snyk-2026"]) .mobile-menu nav {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: #030328;
+    }
+
+    :global(html[data-design-theme="snyk-2026"]) .mobile-menu a {
+      border-bottom-color: rgba(255, 255, 255, 0.12);
     }
     /* snyk-2026-audit:end */
 

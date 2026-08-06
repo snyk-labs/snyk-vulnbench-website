@@ -13,7 +13,7 @@ export const themeColorsByDesignTheme: Record<
     dark: "#211e24",
   },
   "snyk-2026": {
-    light: "#2B0250",
+    light: "#FFFFFF",
     dark: "#030328",
   },
 };
