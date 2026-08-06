@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import {
   expectTheme,
@@ -35,6 +36,15 @@ test("defaults to the light theme with a dark system preference", async ({
   await expect(themeToggle(page, "dark")).toBeVisible();
   await expect(themeToggle(page, "dark")).toHaveAttribute("data-theme", "light");
   await expect(themeToggle(page, "dark")).not.toHaveAttribute("aria-pressed");
+});
+
+test("keeps the Light default accessible with a dark system preference", async ({
+  page,
+}) => {
+  await prepareTheme(page, "dark");
+  await page.goto("/");
+
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 
 test("applies dark semantic surfaces to evidence and analytical views", async ({
@@ -258,34 +268,36 @@ test("returns to Light when another tab clears storage", async ({
   await expect(themeToggle(page, "dark")).toBeVisible();
 });
 
-test.describe("without JavaScript", () => {
-  test.use({
-    colorScheme: "dark",
-    javaScriptEnabled: false,
-  });
+for (const systemColorMode of ["light", "dark"] as const) {
+  test.describe(`without JavaScript in system ${systemColorMode}`, () => {
+    test.use({
+      colorScheme: systemColorMode,
+      javaScriptEnabled: false,
+    });
 
-  test("renders the dark CSS fallback with usable content and a hidden theme control", async ({
-    page,
-  }) => {
-    await page.goto("/");
+    test("renders the Light CSS fallback with usable content and a hidden theme control", async ({
+      page,
+    }) => {
+      await page.goto("/");
 
-    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
-    await expect(page.locator("html")).toHaveCSS("color-scheme", "dark");
-    await expect(page.locator("html")).toHaveCSS(
-      "background-color",
-      "rgb(33, 30, 36)",
-    );
-    await expect(page.locator("html")).toHaveCSS(
-      "color",
-      "rgb(245, 240, 232)",
-    );
-    await expect(page.locator("[data-theme-toggle]")).toBeHidden();
-    await expect(page.locator("main")).toBeVisible();
-    await expect(
-      page.getByRole("heading", {
-        level: 1,
-        name: "Can LLMs find the same bugs twice?",
-      }),
-    ).toBeVisible();
+      await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+      await expect(page.locator("html")).toHaveCSS("color-scheme", "light");
+      await expect(page.locator("html")).toHaveCSS(
+        "background-color",
+        "rgb(247, 244, 237)",
+      );
+      await expect(page.locator("html")).toHaveCSS(
+        "color",
+        "rgb(23, 20, 31)",
+      );
+      await expect(page.locator("[data-theme-toggle]")).toBeHidden();
+      await expect(page.locator("main")).toBeVisible();
+      await expect(
+        page.getByRole("heading", {
+          level: 1,
+          name: "Can LLMs find the same bugs twice?",
+        }),
+      ).toBeVisible();
+    });
   });
-});
+}

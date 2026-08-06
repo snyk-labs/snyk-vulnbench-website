@@ -142,7 +142,7 @@ describe("build-selected branded shell contract", () => {
     const darkFabric = fabric.match(
       /\[data-theme="dark"\]\)[\s\S]*?\.brand-fabric\s*\{([^}]+)\}/,
     )?.[1];
-    const noJavaScriptDarkFabric = fabric.match(
+    const noJavaScriptLightFabric = fabric.match(
       /:not\(\[data-theme\]\)\)[\s\S]*?\.brand-fabric\s*\{([^}]+)\}/,
     )?.[1];
 
@@ -164,7 +164,8 @@ describe("build-selected branded shell contract", () => {
     expect(defaultFabric).toContain("opacity: 0.16;");
     expect(lightFabric).toContain("opacity: 0.16;");
     expect(darkFabric).toContain("opacity: 1;");
-    expect(noJavaScriptDarkFabric).toContain("opacity: 1;");
+    expect(noJavaScriptLightFabric).toContain("opacity: 0.16;");
+    expect(noJavaScriptLightFabric).toContain("BRC_Fabric_NoGradient.png");
     expect(fabric).not.toMatch(
       /mask|::before|::after|transform|rotate|background-size:\s*100%\s+100%/i,
     );

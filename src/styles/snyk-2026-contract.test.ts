@@ -75,10 +75,12 @@ const semanticTokens = [
 ] as const;
 
 function selectorBody(source: string, selector: string) {
-  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = source.match(new RegExp(`${escapedSelector}\\s*\\{([^}]+)\\}`));
-  expect(match, `Missing selector ${selector}`).not.toBeNull();
-  return match?.[1] ?? "";
+  const rules = source.matchAll(/([^{}]+)\{([^}]+)\}/g);
+  for (const rule of rules) {
+    const selectors = (rule[1] ?? "").split(",").map((value) => value.trim());
+    if (selectors.includes(selector)) return rule[2] ?? "";
+  }
+  expect.fail(`Missing selector ${selector}`);
 }
 
 function declarationValue(body: string, property: string) {
@@ -195,34 +197,34 @@ describe("Snyk 2026 design contract", () => {
       "rgba(3, 3, 40, 0.48)",
     );
 
-    for (const selector of [
-      'html[data-design-theme="snyk-2026"][data-theme="dark"]',
-      'html[data-design-theme="snyk-2026"]:not([data-theme])',
-    ]) {
-      const value = declarationValue(
-        selectorBody(source, selector),
-        "--theme-rule-strong",
-      );
-      const match = value.match(
-        /^rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*(0(?:\.\d+)?|1(?:\.0+)?)\s*\)$/,
-      );
-      expect(match, `${selector} must use white alpha`).not.toBeNull();
-      const alpha = Number(match?.[1]);
-      const midnight: [number, number, number] = [3, 3, 40];
-      const composited = midnight.map((channel) =>
-        Math.round(channel + (255 - channel) * alpha),
-      ) as [number, number, number];
-      expect(contrastRatio(composited, midnight)).toBeGreaterThanOrEqual(3);
-    }
-  });
-
-  it("maps explicit and system Dark to the same neutral editorial tokens", async () => {
-    const source = await readFile(tokenPath, "utf8");
     const explicitDark = selectorBody(
       source,
       'html[data-design-theme="snyk-2026"][data-theme="dark"]',
     );
-    const systemDark = selectorBody(
+    const value = declarationValue(explicitDark, "--theme-rule-strong");
+    const match = value.match(
+      /^rgba\(\s*255\s*,\s*255\s*,\s*255\s*,\s*(0(?:\.\d+)?|1(?:\.0+)?)\s*\)$/,
+    );
+    expect(match, "explicit Dark must use white alpha").not.toBeNull();
+    const alpha = Number(match?.[1]);
+    const midnight: [number, number, number] = [3, 3, 40];
+    const composited = midnight.map((channel) =>
+      Math.round(channel + (255 - channel) * alpha),
+    ) as [number, number, number];
+    expect(contrastRatio(composited, midnight)).toBeGreaterThanOrEqual(3);
+  });
+
+  it("maps no-theme to Light while preserving explicit Dark tokens", async () => {
+    const source = await readFile(tokenPath, "utf8");
+    const light = selectorBody(
+      source,
+      'html[data-design-theme="snyk-2026"][data-theme="light"]',
+    );
+    const explicitDark = selectorBody(
+      source,
+      'html[data-design-theme="snyk-2026"][data-theme="dark"]',
+    );
+    const noTheme = selectorBody(
       source,
       'html[data-design-theme="snyk-2026"]:not([data-theme])',
     );
@@ -260,38 +262,59 @@ describe("Snyk 2026 design contract", () => {
 
     for (const [token, value] of Object.entries(expected)) {
       expect(declarationValue(explicitDark, token), token).toBe(value);
-      expect(declarationValue(systemDark, token), token).toBe(value);
     }
 
     for (const token of semanticTokens) {
-      expect(declarationValue(systemDark, token), token).toBe(
-        declarationValue(explicitDark, token),
+      expect(declarationValue(noTheme, token), token).toBe(
+        declarationValue(light, token),
       );
     }
+    expect(declarationValue(noTheme, "background")).toBe("#FFFFFF");
+    expect(declarationValue(noTheme, "color-scheme")).toBe("light");
   });
 
   it("keeps Hot Pink rare and Dark Purple out of broad Dark surfaces", async () => {
     const source = await readFile(tokenPath, "utf8");
 
-    for (const selector of [
+    const body = selectorBody(
+      source,
       'html[data-design-theme="snyk-2026"][data-theme="dark"]',
-      'html[data-design-theme="snyk-2026"]:not([data-theme])',
+    );
+    expect(body.match(/#FF00FF/g)).toHaveLength(1);
+    expect(declarationValue(body, "--theme-series-5")).toBe("#FF00FF");
+    for (const token of [
+      "--theme-paper-raised",
+      "--theme-paper-muted",
+      "--theme-purple-soft",
+      "--theme-matched-soft",
+      "--theme-unmatched-soft",
+      "--theme-warning-soft",
+      "--theme-evidence-surface",
+      "--theme-evidence-hover",
     ]) {
-      const body = selectorBody(source, selector);
-      expect(body.match(/#FF00FF/g)).toHaveLength(1);
-      expect(declarationValue(body, "--theme-series-5")).toBe("#FF00FF");
-      for (const token of [
-        "--theme-paper-raised",
-        "--theme-paper-muted",
-        "--theme-purple-soft",
-        "--theme-matched-soft",
-        "--theme-unmatched-soft",
-        "--theme-warning-soft",
-        "--theme-evidence-surface",
-        "--theme-evidence-hover",
-      ]) {
-        expect(declarationValue(body, token), token).not.toBe("#2B0250");
-      }
+      expect(declarationValue(body, token), token).not.toBe("#2B0250");
+    }
+  });
+
+  it("has no system-Dark no-theme mappings in production styles", async () => {
+    const paths = [
+      "src/styles/tokens.css",
+      "src/styles/tokens-snyk-2026.css",
+      "src/styles/global.css",
+      "src/components/home/Hero.astro",
+      "src/components/site/PageHero.astro",
+      "src/components/site/BrandFabric.astro",
+      "src/components/site/ReleaseMeta.astro",
+      "src/components/evidence/EvidenceScatter.tsx",
+      "src/components/explorer/ExplorerApp.tsx",
+      "src/components/explorer/ExplorerGuideRail.tsx",
+    ];
+
+    for (const path of paths) {
+      const source = await readFile(`${repositoryRoot}/${path}`, "utf8");
+      expect(source, path).not.toMatch(
+        /@media\s*\(prefers-color-scheme:\s*dark\)[\s\S]*?:not\(\[data-theme\]\)/,
+      );
     }
   });
 

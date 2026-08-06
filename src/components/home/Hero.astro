@@ -99,12 +99,10 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     color: #030328;
   }
 
-  @media (prefers-color-scheme: light) {
-    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
-      .hero-copy {
-      background: #FFFFFF;
-      color: #030328;
-    }
+  :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
+    .hero-copy {
+    background: #FFFFFF;
+    color: #030328;
   }
 
   :global(html[data-design-theme="snyk-2026"]) .brand-gradient-accent {
@@ -120,13 +118,6 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   :global(html[data-design-theme="snyk-2026"][data-theme="dark"])
     .brand-gradient-accent {
     height: 1px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
-      .brand-gradient-accent {
-      height: 1px;
-    }
   }
 
   :global(html[data-design-theme="snyk-2026"]) .hero h1 {
@@ -174,28 +165,6 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   :global(html[data-design-theme="snyk-2026"][data-theme="dark"])
     .study-label {
     color: rgba(255, 255, 255, 0.78);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
-      .hero-visual {
-      --paper-raised: rgba(255, 255, 255, 0.08);
-      --paper-muted: rgba(255, 255, 255, 0.04);
-      --ink: rgba(255, 255, 255, 0.78);
-      --ink-soft: rgba(255, 255, 255, 0.65);
-      --ink-faint: rgba(255, 255, 255, 0.5);
-      --rule: rgba(255, 255, 255, 0.12);
-      --rule-strong: rgba(255, 255, 255, 0.4);
-      --action-link: rgba(255, 255, 255, 0.78);
-      border-color: rgba(255, 255, 255, 0.4);
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.78);
-    }
-
-    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
-      .study-label {
-      color: rgba(255, 255, 255, 0.78);
-    }
   }
   /* snyk-2026-audit:end */
 

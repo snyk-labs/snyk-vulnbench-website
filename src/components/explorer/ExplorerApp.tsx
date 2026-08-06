@@ -754,7 +754,9 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
 
         /* snyk-2026-audit:start */
         html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-app,
-        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas {
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas,
+        html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
+        html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
           background: #FFFFFF;
           color: #030328;
         }
@@ -762,21 +764,6 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         html[data-design-theme="snyk-2026"][data-theme="dark"] .explorer-app {
           --explorer-on-accent: #FFFFFF;
           --explorer-selected-surface: var(--evidence-hover, rgba(255, 255, 255, 0.12));
-        }
-
-        @media (prefers-color-scheme: light) {
-          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
-          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
-            background: #FFFFFF;
-            color: #030328;
-          }
-        }
-
-        @media (prefers-color-scheme: dark) {
-          html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app {
-            --explorer-on-accent: #FFFFFF;
-            --explorer-selected-surface: var(--evidence-hover, rgba(255, 255, 255, 0.12));
-          }
         }
         /* snyk-2026-audit:end */
 

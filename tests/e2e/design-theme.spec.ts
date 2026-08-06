@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { auditText } from "../../scripts/check-snyk-brand.mjs";
 import {
@@ -167,6 +168,18 @@ test.describe("Snyk 2026 color mode contract", () => {
     await page.reload();
     await expectTheme(page, "dark", BRAND_THEME_COLORS.dark);
   });
+});
+
+test("keeps branded Light default and explicit Dark accessible", async ({
+  page,
+}) => {
+  await prepareTheme(page, "dark");
+  await page.goto("/");
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+
+  await themeToggle(page, "dark").click();
+  await expectTheme(page, "dark", BRAND_THEME_COLORS.dark);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 
 test("uses the approved local Geist hierarchy without third-party font requests", async ({
@@ -1033,13 +1046,13 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
   });
 });
 
-test.describe("Snyk 2026 without JavaScript", () => {
+test.describe("Snyk 2026 without JavaScript in system Dark", () => {
   test.use({
     colorScheme: "dark",
     javaScriptEnabled: false,
   });
 
-  test("uses the system-dark fallback with complete usable content", async ({
+  test("keeps complete copy and analysis on the white analytical canvas", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -1050,44 +1063,42 @@ test.describe("Snyk 2026 without JavaScript", () => {
       "snyk-2026",
     );
     await expect(page.locator("html")).not.toHaveAttribute("data-theme");
-    await expect(page.locator("html")).toHaveCSS("color-scheme", "dark");
-    await expect(page.locator("html")).toHaveCSS(
-      "background-color",
-      "rgb(3, 3, 40)",
-    );
+    await expect(page.locator("html")).toHaveCSS("color-scheme", "light");
+    await expect(page.locator("html")).toHaveCSS("background-color", WHITE);
     await expect(page.locator("html")).toHaveCSS("background-image", "none");
     await expect(page.locator(".brand-gradient-accent")).toBeVisible();
     await expect(page.locator(".brand-gradient-accent")).toHaveCSS(
       "height",
-      "1px",
+      "4.79688px",
     );
     await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
-    await expect(page.locator(".hero h1")).toHaveCSS("color", WHITE);
-    await expect(page.locator(".hero .lede")).toHaveCSS("color", DARK_BODY);
+    await expect(page.locator(".brand-fabric")).toHaveCSS(
+      "background-image",
+      /BRC_Fabric_NoGradient\.png/,
+    );
+    await expect(page.locator(".hero h1")).toHaveCSS("color", MIDNIGHT);
     await expect(page.locator(".hero-visual")).toHaveCSS(
       "background-color",
-      DARK_RAISED,
+      MIDNIGHT,
     );
     await expect(page.locator(".hero-copy")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
-    await expect(page.locator(".hero-copy")).toHaveCSS("padding", "0px");
+    await expect(page.locator(".hero-copy")).toHaveCSS("color", MIDNIGHT);
     await expect(page.locator(".section").first()).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(page.locator(".publication")).toHaveCSS(
       "background-color",
-      DARK_RAISED,
+      "rgba(111, 0, 221, 0.08)",
     );
     const inspectColor = await page
       .locator(".recurrence-chart__inspect")
       .first()
       .evaluate((element) => getComputedStyle(element).color);
-    expect(inspectColor).toBe(DARK_PRIMARY);
-    expect(inspectColor).not.toBe(HOT_PINK);
-    expect(contrastBetween(inspectColor, MIDNIGHT)).toBeGreaterThanOrEqual(4.5);
+    expect(inspectColor).toBe(HOT_PINK);
     await expect(page.locator("[data-theme-toggle]")).toBeHidden();
     await expect(
       page.getByRole("heading", {
@@ -1105,7 +1116,7 @@ test.describe("Snyk 2026 without JavaScript", () => {
     await expect(noJsPrimaryControl).toBeFocused();
     await expect(noJsPrimaryControl).toHaveCSS(
       "box-shadow",
-      "rgb(111, 0, 221) 0px 0px 0px 3px, rgb(255, 255, 255) 0px 0px 0px 6px",
+      "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(111, 0, 221) 0px 0px 0px 6px",
     );
     await expect(page.locator(".evidence-strip")).toContainText("300");
     await expect(page.locator(".evidence-strip")).toContainText("scans");
@@ -1115,41 +1126,26 @@ test.describe("Snyk 2026 without JavaScript", () => {
 
     await expect(page.locator(".efficiency")).toHaveCSS(
       "background-color",
-      DARK_RAISED,
+      WHITE,
     );
 
     await page.goto("/releases/js-1.0/explore");
 
     await expect(page.locator("html")).not.toHaveAttribute("data-theme");
-    await expect(page.locator("html")).toHaveCSS(
-      "background-color",
-      MIDNIGHT,
-    );
+    await expect(page.locator("html")).toHaveCSS("background-color", WHITE);
     await expect(page.locator("html")).toHaveCSS("background-image", "none");
     await expect(page.locator(".page-hero__copy")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
-    await expect(page.locator(".page-hero__copy")).toHaveCSS("padding", "0px");
+    await expect(page.locator(".page-hero__copy")).toHaveCSS("color", MIDNIGHT);
     await expect(page.locator(".explorer-app")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
+      WHITE,
     );
     await expect(page.locator(".explorer-canvas")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)",
-    );
-    await expect(page.locator(".explorer-header")).toHaveCSS(
-      "background-color",
-      DARK_RAISED,
-    );
-    await expect(page.locator(".explorer-tabs")).toHaveCSS(
-      "background-color",
-      DARK_MUTED,
-    );
-    await expect(page.locator(".explorer-guide section").first()).toHaveCSS(
-      "background-color",
-      DARK_RAISED,
+      WHITE,
     );
     await expectOneVisibleBrandGradient(page);
     await expect(

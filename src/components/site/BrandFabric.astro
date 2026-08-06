@@ -17,6 +17,8 @@
   }
 
   :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .brand-fabric,
+  :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
     .brand-fabric {
     background-image: url("/brand/snyk-2026/BRC_Fabric_NoGradient.png");
     opacity: 0.16;
@@ -26,13 +28,5 @@
     .brand-fabric {
     background-image: url("/brand/snyk-2026/BRC_Fabric_Gradient.png");
     opacity: 1;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
-      .brand-fabric {
-      background-image: url("/brand/snyk-2026/BRC_Fabric_Gradient.png");
-      opacity: 1;
-    }
   }
 </style>

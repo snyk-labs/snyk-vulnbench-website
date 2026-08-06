@@ -155,24 +155,6 @@ export function ExplorerGuideRail({
           dt {
           font-weight: var(--font-weight-label);
         }
-
-        @media (prefers-color-scheme: dark) {
-          html[data-design-theme="snyk-2026"]:not([data-theme])
-            .explorer-guide
-            section,
-          html[data-design-theme="snyk-2026"]:not([data-theme])
-            .explorer-guide
-            nav {
-            border-top-color: var(--theme-rule-strong);
-            border-left: 0.2rem solid var(--theme-purple);
-          }
-
-          html[data-design-theme="snyk-2026"]:not([data-theme])
-            .explorer-guide
-            dt {
-            font-weight: var(--font-weight-label);
-          }
-        }
         /* snyk-2026-audit:end */
 
         .explorer-guide p:not(.eyebrow) {

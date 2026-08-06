@@ -344,13 +344,6 @@ export function EvidenceScatter({
           .evidence-scatter {
           --scatter-selected-surface: var(--theme-evidence-hover);
         }
-
-        @media (prefers-color-scheme: dark) {
-          html[data-design-theme="snyk-2026"]:not([data-theme])
-            .evidence-scatter {
-            --scatter-selected-surface: var(--theme-evidence-hover);
-          }
-        }
         /* snyk-2026-audit:end */
 
         .evidence-scatter__plot {
