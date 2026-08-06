@@ -15,6 +15,51 @@ export interface BrandSocialAssets {
   wordmarkUrl: string;
 }
 
+export interface SocialChartPoint {
+  name: string;
+  type: "model" | "command";
+  x: number;
+  y: number;
+}
+
+export interface DefaultSocialCardData {
+  agreementVariance: SocialChartPoint[];
+}
+
+const defaultAgreementVariance: SocialChartPoint[] = [
+  { name: "Snyk Code SAST", type: "command", x: 0, y: 1 },
+  {
+    name: "Claude Opus 4.6 Medium",
+    type: "model",
+    x: 0.0024674185437360318,
+    y: 0.7537982017982017,
+  },
+  {
+    name: "Claude Opus 4.6 High",
+    type: "model",
+    x: 0.0028950633451438217,
+    y: 0.7523507864684335,
+  },
+  {
+    name: "Claude Sonnet 4.6 Medium",
+    type: "model",
+    x: 0.009170103518359875,
+    y: 0.6741726708074535,
+  },
+  {
+    name: "Claude Opus 4.7 Max",
+    type: "model",
+    x: 0.022273540769297218,
+    y: 0.6876156355721573,
+  },
+  {
+    name: "Claude Sonnet 4.6 High",
+    type: "model",
+    x: 0.03471337765983303,
+    y: 0.6488264834580625,
+  },
+];
+
 type RenderOptions =
   | { designTheme: "classic" }
   /* snyk-2026-audit:start */
@@ -137,24 +182,175 @@ export function renderReleaseShareCard(
     : renderBrandedReleaseCard(card, options.assets);
 }
 
-export function renderDefaultSocialCard(assets: BrandSocialAssets) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+function scaleChartValue(
+  value: number,
+  minimum: number,
+  maximum: number,
+  start: number,
+  end: number,
+) {
+  return start + ((value - minimum) / (maximum - minimum)) * (end - start);
+}
+
+function chartMarker(
+  point: SocialChartPoint,
+  index: number,
+  x: number,
+  y: number,
+) {
+  const color =
+    point.type === "command"
+      ? "#6F00DD"
+      : ["#FF00FF", "#F3552E", "#FE9104", "#2B0250", "#6F00DD"][
+          index % 5
+        ];
+  const common = `data-point-name="${escapeXml(point.name)}" fill="${color}" stroke="#030328" stroke-width="2"`;
+
+  switch (index % 5) {
+    case 1:
+      return `<rect ${common} x="${x - 8}" y="${y - 8}" width="16" height="16"/>`;
+    case 2:
+      return `<path ${common} d="M ${x} ${y - 10} L ${x + 10} ${y} L ${x} ${y + 10} L ${x - 10} ${y} Z"/>`;
+    case 3:
+      return `<path ${common} d="M ${x} ${y - 10} L ${x + 10} ${y + 8} L ${x - 10} ${y + 8} Z"/>`;
+    case 4:
+      return `<path ${common} d="M ${x - 10} ${y} H ${x + 10} M ${x} ${y - 10} V ${y + 10}"/>`;
+    default:
+      return `<circle ${common} cx="${x}" cy="${y}" r="9"/>`;
+  }
+}
+
+function renderLightAgreementChart(points: SocialChartPoint[]) {
+  const plot = {
+    left: 680,
+    right: 1100,
+    top: 170,
+    bottom: 420,
+  };
+  const xMinimum = 0;
+  const xMaximum = 0.04;
+  const yMinimum = 0.6;
+  const yMaximum = 1;
+  const xTicks = [0, 0.01, 0.02, 0.03, 0.04];
+  const yTicks = [0.6, 0.7, 0.8, 0.9, 1];
+  const grid = [
+    ...yTicks.map((tick) => {
+      const y = scaleChartValue(
+        tick,
+        yMinimum,
+        yMaximum,
+        plot.bottom,
+        plot.top,
+      );
+      return `<line x1="${plot.left}" x2="${plot.right}" y1="${y}" y2="${y}" stroke="#030328" stroke-opacity="0.12"/>`;
+    }),
+    ...xTicks.map((tick) => {
+      const x = scaleChartValue(
+        tick,
+        xMinimum,
+        xMaximum,
+        plot.left,
+        plot.right,
+      );
+      return `<line x1="${x}" x2="${x}" y1="${plot.top}" y2="${plot.bottom}" stroke="#030328" stroke-opacity="0.12"/>`;
+    }),
+  ].join("");
+  const ticks = [
+    ...yTicks.map((tick) => {
+      const y = scaleChartValue(
+        tick,
+        yMinimum,
+        yMaximum,
+        plot.bottom,
+        plot.top,
+      );
+      return `<text x="${plot.left - 18}" y="${y + 5}" text-anchor="end" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="14">${Math.round(tick * 100)}%</text>`;
+    }),
+    ...xTicks.map((tick) => {
+      const x = scaleChartValue(
+        tick,
+        xMinimum,
+        xMaximum,
+        plot.left,
+        plot.right,
+      );
+      return `<text x="${x}" y="${plot.bottom + 28}" text-anchor="middle" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="14">${(tick * 100).toFixed(0)} pp</text>`;
+    }),
+  ].join("");
+  const markers = points
+    .map((point, index) => {
+      const x = scaleChartValue(
+        point.x,
+        xMinimum,
+        xMaximum,
+        plot.left,
+        plot.right,
+      );
+      const y = scaleChartValue(
+        point.y,
+        yMinimum,
+        yMaximum,
+        plot.bottom,
+        plot.top,
+      );
+      return chartMarker(point, index, x, y);
+    })
+    .join("");
+  const legend = points
+    .map((point, index) => {
+      const label = point.name
+        .replace("Claude ", "")
+        .replace("Snyk Code SAST", "Snyk Code");
+      const x = 610 + (index % 3) * 165;
+      const y = 476 + Math.floor(index / 3) * 24;
+      const symbol = ["●", "■", "◆", "▲", "✚"][index % 5];
+      const color = point.type === "command" ? "#6F00DD" : "#F3552E";
+      return `<text x="${x}" y="${y}" fill="#030328" font-family="Geist Mono" font-size="12"><tspan fill="${color}">${symbol}</tspan> ${escapeXml(label)}</text>`;
+    })
+    .join("");
+
+  return `<text x="610" y="105" fill="#030328" font-family="Geist Mono" font-size="16" font-weight="500" letter-spacing="1">AGREEMENT VS REPEATED-RUN VARIANCE</text>
+  <text x="610" y="132" fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="17">Higher F1 and lower spread move toward the upper-left.</text>
+  <rect x="595" y="72" width="555" height="465" fill="#FFFFFF" stroke="#030328" stroke-opacity="0.2"/>
+  ${grid}
+  <line x1="${plot.left}" x2="${plot.right}" y1="${plot.bottom}" y2="${plot.bottom}" stroke="#030328" stroke-width="2"/>
+  <line x1="${plot.left}" x2="${plot.left}" y1="${plot.top}" y2="${plot.bottom}" stroke="#030328" stroke-width="2"/>
+  ${ticks}
+  ${markers}
+  <text x="890" y="515" text-anchor="middle" fill="#030328" font-family="Geist Mono" font-size="14">F1 standard deviation (percentage points)</text>
+  <text x="628" y="300" text-anchor="middle" transform="rotate(-90 628 300)" fill="#030328" font-family="Geist Mono" font-size="14">Snyk-reference F1 (%)</text>
+  ${legend}`;
+}
+
+export function renderDefaultSocialCard(
+  assets: BrandSocialAssets,
+  data?: DefaultSocialCardData,
+) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" data-light-social-card="" role="img" aria-labelledby="title description">
   <title id="title">Snyk VulnBench JS 1.0</title>
   <desc id="description">Can LLMs find the same bugs twice? A repeatability and Snyk-reference agreement study.</desc>
-  ${brandCanvas(assets)}
-  <text x="70" y="78" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="500" letter-spacing="1.5">SNYK VULNBENCH JS 1.0</text>
-  <text fill="#FFFFFF" font-family="Geist" font-size="55" font-weight="700" letter-spacing="-1.5">${textLines("Can LLMs find the same bugs twice?", 70, 170, 62, 27)}</text>
-  <text x="70" y="302" fill="#FFFFFF" font-family="Geist" font-size="24">A repeatability and Snyk-reference agreement study</text>
-  <line x1="70" y1="340" x2="930" y2="340" stroke="#FFFFFF" stroke-opacity="0.24"/>
-  <text x="70" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">300 scans</text>
-  <text x="250" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">10 projects</text>
-  <text x="430" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">6 configurations</text>
-  <text x="675" y="392" fill="#FFFFFF" font-family="Geist Mono" font-size="17" font-weight="500">5 repetitions</text>
-  <rect x="70" y="426" width="860" height="74" fill="#030328" stroke="#FFFFFF" stroke-opacity="0.24"/>
-  <text x="94" y="455" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="13" font-weight="500" letter-spacing="1">SCIENTIFIC SCOPE</text>
-  <text x="94" y="483" fill="#FFFFFF" font-family="Geist" font-size="19">Reference agreement is not universal accuracy.</text>
-  <text x="70" y="543" fill="#FFFFFF" fill-opacity="0.65" font-family="Geist Mono" font-size="14">Source: published benchmark evidence</text>
-  <text x="70" y="579" fill="#FFFFFF" font-family="Geist Mono" font-size="16">Dataset 1.0.0 · Deterministic Snyk Code reference set · vulnbench.com</text>
+  ${brandDefinitions(assets)}
+  <rect data-social-background="" data-copy-region="" width="1200" height="630" fill="#FFFFFF"/>
+  <rect data-gradient-accent="" data-brand-background="" width="1200" height="10" fill="url(#brand-gradient)"/>
+  <text x="70" y="78" fill="#030328" font-family="Geist Mono" font-size="18" font-weight="500" letter-spacing="1.5">SNYK VULNBENCH JS 1.0</text>
+  <text fill="#030328" font-family="Geist" font-size="55" font-weight="700" letter-spacing="-1.5">${textLines("Can LLMs find the same bugs twice?", 70, 165, 55, 18)}</text>
+  <text fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="20">${textLines("A repeatability and Snyk-reference agreement study", 70, 300, 27, 32)}</text>
+  <rect x="70" y="350" width="455" height="132" fill="#FFFFFF" stroke="#030328" stroke-opacity="0.2"/>
+  <text x="96" y="386" fill="#6F00DD" font-family="Geist Mono" font-size="15" font-weight="500" letter-spacing="1">SCIENTIFIC SCOPE</text>
+  <text x="96" y="430" fill="#030328" font-family="Geist" font-size="34" font-weight="700">134 of 158</text>
+  <text x="306" y="430" fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="18">matched signatures</text>
+  <text x="96" y="449" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="13">appeared in all five runs</text>
+  <text x="96" y="474" fill="#030328" fill-opacity="0.68" font-family="Geist Mono" font-size="13">Best model Snyk-reference F1: 75.4%</text>
+  <text x="70" y="506" fill="#030328" fill-opacity="0.68" font-family="Geist" font-size="17">Reference agreement is not universal accuracy.</text>
+  <text x="70" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">300 scans</text>
+  <text x="190" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">10 projects</text>
+  <text x="325" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">6 configurations</text>
+  <text x="488" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">5 repetitions</text>
+  ${renderLightAgreementChart(data?.agreementVariance ?? defaultAgreementVariance)}
+  <rect x="0" y="532" width="1200" height="98" fill="#030328"/>
+  <image href="${escapeXml(assets.wordmarkUrl)}" x="70" y="540" width="108" height="43" preserveAspectRatio="xMidYMid meet"/>
+  <text x="220" y="568" fill="#FFFFFF" fill-opacity="0.68" font-family="Geist Mono" font-size="12">Dataset 1.0.0 · deterministic Snyk Code reference set</text>
+  <text x="220" y="592" fill="#FFFFFF" font-family="Geist Mono" font-size="12">Source: published benchmark evidence · vulnbench.com</text>
 </svg>`;
 }
 /* snyk-2026-audit:end */

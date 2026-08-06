@@ -821,7 +821,19 @@ test("publishes branded favicon and default social metadata assets", async ({
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
-    "https://vulnbench.com/brand/snyk-2026/social.svg",
+    "https://vulnbench.com/brand/snyk-2026/social.png",
+  );
+  await expect(page.locator('meta[property="og:image:type"]')).toHaveAttribute(
+    "content",
+    "image/png",
+  );
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+    "content",
+    "1200",
+  );
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute(
+    "content",
+    "630",
   );
 
   const faviconResponse = await request.get(
@@ -834,6 +846,7 @@ test("publishes branded favicon and default social metadata assets", async ({
 
   for (const path of [
     "/brand/snyk-2026/social.svg",
+    "/brand/snyk-2026/social.png",
     "/brand/snyk-2026/logo-snyk-white.png",
     "/brand/snyk-2026/BRC_Fabric_NoGradient.png",
     "/brand/snyk-2026/BRC_Fabric_Gradient.png",

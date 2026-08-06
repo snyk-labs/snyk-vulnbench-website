@@ -1664,7 +1664,7 @@ export function auditGeneratedMetadata(source, fileName = "<html>") {
   )?.[1];
   if (
     !socialImage ||
-    !/\/(?:brand\/snyk-2026\/social|social\/js-1\.0\/(?:summary|repeatability|coverage|efficiency))\.svg$/u.test(
+    !/\/(?:brand\/snyk-2026\/social\.(?:svg|png)|social\/js-1\.0\/(?:summary|repeatability|coverage|efficiency)\.svg)$/u.test(
       socialImage,
     )
   ) {

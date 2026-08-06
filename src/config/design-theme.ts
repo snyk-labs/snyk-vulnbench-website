@@ -14,7 +14,7 @@ export const designThemeAssets: Record<DesignTheme, DesignThemeAssets> = {
   },
   "snyk-2026": {
     favicon: "/brand/snyk-2026/favicon.svg",
-    defaultSocialImage: "/brand/snyk-2026/social.svg",
+    defaultSocialImage: "/brand/snyk-2026/social.png",
   },
 };
 

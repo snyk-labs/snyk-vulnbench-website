@@ -195,9 +195,14 @@ visitor's color mode:
   generated chart share cards unchanged.
 - Snyk 2026 builds select a local branded favicon, branded default Open Graph
   image, and branded generated share-card palette and typography.
-- Snyk 2026 social assets use a canonical Midnight or Brand-Gradient
-  composition with solid white text. They do not attempt to infer the
-  recipient's Light or Dark preference.
+- The Snyk 2026 default Open Graph asset is an explicit website-specific Light
+  analytical composition: a 1200 × 630 PNG with a white canvas, Midnight copy,
+  one thin Brand Gradient accent, a chart-led Agreement versus repeated-run
+  variance visual, dataset context, and the scientific caveat. It is
+  build-selected and does not infer the recipient's Light or Dark preference.
+- The branded SVG source remains available for inspection and generated
+  release-card routes, while the PNG is the canonical external-preview format
+  for X, LinkedIn, WhatsApp, Slack, and other unfurlers.
 - Social assets preserve the same release title, metric context, dataset
   version, provenance, and scientific caveats as Classic assets.
 

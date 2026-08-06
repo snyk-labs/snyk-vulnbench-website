@@ -54,7 +54,7 @@ describe("design-theme browser metadata", () => {
     });
     expect(designThemeAssets["snyk-2026"]).toEqual({
       favicon: "/brand/snyk-2026/favicon.svg",
-      defaultSocialImage: "/brand/snyk-2026/social.svg",
+      defaultSocialImage: "/brand/snyk-2026/social.png",
     });
   });
 });
