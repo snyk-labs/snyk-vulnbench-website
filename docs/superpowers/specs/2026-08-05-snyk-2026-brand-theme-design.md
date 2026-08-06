@@ -1,7 +1,7 @@
 # Snyk 2026 Brand Theme Design
 
-**Status:** Approved design  
-**Date:** 2026-08-05  
+**Status:** Approved design
+**Date:** 2026-08-05
 **Product:** Snyk VulnBench website
 
 ## Purpose
