@@ -117,20 +117,31 @@ const FORBIDDEN_CSS = [
   /(?:-webkit-)?mask-image\s*:/giu,
   /(?:-webkit-)?mask-composite\s*:/giu,
 ];
+const BRANDED_PAGE_SHARED_TARGETS = [
+  { path: "src/styles/tokens-snyk-2026.css" },
+  { path: "src/styles/global.css", marked: true },
+  { path: "src/layouts/BaseLayout.astro" },
+  { path: "src/components/site/BrandFabric.astro" },
+  { path: "src/components/site/SiteFooter.astro", marked: true },
+  { path: "src/components/site/SiteHeader.astro", marked: true },
+  { path: "src/components/site/SnykLogo.astro" },
+];
 const SOURCE_COMPOSITIONS = [
   {
-    name: "branded page source",
+    name: "branded homepage source",
+    checkOverflowGuard: true,
     targets: [
-      { path: "src/styles/tokens-snyk-2026.css" },
-      { path: "src/styles/global.css", marked: true },
-      { path: "src/layouts/BaseLayout.astro" },
-      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
+      ...BRANDED_PAGE_SHARED_TARGETS,
       { path: "src/components/home/Hero.astro", marked: true },
-      { path: "src/components/site/BrandFabric.astro" },
+    ],
+  },
+  {
+    name: "branded interior page source",
+    checkOverflowGuard: true,
+    targets: [
+      ...BRANDED_PAGE_SHARED_TARGETS,
+      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
       { path: "src/components/site/PageHero.astro", marked: true },
-      { path: "src/components/site/SiteFooter.astro", marked: true },
-      { path: "src/components/site/SiteHeader.astro", marked: true },
-      { path: "src/components/site/SnykLogo.astro" },
     ],
   },
   {
@@ -700,7 +711,7 @@ function dependsOnDarkCustomProperty(
 }
 
 function isSemanticMarkSelector(selector) {
-  return /(?:badge|bar|chip|dot|glyph|icon|legend|marker|swatch|tag)\b/iu.test(
+  return /(?:^|[^a-z0-9])(?:badge|bar|chip|dot|glyph|icon|legend|marker|swatch|tag)(?:$|[^a-z0-9])/iu.test(
     selector,
   );
 }
@@ -820,7 +831,32 @@ function auditFonts(source, fileName, customProperties) {
   return findings;
 }
 
-function auditGradients(source, fileName, checkGradientCount = true) {
+function isGradientConsumerProperty(property) {
+  return /^(?:background|background-image|border-image|border-image-source)$/iu.test(
+    property,
+  );
+}
+
+function sanctionedGradientCount(value) {
+  let count = 0;
+  for (const match of value.matchAll(
+    /(?:linear|radial|conic)-gradient\([^)]*\)/giu,
+  )) {
+    if (
+      canonicalGradient(match[0]) === canonicalGradient(SANCTIONED_GRADIENT)
+    ) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+function auditGradients(
+  source,
+  fileName,
+  checkGradientCount = true,
+  customProperties = collectCustomProperties(source),
+) {
   const findings = [];
   let sanctionedCount = 0;
 
@@ -830,7 +866,7 @@ function auditGradients(source, fileName, checkGradientCount = true) {
     if (
       canonicalGradient(match[0]) === canonicalGradient(SANCTIONED_GRADIENT)
     ) {
-      sanctionedCount += 1;
+      continue;
     } else {
       findings.push(
         finding(
@@ -842,6 +878,18 @@ function auditGradients(source, fileName, checkGradientCount = true) {
         ),
       );
     }
+  }
+
+  for (const declaration of declarations(source)) {
+    if (!isGradientConsumerProperty(declaration.property)) continue;
+    const resolution = resolveCustomValue(
+      stripQuotedContent(declaration.value),
+      customProperties,
+    );
+    sanctionedCount += Math.max(
+      0,
+      ...resolution.values.map(sanctionedGradientCount),
+    );
   }
 
   for (const match of source.matchAll(
@@ -975,6 +1023,7 @@ export function auditText(
     source,
     fileName,
     checkGradientCount,
+    resolvedCustomProperties,
   );
   return [
     ...auditForbiddenCss(source, fileName),
@@ -1024,6 +1073,7 @@ export function auditComposition(
       fragment.source,
       fragment.fileName,
       false,
+      customProperties,
     ).sanctionedCount;
   }
   if (sanctionedCount > 1) {
@@ -1164,7 +1214,7 @@ export async function auditBrandProject(root = process.cwd()) {
     findings.push(
       ...auditComposition(fragments, {
         fileName: composition.name,
-        checkOverflowGuard: composition.name === "branded page source",
+        checkOverflowGuard: composition.checkOverflowGuard === true,
       }),
     );
   }

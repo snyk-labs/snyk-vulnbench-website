@@ -445,6 +445,48 @@ describe("Snyk 2026 mechanical brand audit", () => {
     ).toEqual([]);
   });
 
+  it.each(["sidebar", "toolbar", "navbar"])(
+    "does not exempt the structural .%s class as a semantic bar",
+    (className) => {
+      const findings = auditComposition([
+        {
+          fileName: "tokens.css",
+          source:
+            'html[data-design-theme="snyk-2026"][data-theme="dark"] { --accent: #6F00DD; }',
+        },
+        {
+          fileName: "layout.css",
+          source: `.${className} { background: var(--accent); }`,
+        },
+      ]);
+
+      expect(findings.map(({ rule }) => rule)).toContain(
+        "saturated-dark-panel",
+      );
+    },
+  );
+
+  it.each(["chart-bar", "data-bar"])(
+    "preserves the known .%s quantitative mark",
+    (className) => {
+      const findings = auditComposition([
+        {
+          fileName: "tokens.css",
+          source:
+            'html[data-design-theme="snyk-2026"][data-theme="dark"] { --accent: #6F00DD; }',
+        },
+        {
+          fileName: "chart.css",
+          source: `.${className} { background: var(--accent); }`,
+        },
+      ]);
+
+      expect(
+        findings.filter(({ rule }) => rule === "saturated-dark-panel"),
+      ).toEqual([]);
+    },
+  );
+
   it("accepts one exact Dark Brand Gradient warm edge", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
@@ -461,6 +503,64 @@ describe("Snyk 2026 mechanical brand audit", () => {
     ]);
 
     expect(findings).toEqual([]);
+  });
+
+  it("counts resolved Brand Gradient consumers instead of its stored literal", () => {
+    const gradient =
+      "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source: `:root { --brand-gradient: ${gradient}; }`,
+      },
+      {
+        fileName: "hero.css",
+        source: `
+          .brand-gradient-accent {
+            height: 1px;
+            background: var(--brand-gradient);
+          }
+          .brand-gradient-accent-secondary {
+            height: 1px;
+            border-image: var(--brand-gradient);
+          }
+        `,
+      },
+    ]);
+
+    expect(findings.map(({ rule }) => rule)).toContain("gradient-count");
+  });
+
+  it("counts duplicate Brand Gradient consumers through recursive variables and fallbacks", () => {
+    const gradient =
+      "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source: `
+          :root {
+            --brand-gradient: ${gradient};
+            --recursive-gradient: var(--brand-gradient);
+            --fallback-gradient: var(--missing-gradient, var(--brand-gradient));
+          }
+        `,
+      },
+      {
+        fileName: "hero.css",
+        source: `
+          .brand-gradient-accent {
+            height: 1px;
+            background: var(--recursive-gradient);
+          }
+          .brand-gradient-accent-secondary {
+            height: 1px;
+            background-image: var(--fallback-gradient);
+          }
+        `,
+      },
+    ]);
+
+    expect(findings.map(({ rule }) => rule)).toContain("gradient-count");
   });
 
   it("rejects the exact Brand Gradient when it fills a Dark panel", () => {
