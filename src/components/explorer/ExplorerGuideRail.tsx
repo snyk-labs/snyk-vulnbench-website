@@ -139,6 +139,24 @@ export function ExplorerGuideRail({
           background: var(--paper-raised);
         }
 
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .explorer-guide
+          section,
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .explorer-guide
+          nav {
+          border-top-color: var(--theme-rule-strong);
+          border-left: 0.2rem solid var(--theme-purple);
+        }
+
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .explorer-guide
+          dt {
+          font-weight: var(--font-weight-label);
+        }
+        /* snyk-2026-audit:end */
+
         .explorer-guide p:not(.eyebrow) {
           margin-top: var(--space-2);
           color: var(--ink-soft);
@@ -167,7 +185,7 @@ export function ExplorerGuideRail({
         .explorer-guide dd {
           margin: 0;
           font-size: 0.75rem;
-          font-weight: 750;
+          font-weight: var(--font-weight-label-strong);
           overflow-wrap: anywhere;
         }
 
@@ -181,7 +199,7 @@ export function ExplorerGuideRail({
           min-height: 1.75rem;
           align-items: center;
           font-size: 0.75rem;
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
         }
       `}</style>
     </aside>

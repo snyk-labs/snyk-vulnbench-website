@@ -56,6 +56,58 @@ function activeThemeColor(property: string, fallback: string) {
   return resolveCssValue(value || fallback, document.documentElement) || fallback;
 }
 
+interface RgbaColor {
+  red: number;
+  green: number;
+  blue: number;
+  alpha: number;
+}
+
+function parseCssColor(value: string): RgbaColor | null {
+  const hex = value.trim().match(/^#([\da-f]{3,8})$/iu)?.[1];
+  if (hex) {
+    const expanded =
+      hex.length === 3 || hex.length === 4
+        ? [...hex].map((character) => character.repeat(2)).join("")
+        : hex;
+    if (expanded.length !== 6 && expanded.length !== 8) return null;
+    return {
+      red: Number.parseInt(expanded.slice(0, 2), 16),
+      green: Number.parseInt(expanded.slice(2, 4), 16),
+      blue: Number.parseInt(expanded.slice(4, 6), 16),
+      alpha:
+        expanded.length === 8
+          ? Number.parseInt(expanded.slice(6, 8), 16) / 255
+          : 1,
+    };
+  }
+
+  const functional = value.trim().match(/^rgba?\(([^)]+)\)$/iu)?.[1];
+  if (!functional) return null;
+  const channels = functional.match(/[\d.]+/gu)?.map(Number) ?? [];
+  const [red, green, blue, alpha = 1] = channels;
+  if (
+    red === undefined ||
+    green === undefined ||
+    blue === undefined ||
+    channels.length > 4
+  ) {
+    return null;
+  }
+  return { red, green, blue, alpha };
+}
+
+function opaqueColor(value: string, fallback?: string) {
+  const foreground = parseCssColor(value);
+  if (!foreground) return value;
+  if (foreground.alpha === 0) return "none";
+  if (foreground.alpha >= 1) return value;
+  return (
+    fallback ??
+    `rgb(${foreground.red}, ${foreground.green}, ${foreground.blue})`
+  );
+}
+
 const presentationProperties = [
   "color",
   "fill",
@@ -74,6 +126,14 @@ const presentationProperties = [
 
 export function serializeSvg(svg: SVGElement) {
   const clone = svg.cloneNode(true) as SVGElement;
+  const exportSurface = activeThemeColor(
+    "--theme-export-surface",
+    activeThemeColor("--paper-raised", lightExportPalette.background),
+  );
+  const exportText = activeThemeColor(
+    "--theme-export-text",
+    activeThemeColor("--ink", lightExportPalette.text),
+  );
   if (!clone.hasAttribute("xmlns")) {
     clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   }
@@ -87,9 +147,15 @@ export function serializeSvg(svg: SVGElement) {
 
     for (const attribute of Array.from(target.attributes)) {
       if (attribute.value.includes("var(")) {
+        const resolved = resolveCssValue(attribute.value, source);
         target.setAttribute(
           attribute.name,
-          resolveCssValue(attribute.value, source),
+          ["color", "fill", "stroke"].includes(attribute.name)
+            ? opaqueColor(
+                resolved,
+                source.localName === "text" ? exportText : undefined,
+              )
+            : resolved,
         );
       }
     }
@@ -98,23 +164,22 @@ export function serializeSvg(svg: SVGElement) {
     const computed = getComputedStyle(source);
     for (const property of presentationProperties) {
       if (source.hasAttribute(property)) continue;
-      const value = resolveCssValue(computed.getPropertyValue(property), source);
+      const resolved = resolveCssValue(
+        computed.getPropertyValue(property),
+        source,
+      );
+      const value = ["color", "fill", "stroke"].includes(property)
+        ? opaqueColor(
+            resolved,
+            source.localName === "text" ? exportText : undefined,
+          )
+        : resolved;
       if (value) target.setAttribute(property, value);
     }
     target.removeAttribute("class");
     target.removeAttribute("style");
   });
 
-  const computedBackground =
-    typeof getComputedStyle === "undefined"
-      ? ""
-      : resolveCssValue(getComputedStyle(svg).backgroundColor, svg);
-  const background =
-    computedBackground &&
-    computedBackground !== "transparent" &&
-    computedBackground !== "rgba(0, 0, 0, 0)"
-      ? computedBackground
-      : activeThemeColor("--paper-raised", lightExportPalette.background);
   const backgroundRect = clone.ownerDocument.createElementNS(
     "http://www.w3.org/2000/svg",
     "rect",
@@ -122,7 +187,7 @@ export function serializeSvg(svg: SVGElement) {
   backgroundRect.setAttribute("data-export-background", "");
   backgroundRect.setAttribute("width", "100%");
   backgroundRect.setAttribute("height", "100%");
-  backgroundRect.setAttribute("fill", background);
+  backgroundRect.setAttribute("fill", exportSurface);
   const title = clone.querySelector("title");
   title?.after(backgroundRect);
   if (!title) clone.prepend(backgroundRect);
@@ -147,17 +212,24 @@ export function barChartSvg(
     tone?: "matched" | "unmatched" | "neutral";
   }>,
 ) {
+  const exportSurface = activeThemeColor(
+    "--theme-export-surface",
+    activeThemeColor("--paper-raised", lightExportPalette.background),
+  );
   const palette = {
-    background: activeThemeColor(
-      "--paper-raised",
-      lightExportPalette.background,
+    background: exportSurface,
+    text: activeThemeColor(
+      "--theme-export-text",
+      activeThemeColor("--ink", lightExportPalette.text),
     ),
-    text: activeThemeColor("--ink", lightExportPalette.text),
-    matched: activeThemeColor("--matched", lightExportPalette.matched),
-    unmatched: activeThemeColor("--unmatched", lightExportPalette.unmatched),
-    neutral: activeThemeColor(
-      "--series-fallback",
-      lightExportPalette.neutral,
+    matched: opaqueColor(
+      activeThemeColor("--matched", lightExportPalette.matched),
+    ),
+    unmatched: opaqueColor(
+      activeThemeColor("--unmatched", lightExportPalette.unmatched),
+    ),
+    neutral: opaqueColor(
+      activeThemeColor("--series-fallback", lightExportPalette.neutral),
     ),
     fontSans: activeThemeColor("--font-sans", lightExportPalette.fontSans),
     fontMono: activeThemeColor("--font-mono", lightExportPalette.fontMono),

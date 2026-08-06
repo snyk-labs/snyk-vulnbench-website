@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { ExplorerDataset } from "../../../data/explorer/schema";
 import {
   barChartSvg,
@@ -20,6 +21,23 @@ const percent = new Intl.NumberFormat("en-US", {
   style: "percent",
   maximumFractionDigits: 0,
 });
+
+function coverageHeatmapClass(value: number | null) {
+  if (value === null) return "coverage-cell--not-applicable";
+  if (value <= 0) return "coverage-cell--heatmap-0";
+  if (value <= 0.25) return "coverage-cell--heatmap-1";
+  if (value <= 0.5) return "coverage-cell--heatmap-2";
+  if (value <= 0.75) return "coverage-cell--heatmap-3";
+  return "coverage-cell--heatmap-4";
+}
+
+function coverageHeatmapStyle(value: number | null): CSSProperties | undefined {
+  if (value === null) return undefined;
+  const boundedValue = Math.min(Math.max(value, 0), 1);
+  return {
+    "--coverage-heatmap-mix": `${Math.round(boundedValue * 65)}%`,
+  } as CSSProperties;
+}
 
 function projectValue(
   task: ExplorerSelection["tasks"][number],
@@ -191,14 +209,9 @@ export function CoverageView({
                     const details = cellDetails(configuration.id, key);
                     return (
                       <td
-                        className="metric coverage-cell"
+                        className={`metric coverage-cell ${coverageHeatmapClass(details.value)}`}
                         key={key}
-                        style={{
-                          backgroundColor:
-                            details.value === null
-                              ? "var(--paper-muted)"
-                              : `color-mix(in srgb, var(--matched) ${Math.round(details.value * 65)}%, var(--paper-raised))`,
-                        }}
+                        style={coverageHeatmapStyle(details.value)}
                       >
                         <strong>
                           {details.value === null

@@ -1,13 +1,17 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const port = 4323;
+const baseURL = `http://127.0.0.1:${port}`;
+
 export default defineConfig({
   testDir: "./tests/e2e",
+  testIgnore: "**/design-theme*.spec.ts",
   fullyParallel: true,
   forbidOnly: true,
   retries: 0,
   reporter: "line",
   use: {
-    baseURL: "http://127.0.0.1:4321",
+    baseURL,
     trace: "retain-on-failure",
   },
   projects: [
@@ -21,9 +25,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev",
-    url: "http://127.0.0.1:4321",
-    reuseExistingServer: true,
+    command: `VULNBENCH_DESIGN_THEME=classic npm run dev -- --port ${port}`,
+    url: baseURL,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

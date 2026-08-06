@@ -1,0 +1,32 @@
+<div class="brand-fabric" aria-hidden="true"></div>
+
+<style>
+  .brand-fabric {
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    bottom: 0;
+    width: min(54rem, 62vw);
+    aspect-ratio: 5667 / 3316;
+    background-image: url("/brand/snyk-2026/BRC_Fabric_NoGradient.png");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: contain;
+    opacity: 0.16;
+    pointer-events: none;
+  }
+
+  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .brand-fabric,
+  :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
+    .brand-fabric {
+    background-image: url("/brand/snyk-2026/BRC_Fabric_NoGradient.png");
+    opacity: 0.16;
+  }
+
+  :global(html[data-design-theme="snyk-2026"][data-theme="dark"])
+    .brand-fabric {
+    background-image: url("/brand/snyk-2026/BRC_Fabric_Gradient.png");
+    opacity: 1;
+  }
+</style>

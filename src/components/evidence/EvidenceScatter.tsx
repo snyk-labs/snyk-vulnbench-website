@@ -180,10 +180,14 @@ export function EvidenceScatter({
           const y = scale(point.y, yMinimum, yMaximum, 320, 66);
           return (
             <text
+              className="configuration-plot-marker"
+              data-configuration={point.name}
+              data-testid="configuration-plot-marker"
               fill={style.color}
               fontSize="24"
               fontWeight="800"
               key={point.name}
+              paintOrder="stroke fill"
               textAnchor="middle"
               x={x}
               y={y}
@@ -250,12 +254,37 @@ export function EvidenceScatter({
               >
                 <span
                   aria-hidden="true"
+                  className="evidence-scatter__legend-marker--classic"
                   data-shape={style.shape}
-                  data-testid="configuration-marker"
+                  data-testid="configuration-marker-classic"
                   style={{ color: style.color }}
                 >
                   {style.symbol}
                 </span>
+                <svg
+                  aria-hidden="true"
+                  className="evidence-scatter__legend-marker--snyk"
+                  data-shape={style.shape}
+                  data-testid="configuration-marker-snyk"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <text
+                    dominantBaseline="middle"
+                    fill={style.color}
+                    fontSize="18"
+                    fontWeight="800"
+                    paintOrder="stroke fill"
+                    stroke="var(--ink)"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    textAnchor="middle"
+                    x="12"
+                    y="12"
+                  >
+                    {style.symbol}
+                  </text>
+                </svg>
                 {point.name}
               </button>
             </li>
@@ -310,6 +339,13 @@ export function EvidenceScatter({
           margin: 0;
         }
 
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"][data-theme="dark"]
+          .evidence-scatter {
+          --scatter-selected-surface: var(--theme-evidence-hover);
+        }
+        /* snyk-2026-audit:end */
+
         .evidence-scatter__plot {
           width: 100%;
           border: 1px solid var(--rule-strong);
@@ -324,7 +360,7 @@ export function EvidenceScatter({
         .evidence-scatter__plot .chart-title {
           fill: var(--ink);
           font-size: 15px;
-          font-weight: 750;
+          font-weight: var(--font-weight-label-strong);
         }
 
         .evidence-scatter__plot .gridline {
@@ -351,6 +387,16 @@ export function EvidenceScatter({
           font-size: 10px;
         }
 
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"]
+          .evidence-scatter__plot
+          .configuration-plot-marker {
+          stroke: var(--theme-ink);
+          stroke-linejoin: round;
+          stroke-width: 1.5;
+        }
+        /* snyk-2026-audit:end */
+
         .evidence-scatter__legend {
           display: grid;
           padding: 0;
@@ -374,7 +420,7 @@ export function EvidenceScatter({
           border: 1px solid var(--ink);
           background: var(--paper-raised);
           font-size: 0.72rem;
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
         }
 
         .evidence-scatter__legend li {
@@ -394,20 +440,40 @@ export function EvidenceScatter({
           gap: 0.6rem;
           align-items: center;
           font-size: var(--step--1);
+          font-weight: var(--font-weight-control);
           text-align: left;
         }
 
         .evidence-scatter__legend button:hover,
         .evidence-scatter__legend button[aria-pressed="true"] {
-          background: var(--purple-soft);
+          background: var(--scatter-selected-surface, var(--purple-soft));
         }
 
-        .evidence-scatter__legend button span {
+        .evidence-scatter__legend-marker--classic {
           width: 1rem;
           flex: 0 0 1rem;
           font-size: 1rem;
           text-align: center;
         }
+
+        .evidence-scatter__legend-marker--snyk {
+          display: none;
+          width: 1.25rem;
+          height: 1.25rem;
+          flex: 0 0 1.25rem;
+        }
+
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"]
+          .evidence-scatter__legend-marker--classic {
+          display: none;
+        }
+
+        html[data-design-theme="snyk-2026"]
+          .evidence-scatter__legend-marker--snyk {
+          display: block;
+        }
+        /* snyk-2026-audit:end */
 
         .evidence-scatter__status {
           display: flex;

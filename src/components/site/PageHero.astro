@@ -1,4 +1,8 @@
 ---
+/* snyk-2026-audit:start */
+import { isSnyk2026Design } from "../../config/design-theme";
+/* snyk-2026-audit:end */
+
 interface Props {
   eyebrow: string;
   title: string;
@@ -9,8 +13,15 @@ const { eyebrow, title, description } = Astro.props;
 ---
 
 <header class="page-hero">
+  <!-- snyk-2026-audit:start -->
+  {
+    isSnyk2026Design && (
+      <div class="brand-gradient-accent" aria-hidden="true" />
+    )
+  }
+  <!-- snyk-2026-audit:end -->
   <div class="container page-hero__inner">
-    <div>
+    <div class="page-hero__copy">
       <p class="eyebrow">{eyebrow}</p>
       <h1>{title}</h1>
       <p class="lede">{description}</p>
@@ -34,6 +45,38 @@ const { eyebrow, title, description } = Astro.props;
     display: grid;
     gap: var(--space-6);
   }
+
+  /* snyk-2026-audit:start */
+  :global(html[data-design-theme="snyk-2026"]) .page-hero {
+    position: relative;
+  }
+
+  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .page-hero__copy {
+    background: #FFFFFF;
+    color: #030328;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]:not([data-theme]))
+    .page-hero__copy {
+    background: #FFFFFF;
+    color: #030328;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .brand-gradient-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 0.3rem;
+    background: var(--brand-gradient);
+  }
+
+  :global(html[data-design-theme="snyk-2026"][data-theme="dark"])
+    .brand-gradient-accent {
+    height: 1px;
+  }
+  /* snyk-2026-audit:end */
 
   h1 {
     max-width: 18ch;

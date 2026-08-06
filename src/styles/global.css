@@ -1,4 +1,7 @@
 @import "./tokens.css";
+/* snyk-2026-audit:start */
+@import "./tokens-snyk-2026.css";
+/* snyk-2026-audit:end */
 
 *,
 *::before,
@@ -18,6 +21,7 @@ body {
   min-width: 20rem;
   margin: 0;
   font-size: var(--step-0);
+  font-weight: 400;
   line-height: 1.62;
 }
 
@@ -60,7 +64,7 @@ h1,
 h2,
 h3 {
   margin-block: 0;
-  font-weight: 720;
+  font-weight: var(--font-weight-heading, 720);
   letter-spacing: -0.035em;
   line-height: 1.08;
   text-wrap: balance;
@@ -68,6 +72,7 @@ h3 {
 
 h1 {
   font-size: var(--step-4);
+  font-weight: var(--font-weight-h1, 720);
 }
 
 h2 {
@@ -98,6 +103,99 @@ ol {
   border-top: 1px solid var(--rule);
 }
 
+/* snyk-2026-audit:start */
+html[data-design-theme="snyk-2026"][data-theme="light"] .section {
+  background: #FFFFFF;
+  color: #030328;
+}
+
+html[data-design-theme="snyk-2026"]:not([data-theme]) .section {
+  background: #FFFFFF;
+  color: #030328;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] body {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  body
+  .hero
+  .brand-fabric[aria-hidden="true"] {
+  opacity: 0.16;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] h1,
+html[data-design-theme="snyk-2026"][data-theme="dark"] .metric {
+  color: #FFFFFF;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] h2,
+html[data-design-theme="snyk-2026"][data-theme="dark"] h3,
+html[data-design-theme="snyk-2026"][data-theme="dark"] .eyebrow,
+html[data-design-theme="snyk-2026"][data-theme="dark"] button,
+html[data-design-theme="snyk-2026"][data-theme="dark"] input,
+html[data-design-theme="snyk-2026"][data-theme="dark"] select,
+html[data-design-theme="snyk-2026"][data-theme="dark"] textarea {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  .evidence-band
+  .band-heading
+  .eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  .evidence-band
+  .observation.matched
+  .metric {
+  color: var(--theme-matched-text);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] a {
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration-color: #6F00DD;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] th {
+  font-weight: var(--font-weight-label);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] pre,
+html[data-design-theme="snyk-2026"][data-theme="dark"]
+  .recurrence-chart__detail {
+  color: #030328;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button {
+  border-color: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.78);
+  color: #030328;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button:hover {
+  border-color: #6F00DD;
+  background: #FFFFFF;
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button.secondary {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+html[data-design-theme="snyk-2026"][data-theme="dark"] .button.secondary:hover {
+  border-color: #6F00DD;
+  background: rgba(255, 255, 255, 0.12);
+}
+/* snyk-2026-audit:end */
+
 .section-heading {
   display: grid;
   max-width: 55rem;
@@ -109,7 +207,7 @@ ol {
   color: var(--purple-dark);
   font-family: var(--font-mono);
   font-size: var(--step--1);
-  font-weight: 700;
+  font-weight: var(--font-weight-label, 700);
   letter-spacing: 0.08em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -126,6 +224,46 @@ ol {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
+
+.coverage-cell--not-applicable {
+  background-color: var(--paper-muted);
+}
+
+html[data-design-theme="classic"] .coverage-cell[class*="coverage-cell--heatmap-"] {
+  background-color: color-mix(
+    in srgb,
+    var(--matched) var(--coverage-heatmap-mix),
+    var(--paper-raised)
+  );
+  color: var(--ink);
+}
+
+/* snyk-2026-audit:start */
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-0 {
+  background-color: var(--heatmap-0, rgba(111, 0, 221, 0.04));
+  color: var(--heatmap-text-strong, #030328);
+}
+
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-1 {
+  background-color: var(--heatmap-1, rgba(111, 0, 221, 0.08));
+  color: var(--heatmap-text-strong, #030328);
+}
+
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-2 {
+  background-color: var(--heatmap-2, rgba(111, 0, 221, 0.12));
+  color: var(--heatmap-text-strong, #030328);
+}
+
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-3 {
+  background-color: var(--heatmap-3, rgba(111, 0, 221, 0.18));
+  color: var(--heatmap-text-strong, #030328);
+}
+
+html[data-design-theme="snyk-2026"] .coverage-cell--heatmap-4 {
+  background-color: var(--heatmap-4, rgba(111, 0, 221, 0.24));
+  color: var(--heatmap-text-strong, #030328);
+}
+/* snyk-2026-audit:end */
 
 .button-row {
   display: flex;
@@ -145,7 +283,7 @@ ol {
   background: var(--ink);
   color: var(--paper-raised);
   font-size: var(--step--1);
-  font-weight: 700;
+  font-weight: var(--font-weight-control, 700);
   text-decoration: none;
 }
 
@@ -168,7 +306,7 @@ ol {
   display: inline-flex;
   gap: 0.4em;
   align-items: baseline;
-  font-weight: 700;
+  font-weight: var(--font-weight-control, 700);
 }
 
 .text-link::after {

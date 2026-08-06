@@ -752,6 +752,21 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
         }
 
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-app,
+        html[data-design-theme="snyk-2026"][data-theme="light"] .explorer-canvas,
+        html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-app,
+        html[data-design-theme="snyk-2026"]:not([data-theme]) .explorer-canvas {
+          background: #FFFFFF;
+          color: #030328;
+        }
+
+        html[data-design-theme="snyk-2026"][data-theme="dark"] .explorer-app {
+          --explorer-on-accent: #FFFFFF;
+          --explorer-selected-surface: var(--evidence-hover, rgba(255, 255, 255, 0.12));
+        }
+        /* snyk-2026-audit:end */
+
         .explorer-header {
           display: grid;
           width: min(100%, 98rem);
@@ -789,7 +804,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           margin: 0;
           font-family: var(--font-mono);
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-metric-compact);
         }
 
         .explorer-header__actions {
@@ -809,7 +824,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
           align-items: center;
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
           text-decoration: none;
         }
 
@@ -839,13 +854,17 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           border-bottom: 0.25rem solid transparent;
           background: transparent;
           color: var(--ink-soft);
-          font-weight: 750;
+          font-weight: var(--font-weight-control-strong);
           white-space: nowrap;
         }
 
         .explorer-tabs button[aria-selected="true"] {
           border-bottom-color: var(--purple);
           color: var(--ink);
+        }
+
+        .explorer-tabs button:hover {
+          background: var(--explorer-selected-surface, transparent);
         }
 
         .explorer-app__layout {
@@ -901,7 +920,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         .filter-rail summary,
         .filter-rail__select {
           font-size: var(--step--1);
-          font-weight: 750;
+          font-weight: var(--font-weight-label-strong);
         }
 
         .filter-rail label:not(.filter-rail__select) {
@@ -979,7 +998,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
 
         .explorer-pin-list button[aria-pressed="true"] {
           border-color: var(--purple);
-          background: var(--purple-soft);
+          background: var(--explorer-selected-surface, var(--purple-soft));
         }
 
         .explorer-table-scroll {
@@ -1041,14 +1060,14 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           border: 1px solid var(--ink);
           background: var(--paper-raised);
           color: var(--ink);
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
         }
 
         .finding-detail {
           display: grid;
           padding: var(--space-4);
           border-top: 0.3rem solid var(--purple);
-          background: var(--purple-soft);
+          background: var(--explorer-selected-surface, var(--purple-soft));
           gap: var(--space-3);
         }
 
@@ -1073,7 +1092,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         .finding-detail dd {
           margin: 0;
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-label);
           overflow-wrap: anywhere;
         }
 
@@ -1098,7 +1117,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           color: var(--ink);
           align-items: center;
           font-size: var(--step--1);
-          font-weight: 700;
+          font-weight: var(--font-weight-control);
           text-decoration: none;
         }
 
@@ -1127,7 +1146,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
           min-width: 2rem;
           border-right: 1px solid var(--paper-raised);
           background: var(--matched);
-          color: var(--paper-raised);
+          color: var(--explorer-on-accent, var(--paper-raised));
           font-family: var(--font-mono);
           font-size: 0.65rem;
           place-items: center;
@@ -1228,7 +1247,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
         .summary-finding {
           padding: var(--space-4);
           border-top: 0.3rem solid var(--purple);
-          background: var(--purple-soft);
+          background: var(--explorer-selected-surface, var(--purple-soft));
           align-self: end;
         }
 

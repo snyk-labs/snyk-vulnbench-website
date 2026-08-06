@@ -1,50 +1,16 @@
-import { expect, test, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+import {
+  expectTheme,
+  prepareTheme,
+  THEME_KEY,
+  themeToggle,
+} from "./support/theme";
 
 const LIGHT_THEME_COLOR = "#f7f4ed";
 const DARK_THEME_COLOR = "#211e24";
-const THEME_KEY = "vulnbench-theme";
 
-async function prepareTheme(
-  page: Page,
-  colorScheme: "light" | "dark",
-  storedPreference: string | null = null,
-) {
-  await page.emulateMedia({ colorScheme });
-  await page.addInitScript(
-    ({ preference }) => {
-      localStorage.clear();
-      if (preference !== null) {
-        localStorage.setItem("vulnbench-theme", preference);
-      }
-    },
-    { preference: storedPreference },
-  );
-}
-
-async function expectTheme(
-  page: Page,
-  theme: "light" | "dark",
-  themeColor: string,
-) {
-  await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-  await expect(page.locator("html")).toHaveAttribute("style", /color-scheme/);
-  expect(
-    await page.locator("html").evaluate((element) => element.style.colorScheme),
-  ).toBe(theme);
-  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
-    "content",
-    themeColor,
-  );
-}
-
-function themeToggle(page: Page, name: "light" | "dark") {
-  return page.getByRole("button", {
-    name: `Switch to ${name} theme`,
-    exact: true,
-  });
-}
-
-test("initializes the light theme from a light system preference", async ({
+test("defaults to the light theme with a light system preference", async ({
   page,
 }) => {
   await prepareTheme(page, "light");
@@ -60,22 +26,31 @@ test("initializes the light theme from a light system preference", async ({
   await expect(themeToggle(page, "dark")).not.toHaveAttribute("aria-pressed");
 });
 
-test("initializes the dark theme from a dark system preference", async ({
+test("defaults to the light theme with a dark system preference", async ({
   page,
 }) => {
   await prepareTheme(page, "dark");
   await page.goto("/");
 
-  await expectTheme(page, "dark", DARK_THEME_COLOR);
-  await expect(themeToggle(page, "light")).toBeVisible();
-  await expect(themeToggle(page, "light")).toHaveAttribute("data-theme", "dark");
-  await expect(themeToggle(page, "light")).not.toHaveAttribute("aria-pressed");
+  await expectTheme(page, "light", LIGHT_THEME_COLOR);
+  await expect(themeToggle(page, "dark")).toBeVisible();
+  await expect(themeToggle(page, "dark")).toHaveAttribute("data-theme", "light");
+  await expect(themeToggle(page, "dark")).not.toHaveAttribute("aria-pressed");
+});
+
+test("keeps the Light default accessible with a dark system preference", async ({
+  page,
+}) => {
+  await prepareTheme(page, "dark");
+  await page.goto("/");
+
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 
 test("applies dark semantic surfaces to evidence and analytical views", async ({
   page,
 }) => {
-  await prepareTheme(page, "dark");
+  await prepareTheme(page, "dark", "dark");
   await page.goto("/");
 
   const evidenceBand = page.locator(".evidence-band");
@@ -97,20 +72,84 @@ test("applies dark semantic surfaces to evidence and analytical views", async ({
   );
 });
 
-test("uses a valid saved preference instead of the system preference", async ({
-  page,
-}) => {
-  await prepareTheme(page, "dark", "light");
-  await page.goto("/");
+test("keeps Classic coverage cells on a continuous heatmap", async ({ page }) => {
+  await prepareTheme(page, "light");
+  await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=recall");
+  await page
+    .locator('astro-island[component-export="ExplorerApp"]')
+    .waitFor({ state: "attached" });
 
-  await expectTheme(page, "light", LIGHT_THEME_COLOR);
+  const coverageCells = page.locator("td.coverage-cell");
+  await coverageCells.first().waitFor();
+  const presentation = await coverageCells.evaluateAll((cells) => {
+      const samples = cells.map((cell) => {
+        const element = cell as HTMLElement;
+        const band = [...element.classList].find((name) =>
+          name.startsWith("coverage-cell--heatmap-"),
+        );
+        return {
+          background: getComputedStyle(element).backgroundColor,
+          band,
+          mix: element.style.getPropertyValue("--coverage-heatmap-mix"),
+          text: element.querySelector("strong")?.textContent?.trim() ?? "",
+        };
+      });
+      const pair = samples.flatMap((left, index) =>
+        samples
+          .slice(index + 1)
+          .filter(
+            (right) =>
+              left.band &&
+              left.band === right.band &&
+              left.mix &&
+              right.mix &&
+              left.mix !== right.mix,
+          )
+          .map((right) => [left, right] as const),
+      )[0];
+      return { pair };
+    });
+
+  expect(presentation.pair).toBeDefined();
+  expect(presentation.pair?.[0].background).not.toBe(
+    presentation.pair?.[1].background,
+  );
+  await expect(
+    page.getByRole("table", { name: "Vulnerability class coverage matrix" }),
+  ).toBeVisible();
 });
+
+for (const {
+  systemTheme,
+  savedTheme,
+  expectedColor,
+} of [
+  {
+    systemTheme: "dark",
+    savedTheme: "light",
+    expectedColor: LIGHT_THEME_COLOR,
+  },
+  {
+    systemTheme: "light",
+    savedTheme: "dark",
+    expectedColor: DARK_THEME_COLOR,
+  },
+] as const) {
+  test(`uses a saved ${savedTheme} preference instead of system ${systemTheme}`, async ({
+    page,
+  }) => {
+    await prepareTheme(page, systemTheme, savedTheme);
+    await page.goto("/");
+
+    await expectTheme(page, savedTheme, expectedColor);
+  });
+}
 
 test("ignores an invalid saved preference", async ({ page }) => {
   await prepareTheme(page, "dark", "sepia");
   await page.goto("/");
 
-  await expectTheme(page, "dark", DARK_THEME_COLOR);
+  await expectTheme(page, "light", LIGHT_THEME_COLOR);
 });
 
 test("switches theme with a mouse click and persists the explicit choice", async ({
@@ -133,11 +172,11 @@ test("switches theme with keyboard button activation", async ({ page }) => {
   await prepareTheme(page, "dark");
   await page.goto("/");
 
-  await themeToggle(page, "light").focus();
+  await themeToggle(page, "dark").focus();
   await page.keyboard.press("Enter");
 
-  await expectTheme(page, "light", LIGHT_THEME_COLOR);
-  await expect(themeToggle(page, "dark")).toBeFocused();
+  await expectTheme(page, "dark", DARK_THEME_COLOR);
+  await expect(themeToggle(page, "light")).toBeFocused();
 });
 
 test("restores an explicit choice after reload and navigation", async ({
@@ -160,7 +199,7 @@ test("restores an explicit choice after reload and navigation", async ({
   await expect(themeToggle(page, "light")).toBeVisible();
 });
 
-test("follows live system changes until the visitor chooses explicitly", async ({
+test("ignores live system changes before and after an explicit choice", async ({
   page,
 }) => {
   await page.emulateMedia({ colorScheme: "light" });
@@ -170,25 +209,26 @@ test("follows live system changes until the visitor chooses explicitly", async (
   await expectTheme(page, "light", LIGHT_THEME_COLOR);
 
   await page.emulateMedia({ colorScheme: "dark" });
-  await expectTheme(page, "dark", DARK_THEME_COLOR);
-
-  await themeToggle(page, "light").click();
-  await page.emulateMedia({ colorScheme: "dark" });
-  await page.emulateMedia({ colorScheme: "light" });
   await expectTheme(page, "light", LIGHT_THEME_COLOR);
+
+  await themeToggle(page, "dark").click();
+  await expectTheme(page, "dark", DARK_THEME_COLOR);
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expectTheme(page, "dark", DARK_THEME_COLOR);
 });
 
-test("synchronizes valid cross-tab choices and returns to the system theme for invalid or removed preferences", async ({
+test("synchronizes valid cross-tab choices and returns to Light for invalid or removed preferences", async ({
   context,
   page,
 }) => {
-  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
   await page.evaluate((key) => localStorage.removeItem(key), THEME_KEY);
   await page.reload();
 
   const otherPage = await context.newPage();
-  await otherPage.emulateMedia({ colorScheme: "light" });
+  await otherPage.emulateMedia({ colorScheme: "dark" });
   await otherPage.goto("/");
 
   await otherPage.evaluate(
@@ -206,11 +246,11 @@ test("synchronizes valid cross-tab choices and returns to the system theme for i
   await expect(themeToggle(page, "dark")).toBeVisible();
 });
 
-test("returns to the system theme when another tab clears storage", async ({
+test("returns to Light when another tab clears storage", async ({
   context,
   page,
 }) => {
-  await page.emulateMedia({ colorScheme: "light" });
+  await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
   await page.evaluate(
     ({ key, value }) => localStorage.setItem(key, value),
@@ -220,7 +260,7 @@ test("returns to the system theme when another tab clears storage", async ({
   await expectTheme(page, "dark", DARK_THEME_COLOR);
 
   const otherPage = await context.newPage();
-  await otherPage.emulateMedia({ colorScheme: "light" });
+  await otherPage.emulateMedia({ colorScheme: "dark" });
   await otherPage.goto("/");
   await otherPage.evaluate(() => localStorage.clear());
 
@@ -228,34 +268,36 @@ test("returns to the system theme when another tab clears storage", async ({
   await expect(themeToggle(page, "dark")).toBeVisible();
 });
 
-test.describe("without JavaScript", () => {
-  test.use({
-    colorScheme: "dark",
-    javaScriptEnabled: false,
-  });
+for (const systemColorMode of ["light", "dark"] as const) {
+  test.describe(`without JavaScript in system ${systemColorMode}`, () => {
+    test.use({
+      colorScheme: systemColorMode,
+      javaScriptEnabled: false,
+    });
 
-  test("renders the dark CSS fallback with usable content and a hidden theme control", async ({
-    page,
-  }) => {
-    await page.goto("/");
+    test("renders the Light CSS fallback with usable content and a hidden theme control", async ({
+      page,
+    }) => {
+      await page.goto("/");
 
-    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
-    await expect(page.locator("html")).toHaveCSS("color-scheme", "dark");
-    await expect(page.locator("html")).toHaveCSS(
-      "background-color",
-      "rgb(33, 30, 36)",
-    );
-    await expect(page.locator("html")).toHaveCSS(
-      "color",
-      "rgb(245, 240, 232)",
-    );
-    await expect(page.locator("[data-theme-toggle]")).toBeHidden();
-    await expect(page.locator("main")).toBeVisible();
-    await expect(
-      page.getByRole("heading", {
-        level: 1,
-        name: "Can LLMs find the same bugs twice?",
-      }),
-    ).toBeVisible();
+      await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+      await expect(page.locator("html")).toHaveCSS("color-scheme", "light");
+      await expect(page.locator("html")).toHaveCSS(
+        "background-color",
+        "rgb(247, 244, 237)",
+      );
+      await expect(page.locator("html")).toHaveCSS(
+        "color",
+        "rgb(23, 20, 31)",
+      );
+      await expect(page.locator("[data-theme-toggle]")).toBeHidden();
+      await expect(page.locator("main")).toBeVisible();
+      await expect(
+        page.getByRole("heading", {
+          level: 1,
+          name: "Can LLMs find the same bugs twice?",
+        }),
+      ).toBeVisible();
+    });
   });
-});
+}

@@ -1,6 +1,8 @@
 ---
 import SiteFooter from "../components/site/SiteFooter.astro";
 import SiteHeader from "../components/site/SiteHeader.astro";
+import { designTheme, designThemeAssets } from "../config/design-theme";
+import { browserThemeColors } from "../config/theme-colors";
 import type { Release } from "../data/releases/schema";
 import "../styles/global.css";
 
@@ -16,7 +18,7 @@ const {
   title,
   description,
   canonicalPath = Astro.url.pathname,
-  image = "/social/vulnbench-default.svg",
+  image = designThemeAssets[designTheme].defaultSocialImage,
   release,
 } = Astro.props;
 const site = Astro.site ?? new URL("https://vulnbench.com");
@@ -69,18 +71,14 @@ const datasetStructuredData = release
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-design-theme={designTheme}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="theme-color" content="#f7f4ed" />
-    <script is:inline>
+    <meta name="theme-color" content={browserThemeColors.light} />
+    <script is:inline define:vars={{ browserThemeColors }}>
       (() => {
         const storageKey = "vulnbench-theme";
-        const themeColors = {
-          light: "#f7f4ed",
-          dark: "#211e24",
-        };
-        let theme;
+        let theme = "light";
 
         try {
           const savedTheme = localStorage.getItem(storageKey);
@@ -89,30 +87,20 @@ const datasetStructuredData = release
           }
         } catch {}
 
-        if (!theme) {
-          try {
-            theme = matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light";
-          } catch {
-            theme = "light";
-          }
-        }
-
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
 
         try {
           document
             .querySelector('meta[name="theme-color"]')
-            ?.setAttribute("content", themeColors[theme]);
+            ?.setAttribute("content", browserThemeColors[theme]);
         } catch {}
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={designThemeAssets[designTheme].favicon} type="image/svg+xml" />
     <link rel="canonical" href={canonicalUrl} />
     <title>{documentTitle}</title>
 
@@ -155,7 +143,7 @@ const datasetStructuredData = release
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <SiteHeader />
+    <SiteHeader themeColors={browserThemeColors} />
     <main id="main-content">
       <slot />
     </main>

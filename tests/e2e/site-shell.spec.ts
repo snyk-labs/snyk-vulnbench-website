@@ -19,6 +19,23 @@ test("renders an accessible initiative shell", async ({ page }) => {
   ).toBeFocused();
 });
 
+test("keeps the official Snyk logo out of the Classic shell", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-design-theme",
+    "classic",
+  );
+  await expect(
+    page.locator(".site-header").getByRole("link", { name: "Snyk home" }),
+  ).toHaveCount(0);
+  await expect(
+    page.locator(".site-footer").getByRole("link", { name: "Snyk home" }),
+  ).toHaveCount(0);
+});
+
 test("exposes the sparse global navigation at every breakpoint", async ({
   page,
 }) => {

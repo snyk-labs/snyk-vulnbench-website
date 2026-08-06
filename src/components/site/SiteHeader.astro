@@ -1,8 +1,14 @@
 ---
+import type { BrowserThemeColors } from "../../config/theme-colors";
 import { currentRelease } from "../../data/releases";
 import ThemeToggle from "./ThemeToggle.astro";
 import Wordmark from "./Wordmark.astro";
 
+interface Props {
+  themeColors: BrowserThemeColors;
+}
+
+const { themeColors } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
   { label: "Overview", href: "/" },
@@ -52,7 +58,7 @@ const isCurrent = (href: string) => href === activeLink?.href;
         </ul>
       </nav>
 
-      <ThemeToggle />
+      <ThemeToggle themeColors={themeColors} />
 
       <details class="mobile-menu">
         <summary>Menu</summary>
@@ -86,6 +92,29 @@ const isCurrent = (href: string) => href === activeLink?.href;
     background: color-mix(in srgb, var(--paper) 94%, transparent);
   }
 
+  /* snyk-2026-audit:start */
+  :global(html[data-design-theme="snyk-2026"]) .site-header {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+    background: #030328;
+  }
+
+  :global(html[data-design-theme="snyk-2026"]) .site-header nav a,
+  :global(html[data-design-theme="snyk-2026"]) .site-header summary {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  :global(html[data-design-theme="snyk-2026"])
+    .site-header
+    nav
+    a:hover,
+  :global(html[data-design-theme="snyk-2026"])
+    .site-header
+    nav
+    a[aria-current="page"] {
+    color: #FFFFFF;
+  }
+  /* snyk-2026-audit:end */
+
   .header-inner {
     display: flex;
     min-height: 4.25rem;
@@ -115,7 +144,7 @@ const isCurrent = (href: string) => href === activeLink?.href;
   summary {
     color: var(--ink-soft);
     font-size: var(--step--1);
-    font-weight: 700;
+    font-weight: var(--font-weight-control, 700);
     text-decoration: none;
   }
 
@@ -143,6 +172,21 @@ const isCurrent = (href: string) => href === activeLink?.href;
     .header-actions {
       gap: var(--space-2);
     }
+
+    /* snyk-2026-audit:start */
+    :global(html[data-design-theme="snyk-2026"]) .mobile-menu summary {
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    :global(html[data-design-theme="snyk-2026"]) .mobile-menu nav {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: #030328;
+    }
+
+    :global(html[data-design-theme="snyk-2026"]) .mobile-menu a {
+      border-bottom-color: rgba(255, 255, 255, 0.12);
+    }
+    /* snyk-2026-audit:end */
 
     .desktop-nav {
       display: none;

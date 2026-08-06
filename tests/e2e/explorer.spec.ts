@@ -344,11 +344,16 @@ test("opens mobile filter and comparison sheets", async ({ page }) => {
 });
 
 test("preserves the default explorer evidence without JavaScript", async ({
+  baseURL,
   browser,
 }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  if (!baseURL) throw new Error("Playwright baseURL is required");
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+  });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:4321/releases/js-1.0/explore");
+  await page.goto("/releases/js-1.0/explore");
 
   await expect(page.getByRole("heading", { name: "JS 1.0 explorer" })).toBeVisible();
   await expect(page.getByText("300 represented runs")).toBeVisible();

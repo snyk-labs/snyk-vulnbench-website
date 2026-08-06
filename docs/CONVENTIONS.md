@@ -15,6 +15,74 @@ conflict, the approved specification is the source of truth.
   rule unless the underlying reason applies elsewhere.
 - Include the checks that demonstrate the convention is preserved.
 
+## Build-selected design themes
+
+Snyk 2026 is the default build-selected design theme; explicit `classic` remains
+a deterministic override. Light is the default color mode regardless of system
+preference; valid saved Light or Dark choices override it. No-JavaScript output
+uses Light tokens regardless of system preference.
+The current Snyk 2026 identity and Dark rules are defined by the
+[Snyk Dark Neutral Identity Refinement Design](superpowers/specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md).
+
+- Shared components consume semantic CSS tokens rather than environment
+  variables. This keeps release content and analytical behavior independent of
+  the deployment-selected `classic` or `snyk-2026` design.
+- Classic and Snyk 2026 output require separate verification. Run the complete
+  `verify:classic` and `verify:snyk-2026` gates before delivery. The standard
+  build and full verification gate exercise the Snyk 2026 default; the full
+  gate also includes the deterministic Classic override.
+- Verification gates override the design theme for every spawned child process
+  and server. Contract tests must exercise each gate under Classic, invalid,
+  and unset ambient values so an inherited deployment environment cannot
+  select the wrong design.
+- Branded changes must pass the mechanical brand audit and real visual and Axe
+  checks. The audit is additive to, not a substitute for, browser validation.
+  Keep branded constructs inside marked audit blocks in shared sources. The
+  audit must reject saturated Dark panel fills, off-palette literals, excess
+  gradients, decorative shadow or `drop-shadow()` effects, and branded source
+  outside marked audit blocks. Every shared component with branded selectors
+  belongs to a page composition in the audit; balanced markers must exclude
+  Classic-only rules without hiding branded violations. Reject every visible
+  `text-shadow` and every backdrop/filter blur; only guaranteed no-effect
+  `text-shadow` values are valid. Resolve custom-property chains and fallbacks
+  before auditing filters: backdrop filters are no-effect only, while
+  foreground filters may use the explicit non-blur function allowlist.
+- VulnBench remains the primary header identity in both designs. Keep the
+  shared header compact at `4.25rem`. The official Snyk wordmark appears only
+  in the Snyk 2026 footer attribution, spatially separate from the initiative
+  text and with its required clear space.
+- Snyk 2026 Dark uses Midnight and restrained white-alpha depth for page,
+  narrative, explorer, chart, table, and metadata surfaces. Reserve locked
+  saturated colors for semantic marks and small intentional accents rather
+  than broad panels. General Dark action links use a dedicated contrast-safe
+  near-white semantic rather than Hot Pink; approved Light action treatment is
+  unchanged, and Purple remains available for reference-matched marks. Explicit
+  saved Dark must resolve the approved Dark semantic tokens; no-JavaScript
+  output remains Light under either system preference.
+- Snyk 2026 Light is a website-specific white analytical canvas with Midnight
+  copy, restrained locked-color alpha tints, and one contained exact Brand
+  Gradient accent per page. Keep header/footer Midnight, keep most narrative
+  and explorer surfaces light, and reserve a dark evidence card for a contained
+  analytical focal point. Verify explicit Light and no-JavaScript system Light
+  and Dark in a real browser at desktop and mobile widths.
+- The exact Brand Gradient is valid only as one objectively bounded edge per
+  page. Audit every direct or custom-property `background`,
+  `background-image`, `border-image`, and `border-image-source` consumer;
+  require a thin element, no-repeat bounded background size, or thin border.
+  Focus treatment is the only allowed `box-shadow`: it uses approved Purple and
+  white zero-blur keylines on `:focus-visible`.
+- Verify official logo minimums from rendered image bounds at mobile and
+  desktop widths. Preserve clear space of at least one rendered wordmark height
+  on all four sides, and measure each side in a real browser together with
+  control visibility and a 320-pixel horizontal-overflow assertion.
+- Shared analytical markup may expose bounded, design-neutral values through
+  CSS custom properties. Classic may use continuous analytical scales while
+  Snyk 2026 uses locked discrete bands. Root-scoped computed-style tests must
+  prove the presentations differ without reading the build environment in
+  React.
+- Approved local branded assets retain documented provenance and checksums.
+  This keeps their origin and integrity reviewable.
+
 ## Evidence visualizations
 
 ### Label quantitative marks directly

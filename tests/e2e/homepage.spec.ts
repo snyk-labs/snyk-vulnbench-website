@@ -59,12 +59,17 @@ test("communicates the JS 1.0 question and evidence", async ({ page }) => {
 });
 
 test("preserves the complete research story without JavaScript", async ({
+  baseURL,
   browser,
 }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false });
+  if (!baseURL) throw new Error("Playwright baseURL is required");
+  const context = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+  });
   const page = await context.newPage();
 
-  await page.goto("http://127.0.0.1:4321/");
+  await page.goto("/");
   await expectHomepageEvidence(page);
 
   await context.close();

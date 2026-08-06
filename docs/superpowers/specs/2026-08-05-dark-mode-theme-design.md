@@ -9,7 +9,8 @@
 Add a full warm-charcoal dark theme without changing the website's editorial
 research character, static architecture, scientific framing, accessibility
 requirements, or JavaScript budget. Visitors can switch themes from the global
-header, while first-time visits follow the operating-system preference.
+header. Light is the first-visit default regardless of operating-system
+preference; an explicit saved choice selects Light or Dark.
 
 ## Theme architecture
 
@@ -23,14 +24,16 @@ explicit theme contract. A small inline initializer in `BaseLayout.astro` runs
 before paint and resolves the active theme in this order:
 
 1. A valid saved `light` or `dark` preference.
-2. The current `prefers-color-scheme` value.
-3. Light as the defensive fallback.
+2. Light.
 
 The initializer also synchronizes the browser `color-scheme` and
-`theme-color`. Storage and media-query access must fail safely.
+`theme-color`. Storage access must fail safely.
+[Snyk Design and Light Mode Defaults](2026-08-06-snyk-light-defaults-design.md)
+defines the current fallback and default behavior.
 
-Without JavaScript, the site follows `prefers-color-scheme` through CSS. The
-complete narrative, navigation, tables, and static evidence remain usable.
+Without JavaScript, the site uses Light tokens regardless of
+`prefers-color-scheme`. The complete narrative, navigation, tables, and static
+evidence remain usable.
 
 ## Toggle behavior
 
@@ -42,10 +45,8 @@ The top-right header control is a framework-free two-state button:
 - Mouse and keyboard activation update the page immediately.
 - An explicit choice is stored under `vulnbench-theme` and persists across
   navigation and reloads.
-- Before an explicit choice, an open page follows live operating-system theme
-  changes.
 - Valid changes from another tab synchronize. Removing the saved value returns
-  the page to the current system preference.
+  the page to Light.
 - With JavaScript disabled, the inactive control stays hidden.
 
 ## Visual direction
@@ -78,8 +79,10 @@ Exports therefore match the visitor's active theme without depending on the
 website stylesheet.
 
 Favicons and server-generated social share cards remain canonical light assets.
-Those static requests have no reliable visitor theme state, and a stable
-appearance is preferable for external consumers.
+This canonical-light asset rule applies to Classic. Those static requests have
+no reliable visitor theme state, and a stable appearance is preferable for
+external consumers. Snyk 2026 build-selected assets follow the Snyk 2026 brand
+design specification.
 
 ## Accessibility and verification
 
@@ -89,14 +92,14 @@ chart/table parity, and responsive behavior at a 320-pixel viewport.
 
 Automated coverage includes:
 
-- System-light and system-dark initialization.
+- System-light and system-dark Light initialization.
 - Saved-preference precedence and invalid-value fallback.
 - Mouse and keyboard switching.
 - Navigation and reload persistence.
-- Live system changes and cross-tab synchronization.
+- Ignored live system changes and cross-tab synchronization.
 - Browser metadata updates.
 - Dark-mode Axe checks across public routes.
-- Dark CSS fallback with JavaScript disabled.
+- Light CSS fallback with JavaScript disabled under both system preferences.
 - Theme-aware standalone SVG exports.
 - Existing build, source-integrity, release-isolation, accessibility, and
   JavaScript-budget gates.

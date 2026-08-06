@@ -1,4 +1,8 @@
 import type { APIRoute, GetStaticPaths } from "astro";
+import geistFontUrl from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
+import geistMonoFontUrl from "@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url";
+import { renderReleaseShareCard } from "../../../components/social/share-card";
+import { designTheme } from "../../../config/design-theme";
 
 const cards = {
   summary: {
@@ -46,34 +50,24 @@ const cards = {
 export const getStaticPaths: GetStaticPaths = () =>
   Object.keys(cards).map((view) => ({ params: { view } }));
 
-const escapeXml = (value: string) =>
-  value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-
 export const GET: APIRoute = ({ params }) => {
   const view = params.view as keyof typeof cards;
   const card = cards[view];
   if (!card) return new Response("Not found", { status: 404 });
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
-  <title id="title">${escapeXml(card.title)}</title>
-  <desc id="description">${escapeXml(card.finding)}</desc>
-  <rect width="1200" height="630" fill="#f7f4ed"/>
-  <rect x="0" width="28" height="630" fill="#4b2be3"/>
-  <text x="80" y="92" fill="#4b2be3" font-family="monospace" font-size="24" font-weight="700">${escapeXml(card.eyebrow.toUpperCase())}</text>
-  <text x="80" y="190" fill="#17141f" font-family="Arial, sans-serif" font-size="58" font-weight="700">${escapeXml(card.title)}</text>
-  <rect x="80" y="252" width="1040" height="2" fill="#aaa1b0"/>
-  <text x="80" y="315" fill="#17141f" font-family="Arial, sans-serif" font-size="34" font-weight="700">${escapeXml(card.finding)}</text>
-  <text x="80" y="365" fill="#625d68" font-family="monospace" font-size="17">${escapeXml(card.metric.toUpperCase())}</text>
-  <text x="80" y="400" fill="#4b2be3" font-family="Arial, sans-serif" font-size="28" font-weight="700">${escapeXml(card.value)} · ${escapeXml(card.unit)}</text>
-  <rect x="80" y="430" width="1040" height="92" fill="#eee9df" stroke="#aaa1b0"/>
-  <text x="108" y="468" fill="#625d68" font-family="monospace" font-size="18">KEEP IN MIND</text>
-  <text x="108" y="498" fill="#17141f" font-family="Arial, sans-serif" font-size="22">${escapeXml(card.caveat)}</text>
-  <text x="80" y="560" fill="#625d68" font-family="monospace" font-size="16">Source: ${escapeXml(card.source)}</text>
-  <text x="80" y="592" fill="#625d68" font-family="monospace" font-size="18">Dataset 1.0.0 · Snyk VulnBench JS 1.0 · vulnbench.com</text>
-</svg>`;
+  const svg = renderReleaseShareCard(
+    card,
+    designTheme === "classic"
+      ? { designTheme: "classic" }
+      : {
+          designTheme: "snyk-2026",
+          assets: {
+            geistFontUrl,
+            geistMonoFontUrl,
+            wordmarkUrl: "/brand/snyk-2026/logo-snyk-white.png",
+          },
+        },
+  );
 
   return new Response(svg, {
     headers: {

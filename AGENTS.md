@@ -13,6 +13,10 @@ Before making changes, read the documents relevant to the task:
 - `docs/superpowers/specs/2026-08-04-vulnbench-website-design.md` for the
   approved product, content, visual, architecture, accessibility, and delivery
   requirements.
+- `docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md` for the
+  approved build-selected Snyk 2026 visual system.
+- `docs/superpowers/specs/2026-08-06-snyk-light-defaults-design.md` for the
+  approved Snyk 2026 and Light default-resolution contract.
 - `docs/superpowers/specs/2026-08-04-js-1.0-source-import-design.md` before
   changing anything related to the vendored JS 1.0 source.
 - `docs/superpowers/plans/2026-08-05-foundation-homepage.md` for the initial
@@ -28,6 +32,8 @@ Before making changes, read the documents relevant to the task:
   findings, project detail, share-card, and correction-history requirements.
 - `docs/superpowers/plans/2026-08-05-release-system-validation.md` for Phase 4
   internal fixtures, metric compatibility, and public-release isolation.
+- `docs/superpowers/plans/2026-08-05-snyk-2026-brand-theme.md` for the
+  build-selected Snyk 2026 implementation and verification boundaries.
 - `snyk-vulnbench-js-1.0/UPSTREAM-PROVENANCE.md` for the imported research
   source revision and immutability policy.
 
@@ -145,11 +151,28 @@ The development server listens on container port `4321`; publish it to
 - `npm run check:budget` — compressed homepage JavaScript budget.
 - `npm run test:e2e` — desktop/mobile routes, accessibility, metadata, and
   no-JavaScript behavior.
-- `npm run verify` — required full local gate before claiming completion.
+- `npm run verify:classic` — complete Classic build and browser verification.
+- `npm run verify:snyk-2026` — complete branded build, audit, and browser
+  verification.
+- `npm run check:brand` — mechanical Snyk 2026 palette, type, asset, and CSS
+  audit after a branded build.
+- `npm run verify` — required full local gate; its standard build uses the
+  Snyk 2026 default and it also runs the deterministic Classic override gate.
 
 Run commands inside the development container. Add a failing test before
 implementing behavior changes, then run the focused test and the proportional
 full verification suite.
+
+## Design and color defaults
+
+- Snyk 2026 is the default design theme; explicit
+  `VULNBENCH_DESIGN_THEME=classic` remains the Classic override.
+- Light is the default color mode regardless of system preference; only saved
+  Light or Dark choices override it. No-JavaScript output is also Light.
+- Use `npm run build` and `npm run verify` for the default Snyk workflow.
+  `npm run verify:classic` remains the deterministic dedicated Classic gate;
+  `npm run verify:snyk-2026` is the dedicated branded gate and includes the
+  brand audit.
 
 ## Implementation Conventions
 
@@ -157,9 +180,14 @@ full verification suite.
 - Use semantic HTML first; add ARIA only when native semantics are insufficient.
 - Reuse tokens in `src/styles/tokens.css` instead of introducing arbitrary
   colors or spacing.
-- Follow the approved editorial research aesthetic: warm-neutral surfaces,
-  deep ink, deliberate Snyk purple, no gradients, glass effects, decorative
-  shadows, hacker imagery, or gratuitous motion.
+- The warm-neutral and no-gradient editorial rules apply to Classic only.
+  Follow its approved editorial research aesthetic: warm-neutral surfaces, deep
+  ink, deliberate Snyk purple, no gradients, glass effects, decorative shadows,
+  hacker imagery, or gratuitous motion.
+- `data-design-theme="snyk-2026"` is governed by the Snyk 2026 brand design
+  specification. Shared components consume semantic tokens rather than
+  environment variables, and the Snyk specification controls the branded
+  palette, typography, assets, and visual rules.
 - Preserve URL, chart/table, keyboard, and no-JavaScript behavior when changing
   interactive evidence.
 - Add dependencies through npm in the container, keep `package-lock.json` in
