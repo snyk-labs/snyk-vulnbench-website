@@ -147,6 +147,18 @@ test.describe("Snyk 2026 color mode contract", () => {
     });
   }
 
+  test("keeps the Light toggle icon visible when hovered", async ({ page }) => {
+    await prepareTheme(page, "light");
+    await page.goto("/");
+
+    const toggle = themeToggle(page, "dark");
+    await toggle.hover();
+
+    await expect(toggle).toHaveCSS("background-color", WHITE);
+    await expect(toggle).toHaveCSS("color", MIDNIGHT);
+    await expect(toggle.locator(".moon-icon")).toBeVisible();
+  });
+
   test("gives a saved mode precedence and persists a new explicit choice", async ({
     page,
   }) => {
