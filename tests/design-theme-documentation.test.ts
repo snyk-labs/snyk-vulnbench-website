@@ -16,7 +16,12 @@ describe("Snyk 2026 design-theme documentation", () => {
     expect(readme).toContain("`classic` and `snyk-2026`");
     expect(readme).toContain("Absent or empty defaults to `classic`.");
     expect(readme).toContain("Invalid explicit values fail the build.");
-    expect(readme).toContain("docker exec vulnbench-dev sh -lc 'npm run verify:classic'");
+    expect(readme).toContain(
+      "docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run build'",
+    );
+    expect(readme).toContain(
+      "docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run verify:classic'",
+    );
     expect(readme).toContain(
       "docker exec vulnbench-dev sh -lc 'npm run verify:snyk-2026'",
     );

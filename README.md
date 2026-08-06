@@ -29,8 +29,8 @@ Run either build and its matching verification gate in `vulnbench-dev`:
 
 ```sh
 # Classic (default)
-docker exec vulnbench-dev sh -lc 'npm run build'
-docker exec vulnbench-dev sh -lc 'npm run verify:classic'
+docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run build'
+docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run verify:classic'
 
 # Snyk 2026
 docker exec vulnbench-dev sh -lc 'npm run build:snyk-2026'
