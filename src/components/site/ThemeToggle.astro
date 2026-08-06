@@ -124,6 +124,15 @@ const { themeColors } = Astro.props;
     background: var(--paper-muted);
   }
 
+  /* snyk-2026-audit:start */
+  :global(html[data-design-theme="snyk-2026"][data-theme="light"])
+    .theme-toggle:hover {
+    border-color: var(--purple);
+    background: var(--paper-raised);
+    color: var(--ink);
+  }
+  /* snyk-2026-audit:end */
+
   .theme-toggle:focus-visible {
     outline: 2px solid var(--paper);
     outline-offset: 1px;
