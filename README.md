@@ -14,8 +14,28 @@ the release system with a non-public synthetic second release fixture.
 
 - [Product requirements and design](docs/superpowers/specs/2026-08-04-vulnbench-website-design.md)
 - [Dark mode theme design](docs/superpowers/specs/2026-08-05-dark-mode-theme-design.md)
+- [Snyk 2026 brand design](docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md)
 - [Coding-agent and development guidance](AGENTS.md)
 - [Published VulnBench JS 1.0 paper](https://arxiv.org/abs/2606.15762)
+
+## Design deployment
+
+`VULNBENCH_DESIGN_THEME` accepts `classic` and `snyk-2026`. Absent or empty
+defaults to `classic`. Invalid explicit values fail the build. A deployment
+chooses the design at build time. Visitors control only the Light or Dark color
+mode within the selected design.
+
+Run either build and its matching verification gate in `vulnbench-dev`:
+
+```sh
+# Classic (default)
+docker exec vulnbench-dev sh -lc 'npm run build'
+docker exec vulnbench-dev sh -lc 'npm run verify:classic'
+
+# Snyk 2026
+docker exec vulnbench-dev sh -lc 'npm run build:snyk-2026'
+docker exec vulnbench-dev sh -lc 'npm run verify:snyk-2026'
+```
 
 ## License
 

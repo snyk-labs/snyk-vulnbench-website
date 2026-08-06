@@ -78,8 +78,10 @@ Exports therefore match the visitor's active theme without depending on the
 website stylesheet.
 
 Favicons and server-generated social share cards remain canonical light assets.
-Those static requests have no reliable visitor theme state, and a stable
-appearance is preferable for external consumers.
+This canonical-light asset rule applies to Classic. Those static requests have
+no reliable visitor theme state, and a stable appearance is preferable for
+external consumers. Snyk 2026 build-selected assets follow the Snyk 2026 brand
+design specification.
 
 ## Accessibility and verification
 

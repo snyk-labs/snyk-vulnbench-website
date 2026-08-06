@@ -15,6 +15,20 @@ conflict, the approved specification is the source of truth.
   rule unless the underlying reason applies elsewhere.
 - Include the checks that demonstrate the convention is preserved.
 
+## Build-selected design themes
+
+Design theme is selected at build time; color mode is selected by the visitor or system preference.
+
+- Shared components consume semantic CSS tokens rather than environment
+  variables. This keeps release content and analytical behavior independent of
+  the deployment-selected `classic` or `snyk-2026` design.
+- Classic and Snyk 2026 output require separate verification. Run the complete
+  `verify:classic` and `verify:snyk-2026` gates before delivery.
+- Branded changes must pass the mechanical brand audit and real visual and Axe
+  checks. The audit is additive to, not a substitute for, browser validation.
+- Approved local branded assets retain documented provenance and checksums.
+  This keeps their origin and integrity reviewable.
+
 ## Evidence visualizations
 
 ### Label quantitative marks directly
