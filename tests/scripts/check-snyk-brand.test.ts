@@ -385,6 +385,120 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
   });
 
+  it("traces Dark custom properties into unscoped panel consumers across a composition", () => {
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source:
+          'html[data-design-theme="snyk-2026"][data-theme="dark"] { --accent: #6F00DD; }',
+      },
+      {
+        fileName: "panel.css",
+        source: ".panel { background: var(--accent); }",
+      },
+    ]);
+
+    expect(findings.map(({ rule }) => rule)).toContain("saturated-dark-panel");
+    expect(findings.some(({ fileName }) => fileName === "panel.css")).toBe(true);
+  });
+
+  it("traces recursive Dark custom properties and fallbacks into broad panels", () => {
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source: `
+          html[data-design-theme="snyk-2026"][data-theme="dark"] {
+            --brand-tone: #6F00DD;
+            --accent: var(--brand-tone);
+          }
+        `,
+      },
+      {
+        fileName: "panel.css",
+        source:
+          ".panel { background-color: var(--surface, var(--accent)); }",
+      },
+    ]);
+
+    expect(findings.map(({ rule }) => rule)).toContain("saturated-dark-panel");
+  });
+
+  it("preserves saturated semantic marks, text, and borders", () => {
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source:
+          'html[data-design-theme="snyk-2026"][data-theme="dark"] { --accent: #6F00DD; }',
+      },
+      {
+        fileName: "evidence.css",
+        source: `
+          .configuration-marker { background: var(--accent); }
+          .matched-copy { color: var(--accent); }
+          .focus-boundary { border-color: var(--accent); }
+        `,
+      },
+    ]);
+
+    expect(
+      findings.filter(({ rule }) => rule === "saturated-dark-panel"),
+    ).toEqual([]);
+  });
+
+  it("accepts one exact Dark Brand Gradient warm edge", () => {
+    const gradient =
+      "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source: `html[data-design-theme="snyk-2026"][data-theme="dark"] { --brand-gradient: ${gradient}; }`,
+      },
+      {
+        fileName: "hero.css",
+        source:
+          ".brand-gradient-accent { height: 1px; background: var(--brand-gradient); }",
+      },
+    ]);
+
+    expect(findings).toEqual([]);
+  });
+
+  it("rejects the exact Brand Gradient when it fills a Dark panel", () => {
+    const gradient =
+      "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source: `html[data-design-theme="snyk-2026"][data-theme="dark"] { --brand-gradient: ${gradient}; }`,
+      },
+      {
+        fileName: "panel.css",
+        source: ".panel { background: var(--brand-gradient); }",
+      },
+    ]);
+
+    expect(findings.map(({ rule }) => rule)).toContain("saturated-dark-panel");
+  });
+
+  it("still caps and validates exact warm-edge gradients", () => {
+    const gradient =
+      "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
+    const altered =
+      "linear-gradient(90deg, #2B0250 0%, #6F00DD 8%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
+
+    expect(
+      findingRules(`
+        .brand-gradient-accent { height: 1px; background: ${gradient}; }
+        .brand-gradient-accent-secondary { height: 1px; background: ${gradient}; }
+      `),
+    ).toContain("gradient-count");
+    expect(
+      findingRules(
+        `.brand-gradient-accent { height: 1px; background: ${altered}; }`,
+      ),
+    ).toContain("unauthorized-gradient");
+  });
+
   it("rejects two valid source fragments in one page composition", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
@@ -468,6 +582,10 @@ describe("Snyk 2026 mechanical brand audit", () => {
 
   it.each([
     ".branded-panel { background: #2B0250; }",
+    ".branded-panel { background: rgba(111, 0, 221, 0.18); }",
+    ".branded-panel { background: rgb(111 0 221 / 18%); }",
+    ".branded-panel { background: rgba(111 0 221 / .18); }",
+    ".branded-panel { background: rgb(111, 0, 221); }",
     '.branded-copy { font-family: "Geist", sans-serif; }',
     "<BrandFabric />",
     "<SnykLogo />",

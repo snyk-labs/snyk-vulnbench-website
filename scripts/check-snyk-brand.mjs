@@ -332,6 +332,28 @@ function collectCustomProperties(source, customProperties = new Map()) {
   return customProperties;
 }
 
+function isDarkSelector(selector) {
+  return (
+    /\[data-theme\s*=\s*["']?dark["']?\]/iu.test(selector) ||
+    /:not\(\s*\[data-theme\]\s*\)/iu.test(selector)
+  );
+}
+
+function collectDarkCustomPropertyNames(
+  source,
+  darkCustomProperties = new Set(),
+) {
+  for (const rule of source.matchAll(/([^{}]+)\{([^{}]*)\}/gu)) {
+    if (!isDarkSelector(rule[1])) continue;
+    for (const declaration of declarations(rule[2])) {
+      if (declaration.property.startsWith("--")) {
+        darkCustomProperties.add(declaration.property);
+      }
+    }
+  }
+  return darkCustomProperties;
+}
+
 function stripQuotedContent(value) {
   let quote = null;
   let escaped = false;
@@ -623,32 +645,117 @@ function containsOpaqueSaturatedColor(value) {
   return false;
 }
 
-function auditDarkPanelSurfaces(source, fileName, customProperties) {
+function containsDistinctiveBrandColor(source) {
+  for (const match of source.matchAll(
+    /#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{4}|[0-9a-f]{3})(?![0-9a-f])/giu,
+  )) {
+    if (SATURATED_PANEL_HEX.has(expandHex(match[1]).slice(0, 6).toUpperCase())) {
+      return true;
+    }
+  }
+  for (const match of source.matchAll(/\b(?:rgb|rgba)\(([^)]*)\)/giu)) {
+    const parsed = parseRgbLiteral(match[1]);
+    if (parsed && SATURATED_PANEL_HEX.has(parsed.hex)) return true;
+  }
+  return false;
+}
+
+function dependsOnDarkCustomProperty(
+  value,
+  darkCustomProperties,
+  customProperties,
+  stack = [],
+) {
+  let remaining = value;
+  while (true) {
+    const call = findVarCall(remaining);
+    if (!call) return false;
+    if (darkCustomProperties.has(call.name)) return true;
+
+    if (!stack.includes(call.name)) {
+      const nextStack = [...stack, call.name];
+      const definitions = customProperties.get(call.name) ?? [];
+      if (
+        definitions.some((definition) =>
+          dependsOnDarkCustomProperty(
+            definition,
+            darkCustomProperties,
+            customProperties,
+            nextStack,
+          ),
+        ) ||
+        (call.fallback !== undefined &&
+          dependsOnDarkCustomProperty(
+            call.fallback,
+            darkCustomProperties,
+            customProperties,
+            nextStack,
+          ))
+      ) {
+        return true;
+      }
+    }
+    remaining = remaining.slice(call.end);
+  }
+}
+
+function isSemanticMarkSelector(selector) {
+  return /(?:badge|bar|chip|dot|glyph|icon|legend|marker|swatch|tag)\b/iu.test(
+    selector,
+  );
+}
+
+function isExactWarmEdge(selector, body, value) {
+  return (
+    /\.brand-gradient-accent\b/iu.test(selector) &&
+    /(?:^|;)\s*height\s*:\s*1px(?:\s*;|$)/iu.test(body) &&
+    canonicalGradient(value) === canonicalGradient(SANCTIONED_GRADIENT)
+  );
+}
+
+function auditDarkPanelSurfaces(
+  source,
+  fileName,
+  customProperties,
+  darkCustomProperties,
+) {
   const findings = [];
   for (const rule of source.matchAll(/([^{}]+)\{([^{}]*)\}/gu)) {
     const selector = rule[1];
-    const isExplicitDark = /\[data-theme\s*=\s*["']?dark["']?\]/iu.test(
-      selector,
-    );
-    const isSystemDark = /:not\(\s*\[data-theme\]\s*\)/iu.test(selector);
-    if (!isExplicitDark && !isSystemDark) continue;
-
+    const darkRule = isDarkSelector(selector);
     const body = rule[2];
     const bodyOffset = (rule.index ?? 0) + rule[0].indexOf(body);
     for (const declaration of declarations(body)) {
       const property = declaration.property.toLowerCase();
-      const isPanelProperty =
-        /^(?:background|background-color)$/u.test(property) ||
-        (property.startsWith("--") &&
-          /(?:background|bg|hover|panel|paper|soft|surface)/u.test(property));
-      if (!isPanelProperty) continue;
+      const isBackground = /^(?:background|background-color)$/u.test(property);
+      const isSurfaceCustomProperty =
+        property.startsWith("--") &&
+        /(?:background|bg|hover|panel|paper|soft|surface)/u.test(property);
+      const consumesDarkProperty =
+        isBackground &&
+        dependsOnDarkCustomProperty(
+          declaration.value,
+          darkCustomProperties,
+          customProperties,
+        );
+      if (
+        (!darkRule || (!isBackground && !isSurfaceCustomProperty)) &&
+        !consumesDarkProperty
+      ) {
+        continue;
+      }
+      if (isBackground && isSemanticMarkSelector(selector)) continue;
 
       const resolution = resolveCustomValue(
         stripQuotedContent(declaration.value),
         customProperties,
       );
       if (
-        resolution.values.some((value) => containsOpaqueSaturatedColor(value))
+        resolution.values.some(
+          (value) =>
+            !isExactWarmEdge(selector, body, value) &&
+            containsOpaqueSaturatedColor(value),
+        )
       ) {
         findings.push(
           finding(
@@ -853,6 +960,7 @@ export function auditText(
   source,
   {
     customProperties,
+    darkCustomProperties,
     fileName = "<input>",
     checkGradientCount = true,
     checkOverflowGuard = true,
@@ -860,6 +968,8 @@ export function auditText(
 ) {
   const resolvedCustomProperties =
     customProperties ?? collectCustomProperties(source);
+  const resolvedDarkCustomProperties =
+    darkCustomProperties ?? collectDarkCustomPropertyNames(source);
   const literalAuditSource = sanitizeQuotedCustomProperties(source);
   const gradientAudit = auditGradients(
     source,
@@ -876,7 +986,12 @@ export function auditText(
       resolvedCustomProperties,
     ),
     ...auditResolvedColors(source, fileName, resolvedCustomProperties),
-    ...auditDarkPanelSurfaces(source, fileName, resolvedCustomProperties),
+    ...auditDarkPanelSurfaces(
+      source,
+      fileName,
+      resolvedCustomProperties,
+      resolvedDarkCustomProperties,
+    ),
     ...auditFonts(source, fileName, resolvedCustomProperties),
     ...gradientAudit.findings,
     ...(checkOverflowGuard ? auditOverflowGuard(source, fileName) : []),
@@ -890,13 +1005,16 @@ export function auditComposition(
   const findings = [];
   let sanctionedCount = 0;
   const customProperties = new Map();
+  const darkCustomProperties = new Set();
   for (const fragment of fragments) {
     collectCustomProperties(fragment.source, customProperties);
+    collectDarkCustomPropertyNames(fragment.source, darkCustomProperties);
   }
   for (const fragment of fragments) {
     findings.push(
       ...auditText(fragment.source, {
         customProperties,
+        darkCustomProperties,
         fileName: fragment.fileName,
         checkGradientCount: false,
         checkOverflowGuard: false,
@@ -1000,7 +1118,7 @@ export function extractSnykAuditBlocks(source, fileName = "<mixed source>") {
   if (
     /snyk-2026/iu.test(outside) ||
     /\bisSnyk2026Design\b/u.test(outside) ||
-    /#(?:2B0250|6F00DD|FF00FF|F3552E|FE9104)\b/iu.test(outside) ||
+    containsDistinctiveBrandColor(outside) ||
     /\bGeist(?:\s+Mono)?(?:\s+Variable)?\b/iu.test(outside) ||
     /<\s*(?:BrandFabric|SnykLogo)\b/u.test(outside)
   ) {
