@@ -487,6 +487,63 @@ describe("Snyk 2026 mechanical brand audit", () => {
     },
   );
 
+  it.each([
+    ".panel:not(.data-bar)",
+    ".panel:is(.data-bar)",
+    ".panel:has(.data-bar)",
+    ".data-bar ~ .panel",
+    ".data-bar + .panel",
+    ".data-bar .panel",
+    ".navigation-bar",
+    ".filter-bar",
+    ".chart-bar, .panel",
+    ".data-bar:hover, .panel:not(.chart-bar)",
+  ])(
+    "rejects a saturated Dark panel when %s does not exclusively target data-mark subjects",
+    (selector) => {
+      const findings = auditComposition([
+        {
+          fileName: "tokens.css",
+          source:
+            'html[data-design-theme="snyk-2026"][data-theme="dark"] { --accent: #6F00DD; }',
+        },
+        {
+          fileName: "layout.css",
+          source: `${selector} { background: var(--accent); }`,
+        },
+      ]);
+
+      expect(findings.map(({ rule }) => rule)).toContain(
+        "saturated-dark-panel",
+      );
+    },
+  );
+
+  it.each([
+    ".chart-bar:hover",
+    '.data-bar[aria-selected="true"]',
+    ".chart .data-bar:hover",
+    ".panel > .chart-bar:focus-visible",
+    ".chart-bar:not(.hidden)",
+    ".chart-bar, .data-bar[aria-selected]",
+  ])("preserves saturated data-mark subjects selected by %s", (selector) => {
+    const findings = auditComposition([
+      {
+        fileName: "tokens.css",
+        source:
+          'html[data-design-theme="snyk-2026"][data-theme="dark"] { --accent: #6F00DD; }',
+      },
+      {
+        fileName: "chart.css",
+        source: `${selector} { background: var(--accent); }`,
+      },
+    ]);
+
+    expect(
+      findings.filter(({ rule }) => rule === "saturated-dark-panel"),
+    ).toEqual([]);
+  });
+
   it("accepts one exact Dark Brand Gradient warm edge", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";

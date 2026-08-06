@@ -30,6 +30,14 @@ const SATURATED_PANEL_HEX = new Set([
   "FE9104",
   "FF00FF",
 ]);
+const SEMANTIC_DATA_MARK_CLASSES = new Set([
+  "chart-bar",
+  "configuration-marker",
+  "configuration-plot-marker",
+  "data-bar",
+  "recurrence-chart__marker",
+  "recurrence-plot__bar",
+]);
 const ALLOWED_ALPHA_BY_HEX = new Map([
   [
     "FFFFFF",
@@ -710,9 +718,153 @@ function dependsOnDarkCustomProperty(
   }
 }
 
+function selectorListItems(selector) {
+  const items = [];
+  let start = 0;
+  let parentheses = 0;
+  let brackets = 0;
+  let quote = null;
+  let escaped = false;
+
+  for (let index = 0; index < selector.length; index += 1) {
+    const character = selector[index];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (character === "\\") {
+      escaped = true;
+      continue;
+    }
+    if (quote) {
+      if (character === quote) quote = null;
+      continue;
+    }
+    if (character === '"' || character === "'") {
+      quote = character;
+      continue;
+    }
+    if (character === "[") brackets += 1;
+    else if (character === "]") brackets = Math.max(0, brackets - 1);
+    else if (brackets === 0 && character === "(") parentheses += 1;
+    else if (brackets === 0 && character === ")") {
+      parentheses = Math.max(0, parentheses - 1);
+    } else if (
+      character === "," &&
+      parentheses === 0 &&
+      brackets === 0
+    ) {
+      items.push(selector.slice(start, index).trim());
+      start = index + 1;
+    }
+  }
+  items.push(selector.slice(start).trim());
+  return items.filter(Boolean);
+}
+
+function rightmostCompoundSelector(selector) {
+  let start = 0;
+  let parentheses = 0;
+  let brackets = 0;
+  let quote = null;
+  let escaped = false;
+
+  for (let index = 0; index < selector.length; index += 1) {
+    const character = selector[index];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (character === "\\") {
+      escaped = true;
+      continue;
+    }
+    if (quote) {
+      if (character === quote) quote = null;
+      continue;
+    }
+    if (character === '"' || character === "'") {
+      quote = character;
+      continue;
+    }
+    if (character === "[") brackets += 1;
+    else if (character === "]") brackets = Math.max(0, brackets - 1);
+    else if (brackets === 0 && character === "(") parentheses += 1;
+    else if (brackets === 0 && character === ")") {
+      parentheses = Math.max(0, parentheses - 1);
+    } else if (
+      parentheses === 0 &&
+      brackets === 0 &&
+      (/\s/u.test(character) ||
+        character === ">" ||
+        character === "+" ||
+        character === "~" ||
+        (character === "|" && selector[index + 1] === "|"))
+    ) {
+      start = index + 1;
+    }
+  }
+  return selector.slice(start).trim();
+}
+
+function subjectClassNames(selector) {
+  const classes = [];
+  let parentheses = 0;
+  let brackets = 0;
+  let quote = null;
+  let escaped = false;
+
+  for (let index = 0; index < selector.length; index += 1) {
+    const character = selector[index];
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (character === "\\") {
+      escaped = true;
+      continue;
+    }
+    if (quote) {
+      if (character === quote) quote = null;
+      continue;
+    }
+    if (character === '"' || character === "'") {
+      quote = character;
+      continue;
+    }
+    if (character === "[") {
+      brackets += 1;
+      continue;
+    }
+    if (character === "]") {
+      brackets = Math.max(0, brackets - 1);
+      continue;
+    }
+    if (brackets === 0 && character === "(") {
+      parentheses += 1;
+      continue;
+    }
+    if (brackets === 0 && character === ")") {
+      parentheses = Math.max(0, parentheses - 1);
+      continue;
+    }
+    if (character !== "." || parentheses !== 0 || brackets !== 0) continue;
+
+    const className = /^[a-z_][\w-]*/iu.exec(selector.slice(index + 1))?.[0];
+    if (className) classes.push(className);
+  }
+  return classes;
+}
+
 function isSemanticMarkSelector(selector) {
-  return /(?:^|[^a-z0-9])(?:badge|bar|chip|dot|glyph|icon|legend|marker|swatch|tag)(?:$|[^a-z0-9])/iu.test(
-    selector,
+  const items = selectorListItems(selector);
+  return (
+    items.length > 0 &&
+    items.every((item) =>
+      subjectClassNames(rightmostCompoundSelector(item)).some((className) =>
+        SEMANTIC_DATA_MARK_CLASSES.has(className),
+      ),
+    )
   );
 }
 
