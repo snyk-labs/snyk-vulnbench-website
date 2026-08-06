@@ -201,8 +201,8 @@ visitor's color mode:
   variance visual, an interest-led 49.7% unmatched-finding callout with its
   80-of-161 denominator, and the scientific caveat. Its bottom metadata bar
   uses black to blend with the official white-wordmark asset's source
-  background. It is build-selected and does not infer the recipient's Light or
-  Dark preference.
+  background, with the wordmark vertically centered in that bar. It is
+  build-selected and does not infer the recipient's Light or Dark preference.
 - The branded SVG source remains available for inspection and generated
   release-card routes, while the PNG is the canonical external-preview format
   for X, LinkedIn, WhatsApp, Slack, and other unfurlers.

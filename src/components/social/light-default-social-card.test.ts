@@ -18,6 +18,9 @@ describe("light Snyk 2026 default social card", () => {
     expect(svg).toContain('data-social-background=""');
     expect(svg).toContain('data-footer-background=""');
     expect(svg).toContain('width="1200" height="98" fill="#000000"');
+    expect(svg).toContain(
+      'href="/brand/snyk-2026/logo-snyk-white.png" x="70" y="559" width="108" height="43"',
+    );
     expect(svg).toContain('fill="#FFFFFF"');
     expect(svg).toContain("AGREEMENT VS REPEATED-RUN VARIANCE");
     expect(svg).toContain("F1 standard deviation (percentage points)");

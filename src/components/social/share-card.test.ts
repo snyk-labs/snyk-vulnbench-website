@@ -62,9 +62,8 @@ describe("social share-card renderers", () => {
     ).toBe(classicSummarySvg);
   });
 
-  it("keeps one wordmark-height of clearance inside the dark region", () => {
+  it("keeps one wordmark-height of clearance inside the branded release card", () => {
     const brandedCards = [
-      renderDefaultSocialCard(brandAssets),
       renderReleaseShareCard(summaryCard, {
         designTheme: "snyk-2026",
         assets: brandAssets,

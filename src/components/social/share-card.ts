@@ -348,7 +348,7 @@ export function renderDefaultSocialCard(
   <text x="488" y="548" fill="#030328" font-family="Geist Mono" font-size="15" font-weight="500">5 repetitions</text>
   ${renderLightAgreementChart(data?.agreementVariance ?? defaultAgreementVariance)}
   <rect data-footer-background="" x="0" y="532" width="1200" height="98" fill="#000000"/>
-  <image href="${escapeXml(assets.wordmarkUrl)}" x="70" y="540" width="108" height="43" preserveAspectRatio="xMidYMid meet"/>
+  <image href="${escapeXml(assets.wordmarkUrl)}" x="70" y="559" width="108" height="43" preserveAspectRatio="xMidYMid meet"/>
   <text x="220" y="568" fill="#FFFFFF" fill-opacity="0.68" font-family="Geist Mono" font-size="12">Dataset 1.0.0 · deterministic Snyk Code reference set</text>
   <text x="220" y="592" fill="#FFFFFF" font-family="Geist Mono" font-size="12">Source: published benchmark evidence · vulnbench.com</text>
 </svg>`;
