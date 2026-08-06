@@ -34,7 +34,10 @@ The current Snyk 2026 identity and Dark rules are defined by the
   checks. The audit is additive to, not a substitute for, browser validation.
   Keep branded constructs inside marked audit blocks in shared sources. The
   audit must reject saturated Dark panel fills, off-palette literals, excess
-  gradients, and branded source outside marked audit blocks.
+  gradients, decorative shadow or `drop-shadow()` effects, and branded source
+  outside marked audit blocks. Every shared component with branded selectors
+  belongs to a page composition in the audit; balanced markers must exclude
+  Classic-only rules without hiding branded violations.
 - VulnBench remains the primary header identity in both designs. Keep the
   shared header compact at `4.25rem`. The official Snyk wordmark appears only
   in the Snyk 2026 footer attribution, spatially separate from the initiative
@@ -42,15 +45,23 @@ The current Snyk 2026 identity and Dark rules are defined by the
 - Snyk 2026 Dark uses Midnight and restrained white-alpha depth for page,
   narrative, explorer, chart, table, and metadata surfaces. Reserve locked
   saturated colors for semantic marks and small intentional accents rather
-  than broad panels. Explicit Dark and no-JavaScript system Dark must resolve
-  the same semantic tokens; verify that parity in source contracts and rendered
-  browser checks.
+  than broad panels. General Dark action links use a dedicated contrast-safe
+  near-white semantic rather than Hot Pink; approved Light action treatment is
+  unchanged, and Purple remains available for reference-matched marks.
+  Explicit Dark and no-JavaScript system Dark must resolve the same semantic
+  tokens; verify that parity in source contracts and rendered browser checks.
 - Snyk 2026 Light is a website-specific white analytical canvas with Midnight
   copy, restrained locked-color alpha tints, and one contained exact Brand
   Gradient accent per page. Keep header/footer Midnight, keep most narrative
   and explorer surfaces light, and reserve a dark evidence card for a contained
   analytical focal point. Verify explicit and no-JavaScript system Light in a
   real browser at desktop and mobile widths.
+- The exact Brand Gradient is valid only as one objectively bounded edge per
+  page. Audit every direct or custom-property `background`,
+  `background-image`, `border-image`, and `border-image-source` consumer;
+  require a thin element, no-repeat bounded background size, or thin border.
+  Focus treatment is the only allowed `box-shadow`: it uses approved Purple and
+  white zero-blur keylines on `:focus-visible`.
 - Verify official logo minimums from rendered image bounds at mobile and
   desktop widths. Preserve clear space of at least one rendered wordmark height
   on all four sides, and measure each side in a real browser together with

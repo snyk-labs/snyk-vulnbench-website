@@ -110,7 +110,13 @@ describe("Snyk 2026 design-theme documentation", () => {
       "Explicit Dark and no-JavaScript system Dark must resolve the same semantic tokens",
     );
     expect(conventions).toContain(
-      "reject saturated Dark panel fills, off-palette literals, excess gradients, and branded source outside marked audit blocks",
+      "reject saturated Dark panel fills, off-palette literals, excess gradients, decorative shadow or `drop-shadow()` effects",
+    );
+    expect(conventions).toContain(
+      "General Dark action links use a dedicated contrast-safe near-white semantic rather than Hot Pink",
+    );
+    expect(conventions).toContain(
+      "Audit every direct or custom-property `background`, `background-image`, `border-image`, and `border-image-source` consumer",
     );
   });
 

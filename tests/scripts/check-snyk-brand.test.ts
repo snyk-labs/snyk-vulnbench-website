@@ -20,10 +20,13 @@ describe("Snyk 2026 mechanical brand audit", () => {
         html, body { overflow-x: hidden; }
         h1 {
           color: #030328;
-          background: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);
           border-color: rgba(3, 3, 40, 0.12);
           font-family: "Geist", sans-serif;
           font-size: clamp(2.5rem, 6vw, 5rem);
+        }
+        .brand-gradient-accent {
+          height: 0.3rem;
+          background: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%);
         }
         .page { background: #FFFFFF; }
         .matched { background: rgba(111, 0, 221, 0.08); }
@@ -325,7 +328,7 @@ describe("Snyk 2026 mechanical brand audit", () => {
   it("accepts locked custom storage without inspecting variable names", () => {
     expect(
       auditText(
-        "--red: #6F00DD; filter: drop-shadow(0 0 1px var(--red));",
+        "--red: #6F00DD; color: var(--red);",
         { fileName: "fixture.css" },
       ),
     ).toEqual([]);
@@ -562,6 +565,67 @@ describe("Snyk 2026 mechanical brand audit", () => {
     expect(findings).toEqual([]);
   });
 
+  it.each([
+    [
+      "direct background-image",
+      `html[data-design-theme="snyk-2026"][data-theme="dark"] .panel { min-height: 20rem; background-image: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%); }`,
+    ],
+    [
+      "direct border-image",
+      `.panel { border: 2rem solid transparent; border-image: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%) 1; }`,
+    ],
+    [
+      "custom-property background-image",
+      `--brand-edge: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%); @media (prefers-color-scheme: dark) { html[data-design-theme="snyk-2026"]:not([data-theme]) .panel { min-height: 20rem; background-image: var(--brand-edge); } }`,
+    ],
+    [
+      "recursive custom-property border-image",
+      `--brand-edge: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%); --recursive-edge: var(--brand-edge); .panel { border-width: 2rem; border-image: var(--recursive-edge) 1; }`,
+    ],
+  ])("rejects an uncontained exact Brand Gradient through %s", (_label, source) => {
+    expect(findingRules(source)).toContain("uncontained-gradient");
+  });
+
+  it.each([
+    `.brand-gradient-accent { height: 0.3rem; background-image: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%); }`,
+    `.brand-gradient-accent { background-size: 100% 1px; background-repeat: no-repeat; background-image: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%); }`,
+    `.brand-gradient-accent { border-top: 1px solid transparent; border-image: linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%) 1; }`,
+  ])("accepts an objectively bounded exact warm edge", (source) => {
+    expect(auditText(source, { fileName: "fixture.css" })).toEqual([]);
+  });
+
+  it.each([
+    [
+      "saturated blur glow",
+      ".card { box-shadow: 0 0 24px #FF00FF; }",
+    ],
+    ["white blur glow", ".card { box-shadow: 0 0 18px #FFFFFF; }"],
+    ["Purple blur glow", ".card { box-shadow: 0 0 12px #6F00DD; }"],
+    [
+      "resolved blur glow",
+      "--glow: 0 0 12px #6F00DD; .card { box-shadow: var(--glow); }",
+    ],
+    [
+      "zero-blur decorative keyline",
+      ".card { box-shadow: 0 0 0 3px #6F00DD, 0 0 0 6px #FFFFFF; }",
+    ],
+    [
+      "drop-shadow filter",
+      ".card { filter: drop-shadow(0 0 12px #6F00DD); }",
+    ],
+  ])("rejects decorative %s", (_label, source) => {
+    expect(findingRules(source)).toContain("decorative-shadow");
+  });
+
+  it("accepts only the approved zero-blur focus keyline", () => {
+    expect(
+      auditText(
+        ".control:focus-visible { box-shadow: 0 0 0 3px #6F00DD, 0 0 0 6px #FFFFFF; }",
+        { fileName: "fixture.css" },
+      ),
+    ).toEqual([]);
+  });
+
   it("counts resolved Brand Gradient consumers instead of its stored literal", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
@@ -660,8 +724,14 @@ describe("Snyk 2026 mechanical brand audit", () => {
     const gradient =
       "linear-gradient(90deg, #2B0250 0%, #6F00DD 6%, #FF00FF 30%, #F3552E 66%, #FE9104 100%)";
     const fragments = [
-      { fileName: "tokens.css", source: `.page { background: ${gradient}; }` },
-      { fileName: "hero.astro", source: `.hero { border-image: ${gradient}; }` },
+      {
+        fileName: "tokens.css",
+        source: `.brand-gradient-accent { height: 1px; background: ${gradient}; }`,
+      },
+      {
+        fileName: "hero.astro",
+        source: `.brand-gradient-accent { border-top: 1px solid transparent; border-image: ${gradient}; }`,
+      },
     ];
 
     expect(
@@ -708,6 +778,56 @@ describe("Snyk 2026 mechanical brand audit", () => {
       '{ path: "src/components/explorer/ExplorerApp.tsx", marked: true }',
     );
   });
+
+  it.each([
+    ["Wordmark", "src/components/site/Wordmark.astro"],
+    ["Explorer guide rail", "src/components/explorer/ExplorerGuideRail.tsx"],
+    ["Release metadata", "src/components/site/ReleaseMeta.astro"],
+    ["Evidence scatter", "src/components/evidence/EvidenceScatter.tsx"],
+  ])(
+    "keeps the %s branded blocks in an audited page composition",
+    async (_label, target) => {
+      const [auditSource, componentSource] = await Promise.all([
+        readFile(resolve(process.cwd(), "scripts/check-snyk-brand.mjs"), "utf8"),
+        readFile(resolve(process.cwd(), target), "utf8"),
+      ]);
+
+      expect(auditSource).toContain(`{ path: "${target}", marked: true }`);
+      expect(() => extractSnykAuditBlocks(componentSource, target)).not.toThrow();
+    },
+  );
+
+  it.each([
+    "src/components/site/Wordmark.astro",
+    "src/components/explorer/ExplorerGuideRail.tsx",
+    "src/components/site/ReleaseMeta.astro",
+    "src/components/evidence/EvidenceScatter.tsx",
+  ])(
+    "rejects branded violations in %s without scanning Classic-only CSS",
+    (target) => {
+      const mixedSource = `
+        .classic-only {
+          color: #123456;
+          mask-image: linear-gradient(90deg, red, blue);
+        }
+        /* snyk-2026-audit:start */
+        html[data-design-theme="snyk-2026"] .branded {
+          color: #654321;
+          mask-image: none;
+        }
+        /* snyk-2026-audit:end */
+      `;
+      const branded = extractSnykAuditBlocks(mixedSource, target);
+      const findings = auditText(branded, { fileName: target });
+      const messages = findings.map(({ message }) => message).join("\n");
+      const rules = findings.map(({ rule }) => rule);
+
+      expect(rules).toContain("off-palette");
+      expect(rules).toContain("forbidden-css");
+      expect(messages).toContain("#654321");
+      expect(messages).not.toContain("#123456");
+    },
+  );
 
   it("rejects forbidden and off-palette CSS inside an Explorer branded block", () => {
     const explorerSource = `

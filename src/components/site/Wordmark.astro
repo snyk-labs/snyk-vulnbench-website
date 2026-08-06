@@ -1,6 +1,10 @@
 <a class="wordmark" href="/" aria-label="VulnBench home">
   <span class="trace" aria-hidden="true">
-    <i></i><i></i><i></i><i></i><i></i>
+    <i class="wordmark-trace-dot"></i>
+    <i class="wordmark-trace-dot"></i>
+    <i class="wordmark-trace-dot"></i>
+    <i class="wordmark-trace-dot"></i>
+    <i class="wordmark-trace-dot"></i>
   </span>
   <span>VulnBench</span>
 </a>
@@ -65,12 +69,12 @@
   }
 
   :global(html[data-design-theme="snyk-2026"]) .trace {
-    border-color: var(--purple);
+    border-color: var(--theme-purple);
     background: rgba(111, 0, 221, 0.12);
   }
 
-  :global(html[data-design-theme="snyk-2026"]) .trace i {
-    background: var(--purple);
+  :global(html[data-design-theme="snyk-2026"]) .wordmark-trace-dot {
+    background: var(--theme-purple);
   }
   /* snyk-2026-audit:end */
 </style>

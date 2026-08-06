@@ -132,6 +132,7 @@
   --purple: var(--theme-purple);
   --purple-dark: var(--theme-purple-dark);
   --purple-soft: var(--theme-purple-soft);
+  --action-link: var(--theme-action-link, var(--purple-dark));
   --matched: var(--theme-matched);
   --matched-soft: var(--theme-matched-soft);
   --unmatched: var(--theme-unmatched);

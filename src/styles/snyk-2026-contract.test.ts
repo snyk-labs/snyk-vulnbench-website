@@ -28,6 +28,7 @@ const semanticTokens = [
   "--theme-purple",
   "--theme-purple-dark",
   "--theme-purple-soft",
+  "--theme-action-link",
   "--theme-matched",
   "--theme-matched-text",
   "--theme-matched-soft",
@@ -186,6 +187,7 @@ describe("Snyk 2026 design contract", () => {
       "rgba(111, 0, 221, 0.04)",
     );
     expect(declarationValue(light, "--theme-ink")).toBe("#030328");
+    expect(declarationValue(light, "--theme-action-link")).toBe("#6F00DD");
     expect(declarationValue(light, "--theme-matched-text")).toBe("#6F00DD");
     expect(declarationValue(light, "--theme-export-surface")).toBe("#FFFFFF");
     expect(declarationValue(light, "--theme-export-text")).toBe("#030328");
@@ -236,6 +238,7 @@ describe("Snyk 2026 design contract", () => {
       "--theme-purple": "#6F00DD",
       "--theme-purple-dark": "rgba(255, 255, 255, 0.78)",
       "--theme-purple-soft": "rgba(255, 255, 255, 0.08)",
+      "--theme-action-link": "rgba(255, 255, 255, 0.78)",
       "--theme-matched": "#6F00DD",
       "--theme-matched-text": "rgba(255, 255, 255, 0.78)",
       "--theme-matched-soft": "rgba(111, 0, 221, 0.18)",

@@ -22,6 +22,7 @@ html[data-design-theme="snyk-2026"][data-theme="light"] {
   --theme-purple: #6F00DD;
   --theme-purple-dark: #6F00DD;
   --theme-purple-soft: rgba(111, 0, 221, 0.08);
+  --theme-action-link: #6F00DD;
   --theme-matched: #6F00DD;
   --theme-matched-text: #6F00DD;
   --theme-matched-soft: rgba(111, 0, 221, 0.08);
@@ -83,6 +84,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
   --theme-purple: #6F00DD;
   --theme-purple-dark: rgba(255, 255, 255, 0.78);
   --theme-purple-soft: rgba(255, 255, 255, 0.08);
+  --theme-action-link: rgba(255, 255, 255, 0.78);
   --theme-matched: #6F00DD;
   --theme-matched-text: rgba(255, 255, 255, 0.78);
   --theme-matched-soft: rgba(111, 0, 221, 0.18);
@@ -144,6 +146,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] {
     --theme-purple: #6F00DD;
     --theme-purple-dark: rgba(255, 255, 255, 0.78);
     --theme-purple-soft: rgba(255, 255, 255, 0.08);
+    --theme-action-link: rgba(255, 255, 255, 0.78);
     --theme-matched: #6F00DD;
     --theme-matched-text: rgba(255, 255, 255, 0.78);
     --theme-matched-soft: rgba(111, 0, 221, 0.18);

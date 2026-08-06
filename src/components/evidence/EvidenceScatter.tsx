@@ -339,17 +339,19 @@ export function EvidenceScatter({
           margin: 0;
         }
 
+        /* snyk-2026-audit:start */
         html[data-design-theme="snyk-2026"][data-theme="dark"]
           .evidence-scatter {
-          --scatter-selected-surface: var(--evidence-hover);
+          --scatter-selected-surface: var(--theme-evidence-hover);
         }
 
         @media (prefers-color-scheme: dark) {
           html[data-design-theme="snyk-2026"]:not([data-theme])
             .evidence-scatter {
-            --scatter-selected-surface: var(--evidence-hover);
+            --scatter-selected-surface: var(--theme-evidence-hover);
           }
         }
+        /* snyk-2026-audit:end */
 
         .evidence-scatter__plot {
           width: 100%;
@@ -392,13 +394,15 @@ export function EvidenceScatter({
           font-size: 10px;
         }
 
+        /* snyk-2026-audit:start */
         html[data-design-theme="snyk-2026"]
           .evidence-scatter__plot
           .configuration-plot-marker {
-          stroke: var(--ink);
+          stroke: var(--theme-ink);
           stroke-linejoin: round;
           stroke-width: 1.5;
         }
+        /* snyk-2026-audit:end */
 
         .evidence-scatter__legend {
           display: grid;
@@ -466,6 +470,7 @@ export function EvidenceScatter({
           flex: 0 0 1.25rem;
         }
 
+        /* snyk-2026-audit:start */
         html[data-design-theme="snyk-2026"]
           .evidence-scatter__legend-marker--classic {
           display: none;
@@ -475,6 +480,7 @@ export function EvidenceScatter({
           .evidence-scatter__legend-marker--snyk {
           display: block;
         }
+        /* snyk-2026-audit:end */
 
         .evidence-scatter__status {
           display: flex;

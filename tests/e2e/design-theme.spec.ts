@@ -15,6 +15,7 @@ const BRAND_THEME_COLORS = {
 const MIDNIGHT = "rgb(3, 3, 40)";
 const WHITE = "rgb(255, 255, 255)";
 const PURPLE = "rgb(111, 0, 221)";
+const HOT_PINK = "rgb(255, 0, 255)";
 const ORANGE_RED = "rgb(243, 85, 46)";
 const AMBER = "rgb(254, 145, 4)";
 const STRONG_RULE = "rgba(3, 3, 40, 0.48)";
@@ -360,6 +361,10 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
     "color",
     ORANGE_RED,
   );
+  await expect(page.locator(".recurrence-chart__inspect").first()).toHaveCSS(
+    "color",
+    HOT_PINK,
+  );
   await expectNoHorizontalOverflow(page);
 
   await page.goto("/releases/js-1.0");
@@ -372,6 +377,10 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   await expect(page.locator(".section").first()).toHaveCSS(
     "background-color",
     WHITE,
+  );
+  await expect(page.locator(".recurrence-chart__inspect").first()).toHaveCSS(
+    "color",
+    PURPLE,
   );
 
   await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=unmatched");
@@ -503,6 +512,13 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
   await expect(
     page.locator(".recurrence-plot__bar--matchedAllFive"),
   ).toHaveCSS("color", PURPLE);
+  const inspectColor = await page
+    .locator(".recurrence-chart__inspect")
+    .first()
+    .evaluate((element) => getComputedStyle(element).color);
+  expect(inspectColor).toBe(DARK_PRIMARY);
+  expect(inspectColor).not.toBe(HOT_PINK);
+  expect(contrastBetween(inspectColor, MIDNIGHT)).toBeGreaterThanOrEqual(4.5);
   await expect(
     page.getByRole("img", {
       name: "Finding recurrence contrast. Reference-matched findings were more likely to recur in all five runs than unmatched findings.",
@@ -1067,6 +1083,13 @@ test.describe("Snyk 2026 without JavaScript", () => {
       "background-color",
       DARK_RAISED,
     );
+    const inspectColor = await page
+      .locator(".recurrence-chart__inspect")
+      .first()
+      .evaluate((element) => getComputedStyle(element).color);
+    expect(inspectColor).toBe(DARK_PRIMARY);
+    expect(inspectColor).not.toBe(HOT_PINK);
+    expect(contrastBetween(inspectColor, MIDNIGHT)).toBeGreaterThanOrEqual(4.5);
     await expect(page.locator("[data-theme-toggle]")).toBeHidden();
     await expect(
       page.getByRole("heading", {

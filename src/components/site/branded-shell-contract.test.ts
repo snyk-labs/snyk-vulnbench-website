@@ -56,7 +56,9 @@ describe("build-selected branded shell contract", () => {
     );
 
     expect(wordmark).toContain('aria-label="VulnBench home"');
-    expect(wordmark.match(/<i><\/i>/g)).toHaveLength(5);
+    expect(
+      wordmark.match(/<i class="wordmark-trace-dot"><\/i>/g),
+    ).toHaveLength(5);
     expect(wordmark).toContain(
       ':global(html[data-design-theme="snyk-2026"]) .wordmark',
     );

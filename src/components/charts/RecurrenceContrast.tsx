@@ -224,7 +224,7 @@ export function RecurrenceContrast({ evidence }: RecurrenceContrastProps) {
         }
 
         .recurrence-chart__inspect {
-          color: var(--purple-dark);
+          color: var(--action-link);
           font-size: var(--step--1);
           font-weight: var(--font-weight-control);
         }

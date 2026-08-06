@@ -37,6 +37,7 @@ const SEMANTIC_DATA_MARK_CLASSES = new Set([
   "data-bar",
   "recurrence-chart__marker",
   "recurrence-plot__bar",
+  "wordmark-trace-dot",
 ]);
 const ALLOWED_ALPHA_BY_HEX = new Map([
   [
@@ -133,6 +134,7 @@ const BRANDED_PAGE_SHARED_TARGETS = [
   { path: "src/components/site/SiteFooter.astro", marked: true },
   { path: "src/components/site/SiteHeader.astro", marked: true },
   { path: "src/components/site/SnykLogo.astro" },
+  { path: "src/components/site/Wordmark.astro", marked: true },
 ];
 const SOURCE_COMPOSITIONS = [
   {
@@ -144,12 +146,24 @@ const SOURCE_COMPOSITIONS = [
     ],
   },
   {
-    name: "branded interior page source",
+    name: "branded release page source",
     checkOverflowGuard: true,
     targets: [
       ...BRANDED_PAGE_SHARED_TARGETS,
-      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
       { path: "src/components/site/PageHero.astro", marked: true },
+      { path: "src/components/site/ReleaseMeta.astro", marked: true },
+      { path: "src/components/evidence/EvidenceScatter.tsx", marked: true },
+    ],
+  },
+  {
+    name: "branded explorer page source",
+    checkOverflowGuard: true,
+    targets: [
+      ...BRANDED_PAGE_SHARED_TARGETS,
+      { path: "src/components/site/PageHero.astro", marked: true },
+      { path: "src/components/explorer/ExplorerApp.tsx", marked: true },
+      { path: "src/components/explorer/ExplorerGuideRail.tsx", marked: true },
+      { path: "src/components/evidence/EvidenceScatter.tsx", marked: true },
     ],
   },
   {
@@ -935,6 +949,92 @@ function auditDarkPanelSurfaces(
   return findings;
 }
 
+function isApprovedFocusKeyline(value) {
+  const canonical = value.replace(/\s+/gu, "").toLowerCase();
+  return (
+    canonical === "0003px#ffffff,0006px#6f00dd" ||
+    canonical === "0003px#6f00dd,0006px#ffffff"
+  );
+}
+
+function auditDecorativeShadows(source, fileName, customProperties) {
+  const findings = [];
+  const seen = new Set();
+  const addFinding = (index, message) => {
+    const key = `${index}:${message}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    findings.push(
+      finding(fileName, source, index, "decorative-shadow", message),
+    );
+  };
+
+  for (const declaration of declarations(source)) {
+    const resolution = resolveCustomValue(
+      stripQuotedContent(declaration.value),
+      customProperties,
+    );
+    if (
+      resolution.values.some((value) => /\bdrop-shadow\s*\(/iu.test(value))
+    ) {
+      addFinding(
+        declaration.index,
+        "filter: drop-shadow() is forbidden in branded output",
+      );
+    }
+    if (
+      declaration.property.startsWith("--") &&
+      /(?:shadow|focus-ring)/iu.test(declaration.property) &&
+      resolution.values.some(
+        (value) =>
+          !/^(?:none|initial|inherit|unset|revert|revert-layer)$/iu.test(
+            value.trim(),
+          ) && !isApprovedFocusKeyline(value),
+      )
+    ) {
+      addFinding(
+        declaration.index,
+        `${declaration.property} is not an approved zero-blur focus keyline`,
+      );
+    }
+  }
+
+  for (const rule of source.matchAll(/([^{}]+)\{([^{}]*)\}/gu)) {
+    const selector = rule[1];
+    const body = rule[2];
+    const bodyOffset = (rule.index ?? 0) + rule[0].indexOf(body);
+    for (const declaration of declarations(body)) {
+      if (declaration.property.toLowerCase() !== "box-shadow") continue;
+      const resolution = resolveCustomValue(
+        stripQuotedContent(declaration.value),
+        customProperties,
+      );
+      const focusOnly =
+        selectorListItems(selector).length > 0 &&
+        selectorListItems(selector).every((item) =>
+          /:focus-visible\b/iu.test(item),
+        );
+      const approved =
+        resolution.errors.length === 0 &&
+        resolution.values.length > 0 &&
+        resolution.values.every(
+          (value) =>
+            /^(?:none|initial|inherit|unset|revert|revert-layer)$/iu.test(
+              value.trim(),
+            ) ||
+            (focusOnly && isApprovedFocusKeyline(value)),
+        );
+      if (!approved) {
+        addFinding(
+          bodyOffset + declaration.index,
+          "box-shadow is limited to the approved zero-blur :focus-visible keyline",
+        );
+      }
+    }
+  }
+  return findings;
+}
+
 function fontDeclarationValues(source) {
   const values = declarations(source)
     .filter(({ property }) =>
@@ -1003,6 +1103,65 @@ function sanctionedGradientCount(value) {
   return count;
 }
 
+function cssLengthInPixels(value) {
+  const match = /^(\d*\.?\d+)(px|rem)?$/iu.exec(value.trim());
+  if (!match) return Number.NaN;
+  const amount = Number.parseFloat(match[1]);
+  if (!Number.isFinite(amount)) return Number.NaN;
+  if (!match[2] && amount !== 0) return Number.NaN;
+  return match[2]?.toLowerCase() === "rem" ? amount * 16 : amount;
+}
+
+function isThinLength(value) {
+  const pixels = cssLengthInPixels(value);
+  return Number.isFinite(pixels) && pixels >= 0 && pixels <= 4.8;
+}
+
+function hasBoundedHeight(body) {
+  return declarations(body).some(
+    ({ property, value }) =>
+      /^(?:height|max-height)$/iu.test(property) && isThinLength(value),
+  );
+}
+
+function hasBoundedBackgroundSize(body) {
+  const entries = declarations(body);
+  const noRepeat = entries.some(
+    ({ property, value }) =>
+      /^background-repeat$/iu.test(property) && /^no-repeat$/iu.test(value),
+  );
+  return (
+    noRepeat &&
+    entries.some(({ property, value }) => {
+      if (!/^background-size$/iu.test(property)) return false;
+      const sizes = value.trim().split(/\s+/u);
+      return sizes.length === 2 && isThinLength(sizes[1]);
+    })
+  );
+}
+
+function hasBoundedBorderWidth(body) {
+  return declarations(body).some(({ property, value }) => {
+    if (/^border(?:-(?:top|right|bottom|left))?$/iu.test(property)) {
+      const first = value.trim().split(/\s+/u)[0];
+      return first !== undefined && isThinLength(first);
+    }
+    if (/^border(?:-(?:top|right|bottom|left))?-width$/iu.test(property)) {
+      const widths = value.trim().split(/\s+/u);
+      return widths.length > 0 && widths.every(isThinLength);
+    }
+    return false;
+  });
+}
+
+function isContainedGradientEdge(selector, body, property) {
+  if (!/\.brand-gradient-accent\b/iu.test(selector)) return false;
+  if (/^border-image(?:-source)?$/iu.test(property)) {
+    return hasBoundedBorderWidth(body);
+  }
+  return hasBoundedHeight(body) || hasBoundedBackgroundSize(body);
+}
+
 function auditGradients(
   source,
   fileName,
@@ -1042,6 +1201,33 @@ function auditGradients(
       0,
       ...resolution.values.map(sanctionedGradientCount),
     );
+  }
+
+  for (const rule of source.matchAll(/([^{}]+)\{([^{}]*)\}/gu)) {
+    const selector = rule[1];
+    const body = rule[2];
+    const bodyOffset = (rule.index ?? 0) + rule[0].indexOf(body);
+    for (const declaration of declarations(body)) {
+      if (!isGradientConsumerProperty(declaration.property)) continue;
+      const resolution = resolveCustomValue(
+        stripQuotedContent(declaration.value),
+        customProperties,
+      );
+      if (
+        resolution.values.some((value) => sanctionedGradientCount(value) > 0) &&
+        !isContainedGradientEdge(selector, body, declaration.property)
+      ) {
+        findings.push(
+          finding(
+            fileName,
+            source,
+            bodyOffset + declaration.index,
+            "uncontained-gradient",
+            `${declaration.property} uses the Brand Gradient outside an objectively bounded edge`,
+          ),
+        );
+      }
+    }
   }
 
   for (const match of source.matchAll(
@@ -1179,6 +1365,7 @@ export function auditText(
   );
   return [
     ...auditForbiddenCss(source, fileName),
+    ...auditDecorativeShadows(source, fileName, resolvedCustomProperties),
     ...auditHexColors(literalAuditSource, fileName),
     ...auditColorFunctions(literalAuditSource, fileName),
     ...auditCustomPropertyColors(
