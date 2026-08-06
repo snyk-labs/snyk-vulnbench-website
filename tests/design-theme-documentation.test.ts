@@ -234,7 +234,13 @@ describe("Snyk 2026 design-theme documentation", () => {
   });
 
   test("updates historical theme documents for the Snyk and Light defaults", async () => {
-    const [darkModeDesign, snykDesign, snykPlan, darkRefinement] =
+    const [
+      darkModeDesign,
+      snykDesign,
+      snykPlan,
+      darkRefinement,
+      darkRefinementPlan,
+    ] =
       await Promise.all([
       readDocumentation("docs/superpowers/specs/2026-08-05-dark-mode-theme-design.md"),
       readDocumentation(
@@ -245,6 +251,9 @@ describe("Snyk 2026 design-theme documentation", () => {
       ),
       readDocumentation(
         "docs/superpowers/specs/2026-08-06-snyk-dark-neutral-identity-refinement-design.md",
+      ),
+      readDocumentation(
+        "docs/superpowers/plans/2026-08-06-snyk-dark-neutral-identity-refinement.md",
       ),
     ]);
 
@@ -288,6 +297,13 @@ describe("Snyk 2026 design-theme documentation", () => {
     );
     expect(darkRefinement).not.toContain(
       "The Vercel branch-preview configuration remains unchanged.",
+    );
+    expect(darkRefinementPlan).toContain("Defaults supersession:");
+    expect(darkRefinementPlan).toContain(
+      "No-JavaScript system-Light and system-Dark both use the approved Light mapping",
+    );
+    expect(darkRefinementPlan).not.toContain(
+      "Do not change `vercel.json`, `scripts/vercel-build.mjs`, or the PR branch preview behavior.",
     );
   });
 });

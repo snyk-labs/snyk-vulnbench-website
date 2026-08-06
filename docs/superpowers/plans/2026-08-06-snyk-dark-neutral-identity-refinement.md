@@ -1,5 +1,12 @@
 # Snyk Dark Neutral Identity Refinement Implementation Plan
 
+> **Defaults supersession:** The later
+> `docs/superpowers/specs/2026-08-06-snyk-light-defaults-design.md` and
+> `docs/superpowers/plans/2026-08-06-snyk-light-defaults.md` supersede this
+> plan's temporary Vercel-preview preservation and system-derived no-JavaScript
+> Dark assumptions. Snyk 2026 and Light are now the defaults; Classic and Dark
+> remain explicit overrides.
+>
 > **For agentic workers:** REQUIRED SUB-SKILL: Use
 > superpowers:subagent-driven-development (recommended) or
 > superpowers:executing-plans to implement this plan task-by-task. Steps use
@@ -31,8 +38,8 @@ Vitest, Playwright, Axe, Node brand-audit scripts.
 - Exactly one thin Brand Gradient edge may be visible per representative page.
 - Preserve WCAG 2.2 AA, no-JavaScript behavior, chart/table parity, stable
   routes, static architecture, and the 200 KB compressed JavaScript budget.
-- Do not change `vercel.json`, `scripts/vercel-build.mjs`, or the PR branch
-  preview behavior.
+- Standard builds use the Snyk default; the obsolete temporary Vercel
+  branch-preview wrapper is removed by the defaults migration.
 - Run every development command inside `vulnbench-dev` from
   `/workspace/.worktrees/snyk-2026-brand-theme`.
 
@@ -87,8 +94,9 @@ Vitest, Playwright, Axe, Node brand-audit scripts.
 - Modify: `src/components/evidence/EvidenceScatter.tsx`
 
 **Interfaces:**
-- Explicit Dark and no-JavaScript system-Dark share one semantic mapping.
-- Explicit Light and no-JavaScript system-Light token values remain unchanged.
+- Explicit saved Dark uses the Warm Ink mapping.
+- No-JavaScript system-Light and system-Dark both use the approved Light
+  mapping after the defaults migration.
 - Existing `--font-weight-*` tokens retain the approved Light hierarchy.
 
 - [ ] Write failing token/browser contracts for neutral Dark raised surfaces,
