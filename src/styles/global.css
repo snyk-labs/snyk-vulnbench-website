@@ -173,6 +173,10 @@ html[data-design-theme="snyk-2026"][data-theme="dark"]
   color: #030328;
 }
 
+html[data-design-theme="snyk-2026"][data-theme="dark"] .citation-source pre {
+  color: var(--ink);
+}
+
 html[data-design-theme="snyk-2026"][data-theme="dark"] .button {
   border-color: rgba(255, 255, 255, 0.78);
   background: rgba(255, 255, 255, 0.78);

@@ -1,8 +1,8 @@
 ---
 import { currentRelease } from "../../data/releases";
+import { formatBibtexCitation } from "../../data/releases/citation";
 
-const authors = currentRelease.citation.authors.join(", ");
-const citation = `${authors}. “${currentRelease.citation.title}.” arXiv, 2026.`;
+const citation = formatBibtexCitation(currentRelease);
 ---
 
 <section class="publication" aria-labelledby="publication-title">
@@ -18,7 +18,15 @@ const citation = `${authors}. “${currentRelease.citation.title}.” arXiv, 202
 
     <div class="citation">
       <p class="eyebrow">Preferred citation</p>
-      <blockquote>{citation}</blockquote>
+      <div class="citation-source" data-bibtex-citation>
+        <pre><code>{citation}</code></pre>
+        <div class="citation-actions">
+          <button class="button secondary" type="button" data-copy-bibtex>
+            Copy BibTeX
+          </button>
+          <span data-citation-status aria-live="polite"></span>
+        </div>
+      </div>
       <p class="authors">
         Liran Tal · Johannes Kloos · Arsenii Rudich · Stephen Thoemmes · Manoj
         Nair
@@ -73,11 +81,25 @@ const citation = `${authors}. “${currentRelease.citation.title}.” arXiv, 202
     background: var(--paper-raised);
   }
 
-  blockquote {
+  .citation-source pre {
     margin: var(--space-3) 0;
     font-family: var(--font-mono);
     font-size: var(--step--1);
     line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .citation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  [data-citation-status] {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
   }
 
   .authors {
@@ -98,3 +120,36 @@ const citation = `${authors}. “${currentRelease.citation.title}.” arXiv, 202
     }
   }
 </style>
+
+<script>
+  let copiedStatusTimeout: number | undefined;
+
+  document.querySelectorAll<HTMLButtonElement>("[data-copy-bibtex]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const source = button.closest<HTMLElement>("[data-bibtex-citation]");
+      const code = source?.querySelector("code");
+      const status = source?.querySelector<HTMLElement>("[data-citation-status]");
+      const citation = code?.textContent;
+
+      if (!citation || !navigator.clipboard?.writeText) {
+        window.clearTimeout(copiedStatusTimeout);
+        if (status) status.textContent = "Select and copy the BibTeX entry manually.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(citation);
+        if (status) {
+          window.clearTimeout(copiedStatusTimeout);
+          status.textContent = "Copied";
+          copiedStatusTimeout = window.setTimeout(() => {
+            if (status.textContent === "Copied") status.textContent = "";
+          }, 3_000);
+        }
+      } catch {
+        window.clearTimeout(copiedStatusTimeout);
+        if (status) status.textContent = "Select and copy the BibTeX entry manually.";
+      }
+    });
+  });
+</script>

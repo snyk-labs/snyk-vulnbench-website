@@ -58,11 +58,53 @@ async function expectHomepageEvidence(page: import("@playwright/test").Page) {
       name: "Benchmark Harness",
     }),
   ).toHaveAttribute("href", "https://github.com/snyk-labs/snyk-vulnbench");
+  const citation = page.locator("[data-bibtex-citation]");
+  await expect(citation).toContainText("@misc{tal2026snykvulnbenchjs10,");
+  await expect(citation).toContainText(
+    "author = {Tal, Liran and Kloos, Johannes and Rudich, Arsenii and Thoemmes, Stephen and Nair, Manoj}",
+  );
+  await expect(
+    page.getByRole("button", { name: "Copy BibTeX" }),
+  ).toBeVisible();
 }
 
 test("communicates the JS 1.0 question and evidence", async ({ page }) => {
   await page.goto("/");
   await expectHomepageEvidence(page);
+});
+
+test("copies the homepage BibTeX citation", async ({ page }) => {
+  await page.goto("/");
+  const origin = new URL(page.url()).origin;
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"], {
+    origin,
+  });
+
+  const renderedCitation = await page
+    .locator("[data-bibtex-citation] code")
+    .textContent();
+  if (!renderedCitation) throw new Error("Rendered BibTeX citation is required");
+
+  await page.getByRole("button", { name: "Copy BibTeX" }).click();
+  await expect(page.locator("[data-citation-status]")).toHaveText("Copied");
+  await expect
+    .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+    .toBe(renderedCitation);
+});
+
+test("offers manual copy guidance without the Clipboard API", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: undefined,
+    });
+  });
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "Copy BibTeX" }).click();
+  await expect(page.locator("[data-citation-status]")).toHaveText(
+    "Select and copy the BibTeX entry manually.",
+  );
 });
 
 test("preserves the complete research story without JavaScript", async ({
@@ -78,6 +120,9 @@ test("preserves the complete research story without JavaScript", async ({
 
   await page.goto("/");
   await expectHomepageEvidence(page);
+  await expect(page.locator("[data-bibtex-citation]")).toContainText(
+    "@misc{tal2026snykvulnbenchjs10,",
+  );
 
   await context.close();
 });

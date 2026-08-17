@@ -432,6 +432,23 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   await expectNoHorizontalOverflow(page);
 });
 
+test("uses the Dark ink token for the homepage BibTeX source", async ({ page }) => {
+  await prepareTheme(page, "dark", "dark");
+  await page.goto("/");
+
+  const colors = await page.evaluate(() => {
+    const citation = document.querySelector<HTMLElement>("[data-bibtex-citation] pre");
+    if (!citation) throw new Error("BibTeX citation source is required");
+
+    return {
+      citation: getComputedStyle(citation).color,
+      ink: getComputedStyle(document.documentElement).getPropertyValue("--ink").trim(),
+    };
+  });
+
+  expect(colors.citation).toBe(colors.ink);
+});
+
 test("uses neutral Warm Ink layers and restrained semantic color in explicit Dark", async ({
   page,
 }) => {
