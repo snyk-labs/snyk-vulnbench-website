@@ -31,6 +31,8 @@ export function sanitizePostHogEvent(
   const libraryVersion = event.properties.$lib_version;
   const host = event.properties.$host;
   const pathname = event.properties.$pathname;
+  const pageviewId = event.properties.$pageview_id;
+  const eventType = event.properties.$event_type;
 
   if (
     !currentUrl ||
@@ -40,7 +42,9 @@ export function sanitizePostHogEvent(
     typeof library !== "string" ||
     typeof libraryVersion !== "string" ||
     typeof host !== "string" ||
-    typeof pathname !== "string"
+    typeof pathname !== "string" ||
+    typeof pageviewId !== "string" ||
+    typeof eventType !== "string"
   ) {
     return null;
   }
@@ -57,6 +61,8 @@ export function sanitizePostHogEvent(
       $lib_version: libraryVersion,
       $host: host,
       $pathname: pathname,
+      $pageview_id: pageviewId,
+      $event_type: eventType,
     },
   };
 }

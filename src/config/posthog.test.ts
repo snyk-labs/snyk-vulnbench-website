@@ -56,6 +56,8 @@ describe("PostHog privacy contract", () => {
           $lib_version: "1.418.1",
           $host: "vulnbench.com",
           $pathname: "/",
+          $pageview_id: "page-view-id",
+          $event_type: "pageview",
           $referrer: "https://example.test/?token=secret",
           $referring_domain: "example.test",
           distinct_id: "ephemeral-device-id",
@@ -76,6 +78,8 @@ describe("PostHog privacy contract", () => {
         $lib_version: "1.418.1",
         $host: "vulnbench.com",
         $pathname: "/",
+        $pageview_id: "page-view-id",
+        $event_type: "pageview",
       },
     });
   });
