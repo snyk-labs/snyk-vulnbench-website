@@ -106,3 +106,14 @@ vertical order, hover behavior, or nearby content.
 For the recurrence contrast chart, this means showing each finding-group label
 and percentage directly above its bar while retaining exact counts, linked
 explorer states, provenance, and the accessible table below the plot.
+
+## Cookieless analytics
+
+When analytics is approved for a public VulnBench release, it must default to
+PostHog EU Cloud cookieless page-view measurement. Keep Cookieless server hash
+mode and IP discard enabled in PostHog, use no browser persistence or person
+profiles, and disable behavioral collection such as autocapture, heatmaps,
+performance capture, replay, surveys, feature flags, exceptions, and page
+leaves. Send only origin-plus-path page views; remove query strings, fragments,
+and referrers. Publish the static privacy disclosure and verify both sanitized
+network payloads and the absence of PostHog requests with JavaScript disabled.

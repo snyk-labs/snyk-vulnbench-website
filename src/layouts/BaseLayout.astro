@@ -1,4 +1,5 @@
 ---
+import PostHogAnalytics from "../components/site/PostHogAnalytics.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import { designTheme, designThemeAssets } from "../config/design-theme";
@@ -151,6 +152,7 @@ const datasetStructuredData = release
       )
     }
     <slot name="head" />
+    <PostHogAnalytics />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

@@ -17,6 +17,7 @@ const routes = [
   "/methodology",
   "/data",
   "/about",
+  "/privacy",
 ];
 
 for (const theme of ["default", "dark"] as const) {

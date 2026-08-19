@@ -52,7 +52,11 @@ import SnykLogo from "./SnykLogo.astro";
 
   <div class="legal container">
     <p>© 2026 Snyk Limited. Research artifacts are provided under Apache 2.0.</p>
-    <a href="/about">About VulnBench</a>
+    <div class="legal-links">
+      <a href="/about">About VulnBench</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://snyk.io/policies/terms-of-service/">Terms of service</a>
+    </div>
   </div>
 </footer>
 
@@ -137,6 +141,12 @@ import SnykLogo from "./SnykLogo.astro";
     font-size: var(--step--1);
     gap: var(--space-3);
     justify-content: space-between;
+  }
+
+  .legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   @media (min-width: 48rem) {

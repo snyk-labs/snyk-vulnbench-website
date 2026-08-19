@@ -1,0 +1,43 @@
+---
+import PageHero from "../components/site/PageHero.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How Snyk VulnBench uses privacy-minimized, cookieless analytics."
+>
+  <PageHero
+    eyebrow="Privacy"
+    title="Privacy"
+    description="Snyk VulnBench measures aggregate page visits without analytics cookies, browser storage, visitor identification, or behavioral tracking."
+  />
+
+  <section class="section">
+    <div class="container prose reading-width">
+      <h2>Analytics</h2>
+      <p>
+        We use PostHog EU Cloud to measure aggregate page visits and understand
+        which public research pages are useful. PostHog does not use analytics
+        cookies or browser storage on this website.
+      </p>
+      <p>
+        The PostHog project is configured to discard client IP data. We do not
+        identify visitors or create person profiles, and do not collect clicks,
+        form interactions, heatmaps, Web Vitals, session replay, surveys,
+        feature-flag evaluations, exceptions, or page-leave events.
+      </p>
+      <p>
+        Analytics receives only the page origin and path. Query strings,
+        fragments, and referrer URLs are removed before page-view data is sent.
+      </p>
+
+      <h2>Policies and requests</h2>
+      <p>
+        Read the <a href="https://snyk.io/policies/privacy/">Snyk Privacy Notice</a>
+        and <a href="https://snyk.io/policies/terms-of-service/">Snyk Terms of Service</a>
+        for privacy rights, contact details, and governing terms.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
