@@ -11,6 +11,20 @@ async function expectHomepageEvidence(page: import("@playwright/test").Page) {
   await expect(
     page.getByText("A repeatability and Snyk-reference agreement study"),
   ).toBeVisible();
+  const heroVisual = page.locator(".hero-visual");
+  await expect(
+    heroVisual.getByRole("heading", {
+      name: "Same review. Different results.",
+    }),
+  ).toBeVisible();
+  await expect(
+    heroVisual.getByText("300 scans · 10 projects · 6 configurations"),
+  ).toBeVisible();
+  await expect(
+    heroVisual.getByText(
+      "One run is not a decision. Repeatability helps prioritize what to inspect; it does not label unmatched reports as false positives.",
+    ),
+  ).toBeVisible();
 
   const scope = page.locator('dl[aria-label="Benchmark scope"]');
   for (const [value, label] of [

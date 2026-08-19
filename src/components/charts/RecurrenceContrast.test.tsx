@@ -25,6 +25,12 @@ describe("RecurrenceContrast", () => {
     expect(
       screen.getByRole("table", { name: /exact recurrence values/i }),
     ).toHaveTextContent("134 of 158");
+    expect(screen.getByText("For AppSec teams")).toBeVisible();
+    expect(
+      screen.getByText(
+        "One run is not a decision. Repeatability helps prioritize what to inspect; it does not label unmatched reports as false positives.",
+      ),
+    ).toBeVisible();
     expect(screen.getByText("Dataset 1.0.0")).toBeVisible();
   });
 

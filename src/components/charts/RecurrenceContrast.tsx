@@ -10,8 +10,8 @@ interface RecurrenceContrastProps {
 
 const keys = [
   "matchedAllFive",
-  "unmatchedOnce",
   "unmatchedAllFive",
+  "unmatchedOnce",
 ] as const;
 
 function percentage({ numerator, denominator }: HeadlineObservation) {
@@ -70,6 +70,14 @@ export function RecurrenceContrast({ evidence }: RecurrenceContrastProps) {
           </li>
         ))}
       </ul>
+
+      <aside className="recurrence-chart__note">
+        <strong>For AppSec teams</strong>
+        <p>
+          One run is not a decision. Repeatability helps prioritize what to
+          inspect; it does not label unmatched reports as false positives.
+        </p>
+      </aside>
 
       <p className="recurrence-chart__detail" aria-live="polite">
         <strong>{exactValue(active)}</strong> · {active.label}
@@ -237,6 +245,30 @@ export function RecurrenceContrast({ evidence }: RecurrenceContrastProps) {
           font-family: var(--font-mono);
           font-size: var(--step--1);
           font-variant-numeric: tabular-nums;
+        }
+
+        .recurrence-chart__note {
+          display: grid;
+          padding: 0.8rem 1rem;
+          border-inline: 1px solid var(--rule-strong);
+          border-bottom: 1px solid var(--rule);
+          background: var(--paper-muted);
+          gap: 0.25rem;
+        }
+
+        .recurrence-chart__note strong {
+          color: var(--action-link);
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+
+        .recurrence-chart__note p {
+          margin: 0;
+          color: var(--ink);
+          font-size: var(--step--1);
+          line-height: 1.4;
         }
 
         .recurrence-chart__table {

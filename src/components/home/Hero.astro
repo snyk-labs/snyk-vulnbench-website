@@ -55,11 +55,15 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     <div class="hero-visual">
       <div class="visual-heading">
         <div>
-          <p class="eyebrow">Headline evidence</p>
-          <h2>Stable matches. Variable extras.</h2>
+          <p class="eyebrow">Headline evidence · 5 identical reviews</p>
+          <h2>Same review. Different results.</h2>
         </div>
         <span class="metric">JS 1.0</span>
       </div>
+      <p class="visual-scope">
+        {currentRelease.evidence.scans} scans · {currentRelease.evidence.projects}
+        projects · {currentRelease.evidence.configurations} configurations
+      </p>
       <slot />
     </div>
   </div>
@@ -238,6 +242,13 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     background: var(--paper-raised);
     font-size: 0.7rem;
     white-space: nowrap;
+  }
+
+  .visual-scope {
+    margin: calc(var(--space-4) * -1) 0 var(--space-4);
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
   }
 
   @media (min-width: 62rem) {
