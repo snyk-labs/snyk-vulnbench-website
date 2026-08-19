@@ -6,20 +6,18 @@ const percentage = (numerator: number, denominator: number) =>
   `${((numerator / denominator) * 100).toFixed(1)}%`;
 const observations = [
   {
-    value: percentage(
-      evidence.matchedAllFive.numerator,
-      evidence.matchedAllFive.denominator,
-    ),
-    label: "reference-matched findings appeared in all five repetitions",
-    href: evidence.matchedAllFive.explorerPath,
-    tone: "matched",
+    value: "5.67×",
+    label:
+      "Opus 4.7 Max cost more and scored lower than Opus 4.6 Medium: 68.8% vs 75.4% Snyk-reference F1.",
+    href: "/releases/js-1.0/explore?view=efficiency",
+    tone: "cost",
   },
   {
     value: percentage(
       evidence.unmatchedOnce.numerator,
       evidence.unmatchedOnce.denominator,
     ),
-    label: "unmatched findings appeared in only one repetition",
+    label: "Nearly half of unmatched reports surfaced in just one run.",
     href: evidence.unmatchedOnce.explorerPath,
     tone: "unmatched",
   },
@@ -28,7 +26,7 @@ const observations = [
       evidence.unmatchedAllFive.numerator,
       evidence.unmatchedAllFive.denominator,
     ),
-    label: "unmatched findings appeared in all five repetitions",
+    label: "Only 13.7% of unmatched reports recurred in all five runs.",
     href: evidence.unmatchedAllFive.explorerPath,
     tone: "unmatched-outline",
   },
@@ -39,11 +37,11 @@ const observations = [
   <div class="container">
     <div class="band-heading">
       <p class="eyebrow">Latest evidence · JS 1.0</p>
-      <h2 id="latest-evidence-title">Repeatability separated signal from noise.</h2>
+      <h2 id="latest-evidence-title">Same code. Same prompt. Different findings.</h2>
       <p>
-        Reference-matched findings were markedly more stable across identical
-        runs. Unmatched does not mean false positive; it identifies evidence
-        that needs inspection.
+        Across five identical runs, 84.8% of reference-matched findings recurred
+        every time. Nearly half of unmatched reports appeared only once—evidence
+        to inspect, not dismiss.
       </p>
     </div>
 
@@ -111,7 +109,7 @@ const observations = [
     font-weight: var(--font-weight-metric);
   }
 
-  .observation.matched .metric {
+  .observation.cost .metric {
     color: var(--evidence-matched);
   }
 

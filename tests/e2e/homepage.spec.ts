@@ -23,17 +23,29 @@ async function expectHomepageEvidence(page: import("@playwright/test").Page) {
     await expect(scope.getByText(label, { exact: true })).toBeVisible();
   }
 
-  for (const percentage of ["84.8%", "49.7%", "13.7%"]) {
+  for (const metric of ["5.67×", "49.7%", "13.7%"]) {
     await expect(
-      page.locator(".evidence-band .metric").filter({ hasText: percentage }),
+      page.locator(".evidence-band .metric").filter({ hasText: metric }),
     ).toBeVisible();
   }
+  await expect(
+    page.getByRole("heading", {
+      name: "Same code. Same prompt. Different findings.",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(
+      "Across five identical runs, 84.8% of reference-matched findings recurred every time. Nearly half of unmatched reports appeared only once—evidence to inspect, not dismiss.",
+    ),
+  ).toBeVisible();
 
   await expect(
     page.getByRole("link", { name: "Explore the results" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "What the data show" }),
+    page.getByRole("heading", {
+      name: "An AI review is a measurement—not a verdict.",
+    }),
   ).toBeVisible();
   const findingTargets = await page
     .locator(".findings .text-link")
