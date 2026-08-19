@@ -63,6 +63,7 @@ export const posthogOptions = {
   disable_session_recording: true,
   disable_surveys: true,
   advanced_disable_flags: true,
+  disable_compression: true,
   property_denylist: ["$referrer", "$referring_domain"],
   before_send: sanitizePostHogEvent,
 } satisfies Partial<PostHogConfig>;
