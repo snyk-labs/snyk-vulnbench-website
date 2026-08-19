@@ -15,7 +15,7 @@ describe("PostHog privacy contract", () => {
       persistence: "memory",
       person_profiles: "never",
       autocapture: false,
-      capture_pageview: false,
+      capture_pageview: true,
       capture_pageleave: false,
       capture_performance: false,
       capture_exceptions: false,

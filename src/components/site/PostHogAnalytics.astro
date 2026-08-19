@@ -3,13 +3,7 @@
   import {
     posthogOptions,
     posthogProjectToken,
-    sanitizeAnalyticsUrl,
   } from "../../config/posthog";
 
   posthog.init(posthogProjectToken, posthogOptions);
-
-  const currentUrl = sanitizeAnalyticsUrl(window.location.href);
-  if (currentUrl) {
-    posthog.capture("$pageview", { $current_url: currentUrl });
-  }
 </script>
