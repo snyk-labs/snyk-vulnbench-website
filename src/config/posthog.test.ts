@@ -22,8 +22,8 @@ describe("PostHog privacy contract", () => {
       disable_session_recording: true,
       disable_surveys: true,
       advanced_disable_flags: true,
-      disable_compression: true,
     });
+    expect(posthogOptions).not.toHaveProperty("disable_compression");
   });
 
   it("removes query strings and fragments from analytics URLs", () => {
