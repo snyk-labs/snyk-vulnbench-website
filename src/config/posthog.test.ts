@@ -83,4 +83,29 @@ describe("PostHog privacy contract", () => {
       },
     });
   });
+
+  it("keeps pageviews when optional classification metadata is absent", () => {
+    expect(
+      sanitizePostHogEvent({
+        uuid: "9eb33bb4-4ab6-4129-8a9e-4c4f9fbd4055",
+        event: "$pageview",
+        properties: {
+          token: posthogProjectToken,
+          $cookieless_mode: true,
+          distinct_id: "ephemeral-device-id",
+          $current_url: "https://vulnbench.com/",
+          $lib: "web",
+          $lib_version: "1.418.1",
+          $host: "vulnbench.com",
+          $pathname: "/",
+        },
+      } as CaptureResult),
+    ).toMatchObject({
+      event: "$pageview",
+      properties: {
+        distinct_id: "ephemeral-device-id",
+        $current_url: "https://vulnbench.com/",
+      },
+    });
+  });
 });

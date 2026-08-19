@@ -42,9 +42,7 @@ export function sanitizePostHogEvent(
     typeof library !== "string" ||
     typeof libraryVersion !== "string" ||
     typeof host !== "string" ||
-    typeof pathname !== "string" ||
-    typeof pageviewId !== "string" ||
-    typeof eventType !== "string"
+    typeof pathname !== "string"
   ) {
     return null;
   }
@@ -61,8 +59,10 @@ export function sanitizePostHogEvent(
       $lib_version: libraryVersion,
       $host: host,
       $pathname: pathname,
-      $pageview_id: pageviewId,
-      $event_type: eventType,
+      ...(typeof pageviewId === "string"
+        ? { $pageview_id: pageviewId }
+        : {}),
+      ...(typeof eventType === "string" ? { $event_type: eventType } : {}),
     },
   };
 }
