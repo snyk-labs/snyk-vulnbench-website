@@ -40,8 +40,7 @@ Vitest, Playwright, Axe, Node brand-audit scripts.
   routes, static architecture, and the 200 KB compressed JavaScript budget.
 - Standard builds use the Snyk default; the obsolete temporary Vercel
   branch-preview wrapper is removed by the defaults migration.
-- Run every development command inside `vulnbench-dev` from
-  `/workspace/.worktrees/snyk-2026-brand-theme`.
+- Run every development command from the repository root.
 
 ---
 
@@ -158,7 +157,7 @@ Vitest, Playwright, Axe, Node brand-audit scripts.
 - No planned production files; fixes only if a failing gate identifies a
   specific regression.
 
-- [ ] Run `npm run verify` inside `vulnbench-dev`.
+- [ ] Run `npm run verify` from the repository root.
 - [ ] Confirm Classic and Snyk builds, unit tests, Playwright/Axe suites,
       source integrity, release isolation, budgets, and brand audit pass.
 - [ ] Run final Snyk Code and dependency scans; separate expected fixture,

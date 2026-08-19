@@ -67,5 +67,4 @@ Update the existing branded identity tests to prove:
   approved identity sources and rejects them in generic branded fixtures.
 
 Run the focused identity tests, Astro/TypeScript diagnostics, and the
-proportional Classic and Snyk verification checks inside the mandated
-`vulnbench-dev` container.
+proportional Classic and Snyk verification checks from the repository root.

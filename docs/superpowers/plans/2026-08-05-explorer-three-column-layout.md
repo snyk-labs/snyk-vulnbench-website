@@ -16,7 +16,7 @@
 - Preserve current mobile filter/comparison dialog behavior.
 - Do not introduce page-level horizontal overflow.
 - Keep the guide contextual and evidence-first; do not add empty promotional UI.
-- Run all development commands inside `vulnbench-dev`.
+- Run all development commands from the repository root.
 - Do not commit or push unless explicitly requested.
 
 ---

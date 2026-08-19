@@ -356,8 +356,7 @@ VULNBENCH_DESIGN_THEME=classic npm run build
 VULNBENCH_DESIGN_THEME=snyk-2026 npm run build
 ```
 
-All development and verification commands run inside the repository's
-`node:24-trixie-slim` development container.
+Run development and verification commands from the repository root.
 
 ## Approval gate
 

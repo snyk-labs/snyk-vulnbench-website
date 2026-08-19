@@ -29,17 +29,17 @@ describe("Snyk 2026 design-theme documentation", () => {
       "No-JavaScript rendering is also Light regardless of system preference.",
     );
     expect(readme).toContain(
-      "docker exec vulnbench-dev sh -lc 'npm run build'",
+      "Run the default Snyk build and full verification, or the deterministic Classic override, from the repository root:",
     );
     expect(readme).toContain(
-      "docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run verify:classic'",
+      "VULNBENCH_DESIGN_THEME=classic npm run verify:classic",
     );
     expect(readme).toContain(
-      "docker exec vulnbench-dev sh -lc 'npm run verify:snyk-2026'",
+      "npm run verify:snyk-2026",
     );
-    expect(readme).toContain(
-      "docker exec vulnbench-dev sh -lc 'npm run verify'",
-    );
+    expect(readme).toContain("npm run verify");
+    expect(readme).not.toContain("docker exec");
+    expect(readme).not.toContain("vulnbench-dev");
   });
 
   test("keeps agent guidance identical and scopes visual rules", async () => {

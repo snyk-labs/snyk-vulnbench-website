@@ -12,8 +12,7 @@ branded favicon contents with the existing Classic SVG identity, and extend the
 mechanical audit with a source-scoped exception for those two identity assets.
 The Snyk header text and all other branded surfaces remain unchanged.
 
-**Tech Stack:** Astro, SVG, CSS, TypeScript, Vitest, Docker container
-`vulnbench-dev`.
+**Tech Stack:** Astro, SVG, CSS, TypeScript, Vitest.
 
 ## Global Constraints
 
@@ -29,8 +28,8 @@ The Snyk header text and all other branded surfaces remain unchanged.
   `public/brand/snyk-2026/favicon.svg`; generic branded audit fixtures and all
   other Snyk sources must continue rejecting `#e8e1ff` and `#4b2be3`.
 - Do not alter the vendored `snyk-vulnbench-js-1.0/` source.
-- All npm, Astro, Vitest, build, and verification commands run inside
-  `node:24-trixie-slim` container `vulnbench-dev`.
+- Run all npm, Astro, Vitest, build, and verification commands from the
+  repository root.
 - Do not commit or push unless the user explicitly requests it.
 
 ---
@@ -139,7 +138,7 @@ only through the audit pipeline used by the two configured source targets.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npx vitest run src/components/site/branded-shell-contract.test.ts src/config/brand-static-assets.test.ts'
+npx vitest run src/components/site/branded-shell-contract.test.ts src/config/brand-static-assets.test.ts
 ```
 
 Expected result: FAIL because the Wordmark does not yet contain the approved
@@ -223,7 +222,7 @@ In `scripts/check-snyk-brand.mjs`:
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npx vitest run src/components/site/branded-shell-contract.test.ts src/config/brand-static-assets.test.ts'
+npx vitest run src/components/site/branded-shell-contract.test.ts src/config/brand-static-assets.test.ts
 ```
 
 Expected result: PASS with both identity-contract test files green.
@@ -246,7 +245,7 @@ Expected result: PASS with both identity-contract test files green.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run check'
+npm run check
 ```
 
 Expected result: PASS with no Astro or TypeScript diagnostics.
@@ -256,7 +255,7 @@ Expected result: PASS with no Astro or TypeScript diagnostics.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run test:unit'
+npm run test:unit
 ```
 
 Expected result: PASS, including release contracts, explorer behavior, source
@@ -267,8 +266,8 @@ integrity, updated identity tests, and the source-scoped brand-audit tests.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run verify:snyk-2026'
-docker exec vulnbench-dev sh -lc 'npm run verify:classic'
+npm run verify:snyk-2026
+npm run verify:classic
 ```
 
 Expected result: both gates pass. The Snyk gate must continue selecting

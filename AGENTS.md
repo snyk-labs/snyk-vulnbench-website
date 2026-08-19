@@ -127,21 +127,15 @@ The implemented foundation includes:
 
 ## Development Environment
 
-All development commands must run inside a container based on
-`node:24-trixie-slim`, with this repository mounted at `/workspace`. Do not run
-`npm install`, build tools, tests, or the development server directly on the
-host.
-
-The active development convention is:
+Run development commands directly from the repository root:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm install'
-docker exec vulnbench-dev sh -lc 'npm run dev'
-docker exec vulnbench-dev sh -lc 'npm run verify'
+npm install
+npm run dev
+npm run verify
 ```
 
-The development server listens on container port `4321`; publish it to
-`127.0.0.1:4321` when creating the container.
+The development server listens on port `4321`.
 
 ## Testing and Verification
 
@@ -159,9 +153,8 @@ The development server listens on container port `4321`; publish it to
 - `npm run verify` — required full local gate; its standard build uses the
   Snyk 2026 default and it also runs the deterministic Classic override gate.
 
-Run commands inside the development container. Add a failing test before
-implementing behavior changes, then run the focused test and the proportional
-full verification suite.
+Add a failing test before implementing behavior changes, then run the focused
+test and the proportional full verification suite.
 
 ## Design and color defaults
 

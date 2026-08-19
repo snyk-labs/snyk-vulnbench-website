@@ -29,17 +29,17 @@ explicit overrides. No-JavaScript rendering is also Light regardless of system
 preference.
 
 Run the default Snyk build and full verification, or the deterministic Classic
-override, in `vulnbench-dev`:
+override, from the repository root:
 
 ```sh
 # Snyk 2026 and Light defaults
-docker exec vulnbench-dev sh -lc 'npm run build'
-docker exec vulnbench-dev sh -lc 'npm run verify'
-docker exec vulnbench-dev sh -lc 'npm run verify:snyk-2026'
+npm run build
+npm run verify
+npm run verify:snyk-2026
 
 # Explicit Classic override
-docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run build'
-docker exec vulnbench-dev sh -lc 'VULNBENCH_DESIGN_THEME=classic npm run verify:classic'
+VULNBENCH_DESIGN_THEME=classic npm run build
+VULNBENCH_DESIGN_THEME=classic npm run verify:classic
 ```
 
 ## License

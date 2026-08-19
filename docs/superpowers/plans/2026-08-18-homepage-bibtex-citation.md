@@ -14,7 +14,7 @@
 - The citation formatter consumes existing release metadata and does not create a second source of truth.
 - BibTeX is the only visible citation style for this homepage change.
 - The copy button is optional enhancement; the visible citation remains manually selectable and available without JavaScript.
-- All development commands run inside the `node:24-trixie-slim` `vulnbench-dev` container.
+- Run all development commands from the repository root.
 - Do not modify the vendored `snyk-vulnbench-js-1.0/` snapshot.
 - Do not commit changes unless the user explicitly requests a commit.
 
@@ -72,7 +72,7 @@ describe("formatBibtexCitation", () => {
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run test:unit -- src/data/releases/citation.test.ts'
+npm run test:unit -- src/data/releases/citation.test.ts
 ```
 
 Expected: Vitest fails because `src/data/releases/citation.ts` and
@@ -193,7 +193,7 @@ Extend the no-JavaScript test after `expectHomepageEvidence(page)`:
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run test:e2e -- tests/e2e/homepage.spec.ts'
+npm run test:e2e -- tests/e2e/homepage.spec.ts
 ```
 
 Expected: existing homepage assertions pass, while the new citation assertions
@@ -252,12 +252,12 @@ all pass.
 **Files:**
 - No additional files; verify the changes from Tasks 1 and 2.
 
-- [x] **Step 1: Run unit tests** — Completed with the known baseline font-resolution failure: 352 tests passed, while `default-social-route.test.ts` and `light-default-social-route.test.ts` cannot load the Geist font from `/workspace/node_modules`.
+- [x] **Step 1: Run unit tests** — Completed with the known baseline font-resolution failure: 352 tests passed, while `default-social-route.test.ts` and `light-default-social-route.test.ts` cannot load the Geist font from the repository's `node_modules` directory.
 
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run test:unit'
+npm run test:unit
 ```
 
 Expected: all unit tests pass, including release contract and citation tests.
@@ -267,7 +267,7 @@ Expected: all unit tests pass, including release contract and citation tests.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run check'
+npm run check
 ```
 
 Expected: Astro and TypeScript diagnostics finish with zero errors.
@@ -277,7 +277,7 @@ Expected: Astro and TypeScript diagnostics finish with zero errors.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run build'
+npm run build
 ```
 
 Expected: the default Snyk 2026 static build completes successfully and the
@@ -288,7 +288,7 @@ generated homepage contains the server-rendered citation block.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run check:budget'
+npm run check:budget
 ```
 
 Expected: the homepage remains under the existing compressed JavaScript budget.
@@ -298,7 +298,7 @@ Expected: the homepage remains under the existing compressed JavaScript budget.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run verify'
+npm run verify
 ```
 
 Expected: Classic and Snyk 2026 verification complete with zero failures.

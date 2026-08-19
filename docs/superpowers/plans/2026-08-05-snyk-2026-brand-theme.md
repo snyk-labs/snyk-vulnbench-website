@@ -76,7 +76,7 @@ exactly preserved.
    - Wire [`astro.config.ts`](astro.config.ts), [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro), and [`src/components/site/ThemeToggle.astro`](src/components/site/ThemeToggle.astro) so `<html>` receives `data-design-theme`, both pre-paint scripts share one color map, and existing `vulnbench-theme` behavior remains unchanged.
 
 2. **Add approved local assets and Geist typography**
-   - Run package-health checks, then add the latest `@fontsource-variable/geist` and `@fontsource-variable/geist-mono` packages through npm inside `vulnbench-dev`.
+   - Run package-health checks, then add the latest `@fontsource-variable/geist` and `@fontsource-variable/geist-mono` packages through npm from the repository root.
    - Copy the approved `logo-snyk-white.png` and required gradient/no-gradient corner PNGs from the attached brand skill into [`public/brand/snyk-2026/`](public/brand/snyk-2026/) without editing them; record source paths, dimensions, and checksums in `PROVENANCE.md`.
    - Add a branded favicon and default social SVG using only Midnight, the locked palette, solid white text, and the sanctioned gradient.
 
@@ -105,7 +105,7 @@ exactly preserved.
      logo/fabric presence and clearance, branded metadata, chart exports,
      320px overflow, representative explorer layouts, and Axe across all public
      routes.
-   - Add [`scripts/check-snyk-brand.mjs`](scripts/check-snyk-brand.mjs), porting the supplied mechanical audit rules to the mandated Node container. Scan branded source/static outputs for off-palette colors, off-brand fonts, forbidden CSS, fixed hero pixels, and unauthorized gradients.
+   - Add [`scripts/check-snyk-brand.mjs`](scripts/check-snyk-brand.mjs), porting the supplied mechanical audit rules to the project's Node runtime. Scan branded source/static outputs for off-palette colors, off-brand fonts, forbidden CSS, fixed hero pixels, and unauthorized gradients.
    - Add `build:snyk-2026`, `test:e2e:snyk-2026`, `check:brand`, and
      `verify:snyk-2026` scripts; make the full `npm run verify` gate exercise
      the default Snyk build and deterministic Classic override without adding
@@ -120,5 +120,5 @@ exactly preserved.
 
 8. **Audit, verify, and deliver**
    - Render and read back desktop/mobile screenshots of the homepage in both branded modes plus release evidence and explorer coverage views; fix every §10 brand-audit failure.
-   - Run dependency health/security checks, first-party Snyk Code/SCA scans with benchmark fixtures treated as expected evidence, source-integrity tests, `npm run verify`, and the explicit branded gate inside `vulnbench-dev`.
+   - Run dependency health/security checks, first-party Snyk Code/SCA scans with benchmark fixtures treated as expected evidence, source-integrity tests, `npm run verify`, and the explicit branded gate from the repository root.
    - Commit cohesive TDD stages on `feat/snyk-2026-brand-theme`, push the branch, create the PR with summary/test plan, and return its URL. Include draft-only Jira and `#ask-brand-design` approval text; do not submit either externally.

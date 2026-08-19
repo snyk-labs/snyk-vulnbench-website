@@ -18,7 +18,7 @@
 - Keep raw descriptions and source snippets out of URL state.
 - Static output only; no runtime data service.
 - Phase 3 may deepen cases and cross-filtering but must not add accounts or mutable annotations.
-- Run all development commands inside `vulnbench-dev`.
+- Run all development commands from the repository root.
 - Do not commit or push unless explicitly requested.
 
 ---

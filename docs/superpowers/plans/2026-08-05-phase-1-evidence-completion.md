@@ -6,7 +6,7 @@
 
 **Architecture:** Build-time TypeScript loaders read and validate the immutable upstream chart manifests, then expose one release-specific `PublishedEvidence` view model. Astro renders the editorial narrative and static evidence; React islands are limited to sortable tables and focusable charts that retain equivalent server-rendered tables.
 
-**Tech Stack:** Astro 7, strict TypeScript 6, React 19 islands, Zod 4, Vitest, Playwright, Axe, npm inside `node:24-trixie-slim`.
+**Tech Stack:** Astro 7, strict TypeScript 6, React 19 islands, Zod 4, Vitest, Playwright, Axe, npm.
 
 ## Global Constraints
 
@@ -20,7 +20,7 @@
 - Every chart must include exact values, units, source, release, dataset version, aggregation, sample size, interpretation, caveat, and an equivalent table.
 - Meet WCAG 2.2 AA and preserve the full research story without JavaScript.
 - Keep narrative-page JavaScript below 200 KB compressed.
-- Run every development command inside the `vulnbench-dev` container.
+- Run every development command from the repository root.
 - Do not commit or push unless the user explicitly asks.
 
 ## File Map

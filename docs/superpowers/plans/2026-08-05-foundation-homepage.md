@@ -6,7 +6,7 @@
 
 **Architecture:** Astro owns static routing, layouts, metadata, and narrative rendering. Strict TypeScript modules validate immutable release manifests and expose small view models to pages; React is reserved for lightweight interactive analytical islands. The archived JS 1.0 repository remains an immutable source snapshot, while generated website assets use a separate typed contract.
 
-**Tech Stack:** Astro, TypeScript strict mode, React islands, MDX, Zod, Vitest, Playwright, npm in `node:24-trixie-slim`.
+**Tech Stack:** Astro, TypeScript strict mode, React islands, MDX, Zod, Vitest, Playwright, npm.
 
 ## Global Constraints
 
@@ -69,7 +69,7 @@ describe("JS 1.0 source snapshot", () => {
 
 - [ ] **Step 2: Run the focused test and confirm it fails because the snapshot is absent**
 
-Run in the development container: `npm exec vitest run tests/source-import.test.ts`
+Run from the repository root: `npm exec vitest run tests/source-import.test.ts`
 
 Expected: FAIL because `snyk-vulnbench-js-1.0/UPSTREAM-PROVENANCE.md` does not exist.
 
@@ -93,7 +93,7 @@ rm -rf "$archive" "$staging"
 
 - [ ] **Step 5: Re-run the source-import test**
 
-Run in the development container: `npm exec vitest run tests/source-import.test.ts`
+Run from the repository root: `npm exec vitest run tests/source-import.test.ts`
 
 Expected: PASS with zero missing required files and no nested Git metadata.
 
@@ -114,17 +114,17 @@ Expected: PASS with zero missing required files and no nested Git metadata.
 
 - [ ] **Step 1: Initialize Astro without replacing repository documentation**
 
-Run in the development container: `npm create astro@latest -- . --template minimal --typescript strict --install false --git false`
+Run from the repository root: `npm create astro@latest -- . --template minimal --typescript strict --install false --git false`
 
 Keep the existing `README.md`, `LICENSE`, `docs/`, and imported source directory.
 
 - [ ] **Step 2: Install runtime integrations and validation**
 
-Run in the development container: `npm install @astrojs/mdx @astrojs/react @astrojs/sitemap @astrojs/partytown @vitejs/plugin-react astro react react-dom zod`
+Run from the repository root: `npm install @astrojs/mdx @astrojs/react @astrojs/sitemap @astrojs/partytown @vitejs/plugin-react astro react react-dom zod`
 
 - [ ] **Step 3: Install verification dependencies**
 
-Run in the development container: `npm install --save-dev @astrojs/check @playwright/test @testing-library/jest-dom @testing-library/react @types/node @types/react @types/react-dom jsdom typescript vitest`
+Run from the repository root: `npm install --save-dev @astrojs/check @playwright/test @testing-library/jest-dom @testing-library/react @types/node @types/react @types/react-dom jsdom typescript vitest`
 
 - [ ] **Step 4: Configure static output and strict checks**
 
@@ -146,7 +146,7 @@ export default defineConfig({
 
 - [ ] **Step 5: Verify the empty application baseline**
 
-Run in the development container: `npm run check && npm run test:unit && npm run build`
+Run from the repository root: `npm run check && npm run test:unit && npm run build`
 
 Expected: all commands exit 0 and `dist/index.html` is generated.
 
@@ -190,7 +190,7 @@ it("reconstructs the three published recurrence values", () => {
 
 - [ ] **Step 2: Run the focused tests and confirm missing modules fail**
 
-Run in the development container: `npm exec vitest run src/data/releases/releases.test.ts src/data/releases/headline.test.ts`
+Run from the repository root: `npm exec vitest run src/data/releases/releases.test.ts src/data/releases/headline.test.ts`
 
 Expected: FAIL because the release modules do not exist.
 
@@ -222,7 +222,7 @@ Include the arXiv paper, Snyk publication, upstream GitHub repository, local met
 
 - [ ] **Step 5: Re-run release contract tests**
 
-Run in the development container: `npm exec vitest run src/data/releases`
+Run from the repository root: `npm exec vitest run src/data/releases`
 
 Expected: PASS, including schema rejection tests for duplicate IDs, missing units, and non-finite values.
 
@@ -261,7 +261,7 @@ test("renders the initiative shell with keyboard-visible navigation", async ({
 
 - [ ] **Step 2: Run the focused test and confirm shell semantics are missing**
 
-Run in the development container: `npm run test:e2e -- tests/e2e/site-shell.spec.ts`
+Run from the repository root: `npm run test:e2e -- tests/e2e/site-shell.spec.ts`
 
 Expected: FAIL because the site shell is not implemented.
 
@@ -279,7 +279,7 @@ The footer must expose the current release, paper, methodology, data, GitHub, Ap
 
 - [ ] **Step 5: Re-run the shell test**
 
-Run in the development container: `npm run test:e2e -- tests/e2e/site-shell.spec.ts`
+Run from the repository root: `npm run test:e2e -- tests/e2e/site-shell.spec.ts`
 
 Expected: PASS on desktop and mobile Playwright projects.
 
@@ -318,7 +318,7 @@ The Playwright test must assert the exact research question, study-type label, f
 
 - [ ] **Step 2: Run tests and confirm they fail because homepage components are absent**
 
-Run in the development container: `npm exec vitest run src/components/charts/RecurrenceContrast.test.tsx && npm run test:e2e -- tests/e2e/homepage.spec.ts`
+Run from the repository root: `npm exec vitest run src/components/charts/RecurrenceContrast.test.tsx && npm run test:e2e -- tests/e2e/homepage.spec.ts`
 
 Expected: FAIL on missing chart and homepage content.
 
@@ -344,7 +344,7 @@ Add latest evidence, three linked key findings, six-step benchmark anatomy, curr
 
 - [ ] **Step 6: Re-run homepage tests**
 
-Run in the development container: `npm exec vitest run src/components/charts/RecurrenceContrast.test.tsx && npm run test:e2e -- tests/e2e/homepage.spec.ts`
+Run from the repository root: `npm exec vitest run src/components/charts/RecurrenceContrast.test.tsx && npm run test:e2e -- tests/e2e/homepage.spec.ts`
 
 Expected: PASS with JavaScript enabled and with `javaScriptEnabled: false`.
 
@@ -389,7 +389,7 @@ for (const path of [
 
 - [ ] **Step 2: Run the route inventory and confirm missing routes fail**
 
-Run in the development container: `npm run test:e2e -- tests/e2e/routes.spec.ts`
+Run from the repository root: `npm run test:e2e -- tests/e2e/routes.spec.ts`
 
 Expected: FAIL with 404 responses for routes not yet implemented.
 
@@ -401,7 +401,7 @@ The data page must identify dataset version `1.0.0`, source provenance, JSONL so
 
 - [ ] **Step 4: Re-run route tests**
 
-Run in the development container: `npm run test:e2e -- tests/e2e/routes.spec.ts`
+Run from the repository root: `npm run test:e2e -- tests/e2e/routes.spec.ts`
 
 Expected: PASS with no dead internal navigation destinations.
 
@@ -422,7 +422,7 @@ Test keyboard order, landmarks, reduced-motion media query, 200% viewport reflow
 
 - [ ] **Step 2: Run acceptance tests and confirm missing metadata or scripts fail**
 
-Run in the development container: `npm run build && npm run test:e2e -- tests/e2e/accessibility.spec.ts tests/e2e/metadata.spec.ts`
+Run from the repository root: `npm run build && npm run test:e2e -- tests/e2e/accessibility.spec.ts tests/e2e/metadata.spec.ts`
 
 Expected: FAIL until structured metadata, robots output, and budget script exist.
 
@@ -432,7 +432,7 @@ Add JSON-LD and citation meta from the validated release manifest. The budget sc
 
 - [ ] **Step 4: Run the complete verification suite**
 
-Run in the development container: `npm run verify`
+Run from the repository root: `npm run verify`
 
 Expected: type checks pass, all unit and browser tests pass, static build succeeds, all internal routes resolve, and narrative JavaScript stays within budget.
 

@@ -25,7 +25,7 @@ Axe, Node verification scripts.
   accessibility, static architecture, and budgets.
 - Remove `vercel.json`, `scripts/vercel-build.mjs`, and
   `tests/vercel-preview-theme.test.ts`.
-- Run development commands in `vulnbench-dev`.
+- Run development commands from the repository root.
 
 ### Task 1: Change typed design and color-mode defaults
 

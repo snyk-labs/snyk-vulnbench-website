@@ -19,7 +19,7 @@ custom properties.
 - Preserve deterministic explorer URLs and clipboard fallback behavior.
 - Keep the notice accessible with `role="status"`.
 - Use semantic theme tokens and avoid broad page-level layout changes.
-- Run npm, Astro, Vitest, and Playwright commands inside `vulnbench-dev`.
+- Run npm, Astro, Vitest, and Playwright commands from the repository root.
 - Do not commit or push unless explicitly requested.
 
 ---
@@ -78,8 +78,8 @@ expect(geometry.bottom).toBeLessThan(40);
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npx vitest run src/components/explorer/ExplorerApp.test.tsx'
-docker exec vulnbench-dev sh -lc 'npx playwright test tests/e2e/explorer.spec.ts -g "share confirmation"'
+npx vitest run src/components/explorer/ExplorerApp.test.tsx
+npx playwright test tests/e2e/explorer.spec.ts -g "share confirmation"
 ```
 
 Expected: the unit assertion may pass for the existing status semantics, but
@@ -162,7 +162,7 @@ the compact lower-right geometry assertions.
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npx vitest run src/components/explorer/ExplorerApp.test.tsx'
+npx vitest run src/components/explorer/ExplorerApp.test.tsx
 ```
 
 - [ ] **Step 2: Run explorer browser coverage**
@@ -170,7 +170,7 @@ docker exec vulnbench-dev sh -lc 'npx vitest run src/components/explorer/Explore
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npx playwright test tests/e2e/explorer.spec.ts'
+npx playwright test tests/e2e/explorer.spec.ts
 ```
 
 - [ ] **Step 3: Run diagnostics**
@@ -178,7 +178,7 @@ docker exec vulnbench-dev sh -lc 'npx playwright test tests/e2e/explorer.spec.ts
 Run:
 
 ```sh
-docker exec vulnbench-dev sh -lc 'npm run check'
+npm run check
 ```
 
 - [ ] **Step 4: Inspect the final diff**

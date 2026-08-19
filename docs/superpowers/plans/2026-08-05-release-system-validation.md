@@ -17,7 +17,7 @@
 - Incompatible metrics return a user-readable blocking reason.
 - Release-specific dimensions and metrics must not be added to shared JS 1.0 contracts.
 - Static output only.
-- Run all commands inside `vulnbench-dev`.
+- Run all commands from the repository root.
 - Do not commit or push unless explicitly requested.
 
 ---

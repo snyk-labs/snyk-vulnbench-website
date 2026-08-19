@@ -24,7 +24,7 @@
 - Desktop uses a sticky filter rail; mobile uses a filter sheet and sticky Filters / Compare bar.
 - Keep full explorer code off narrative routes and homepage.
 - Meet WCAG 2.2 AA and preserve the static release story if JavaScript fails.
-- Run all development commands inside `vulnbench-dev`.
+- Run all development commands from the repository root.
 - Do not commit or push unless explicitly requested.
 
 ## File Map
