@@ -27,12 +27,20 @@ export function sanitizePostHogEvent(
   const token = event.properties.token;
   const cookielessMode = event.properties.$cookieless_mode;
   const distinctId = event.properties.distinct_id;
+  const library = event.properties.$lib;
+  const libraryVersion = event.properties.$lib_version;
+  const host = event.properties.$host;
+  const pathname = event.properties.$pathname;
 
   if (
     !currentUrl ||
     typeof token !== "string" ||
     cookielessMode !== true ||
-    typeof distinctId !== "string"
+    typeof distinctId !== "string" ||
+    typeof library !== "string" ||
+    typeof libraryVersion !== "string" ||
+    typeof host !== "string" ||
+    typeof pathname !== "string"
   ) {
     return null;
   }
@@ -45,6 +53,10 @@ export function sanitizePostHogEvent(
       $cookieless_mode: true,
       distinct_id: distinctId,
       $current_url: currentUrl,
+      $lib: library,
+      $lib_version: libraryVersion,
+      $host: host,
+      $pathname: pathname,
     },
   };
 }

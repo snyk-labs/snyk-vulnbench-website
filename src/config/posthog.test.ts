@@ -52,6 +52,10 @@ describe("PostHog privacy contract", () => {
           token: posthogProjectToken,
           $cookieless_mode: true,
           $current_url: "https://vulnbench.com/?email=reader@example.com#top",
+          $lib: "web",
+          $lib_version: "1.418.1",
+          $host: "vulnbench.com",
+          $pathname: "/",
           $referrer: "https://example.test/?token=secret",
           $referring_domain: "example.test",
           distinct_id: "ephemeral-device-id",
@@ -68,6 +72,10 @@ describe("PostHog privacy contract", () => {
         $cookieless_mode: true,
         distinct_id: "ephemeral-device-id",
         $current_url: "https://vulnbench.com/",
+        $lib: "web",
+        $lib_version: "1.418.1",
+        $host: "vulnbench.com",
+        $pathname: "/",
       },
     });
   });
