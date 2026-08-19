@@ -65,6 +65,7 @@ describe("PostHog privacy contract", () => {
       properties: {
         token: posthogProjectToken,
         $cookieless_mode: true,
+        distinct_id: "ephemeral-device-id",
         $current_url: "https://vulnbench.com/",
       },
     });

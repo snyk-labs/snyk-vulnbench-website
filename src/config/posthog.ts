@@ -26,11 +26,13 @@ export function sanitizePostHogEvent(
   );
   const token = event.properties.token;
   const cookielessMode = event.properties.$cookieless_mode;
+  const distinctId = event.properties.distinct_id;
 
   if (
     !currentUrl ||
     typeof token !== "string" ||
-    cookielessMode !== true
+    cookielessMode !== true ||
+    typeof distinctId !== "string"
   ) {
     return null;
   }
@@ -41,6 +43,7 @@ export function sanitizePostHogEvent(
     properties: {
       token,
       $cookieless_mode: true,
+      distinct_id: distinctId,
       $current_url: currentUrl,
     },
   };
