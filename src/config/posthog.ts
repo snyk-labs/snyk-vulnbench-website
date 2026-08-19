@@ -33,6 +33,7 @@ export function sanitizePostHogEvent(
   const pathname = event.properties.$pathname;
   const pageviewId = event.properties.$pageview_id;
   const eventType = event.properties.$event_type;
+  const rawUserAgent = event.properties.$raw_user_agent;
 
   if (
     !currentUrl ||
@@ -63,6 +64,9 @@ export function sanitizePostHogEvent(
         ? { $pageview_id: pageviewId }
         : {}),
       ...(typeof eventType === "string" ? { $event_type: eventType } : {}),
+      ...(typeof rawUserAgent === "string"
+        ? { $raw_user_agent: rawUserAgent }
+        : {}),
     },
   };
 }

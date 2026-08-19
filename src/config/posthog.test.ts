@@ -58,6 +58,7 @@ describe("PostHog privacy contract", () => {
           $pathname: "/",
           $pageview_id: "page-view-id",
           $event_type: "pageview",
+          $raw_user_agent: "Mozilla/5.0",
           $referrer: "https://example.test/?token=secret",
           $referring_domain: "example.test",
           distinct_id: "ephemeral-device-id",
@@ -80,6 +81,7 @@ describe("PostHog privacy contract", () => {
         $pathname: "/",
         $pageview_id: "page-view-id",
         $event_type: "pageview",
+        $raw_user_agent: "Mozilla/5.0",
       },
     });
   });
