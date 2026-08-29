@@ -48,10 +48,10 @@ function viewGuide(state: ExplorerState) {
   if (state.view === "efficiency") {
     return {
       interpretation:
-        "Upper-left combines higher agreement with lower resource use. Change the resource axis without changing the agreement definition.",
+        "Projected resource rates apply the complete JS 1.0 release to web-application size references above. Upper-left applies only to the lower observed scatter, where higher Snyk-reference agreement combines with lower resource use. The upper projection instead plots resource use against application source lines of code. Observed evidence below shows measured Snyk-reference agreement versus resource use. Change the resource axis without changing the agreement definition.",
       metric: efficiencyMetric[state.efficiencyMetric],
       caveat:
-        "Cost and token values apply to model sessions; they are not applicable to the command reference.",
+        "This is a linear extrapolation from small JS 1.0 fixtures, not completed production scans. Scanning a full codebase does not guarantee finding every vulnerability. Cost and token values apply to model sessions; they are not applicable to the command reference.",
     };
   }
   return {

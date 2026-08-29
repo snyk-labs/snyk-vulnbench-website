@@ -342,6 +342,85 @@ test("downloads filtered CSV and chart SVG", async ({ page }) => {
   );
 });
 
+test("renders accessible projected and observed efficiency evidence", async ({
+  page,
+}) => {
+  await page.goto("/releases/js-1.0/explore?v=1&view=efficiency&resource=cost");
+  await page.locator(explorerIsland).waitFor({ state: "attached" });
+
+  const projectedHeading = page.getByRole("heading", {
+    name: "Projected model cost by web application size",
+  });
+  const observedHeading = page.getByRole("heading", {
+    name: /Observed Snyk-reference agreement versus estimated model-session cost/i,
+  });
+  await expect(projectedHeading).toBeVisible();
+  await expect(observedHeading).toBeVisible();
+  expect(
+    await projectedHeading.evaluate(
+      (heading, observed) =>
+        heading.compareDocumentPosition(observed as Node) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+      await observedHeading.elementHandle(),
+    ),
+  ).toBeTruthy();
+
+  const projection = page.locator(".model-resource-projection");
+  await expect(projection).toHaveCount(1);
+  for (const application of [
+    "Mastodon",
+    "Zulip",
+    "WordPress Core",
+    "Discourse",
+    "Mattermost",
+  ]) {
+    await expect(
+      page.getByRole("button", { name: `Show ${application} projections` }),
+    ).toBeVisible();
+  }
+
+  const mastodon = page.getByRole("button", {
+    name: "Show Mastodon projections",
+  });
+  const mattermost = page.getByRole("button", {
+    name: "Show Mattermost projections",
+  });
+  await mastodon.focus();
+  await page.keyboard.press("End");
+  await expect(mattermost).toBeFocused();
+  await expect(mattermost).toHaveAttribute("aria-pressed", "true");
+  const projectionStatus = projection.getByRole("status");
+  await expect(projectionStatus).toHaveCount(1);
+  await expect(projectionStatus).toContainText(
+    "Claude Opus 4.6 Medium: $432.83",
+  );
+  const projectionCaveat = projection
+    .locator("figcaption")
+    .getByText(/Projected values are linear extrapolations from small JS 1\.0 fixtures/);
+  await expect(projectionCaveat).toHaveCount(1);
+  await expect(projectionCaveat).toBeVisible();
+
+  const csvDownload = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Export projected cost CSV" }).click();
+  expect((await csvDownload).suggestedFilename()).toBe(
+    "js-1.0-projected-cost.csv",
+  );
+});
+
+test("keeps projected efficiency evidence within a 320px page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/releases/js-1.0/explore?v=1&view=efficiency&resource=cost");
+  await page.locator(explorerIsland).waitFor({ state: "attached" });
+
+  const viewport = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    innerWidth: window.innerWidth,
+  }));
+  expect(viewport.scrollWidth).toBeLessThanOrEqual(viewport.innerWidth);
+});
+
 test("opens mobile filter and comparison sheets", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/releases/js-1.0/explore");

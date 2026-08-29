@@ -1,6 +1,10 @@
 ---
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import {
+  JS10_FIXTURE_SLOC,
+  webApplicationReferences,
+} from "../../../data/explorer/resource-projection";
 import { currentRelease } from "../../../data/releases";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 ---
@@ -33,6 +37,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
             <li><a href="#design">Benchmark design</a></li>
             <li><a href="#matching">Reference matching</a></li>
             <li><a href="#metrics">Metric definitions</a></li>
+            <li><a href="#resource-projections">Resource projections</a></li>
             <li><a href="#limitations">Limitations</a></li>
             <li><a href="#reproduction">Reproduction</a></li>
           </ol>
@@ -97,8 +102,104 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
             </dl>
           </section>
 
+          <section id="resource-projections">
+            <p class="eyebrow">04 · Resource projections</p>
+            <h2>A release-wide linear extrapolation</h2>
+            <p>
+              The Explorer labels these values <strong>Projected</strong>:
+              they are not completed scans of the application references. The
+              lower Efficiency figure remains <strong>Observed</strong>
+              benchmark evidence, including Snyk-reference F1 as reference
+              agreement rather than universal detection accuracy.
+            </p>
+            <p>
+              For each configuration and resource metric, the release resource
+              total is the sum of the ten published per-fixture mean session
+              resource values. The resource rate per 1,000 SLOC is that total
+              divided by 1.154; projected application resource is the rate
+              multiplied by the application SLOC and divided by 1,000. Rates
+              always use the complete release matrix, not the currently
+              filtered fixture subset; filters determine only which
+              configuration lines are visible.
+            </p>
+            <dl class="projection-formula">
+              <div>
+                <dt>Fixture denominator</dt>
+                <dd>
+                  {JS10_FIXTURE_SLOC.toLocaleString("en-US")} SLOC across the
+                  JS 1.0 fixtures, counted with <code>cloc 2.06</code> across
+                  JavaScript, TypeScript, JSX/TSX, CSS/SCSS, HTML, and
+                  Handlebars.
+                </dd>
+              </div>
+              <div>
+                <dt>Excluded from the denominator</dt>
+                <dd>
+                  Package manifests, lockfiles, dependencies, comments, and
+                  blank lines.
+                </dd>
+              </div>
+              <div>
+                <dt>Resource semantics</dt>
+                <dd>
+                  Cost uses estimated API-equivalent model-session USD; tokens
+                  use mean total tokens; duration uses mean wall-clock seconds.
+                  Snyk Code has no comparable model-session cost or token
+                  value.
+                </dd>
+              </div>
+            </dl>
+            <h3>Pinned web-application size references</h3>
+            <p>
+              <code>cloc 2.06</code> measured production application code on
+              the following pinned upstream revisions on 2026-08-29. The
+              counts include browser and server application code and exclude
+              tests, documentation, dependencies, generated output, fixtures,
+              mocks, and build artifacts.
+            </p>
+            <div class="projection-references">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Application</th>
+                    <th scope="col">Pinned upstream revision</th>
+                    <th scope="col">Production SLOC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    webApplicationReferences.map((reference) => (
+                      <tr>
+                        <th scope="row">{reference.name}</th>
+                        <td>
+                          <a
+                            class="text-link"
+                            href={`${reference.repositoryUrl}/commit/${reference.commit}`}
+                          >
+                            <code>{reference.commit}</code>
+                          </a>
+                        </td>
+                        <td>{reference.sloc.toLocaleString("en-US")}</td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </table>
+            </div>
+            <aside class="critical-caveat">
+              <strong>Projection limit</strong>
+              <p>
+                This deliberately simple linear extrapolation does not model
+                context-window boundaries, repository indexing, incremental
+                scans, parallel execution, deduplication, caching changes,
+                model price changes, or economies of scale. A full-codebase
+                scan does not guarantee finding every vulnerability.
+              </p>
+            </aside>
+          </section>
+
           <section id="limitations">
-            <p class="eyebrow">04 · Limitations</p>
+            <p class="eyebrow">05 · Limitations</p>
             <h2>What the protocol cannot establish</h2>
             <ul>
               {
@@ -110,7 +211,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
           </section>
 
           <section id="reproduction">
-            <p class="eyebrow">05 · Reproduction</p>
+            <p class="eyebrow">06 · Reproduction</p>
             <h2>Trace the release to immutable source artifacts</h2>
             <p>
               The website vendors the exact upstream source tree at commit
@@ -190,6 +291,51 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     font-weight: var(--font-weight-label-strong);
   }
 
+  .projection-formula {
+    margin-top: var(--space-5);
+    border-top: 1px solid var(--ink);
+  }
+
+  .projection-formula > div {
+    display: grid;
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-2);
+  }
+
+  .projection-formula dt {
+    font-weight: var(--font-weight-label-strong);
+  }
+
+  .projection-formula dd {
+    margin: 0;
+  }
+
+  .projection-references {
+    max-width: 100%;
+    margin-top: var(--space-4);
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+  }
+
+  .projection-references table {
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .projection-references th,
+  .projection-references td {
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .projection-references tbody tr:last-child th,
+  .projection-references tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
   .metrics dd {
     margin: 0;
   }
@@ -219,6 +365,10 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     }
 
     .metrics > div {
+      grid-template-columns: 13rem 1fr;
+    }
+
+    .projection-formula > div {
       grid-template-columns: 13rem 1fr;
     }
   }

@@ -55,6 +55,150 @@ describe("ExplorerApp", () => {
     expect(screen.getByText("0 active filters")).toBeVisible();
   });
 
+  it("orders combined, projected, and observed efficiency headings and changes both resource displays", () => {
+    render(<ExplorerApp dataset={dataset} initialSearch="" />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "Efficiency" }));
+
+    const combined = screen.getByRole("heading", {
+      name: "Projected and observed efficiency evidence",
+    });
+    const projected = screen.getByRole("heading", {
+      name: "Projected model cost by web application size",
+    });
+    const observed = screen.getByRole("heading", {
+      name: "Observed Snyk-reference agreement versus estimated model-session cost",
+    });
+    expect(
+      combined.compareDocumentPosition(projected) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      projected.compareDocumentPosition(observed) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    for (const name of [
+      "Mastodon",
+      "Zulip",
+      "WordPress Core",
+      "Discourse",
+      "Mattermost",
+    ]) {
+      expect(
+        screen.getByRole("button", { name: `Show ${name} projections` }),
+      ).toBeVisible();
+    }
+
+    fireEvent.change(screen.getByLabelText("Efficiency resource"), {
+      target: { value: "tokens" },
+    });
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Projected model tokens by web application size",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "Observed Snyk-reference agreement versus average total tokens",
+      }),
+    ).toBeVisible();
+  });
+
+  it("synchronizes duration across both figures and includes the command reference", () => {
+    render(<ExplorerApp dataset={dataset} initialSearch="" />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "Efficiency" }));
+    fireEvent.change(screen.getByLabelText("Efficiency resource"), {
+      target: { value: "duration" },
+    });
+
+    expect(
+      screen.getByRole("heading", {
+        name: "Projected model duration by web application size",
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", {
+        name: "Observed Snyk-reference agreement versus average duration",
+      }),
+    ).toBeVisible();
+    expect(screen.getByTestId("projection-line-snyk-code")).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Show details for Snyk Code SAST" }),
+    ).toBeVisible();
+  });
+
+  it("keeps command cost and tokens not applicable in the projected view", () => {
+    render(<ExplorerApp dataset={dataset} initialSearch="" />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "Efficiency" }));
+
+    expect(
+      screen.getByRole("table", {
+        name: "Projected model cost by web application",
+      }),
+    ).toHaveTextContent("N/A");
+
+    fireEvent.change(screen.getByLabelText("Efficiency resource"), {
+      target: { value: "tokens" },
+    });
+
+    expect(
+      screen.getByRole("table", {
+        name: "Projected model tokens by web application",
+      }),
+    ).toHaveTextContent("N/A");
+  });
+
+  it("preserves the no-model recovery path for unavailable cost", () => {
+    render(
+      <ExplorerApp
+        dataset={dataset}
+        initialSearch="?view=efficiency&configs=snyk-code&ref=1"
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Resource metric unavailable" }),
+    ).toBeVisible();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Show model configurations" }),
+    );
+    expect(
+      screen.getByRole("heading", {
+        name: "Projected model cost by web application size",
+      }),
+    ).toBeVisible();
+  });
+
+  it("filters projected lines by configuration while retaining release-wide rates after project filtering", () => {
+    render(<ExplorerApp dataset={dataset} initialSearch="" />);
+
+    fireEvent.click(screen.getByRole("tab", { name: "Efficiency" }));
+
+    const mediumLabel = () =>
+      screen
+        .getAllByTestId("projection-label")
+        .find((label) =>
+          label.textContent?.includes("Claude Opus 4.6 Medium"),
+        );
+    expect(mediumLabel()).toHaveTextContent("$0.544/1k SLOC");
+
+    fireEvent.click(
+      screen.getByRole("checkbox", { name: "Claude Opus 4.6 High" }),
+    );
+    expect(
+      screen.queryByTestId("projection-line-opus-4-6-high"),
+    ).not.toBeInTheDocument();
+    expect(mediumLabel()).toHaveTextContent("$0.544/1k SLOC");
+
+    fireEvent.click(
+      screen.getByRole("checkbox", { name: dataset.projects[0]!.name }),
+    );
+    expect(mediumLabel()).toHaveTextContent("$0.544/1k SLOC");
+  });
+
   it("pins configurations and selects a baseline", () => {
     render(<ExplorerApp dataset={dataset} initialSearch="" />);
 

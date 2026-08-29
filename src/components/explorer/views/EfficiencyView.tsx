@@ -1,8 +1,16 @@
+import { useMemo } from "react";
+import {
+  deriveResourceProfiles,
+  type ResourceMetric,
+} from "../../../data/explorer/resource-projection";
+import type { ExplorerDataset } from "../../../data/explorer/schema";
 import { EvidenceScatter } from "../../evidence/EvidenceScatter";
+import { ModelResourceProjection } from "../charts/ModelResourceProjection";
 import type { ExplorerSelection } from "../selectors";
 import type { ExplorerState } from "../state";
 
 interface EfficiencyViewProps {
+  dataset: ExplorerDataset;
   selection: ExplorerSelection;
   state: ExplorerState;
   onPin: (id: string) => void;
@@ -10,12 +18,17 @@ interface EfficiencyViewProps {
 }
 
 export function EfficiencyView({
+  dataset,
   selection,
   state,
   onPin,
   onRecover,
 }: EfficiencyViewProps) {
   const resource = state.efficiencyMetric;
+  const profiles = useMemo(
+    () => deriveResourceProfiles(dataset.configurations, dataset.tasks),
+    [dataset],
+  );
   const points = selection.summaries
     .filter(
       ({ type, costUsd }) =>
@@ -80,12 +93,10 @@ export function EfficiencyView({
     <section aria-labelledby="efficiency-view-title" className="explorer-view">
       <div className="explorer-view__heading">
         <p className="eyebrow">Efficiency</p>
-        <h3 id="efficiency-view-title">
-          Snyk-reference agreement versus {xLabel.toLowerCase()}
-        </h3>
+        <h3 id="efficiency-view-title">Projected and observed efficiency evidence</h3>
         <p>
-          Better points move toward the upper-left: higher reference agreement
-          with lower resource use.
+          Compare release-wide projected resource use by web-application size
+          with observed benchmark resource use and Snyk-reference agreement.
         </p>
       </div>
 
@@ -108,6 +119,27 @@ export function EfficiencyView({
         ))}
       </div>
 
+      <ModelResourceProjection
+        metric={resource as ResourceMetric}
+        profiles={profiles}
+        selectedConfigurationIds={selection.configurations.map(({ id }) => id)}
+      />
+
+      <div className="explorer-relationship-divider">
+        Projected from the observed benchmark evidence below
+      </div>
+
+      <div className="explorer-observed-efficiency">
+        <p className="eyebrow">Observed</p>
+        <h3>
+          Observed Snyk-reference agreement versus {xLabel.toLowerCase()}
+        </h3>
+        <p>
+          Upper-left means higher Snyk-reference agreement with lower{" "}
+          {xLabel.toLowerCase()} across the selected benchmark fixtures.
+        </p>
+      </div>
+
       <EvidenceScatter
         caveat={
           resource === "duration"
@@ -123,6 +155,31 @@ export function EfficiencyView({
         xUnit={xUnit}
         yLabel="Snyk-reference F1"
       />
+
+      <style>{`
+        .explorer-relationship-divider {
+          padding-top: var(--space-4);
+          border-top: 1px solid var(--rule-strong);
+          color: var(--ink-soft);
+          font-family: var(--font-mono);
+          font-size: var(--step--1);
+        }
+
+        .explorer-observed-efficiency {
+          display: grid;
+          margin-top: calc(var(--space-5) * -1);
+          gap: var(--space-2);
+        }
+
+        .explorer-observed-efficiency h3,
+        .explorer-observed-efficiency p {
+          margin: 0;
+        }
+
+        .explorer-observed-efficiency > p:last-child {
+          color: var(--ink-soft);
+        }
+      `}</style>
     </section>
   );
 }

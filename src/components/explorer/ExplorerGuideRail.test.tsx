@@ -39,7 +39,7 @@ describe("ExplorerGuideRail", () => {
     ],
     [
       "efficiency",
-      "Upper-left combines higher agreement with lower resource use",
+      "Upper-left applies only to the lower observed scatter",
       "Estimated model-session cost",
     ],
   ] as const)("explains the %s view", (view, interpretation, metric) => {
@@ -59,5 +59,39 @@ describe("ExplorerGuideRail", () => {
 
     expect(screen.getByText(interpretation, { exact: false })).toBeVisible();
     expect(screen.getByText(metric, { exact: true })).toBeVisible();
+  });
+
+  it("distinguishes projected resource estimates from observed benchmark evidence", () => {
+    const state = {
+      ...defaultExplorerState(),
+      view: "efficiency" as const,
+    };
+    render(
+      <ExplorerGuideRail
+        activeFilterCount={0}
+        representedRuns={300}
+        state={state}
+      />,
+    );
+
+    const guide = screen.getByRole("complementary", { name: "View guide" });
+    expect(guide).toHaveTextContent(
+      "Projected resource rates apply the complete JS 1.0 release to web-application size references",
+    );
+    expect(guide).toHaveTextContent(
+      "Upper-left applies only to the lower observed scatter",
+    );
+    expect(guide).toHaveTextContent(
+      "upper projection instead plots resource use against application source lines of code",
+    );
+    expect(guide).toHaveTextContent(
+      "Observed evidence below shows measured Snyk-reference agreement",
+    );
+    expect(guide).toHaveTextContent(
+      "linear extrapolation from small JS 1.0 fixtures",
+    );
+    expect(guide).toHaveTextContent(
+      "does not guarantee finding every vulnerability",
+    );
   });
 });

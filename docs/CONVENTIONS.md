@@ -107,6 +107,25 @@ For the recurrence contrast chart, this means showing each finding-group label
 and percentage directly above its bar while retaining exact counts, linked
 explorer states, provenance, and the accessible table below the plot.
 
+### Separate projected and observed evidence
+
+Projections are interpretations of measured benchmark data, not further
+measurements. Readers must not have to infer that distinction from chart
+position, color, or surrounding prose.
+
+- Render projected and observed analytical evidence as separate, explicitly
+  labeled figures. Preserve their reading order and provide an equivalent
+  exact-value table for each figure.
+- State each projection's observed input scope, denominator and formula,
+  assumptions, out-of-sample scale, unit, and limitations adjacent to the
+  figure. Label size references as references rather than completed scans.
+- Keep release-wide rates release-wide: filters may change visible series, but
+  must not silently recalculate the measured basis from a subset unless the
+  figure states that altered basis.
+- Test the browser composition for figure order, exact accessible values,
+  keyboard controls, exports, and narrow-page overflow. Run the existing Axe
+  suite to protect the semantic structure and contrast of both figures.
+
 ## Cookieless analytics
 
 When analytics is approved for a public VulnBench release, it must default to

@@ -691,6 +691,7 @@ export function ExplorerApp({ dataset, initialSearch }: ExplorerAppProps) {
             />
           ) : state.view === "efficiency" ? (
             <EfficiencyView
+              dataset={dataset}
               onPin={togglePin}
               onRecover={() =>
                 updateState({
