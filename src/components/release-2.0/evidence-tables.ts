@@ -288,7 +288,7 @@ function policyRecallSpec(): TableSpec {
       configurationColumn(),
       ...pivot.columnValues.map((subset) => ({
         key: subset,
-        label: sentenceCase(subset),
+        label: sentenceCase(subset.replace(/\bvulns$/u, "vulnerabilities")),
         numeric: true,
       })),
     ],
@@ -354,7 +354,7 @@ const toleranceLabel = (tolerance: string) =>
       ? "Any line in the right file"
       : tolerance === "2"
         ? "±2 lines (used for results)"
-        : `±${tolerance} lines`;
+        : `±${tolerance} ${tolerance === "1" ? "line" : "lines"}`;
 
 function pivotBy(rows: Row[], rowKey: string, columnKey: string, value: (row: Row) => string) {
   const pivoted = new Map<string, Row>();

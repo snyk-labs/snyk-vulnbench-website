@@ -176,6 +176,24 @@ describe("Snyk VulnBench 2.0 evidence tables", () => {
     expect(rendered(ranks!)[0]?.[0]).toBe("Endpoint rule, ±2 lines (used for all results)");
   });
 
+  test("spells out the policy-class subsets in column headers", () => {
+    const [recall] = figureTableSpecs(6);
+    const labels = recall?.columns.map(({ label }) => label);
+    expect(labels).toContain("All other vulnerabilities");
+    expect(labels?.join("\n")).not.toMatch(/\bvulns\b/u);
+  });
+
+  test("uses the singular for a one-line tolerance", () => {
+    const tolerance = figureTableSpecs(8).find(({ id }) => id === "tolerance-sweep");
+    const counted = (tolerance?.columns ?? [])
+      .map(({ label }) => label.match(/^±(\d+) (lines?)\b/u))
+      .filter((match) => match !== null);
+    expect(counted.some(([, count]) => count === "1")).toBe(true);
+    for (const [label, count, unit] of counted) {
+      expect(unit, label).toBe(count === "1" ? "line" : "lines");
+    }
+  });
+
   test("never shows a cost as zero", () => {
     for (const spec of figureTableSpecs(10)) {
       for (const cells of rendered(spec)) {
