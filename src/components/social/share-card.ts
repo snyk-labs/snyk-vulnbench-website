@@ -1,3 +1,5 @@
+import { v20Copy } from "../../data/releases/2.0-content";
+
 export interface ReleaseShareCard {
   eyebrow: string;
   title: string;
@@ -352,5 +354,52 @@ export function renderDefaultSocialCard(
   <text x="220" y="568" fill="#FFFFFF" fill-opacity="0.68" font-family="Geist Mono" font-size="12">Dataset 1.0.0 · deterministic Snyk Code reference set</text>
   <text x="220" y="592" fill="#FFFFFF" font-family="Geist Mono" font-size="12">Source: published benchmark evidence · vulnbench.com</text>
 </svg>`;
+}
+/* snyk-2026-audit:end */
+
+const release20Card = {
+  eyebrow: "Snyk VulnBench 2.0",
+  title: v20Copy.home.h1,
+  subtitle: v20Copy.home.subtitle,
+  disclosure: v20Copy.disclosure.short,
+  footer: "Dataset 2.0.0 · Snyk VulnBench 2.0 · vulnbench.com",
+};
+
+function renderClassicRelease20Card() {
+  const card = release20Card;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">${escapeXml(card.eyebrow)}</title>
+  <desc id="description">${escapeXml(card.title)}</desc>
+  <rect width="1200" height="630" fill="#f7f4ed"/>
+  <rect x="0" width="28" height="630" fill="#4b2be3"/>
+  <text x="80" y="92" fill="#4b2be3" font-family="monospace" font-size="24" font-weight="700">${escapeXml(card.eyebrow.toUpperCase())}</text>
+  <text fill="#17141f" font-family="Arial, sans-serif" font-size="50" font-weight="700">${textLines(card.title, 80, 175, 60, 40)}</text>
+  <text fill="#55515f" font-family="Arial, sans-serif" font-size="27">${textLines(card.subtitle, 80, 380, 36, 70)}</text>
+  <rect x="80" y="440" width="1040" height="2" fill="#aaa1b0"/>
+  <text fill="#17141f" font-family="Arial, sans-serif" font-size="21">${textLines(card.disclosure, 80, 488, 30, 92)}</text>
+  <text x="80" y="592" fill="#625d68" font-family="monospace" font-size="18">${escapeXml(card.footer)}</text>
+</svg>`;
+}
+
+/* snyk-2026-audit:start */
+function renderBrandedRelease20Card(assets: BrandSocialAssets) {
+  const card = release20Card;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">${escapeXml(card.eyebrow)}</title>
+  <desc id="description">${escapeXml(card.title)}</desc>
+  ${brandCanvas(assets)}
+  <text x="70" y="74" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="500" letter-spacing="1.5">${escapeXml(card.eyebrow.toUpperCase())}</text>
+  <text fill="#FFFFFF" font-family="Geist" font-size="44" font-weight="700" letter-spacing="-1">${textLines(card.title, 70, 215, 52, 34)}</text>
+  <text fill="#FFFFFF" fill-opacity="0.78" font-family="Geist" font-size="24" font-weight="500">${textLines(card.subtitle, 70, 385, 32, 62)}</text>
+  <rect x="70" y="440" width="860" height="78" fill="#030328" stroke="#FFFFFF" stroke-opacity="0.24"/>
+  <text fill="#FFFFFF" font-family="Geist" font-size="18">${textLines(card.disclosure, 94, 472, 26, 82)}</text>
+  <text x="70" y="575" fill="#FFFFFF" font-family="Geist Mono" font-size="16">${escapeXml(card.footer)}</text>
+</svg>`;
+}
+
+export function renderRelease20SocialCard(options: RenderOptions) {
+  return options.designTheme === "classic"
+    ? renderClassicRelease20Card()
+    : renderBrandedRelease20Card(options.assets);
 }
 /* snyk-2026-audit:end */
