@@ -1,0 +1,128 @@
+---
+import EvidenceStrip from "../../../components/home/EvidenceStrip.astro";
+import KeyFindings from "../../../components/home/KeyFindings.astro";
+import DiffersBlock from "../../../components/release-2.0/DiffersBlock.astro";
+import Disclosure from "../../../components/release-2.0/Disclosure.astro";
+import ReleaseSection from "../../../components/release-2.0/ReleaseSection.astro";
+import Scorecard from "../../../components/release-2.0/Scorecard.astro";
+import PageHero from "../../../components/site/PageHero.astro";
+import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { releaseStatusLabel, requireReleaseBySlug } from "../../../data/releases";
+import { v20Copy } from "../../../data/releases/2.0-content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const release = requireReleaseBySlug("2.0");
+const { home, releaseCard, releasePage } = v20Copy;
+const mutedSections = new Set(["design", "main-result", "flow-shape", "outside", "localization", "efficiency"]);
+---
+
+<BaseLayout
+  title={release.name}
+  description={releaseCard.summary}
+  image="/social/2.0/release.svg"
+  release={release}
+>
+  <PageHero
+    eyebrow={`${releaseStatusLabel(release)} · 2.0`}
+    title={releaseCard.question}
+    description={releaseCard.summary}
+  >
+    <div slot="actions" class="button-row">
+      <a class="button" href={release.links.explore}>{home.buttons[0]}</a>
+      <a class="button secondary" href={release.links.paper}>{home.buttons[1]}</a>
+    </div>
+    <ReleaseMeta slot="aside" release={release} />
+  </PageHero>
+
+  <div class="release-header container">
+    <Disclosure form="long" />
+    <EvidenceStrip items={home.stats} />
+  </div>
+
+  <article>
+    <KeyFindings full />
+
+    {
+      releasePage.map((section) =>
+        section.id === "design" ? (
+          <ReleaseSection section={section} muted>
+            <Scorecard />
+          </ReleaseSection>
+        ) : (
+          <ReleaseSection section={section} muted={mutedSections.has(section.id)} />
+        ),
+      )
+    }
+
+    <DiffersBlock />
+
+    <section class="section limitations" id="limitations" aria-labelledby="limitations-title">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">Limitations</p>
+          <h2 id="limitations-title">What the protocol cannot establish</h2>
+        </div>
+        <ul>
+          {release.caveats.map((caveat) => <li>{caveat}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section release-cta">
+      <div class="container">
+        <p class="eyebrow">Continue the research trail</p>
+        <h2>Inspect the evidence behind the narrative</h2>
+        <nav aria-label="Release resources">
+          <a class="button" href={release.links.explore}>{home.buttons[0]}</a>
+          <a class="button secondary" href={release.links.methodology}>Methodology</a>
+          <a class="button secondary" href={release.links.data}>Data</a>
+          <a class="button secondary" href={release.links.paper}>Paper</a>
+          <a class="button secondary" href={release.links.github}>GitHub</a>
+          <a class="button secondary" href="/about#citation">Cite this release</a>
+        </nav>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .release-header {
+    display: grid;
+    padding-block: var(--space-5);
+    gap: var(--space-5);
+  }
+
+  .limitations ul {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .limitations li {
+    padding: var(--space-3) 0 var(--space-3) 2rem;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+
+  .limitations li::before {
+    content: "—";
+    display: inline-block;
+    width: 2rem;
+    margin-left: -2rem;
+    color: var(--purple-dark);
+  }
+
+  .release-cta nav {
+    display: flex;
+    margin-top: var(--space-5);
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .release-cta h2 {
+    max-width: 20ch;
+    margin-top: var(--space-2);
+  }
+</style>

@@ -1,0 +1,202 @@
+---
+import DataTable from "../../../components/release-2.0/DataTable.astro";
+import FigureGroup from "../../../components/release-2.0/FigureGroup.astro";
+import Scorecard from "../../../components/release-2.0/Scorecard.astro";
+import {
+  classRecallSpec,
+  matchMatrixSpec,
+  perApplicationSpec,
+} from "../../../components/release-2.0/evidence-tables";
+import PageHero from "../../../components/site/PageHero.astro";
+import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { requireReleaseBySlug } from "../../../data/releases";
+import { v20Copy } from "../../../data/releases/2.0-content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const release = requireReleaseBySlug("2.0");
+const { home, findings } = v20Copy;
+const [complementarity, harnessPolicy, efficiency] = findings;
+if (!complementarity || !harnessPolicy || !efficiency) throw new Error("Missing 2.0 findings");
+
+const views = [
+  { id: "summary", label: "Summary" },
+  { id: "complementarity", label: "Complementarity" },
+  { id: "harness-policy", label: "Harness policy" },
+  { id: "efficiency", label: "Efficiency" },
+  { id: "findings", label: "Findings" },
+] as const;
+const findingViews = [
+  { id: "complementarity", finding: complementarity },
+  { id: "harness-policy", finding: harnessPolicy },
+  { id: "efficiency", finding: efficiency },
+];
+---
+
+<BaseLayout
+  title="2.0 Explore evidence"
+  description={home.findings_intro.body}
+  image="/social/2.0/release.svg"
+  release={release}
+>
+  <PageHero
+    eyebrow="2.0 · Explore evidence"
+    title={home.findings_intro.h2}
+    description={home.findings_intro.body}
+  >
+    <ReleaseMeta slot="aside" release={release} />
+  </PageHero>
+
+  <nav class="view-tabs container" aria-label="Evidence views">
+    <ul>
+      {
+        views.map(({ id, label }) => (
+          <li>
+            <a href={`?view=${id}`} data-view-link={id}>
+              {label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <section class="section view" id="view-summary" data-view="summary" aria-labelledby="summary-title">
+    <div class="container view__inner">
+      <div class="view__text">
+        <p class="eyebrow">{home.headline_evidence.kicker}</p>
+        <h2 id="summary-title">{home.headline_evidence.h2}</h2>
+        <ul class="callouts">
+          {home.headline_evidence.callouts.map((callout) => <li>{callout}</li>)}
+        </ul>
+        <p class="for-appsec">{home.headline_evidence.for_appsec}</p>
+        <p class="dataset-line metric">{home.headline_evidence.dataset_line}</p>
+      </div>
+      <Scorecard />
+      <DataTable {...perApplicationSpec()} />
+      <DataTable {...classRecallSpec()} />
+    </div>
+  </section>
+
+  {
+    findingViews.map(({ id, finding }) => (
+      <section
+        class="section view"
+        id={`view-${id}`}
+        data-view={id}
+        aria-labelledby={`${id}-title`}
+      >
+        <div class="container view__inner">
+          <div class="view__text">
+            <p class="eyebrow">
+              {finding.n} · {views.find((view) => view.id === id)?.label}
+            </p>
+            <h2 id={`${id}-title`}>{finding.title}</h2>
+            {finding.body.map((paragraph) => <p>{paragraph}</p>)}
+            <p class="caveat">
+              <strong>Interpret with care:</strong> {finding.care}
+            </p>
+          </div>
+          <FigureGroup figures={finding.figures} />
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section view" id="view-findings" data-view="findings" aria-labelledby="findings-title">
+    <div class="container view__inner">
+      <div class="view__text">
+        <p class="eyebrow">Findings</p>
+        <h2 id="findings-title">Matches per reference vulnerability</h2>
+      </div>
+      <DataTable {...matchMatrixSpec()} collapsible={false} />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const views = [...document.querySelectorAll<HTMLElement>("[data-view]")];
+  const requested = new URLSearchParams(window.location.search).get("view");
+  const active = views.some((view) => view.dataset.view === requested) ? requested : "summary";
+
+  for (const view of views) view.hidden = view.dataset.view !== active;
+  for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-view-link]")) {
+    if (link.dataset.viewLink === active) link.setAttribute("aria-current", "page");
+  }
+</script>
+
+<style>
+  .view-tabs {
+    padding-block: var(--space-4) 0;
+  }
+
+  .view-tabs ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--rule-strong);
+    gap: var(--space-1) var(--space-4);
+    flex-wrap: wrap;
+    list-style: none;
+  }
+
+  .view-tabs a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    padding-inline: 0.2rem;
+    align-items: center;
+    border-bottom: 0.2rem solid transparent;
+    font-size: var(--step--1);
+    font-weight: var(--font-weight-control);
+  }
+
+  .view-tabs a[aria-current="page"] {
+    border-bottom-color: var(--purple);
+    color: var(--ink);
+  }
+
+  .view[hidden] {
+    display: none;
+  }
+
+  .view__inner {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-5);
+  }
+
+  .view__inner > :global(*) {
+    min-width: 0;
+  }
+
+  .view__text {
+    display: grid;
+    max-width: 50rem;
+    gap: var(--space-3);
+  }
+
+  .view + .view {
+    border-top: 1px solid var(--rule);
+  }
+
+  .callouts {
+    display: grid;
+    padding-left: 1.25rem;
+    gap: var(--space-2);
+  }
+
+  .for-appsec,
+  .caveat {
+    padding-left: var(--space-3);
+    border-left: 0.2rem solid var(--warning);
+  }
+
+  .caveat {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .dataset-line {
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+  }
+</style>

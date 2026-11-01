@@ -1,20 +1,9 @@
 ---
 import type { V20Table } from "../../data/releases/2.0-content";
-
-export interface DataColumn {
-  key: string;
-  label: string;
-  rowHeader?: boolean;
-  numeric?: boolean;
-  display?: (row: Record<string, string>) => string;
-}
-
-export interface ColumnGroup {
-  label: string;
-  span: number;
-}
+import type { ColumnGroup, DataColumn } from "./evidence-tables";
 
 interface Props {
+  id?: string;
   caption: string;
   columns: DataColumn[];
   rows: Record<string, string>[];
@@ -27,6 +16,7 @@ interface Props {
 }
 
 const {
+  id,
   caption,
   columns,
   rows,
@@ -48,7 +38,7 @@ const notes = [note, table?.meta.empty_cells].filter(
 );
 ---
 
-<Wrapper class="data-table" open={collapsible && open ? true : undefined}>
+<Wrapper class="data-table" id={id} open={collapsible && open ? true : undefined}>
   {collapsible && <summary>{summary}</summary>}
   <div class="data-table__scroll" tabindex="0" role="region" aria-label={caption}>
     <table>
@@ -81,7 +71,16 @@ const notes = [note, table?.meta.empty_cells].filter(
             <tr>
               {columns.map((column) =>
                 column.rowHeader ? (
-                  <th scope="row">{cell(column, row)}</th>
+                  <th scope="row">
+                    {column.swatch?.(row) && (
+                      <span
+                        class="swatch"
+                        style={`--swatch: ${column.swatch(row)}`}
+                        aria-hidden="true"
+                      />
+                    )}
+                    {cell(column, row)}
+                  </th>
                 ) : (
                   <td class:list={{ numeric: column.numeric }}>
                     {cell(column, row)}
@@ -169,6 +168,17 @@ const notes = [note, table?.meta.empty_cells].filter(
   tbody th {
     font-weight: var(--font-weight-label);
     min-width: 12rem;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-right: 0.45rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: 50%;
+    background: var(--swatch);
+    vertical-align: -0.05rem;
   }
 
   .numeric {
