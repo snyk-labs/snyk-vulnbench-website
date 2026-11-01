@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import { prepareTheme } from "./support/theme";
@@ -142,6 +142,9 @@ test("the 2.0 data page links public repository paths and static tables", async 
   expect(metaText).not.toMatch(/source_claims|\bC-[A-Z0-9]+-\d+/u);
 
   await page.goto("/data/2.0/");
+  await expect(page.locator(".empty-cells")).toHaveText(
+    "An empty cell means not applicable or unavailable; it never means zero.",
+  );
   for (const name of ["pairwise_union", "sol_sink_offsets", "deepsec_funnel", "rank_stability"]) {
     const entry = page.locator(".tables li").filter({ hasText: `${name}.csv` });
     const { paper } = readJson<{ paper: string }>(`tables/${name}.meta.json`);
@@ -149,6 +152,52 @@ test("the 2.0 data page links public repository paths and static tables", async 
     const download = await request.get(`/data/2.0/${name}.csv`);
     expect(await download.text()).toBe(readContent(`tables/${name}.csv`));
   }
+});
+
+test("every 2.0 notes download is the stored file byte for byte, with its paper reference", async ({
+  request,
+}) => {
+  const notes = readdirSync(resolve(contentRoot, "tables")).filter((file) =>
+    file.endsWith(".meta.json"),
+  );
+  expect(notes).toHaveLength(18);
+  for (const file of notes) {
+    const download = await request.get(`/data/2.0/${file}`);
+    expect(download.status(), file).toBe(200);
+    const text = await download.text();
+    expect(text, file).toBe(readContent(`tables/${file}`));
+    const meta = JSON.parse(text) as Record<string, unknown>;
+    expect(Object.keys(meta), file).toEqual(expect.arrayContaining(["units", "basis", "paper"]));
+    expect(meta, file).not.toHaveProperty("source_claims");
+  }
+});
+
+test("the 2.0 release page uses the corrected headings, question and table labels", async ({
+  page,
+}) => {
+  await page.goto("/releases/2.0");
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Real vulnerabilities the reference set missed" }),
+  ).toBeVisible();
+  await expect(page.locator("main")).not.toContainText("answer key");
+  await expect(
+    page.getByRole("cell", {
+      name: "What do AI security agents find that SAST does not, and what do they miss that SAST catches?",
+      exact: true,
+    }),
+  ).toHaveCount(1);
+  await expect(
+    page.locator("#values-policy-class-recall th").filter({ hasText: /^All other vulnerabilities$/u }),
+  ).toHaveCount(1);
+  await expect(
+    page.locator("#values-tolerance-sweep th").filter({ hasText: /^±1 line$/u }),
+  ).toHaveCount(1);
+  const notes = await page.locator(".data-table").allTextContents();
+  expect(notes.length).toBeGreaterThan(0);
+  expect(notes.join("\n")).not.toContain("as stated in");
+  await expect(
+    page.getByText("An empty cell means not applicable or unavailable; it never means zero.").first(),
+  ).toBeAttached();
 });
 
 test("the 2.0 explorer selects a view from the URL and keeps every view without JavaScript", async ({

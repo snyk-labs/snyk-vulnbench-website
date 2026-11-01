@@ -149,6 +149,9 @@ claims from it.
   served content and strips internal review keys (`src` tags, claim IDs and
   `source_claims`); the numbers registry, guardrails and checking scripts stay
   in the package.
+- Serve each table and notes download as the stored file's bytes, never a
+  re-serialization, so `/data/<release>/` files can be compared byte for byte
+  with the reviewed package.
 - Render numbers exactly as the imported copy or table cell prints them. Do
   not compute differences, ratios, percentages or rankings in components, and
   do not type numbers into components or tests; tests read the imported files.
