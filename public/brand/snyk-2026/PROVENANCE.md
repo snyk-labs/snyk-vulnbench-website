@@ -29,7 +29,7 @@ be edited or recompressed.
 
 - Source: the Snyk 2026 build's generated `/social/2.0/release.svg` card
 - Role: Snyk VulnBench 2.0 Open Graph preview for unfurlers that do not render SVG
-- Regenerate: run `npm run build && npm run preview`, then
-  `node scripts/rasterise-social-card.mjs http://localhost:4321/social/2.0/release.svg public/brand/snyk-2026/social-2.0.png`
+- Regenerate: serve a Snyk 2026 build with `npm run build && npm run preview`, then
+  run `node scripts/rasterise-social-card.mjs <preview-origin>/social/2.0/release.svg public/brand/snyk-2026/social-2.0.png`
 - Dimensions: 1200 × 630 pixels
 - SHA-256: `a1dece9ee8fe5e2b34caf198c08b428ceb8cd87eb7b83e0a18d7ce78ea2c1da6`
