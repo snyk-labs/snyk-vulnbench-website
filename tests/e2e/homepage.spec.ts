@@ -1,14 +1,15 @@
 import { expect, test, type Page } from "@playwright/test";
-import { firstOf, readV20Copy, v20Home as home } from "./support/v20-copy";
+import { firstOf, heroDisclosure, readV20Copy, v20Home as home } from "./support/v20-copy";
 
 const findings = readV20Copy<{ title: string }[]>("findings.json");
-const disclosure = readV20Copy<{ short: string }>("disclosure.json");
 
 async function expectHomepageEvidence(page: Page) {
   await expect(page.locator("main h1")).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1, name: home.h1 })).toBeVisible();
   await expect(page.getByText(home.subtitle, { exact: true })).toBeVisible();
-  await expect(page.getByText(disclosure.short, { exact: true }).first()).toBeVisible();
+  const disclosure = page.locator(".hero [data-disclosure]");
+  await expect(disclosure).toHaveText(heroDisclosure);
+  await expect(disclosure).not.toContainText(home.eyebrow);
 
   const heroVisual = page.locator(".hero-visual");
   await expect(

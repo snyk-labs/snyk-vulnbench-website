@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import { prepareTheme } from "./support/theme";
+import { heroDisclosure } from "./support/v20-copy";
 
 const contentRoot = resolve(process.cwd(), "src/data/releases/content/2.0");
 const readContent = (path: string) => readFileSync(resolve(contentRoot, path), "utf8");
@@ -138,6 +139,7 @@ test("the 2.0 data page links public repository paths and static tables", async 
   expect(meta.status()).toBe(200);
   const metaText = await meta.text();
   expect(metaText).not.toMatch(/source_claims|\bC-[A-Z0-9]+-\d+/u);
+
 });
 
 test("the 2.0 explorer selects a view from the URL and keeps every view without JavaScript", async ({
@@ -166,7 +168,7 @@ test("the homepage presents 2.0 as current with the short disclosure and both re
 }) => {
   await page.goto("/");
   await expect(page.locator(".release-line")).toContainText("Snyk VulnBench 2.0");
-  await expectBodySizedDisclosure(page, disclosure.short);
+  await expectBodySizedDisclosure(page, heroDisclosure);
   const history = page.locator(".release-note");
   await expect(history).toContainText("Snyk VulnBench 2.0");
   await expect(history).toContainText("Snyk VulnBench JS 1.0");

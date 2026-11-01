@@ -15,7 +15,7 @@ test("frames the hero with the 2.0 copy, Figure 1 and the short disclosure", asy
     "{home.headline_evidence.h2}",
     "{home.headline_evidence.for_appsec}",
     "{home.headline_evidence.dataset_line}",
-    '<Disclosure form="short" />',
+    '<Disclosure form="short" repeats={home.eyebrow} />',
     "<EvidenceStrip items={home.stats} />",
     "<PaperFigure number={1}",
   ]) {

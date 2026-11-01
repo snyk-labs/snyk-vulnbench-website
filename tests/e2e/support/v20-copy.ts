@@ -8,6 +8,7 @@ export function readV20Copy<T>(file: string): T {
 }
 
 export const v20Home = readV20Copy<{
+  eyebrow: string;
   h1: string;
   subtitle: string;
   buttons: string[];
@@ -22,3 +23,9 @@ export function firstOf<T>(items: readonly T[]): T {
   if (item === undefined) throw new Error("Expected at least one 2.0 copy item");
   return item;
 }
+
+/** The short disclosure as the homepage hero shows it, under the heading its first sentence repeats. */
+export const heroDisclosure = readV20Copy<{ short: string }>("disclosure.json").short.replace(
+  `${v20Home.eyebrow}. `,
+  "",
+);
