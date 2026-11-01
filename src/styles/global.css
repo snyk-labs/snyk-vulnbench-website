@@ -174,7 +174,7 @@ html[data-design-theme="snyk-2026"][data-theme="dark"]
 }
 
 html[data-design-theme="snyk-2026"][data-theme="dark"] .citation-source pre {
-  color: var(--ink);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 html[data-design-theme="snyk-2026"][data-theme="dark"] .button {
