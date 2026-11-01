@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { js10Release } from "./js-1.0";
+import { v20Release } from "./2.0";
+import { v20CitationBib } from "./2.0-content";
 import { formatBibtexCitation } from "./citation";
 
 describe("formatBibtexCitation", () => {
@@ -44,6 +46,14 @@ describe("formatBibtexCitation", () => {
 
     expect(result).toContain(
       "title = {50\\% costs \\$5 \\& tags \\#1\\_2 use \\textasciitilde{} and \\textasciicircum{} with \\{braces\\} and \\textbackslash{}backslashes}",
+    );
+  });
+});
+
+describe("published BibTeX entries", () => {
+  it("match the reviewed citation.bib for both releases, 2.0 first", () => {
+    expect(v20CitationBib.trim()).toBe(
+      [formatBibtexCitation(v20Release), formatBibtexCitation(js10Release)].join("\n\n"),
     );
   });
 });

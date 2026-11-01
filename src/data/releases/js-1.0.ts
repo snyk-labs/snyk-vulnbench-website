@@ -29,7 +29,7 @@ export const js10Release = releaseSchema.parse({
   name: releaseName,
   shortName: "JS 1.0",
   publicationState: "public",
-  status: "current",
+  status: "superseded",
   publishedAt: "2026-06-11",
   updatedAt: "2026-06-11",
   datasetVersion,

@@ -3,25 +3,50 @@ import {
   currentRelease,
   getReleaseBySlug,
   publicReleases,
+  releaseStatusLabel,
   releases,
+  requireReleaseBySlug,
 } from "./index";
 import { validationFixtures } from "./fixtures/registry";
+import { js10Release } from "./js-1.0";
 import { releaseCatalogSchema, releaseSchema } from "./schema";
 
 describe("release catalog", () => {
-  it("exposes JS 1.0 as the current repeatability release", () => {
-    expect(currentRelease.slug).toBe("js-1.0");
+  it("exposes Snyk VulnBench 2.0 as the single current release", () => {
+    expect(currentRelease.slug).toBe("2.0");
+    expect(currentRelease.name).toBe("Snyk VulnBench 2.0");
     expect(currentRelease.publicationState).toBe("public");
-    expect(currentRelease.studyType).toBe(
-      "Repeatability and Snyk-reference agreement",
-    );
-    expect(currentRelease.evidence).toEqual({
+    expect(currentRelease.datasetVersion).toBe("2.0.0");
+    expect(currentRelease.publishedAt).toBe("2026-10-28");
+    expect(releases.filter(({ status }) => status === "current")).toEqual([
+      currentRelease,
+    ]);
+    expect(getReleaseBySlug("2.0")).toBe(currentRelease);
+  });
+
+  it("keeps JS 1.0 intact apart from its superseded status", () => {
+    const js10 = requireReleaseBySlug("js-1.0");
+    expect(js10.status).toBe("superseded");
+    expect(js10.studyType).toBe("Repeatability and Snyk-reference agreement");
+    expect(js10.evidence).toEqual({
       scans: 300,
       projects: 10,
       configurations: 6,
       repetitions: 5,
     });
-    expect(getReleaseBySlug("js-1.0")).toBe(currentRelease);
+    expect(js10.links.github).toBe(
+      "https://github.com/snyk-labs/snyk-vulnbench-js-1.0",
+    );
+    expect(() => requireReleaseBySlug("missing")).toThrow(
+      "Unknown release: missing",
+    );
+  });
+
+  it("labels release status with the catalog's own vocabulary", () => {
+    expect(releaseStatusLabel(currentRelease)).toBe("Current release");
+    expect(releaseStatusLabel(requireReleaseBySlug("js-1.0"))).toBe(
+      "Superseded release",
+    );
   });
 
   it("contains unique stable release identifiers and slugs", () => {
@@ -30,7 +55,7 @@ describe("release catalog", () => {
   });
 
   it("keeps internal validation fixtures out of the public catalog", () => {
-    expect(publicReleases.map(({ slug }) => slug)).toEqual(["js-1.0"]);
+    expect(publicReleases.map(({ slug }) => slug)).toEqual(["2.0", "js-1.0"]);
     expect(validationFixtures.map(({ slug }) => slug)).toEqual([
       "synthetic-2.0",
     ]);
@@ -44,7 +69,7 @@ describe("release catalog", () => {
   });
 
   it("rejects metric definitions without a unit", () => {
-    const invalidRelease = structuredClone(currentRelease);
+    const invalidRelease = structuredClone(js10Release);
     const firstMetric = invalidRelease.metrics[0];
     if (!firstMetric) {
       throw new Error("Test fixture must define at least one metric");
@@ -58,7 +83,7 @@ describe("release catalog", () => {
   });
 
   it("rejects non-finite headline values", () => {
-    const invalidRelease = structuredClone(currentRelease);
+    const invalidRelease = structuredClone(js10Release);
     if (invalidRelease.headlineEvidence.kind !== "repeatability") {
       throw new Error("JS 1.0 must expose repeatability headlines");
     }
@@ -68,8 +93,8 @@ describe("release catalog", () => {
   });
 
   it("validates unique dimensions, assets, and metric lineage", () => {
-    expect(currentRelease.dimensions.length).toBeGreaterThan(0);
-    expect(currentRelease.assets).toEqual(
+    expect(js10Release.dimensions.length).toBeGreaterThan(0);
+    expect(js10Release.assets).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           id: "published-evidence",
@@ -78,27 +103,27 @@ describe("release catalog", () => {
       ]),
     );
 
-    const duplicateDimension = structuredClone(currentRelease);
+    const duplicateDimension = structuredClone(js10Release);
     duplicateDimension.dimensions.push(duplicateDimension.dimensions[0]!);
     expect(() => releaseSchema.parse(duplicateDimension)).toThrow(
       "Dimension IDs must be unique",
     );
 
-    const missingDimensions = structuredClone(currentRelease);
+    const missingDimensions = structuredClone(js10Release);
     missingDimensions.dimensions = [];
     expect(() => releaseSchema.parse(missingDimensions)).toThrow();
 
-    const missingAssets = structuredClone(currentRelease);
+    const missingAssets = structuredClone(js10Release);
     missingAssets.assets = [];
     expect(() => releaseSchema.parse(missingAssets)).toThrow();
 
-    const wrongAssetVersion = structuredClone(currentRelease);
+    const wrongAssetVersion = structuredClone(js10Release);
     wrongAssetVersion.assets[0]!.datasetVersion = "9.9.9";
     expect(() => releaseSchema.parse(wrongAssetVersion)).toThrow(
       "Asset versions must match the release dataset version",
     );
 
-    const contradictory = structuredClone(currentRelease);
+    const contradictory = structuredClone(js10Release);
     const lineage = contradictory.compatibility.metricLineage[0]!;
     lineage.compatibleWith = ["same-lineage"];
     lineage.incompatibleWith = ["same-lineage"];
