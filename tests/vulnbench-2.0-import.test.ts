@@ -54,7 +54,11 @@ describe("Snyk VulnBench 2.0 content import", () => {
     expect(names).toContain("figures.json");
     expect(names).toContain("colours.json");
     expect(names).toContain("citation.bib");
-    expect(names.filter((name) => name.endsWith(".csv"))).toHaveLength(15);
+    expect(names.filter((name) => name.endsWith(".csv"))).toHaveLength(18);
+    for (const table of ["sol_sink_offsets", "deepsec_funnel", "rank_stability"]) {
+      expect(names).toContain(`tables/${table}.csv`);
+      expect(names).toContain(`tables/${table}.meta.json`);
+    }
     expect(names.some((name) => /site-numbers|guardrails|README|allow-list|\.py$/iu.test(name))).toBe(false);
 
     for (const file of files) {

@@ -1,0 +1,11 @@
+offset_bin_lines,bin_lo,bin_hi,reported_location_is_a_source,missed_sinks
+≤−21,,-21,true,0
+≤−21,,-21,false,1
+−20…−11,-20,-11,true,1
+−20…−11,-20,-11,false,8
+−10…−6,-10,-6,true,9
+−10…−6,-10,-6,false,15
+−5…−3,-5,-3,true,6
+−5…−3,-5,-3,false,15
+≥+3,2,,true,0
+≥+3,2,,false,2

@@ -59,7 +59,7 @@ describe("Snyk VulnBench 2.0 release manifest", () => {
   });
 
   it("publishes every table as a versioned CSV asset", () => {
-    expect(v20Tables).toHaveLength(15);
+    expect(v20Tables).toHaveLength(18);
     expect(v20Release.assets.map(({ path }) => path)).toEqual(
       v20Tables.map(({ name }) => `/data/2.0/${name}.csv`),
     );
