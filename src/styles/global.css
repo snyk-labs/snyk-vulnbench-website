@@ -144,20 +144,6 @@ html[data-design-theme="snyk-2026"][data-theme="dark"] .eyebrow {
   color: rgba(255, 255, 255, 0.5);
 }
 
-html[data-design-theme="snyk-2026"][data-theme="dark"]
-  .evidence-band
-  .band-heading
-  .eyebrow {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-html[data-design-theme="snyk-2026"][data-theme="dark"]
-  .evidence-band
-  .observation.matched
-  .metric {
-  color: var(--theme-matched-text);
-}
-
 html[data-design-theme="snyk-2026"][data-theme="dark"] a {
   color: rgba(255, 255, 255, 0.78);
   text-decoration-color: #6F00DD;
