@@ -105,6 +105,47 @@ describe("Snyk VulnBench 2.0 evidence tables", () => {
     expect(control?.caption).toContain("single run, 19 of the 20 applications");
   });
 
+  test("gives Figures 7, 9 and 12 their exact-value tables", () => {
+    for (const figure of [7, 9, 12]) {
+      expect(figureTableSpecs(figure)[0]?.table, `Figure ${figure}`).toBeDefined();
+    }
+  });
+
+  test("shows the Codex Security with GPT-5.6 Sol sink offsets by bin", () => {
+    const [offsets] = figureTableSpecs(7);
+    expect(offsets?.caption).toContain("Codex Security · GPT-5.6 Sol");
+    expect(rendered(offsets!)).toEqual([
+      ["≤−21", "0", "1"],
+      ["−20…−11", "1", "8"],
+      ["−10…−6", "9", "15"],
+      ["−5…−3", "6", "15"],
+      ["≥+3", "0", "2"],
+    ]);
+  });
+
+  test("keeps DeepSec's localized-recall note beside the Figure 9 table", () => {
+    const [stages, languages] = figureTableSpecs(9);
+    expect(stages?.note).toBe(
+      "Localized recall is DeepSec's primary metric and is not comparable with Attacker-Reachable Vulnerability Recall.",
+    );
+    expect(rendered(stages!)).toContainEqual(["Localized match, Opus 5 xhigh backend", "37 of 56"]);
+    expect(rendered(stages!)[0]).toEqual(["Reference vulnerabilities", "108"]);
+    expect(rendered(languages!)).toContainEqual(["Java", "12 of 12"]);
+  });
+
+  test("ranks every endpoint-aware configuration under each scoring rule", () => {
+    const [ranks] = figureTableSpecs(12);
+    expect(ranks?.rows).toHaveLength(21);
+    expect(ranks?.columns.map(({ label }) => label)).toEqual([
+      "Scoring rule",
+      ...v20Configurations
+        .filter(({ metric }) => metric === "ar_recall")
+        .map(({ display_name }) => display_name),
+      "Kendall's τ",
+    ]);
+    expect(rendered(ranks!)[0]?.[0]).toBe("Endpoint rule, ±2 lines (used for all results)");
+  });
+
   test("never shows a cost as zero", () => {
     for (const spec of figureTableSpecs(10)) {
       for (const cells of rendered(spec)) {

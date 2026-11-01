@@ -4,6 +4,7 @@ import {
   inPaperOrder,
   isEndpointAware,
   v20Configurations,
+  v20Copy,
   type V20Table,
 } from "../../data/releases/2.0-content";
 import { configurationColour } from "./configuration-style";
@@ -355,6 +356,104 @@ const toleranceLabel = (tolerance: string) =>
         ? "±2 lines (used for results)"
         : `±${tolerance} lines`;
 
+function pivotBy(rows: Row[], rowKey: string, columnKey: string, value: (row: Row) => string) {
+  const pivoted = new Map<string, Row>();
+  for (const row of rows) {
+    const id = row[rowKey] ?? "";
+    const record = pivoted.get(id) ?? { [rowKey]: id };
+    record[row[columnKey] ?? ""] = value(row);
+    pivoted.set(id, record);
+  }
+  return [...pivoted.values()];
+}
+
+const columnNote = (table: V20Table, key: string) => {
+  const columns = table.meta.columns as Record<string, unknown> | undefined;
+  const text = columns?.[key];
+  if (typeof text !== "string") throw new Error(`No column note for ${table.name}: ${key}`);
+  return sentenceCase(text);
+};
+
+function sinkOffsetSpec(): TableSpec {
+  const table = getV20Table("sol_sink_offsets");
+  return {
+    id: "sol-sink-offsets",
+    caption: `${getV20Configuration("codex-security-sol-xhigh").display_name} · missed curated sinks with a reported location in the same file`,
+    table,
+    note: `Offset: ${columnNote(table, "offset_bin_lines")}.`,
+    rows: pivotBy(table.rows, "offset_bin_lines", "reported_location_is_a_source", (row) =>
+      row.missed_sinks ?? "",
+    ),
+    groups: [
+      { label: "Offset", span: 1 },
+      { label: "Missed curated sinks", span: 2 },
+    ],
+    columns: [
+      { key: "offset_bin_lines", label: "Offset in lines", rowHeader: true },
+      { key: "true", label: "Reported location is a curated source", numeric: true },
+      { key: "false", label: "Reported location is not a curated source", numeric: true },
+    ],
+  };
+}
+
+const releaseSectionBoundary = (figure: number) => {
+  const boundary = v20Copy.releasePage.find((section) => section.figure === figure)?.boundary;
+  if (!boundary) throw new Error(`No boundary note for Figure ${figure}`);
+  return boundary;
+};
+
+function deepSecFunnelSpecs(): TableSpec[] {
+  const table = getV20Table("deepsec_funnel");
+  const counted = (row: Row) => (row.of ? ofTotal(row.count ?? "", row.of) : (row.count ?? ""));
+  return [
+    {
+      id: "deepsec-funnel",
+      caption: "DeepSec · from the reference set through the scan stage to localized matches",
+      table,
+      note: releaseSectionBoundary(9),
+      rows: table.rows.filter((row) => row.language_family === "all"),
+      columns: [
+        { key: "stage", label: "Stage", rowHeader: true, display: (row) => sentenceCase(row.stage ?? "") },
+        { key: "count", label: "Vulnerabilities", numeric: true, display: counted },
+      ],
+    },
+    {
+      id: "deepsec-candidates-by-language",
+      caption: "DeepSec · a flow file among the scan stage's candidates, by language family",
+      rows: table.rows.filter((row) => row.language_family !== "all"),
+      columns: [
+        { key: "language_family", label: "Language family", rowHeader: true },
+        { key: "count", label: "Vulnerabilities", numeric: true, display: counted },
+      ],
+    },
+  ];
+}
+
+function rankStabilitySpec(): TableSpec {
+  const table = getV20Table("rank_stability");
+  return {
+    id: "rank-stability",
+    caption: "Rank of each endpoint-aware configuration by macro recall under each scoring rule · DeepSec excluded",
+    table,
+    note: `Rank: ${columnNote(table, "<config_id>")}. Kendall's τ: ${columnNote(table, "kendall_tau")}.`,
+    rows: table.rows,
+    groups: [
+      { label: "Scoring rule", span: 1 },
+      { label: "Rank by macro recall", span: endpointAware.length },
+      { label: "Agreement", span: 1 },
+    ],
+    columns: [
+      { key: "scoring_rule", label: "Scoring rule", rowHeader: true },
+      ...endpointAware.map(({ config_id, display_name }) => ({
+        key: config_id,
+        label: display_name,
+        numeric: true,
+      })),
+      { key: "kendall_tau", label: "Kendall's τ", numeric: true },
+    ],
+  };
+}
+
 function toleranceSpec(): TableSpec {
   const table = getV20Table("tolerance_sweep");
   const pivot = pivotByConfiguration(table.rows, "tolerance_lines", (row) => row.matched ?? "");
@@ -596,9 +695,12 @@ const FIGURE_TABLES: Record<number, () => TableSpec[]> = {
   4: () => [flowShapeSpec()],
   5: () => [triageSpec()],
   6: () => [policyRecallSpec(), policyDetailSpec(), policyControlSpec()],
+  7: () => [sinkOffsetSpec()],
   8: () => [toleranceSpec()],
+  9: deepSecFunnelSpecs,
   10: efficiencySpecs,
   11: efficiencySpecs,
+  12: () => [rankStabilitySpec()],
   13: () => [corpusSpec()],
 };
 
