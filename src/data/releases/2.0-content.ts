@@ -289,6 +289,7 @@ export interface V20Table {
   columns: string[];
   rows: Record<string, string>[];
   csv: string;
+  metaJson: string;
   meta: Record<string, unknown> & { empty_cells?: string; basis?: string; paper?: string };
 }
 
@@ -297,22 +298,24 @@ const tableSources = import.meta.glob<string>("./content/2.0/tables/*.csv", {
   import: "default",
   eager: true,
 });
-const tableMeta = import.meta.glob<Record<string, unknown>>(
-  "./content/2.0/tables/*.meta.json",
-  { import: "default", eager: true },
-);
+const tableMeta = import.meta.glob<string>("./content/2.0/tables/*.meta.json", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
 
 export const v20Tables: V20Table[] = Object.entries(tableSources)
   .map(([path, csv]) => {
     const name = path.replace(/^.*\/(.+)\.csv$/u, "$1");
     const [columns = [], ...records] = parseCsv(csv);
-    const meta = tableMeta[`./content/2.0/tables/${name}.meta.json`];
-    if (!meta) throw new Error(`Missing notes file for ${name}.csv`);
+    const metaJson = tableMeta[`./content/2.0/tables/${name}.meta.json`];
+    if (!metaJson) throw new Error(`Missing notes file for ${name}.csv`);
     return {
       name,
       columns,
       csv,
-      meta,
+      metaJson,
+      meta: JSON.parse(metaJson) as V20Table["meta"],
       rows: records.map((record) => {
         if (record.length !== columns.length) {
           throw new Error(`${name}.csv has a row with ${record.length} cells`);

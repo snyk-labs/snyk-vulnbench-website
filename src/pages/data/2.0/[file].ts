@@ -13,7 +13,7 @@ export const GET: APIRoute = ({ params }) => {
   const file = params.file ?? "";
   const isCsv = file.endsWith(".csv");
   const table = getV20Table(file.replace(/\.(csv|meta\.json)$/u, ""));
-  const body = isCsv ? table.csv : `${JSON.stringify(table.meta, null, 2)}\n`;
+  const body = isCsv ? table.csv : table.metaJson;
 
   return new Response(body, {
     headers: {

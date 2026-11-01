@@ -5,7 +5,7 @@
     {
       "aspect": "Question",
       "js10": "Can LLMs find the same bugs twice? Repeatability and agreement.",
-      "v20": "What do AI security agents find that SAST does not, and what do they miss?"
+      "v20": "What do AI security agents find that SAST does not, and what do they miss that SAST catches?"
     },
     {
       "aspect": "Fixtures",

@@ -65,6 +65,27 @@ describe("Snyk VulnBench 2.0 release manifest", () => {
     );
   });
 
+  it("carries the corrected empty-cell note and paper references in every notes file", () => {
+    for (const { name, meta } of v20Tables) {
+      expect(meta.empty_cells, name).toBe(
+        "An empty cell means not applicable or unavailable; it never means zero.",
+      );
+      expect(meta, name).toHaveProperty("units");
+      expect(meta, name).toHaveProperty("basis");
+      expect(meta.paper, name).toMatch(/\S/u);
+      expect(meta, name).not.toHaveProperty("source_claims");
+    }
+  });
+
+  it("uses the corrected 2.0 question and reference-set wording", () => {
+    expect(v20Copy.differs.rows.find(({ aspect }) => aspect === "Question")?.v20).toBe(
+      "What do AI security agents find that SAST does not, and what do they miss that SAST catches?",
+    );
+    const outside = v20Copy.releasePage.find(({ id }) => id === "outside");
+    expect(outside?.h2).toBe("Real vulnerabilities the reference set missed");
+    expect(JSON.stringify(v20Copy)).not.toContain("answer key");
+  });
+
   it("keeps findings in the paper's order with their caveats", () => {
     expect(v20Copy.findings.map(({ id }) => id)).toEqual([
       "complementarity",
