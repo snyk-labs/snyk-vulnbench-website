@@ -193,6 +193,11 @@
   --space-7: 3.75rem;
   --space-8: 5.5rem;
 
+  /* Paper figure colours from the Snyk VulnBench 2.0 release (colours.json). */
+  --figure-purple: #6f00dd;
+  --figure-orange: #f3552e;
+  --figure-pink: #ff00ff;
+
   --content: 74rem;
   --reading: 46rem;
   --radius: 0.35rem;
