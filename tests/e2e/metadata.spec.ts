@@ -35,6 +35,16 @@ test("publishes canonical social metadata", async ({ page, request }) => {
   expect(favicon.headers()["content-type"]).toContain("image/svg+xml");
 });
 
+test("shared pages outside JS 1.0 never preview with the JS 1.0 card", async ({ page }) => {
+  for (const path of ["/privacy", "/about", "/releases", "/data", "/methodology"]) {
+    await page.goto(path);
+    await expect(page.locator('meta[property="og:image"]'), path).toHaveAttribute(
+      "content",
+      "https://vulnbench.com/social/2.0/release.svg",
+    );
+  }
+});
+
 test("publishes scholarly article, dataset, and citation metadata", async ({
   page,
 }) => {

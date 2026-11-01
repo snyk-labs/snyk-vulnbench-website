@@ -833,7 +833,7 @@ test("publishes branded favicon and default social metadata assets", async ({
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
-    "https://vulnbench.com/brand/snyk-2026/social.png",
+    "https://vulnbench.com/brand/snyk-2026/social-2.0.png",
   );
   await expect(page.locator('meta[property="og:image:type"]')).toHaveAttribute(
     "content",
