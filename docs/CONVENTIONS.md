@@ -136,3 +136,36 @@ performance capture, replay, surveys, feature flags, exceptions, and page
 leaves. Send only origin-plus-path page views; remove query strings, fragments,
 and referrers. Publish the static privacy disclosure and verify both sanitized
 network payloads and the absence of PostHog requests with JavaScript disabled.
+
+## Release copy and published numbers
+
+A release's narrative claims and numbers are reviewed outside this repository
+before launch. The site reproduces that reviewed record; it never derives new
+claims from it.
+
+- Import release copy, tables and figures with the release's import script
+  (for 2.0, `node scripts/import-vulnbench-2.0.mjs --handoff <extracted-package-dir>`).
+  Keep the handoff package outside the repository. The importer copies only
+  served content and strips internal review keys (`src` tags, claim IDs and
+  `source_claims`); the numbers registry, guardrails and checking scripts stay
+  in the package.
+- Render numbers exactly as the imported copy or table cell prints them. Do
+  not compute differences, ratios, percentages or rankings in components, and
+  do not type numbers into components or tests; tests read the imported files.
+- Keep wording as imported. Presentation may split lines, choose which body
+  lines a card shows, or shorten headings without changing meaning; record any
+  added interface label as a deviation for review.
+- Previous releases keep their URLs, pages, data and citations. A new release
+  changes only the previous release's status label; global navigation and the
+  footer move to the current release.
+- Verify with the package's number checker against built output, a search of
+  the build for claim IDs, and a normalized diff of previous-release pages and
+  data against `main` that ignores only the shared header and footer.
+
+## Social previews
+
+External unfurlers do not reliably render SVG. In the Snyk 2026 build, every
+page's `og:image` is a 1200 × 630 PNG; generated SVG cards remain available as
+sources. Rasterize a new card from the served build with
+`scripts/rasterise-social-card.mjs`, record its provenance and checksum, and
+assert the PNG's dimensions and size in unit tests.

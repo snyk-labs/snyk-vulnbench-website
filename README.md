@@ -2,13 +2,16 @@
 
 This repository contains the interactive static website for the Snyk VulnBench benchmark initiative. The website will centralize published VulnBench releases, research insights, methodology, benchmark data, and interactive comparisons.
 
-The initial release will showcase [Snyk VulnBench JS 1.0](https://snyk.io/blog/snyk-vulnbench-js-1-0-llm-security-review-repeatability/) and provide a foundation for VulnBench 2.0 and later iterations.
+The current release is Snyk VulnBench 2.0, published at `/releases/2.0/`. The
+previous release, [Snyk VulnBench JS 1.0](https://snyk.io/blog/snyk-vulnbench-js-1-0-llm-security-review-repeatability/),
+keeps its stable URLs under `/releases/js-1.0/`.
 
 ## Project status
 
 The Phase 1 static research narrative, Phase 2 configurable benchmark explorer,
 and Phase 3 finding/project evidence depth are implemented. Phase 4 validates
-the release system with a non-public synthetic second release fixture.
+the release system with a non-public synthetic second release fixture. Snyk
+VulnBench 2.0 is the first additional public release.
 
 ## Project documentation
 
@@ -17,6 +20,8 @@ the release system with a non-public synthetic second release fixture.
 - [Snyk 2026 brand design](docs/superpowers/specs/2026-08-05-snyk-2026-brand-theme-design.md)
 - [Snyk and Light defaults design](docs/superpowers/specs/2026-08-06-snyk-light-defaults-design.md)
 - [Coding-agent and development guidance](AGENTS.md)
+- [Release copy and published-number conventions](docs/CONVENTIONS.md#release-copy-and-published-numbers)
+- [Published VulnBench 2.0 paper](https://arxiv.org/abs/2610.38617)
 - [Published VulnBench JS 1.0 paper](https://arxiv.org/abs/2606.15762)
 
 ## Design deployment
