@@ -140,6 +140,14 @@ test("the 2.0 data page links public repository paths and static tables", async 
   const metaText = await meta.text();
   expect(metaText).not.toMatch(/source_claims|\bC-[A-Z0-9]+-\d+/u);
 
+  await page.goto("/data/2.0/");
+  for (const name of ["pairwise_union", "sol_sink_offsets", "deepsec_funnel", "rank_stability"]) {
+    const entry = page.locator(".tables li").filter({ hasText: `${name}.csv` });
+    const { paper } = readJson<{ paper: string }>(`tables/${name}.meta.json`);
+    await expect(entry.locator("dd").filter({ hasText: paper })).toHaveText(paper);
+    const download = await request.get(`/data/2.0/${name}.csv`);
+    expect(await download.text()).toBe(readContent(`tables/${name}.csv`));
+  }
 });
 
 test("the 2.0 explorer selects a view from the URL and keeps every view without JavaScript", async ({

@@ -12,6 +12,7 @@ const tables = v20Tables.map((table) => ({
   name: table.name,
   basis: typeof table.meta.basis === "string" ? table.meta.basis : "",
   units: typeof table.meta.units === "string" ? table.meta.units : "",
+  paper: typeof table.meta.paper === "string" ? table.meta.paper : "",
 }));
 ---
 
@@ -36,17 +37,21 @@ const tables = v20Tables.map((table) => ({
       <p class="empty-cells">{v20Tables[0]?.meta.empty_cells}</p>
       <ol class="tables">
         {
-          tables.map(({ name, basis, units }) => (
+          tables.map(({ name, basis, units, paper }) => (
             <li>
               <h2>{name}.csv</h2>
               <dl>
                 <div>
-                  <dt>Basis</dt>
+                  <dt>Basis</dt>{" "}
                   <dd>{basis}</dd>
                 </div>
                 <div>
-                  <dt>Units</dt>
+                  <dt>Units</dt>{" "}
                   <dd>{units}</dd>
+                </div>
+                <div>
+                  <dt>Paper</dt>{" "}
+                  <dd>{paper}</dd>
                 </div>
               </dl>
               <p class="links">
