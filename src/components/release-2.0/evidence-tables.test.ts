@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 import {
   getV20Configuration,
   v20Configurations,
+  v20Copy,
   v20Tables,
 } from "../../data/releases/2.0-content";
 import {
@@ -30,6 +31,16 @@ const rendered = (spec: TableSpec) =>
       column.display ? column.display(row) : (row[column.key] ?? ""),
     ),
   );
+
+const strings = (value: unknown): string[] =>
+  typeof value === "string"
+    ? [value]
+    : Array.isArray(value)
+      ? value.flatMap(strings)
+      : value && typeof value === "object"
+        ? Object.values(value).flatMap(strings)
+        : [];
+const copyStrings = new Set(strings(v20Copy));
 
 const deepSecNames = v20Configurations
   .filter(({ metric }) => metric === "localized_recall")
@@ -99,10 +110,29 @@ describe("Snyk VulnBench 2.0 evidence tables", () => {
     expect(rendered(endpointAware!)[0]?.[1]).toBe("82.4% (89 of 108)");
   });
 
-  test("labels the supplementary control with its scope", () => {
+  test("labels the supplementary control as a single run kept out of the main results", () => {
     const control = figureTableSpecs(6).find(({ id }) => id === "policy-control-supplementary");
     expect(control?.caption).toContain("Supplementary");
-    expect(control?.caption).toContain("single run, 19 of the 20 applications");
+    expect(control?.caption).toContain("single run");
+    expect(control?.caption).toContain("never merged into the main results");
+  });
+
+  test("keeps numbers, claims and rankings out of interface labels", () => {
+    for (const spec of allSpecs) {
+      const dataValues = new Set(spec.table?.rows.flatMap((row) => Object.values(row)) ?? []);
+      const labels = [
+        spec.caption,
+        ...(spec.groups ?? []).map(({ label }) => label),
+        ...spec.columns.filter(({ key }) => !dataValues.has(key)).map(({ label }) => label),
+      ].filter((label) => !copyStrings.has(label));
+      for (const label of labels) {
+        const withoutNames = v20Configurations
+          .map(({ display_name }) => display_name)
+          .reduce((text, name) => text.replaceAll(name, ""), label)
+          .replace(/Opus 5|GPT-5\.6|Sonnet 5/gu, "");
+        expect(withoutNames, `${spec.id}: ${label}`).not.toMatch(/\d|most |best|better|worse|leads?\b/u);
+      }
+    }
   });
 
   test("gives Figures 7, 9 and 12 their exact-value tables", () => {

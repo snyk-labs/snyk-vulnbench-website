@@ -98,6 +98,7 @@ test("the 2.0 methodology page lists both releases' context and the disclosure",
   await expect(page.getByRole("heading", { name: "What the protocol cannot establish" })).toBeVisible();
   await expect(page.locator("#metrics dt")).toHaveCount(9);
   await expect(page.getByRole("table", { name: /Reference vulnerabilities by language family/u })).toBeVisible();
+  await expect(page.locator("#terms .eyebrow")).toHaveText("Terms");
 });
 
 test("2.0 pages carry scholarly citation metadata", async ({ page }) => {

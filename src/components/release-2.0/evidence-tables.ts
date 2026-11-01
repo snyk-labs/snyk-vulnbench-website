@@ -326,7 +326,7 @@ function policyControlSpec(): TableSpec {
   return {
     id: "policy-control-supplementary",
     caption:
-      "Supplementary prompt-swap control · single run, 19 of the 20 applications · never merged into the main results",
+      "Supplementary prompt-swap control · single run · never merged into the main results",
     table,
     rows: table.rows,
     columns: [
@@ -339,7 +339,7 @@ function policyControlSpec(): TableSpec {
       },
       {
         key: "security_review_matched",
-        label: "Main run: Claude Code /security-review · Opus 5 xhigh, same 19 applications",
+        label: `Main run: ${getV20Configuration("opus-5-xhigh-security-review").display_name}, same applications`,
         numeric: true,
         display: (row) => ofTotal(row.security_review_matched ?? "", row.n ?? ""),
       },
@@ -460,7 +460,7 @@ function toleranceSpec(): TableSpec {
   return {
     id: "tolerance-sweep",
     caption:
-      "Vulnerabilities matched against line tolerance · endpoint rule; only ±2 lines is used for results; DeepSec excluded",
+      "Vulnerabilities matched against line tolerance · endpoint rule; DeepSec excluded",
     table,
     rows: pivot.rows,
     groups: [
@@ -496,7 +496,7 @@ const costColumns: DataColumn[] = [
 const wallTimeColumns: DataColumn[] = [
   {
     key: "wall_time_total",
-    label: "Wall time, total over 20 applications",
+    label: "Wall time, total",
     numeric: true,
     display: (row) =>
       row.config_id === "snyk-code"
@@ -636,8 +636,9 @@ export function classRecallSpec(): TableSpec {
   });
   return {
     id: "class-recall",
-    caption: "Matched vulnerabilities by class · endpoint-aware configurations; most classes are small",
+    caption: "Matched vulnerabilities by class · endpoint-aware configurations",
     table,
+    note: `${sentenceCase(table.meta.basis ?? "")}.`,
     rows,
     columns: [
       { key: "class", label: "Class", rowHeader: true, display: (row) => classLabel(row.class ?? "") },
