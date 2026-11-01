@@ -3,8 +3,17 @@
 import { isSnyk2026Design } from "../../config/design-theme";
 /* snyk-2026-audit:end */
 import { currentRelease } from "../../data/releases";
+import { v20Copy } from "../../data/releases/2.0-content";
+import DataTable from "../release-2.0/DataTable.astro";
+import Disclosure from "../release-2.0/Disclosure.astro";
+import PaperFigure from "../release-2.0/PaperFigure.astro";
+import { scorecardSpecs } from "../release-2.0/evidence-tables";
 import BrandFabric from "../site/BrandFabric.astro";
 import EvidenceStrip from "./EvidenceStrip.astro";
+
+const { home } = v20Copy;
+const [releaseKicker, releaseName] = home.current_release_label.split(" · ");
+const [exploreLabel, paperLabel, methodologyLabel, dataLabel] = home.buttons;
 ---
 
 <section class="hero">
@@ -20,51 +29,45 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   <div class="hero-grid container">
     <div class="hero-copy">
       <div class="release-line">
-        <span class="release-kicker">Current release</span>
-        <span>{currentRelease.name}</span>
+        <span class="release-kicker">{releaseKicker}</span>
+        <a href={currentRelease.links.overview}>{releaseName}</a>
       </div>
 
-      <p class="eyebrow">A Snyk benchmark initiative</p>
-      <h1>{currentRelease.researchQuestion}</h1>
-      <p class="study-label">
-        A repeatability and Snyk-reference agreement study
-      </p>
-      <p class="lede">
-        We ran the same agentic security review five times against inspectable
-        JavaScript projects to measure what recurs, what varies, and how model
-        findings align with a deterministic Snyk Code reference set.
-      </p>
+      <p class="eyebrow">{home.eyebrow}</p>
+      <h1>{home.h1}</h1>
+      <p class="study-label">{home.subtitle}</p>
+      <p class="lede">{home.lede}</p>
 
       <div class="button-row">
-        <a class="button" href={currentRelease.links.explore}
-          >Explore the results</a
-        >
-        <a class="button secondary" href={currentRelease.links.paper}
-          >Read the paper</a
-        >
+        <a class="button" href={currentRelease.links.explore}>{exploreLabel}</a>
+        <a class="button secondary" href={currentRelease.links.paper}>{paperLabel}</a>
       </div>
 
       <div class="secondary-links">
-        <a href={currentRelease.links.methodology}>View methodology</a>
-        <a href={currentRelease.links.data}>Download data</a>
+        <a href={currentRelease.links.methodology}>{methodologyLabel}</a>
+        <a href={currentRelease.links.data}>{dataLabel}</a>
       </div>
 
-      <EvidenceStrip evidence={currentRelease.evidence} />
+      <Disclosure form="short" />
+
+      <EvidenceStrip items={home.stats} />
     </div>
 
     <div class="hero-visual">
       <div class="visual-heading">
         <div>
-          <p class="eyebrow">Headline evidence · 5 identical reviews</p>
-          <h2>Same review. Different results.</h2>
+          <p class="eyebrow">{home.headline_evidence.kicker}</p>
+          <h2>{home.headline_evidence.h2}</h2>
         </div>
-        <span class="metric">JS 1.0</span>
+        <span class="metric">2.0</span>
       </div>
-      <p class="visual-scope">
-        {currentRelease.evidence.scans} scans · {currentRelease.evidence.projects}
-        projects · {currentRelease.evidence.configurations} configurations
-      </p>
-      <slot />
+      <PaperFigure number={1} scheme={isSnyk2026Design ? "dark" : "auto"} loading="eager" />
+      <ul class="callouts">
+        {home.headline_evidence.callouts.map((callout) => <li>{callout}</li>)}
+      </ul>
+      <p class="for-appsec">{home.headline_evidence.for_appsec}</p>
+      <p class="visual-scope">{home.headline_evidence.dataset_line}</p>
+      {scorecardSpecs().map((spec) => <DataTable {...spec} id={`hero-${spec.id}`} />)}
     </div>
   </div>
 </section>
@@ -125,8 +128,8 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   }
 
   :global(html[data-design-theme="snyk-2026"]) .hero h1 {
-    max-width: 13ch;
-    font-size: clamp(2.25rem, 5.4vw, 4.75rem);
+    max-width: 20ch;
+    font-size: clamp(2rem, 3.8vw, 3.4rem);
     font-weight: 700;
     letter-spacing: -0.045em;
     line-height: 0.98;
@@ -195,7 +198,8 @@ import EvidenceStrip from "./EvidenceStrip.astro";
   }
 
   h1 {
-    max-width: 13ch;
+    max-width: 22ch;
+    font-size: var(--step-3);
   }
 
   .study-label {
@@ -244,8 +248,39 @@ import EvidenceStrip from "./EvidenceStrip.astro";
     white-space: nowrap;
   }
 
+  .hero-visual {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-4);
+  }
+
+  .hero-visual > :global(*) {
+    min-width: 0;
+  }
+
+  .hero-visual :global(.paper-figure) {
+    margin: 0;
+  }
+
+  .visual-heading {
+    padding-bottom: 0;
+  }
+
+  .callouts {
+    display: grid;
+    padding-left: 1.1rem;
+    margin: 0;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+  }
+
+  .for-appsec {
+    padding-left: var(--space-3);
+    border-left: 0.2rem solid var(--warning);
+    font-size: var(--step--1);
+  }
+
   .visual-scope {
-    margin: calc(var(--space-4) * -1) 0 var(--space-4);
     color: var(--ink-faint);
     font-family: var(--font-mono);
     font-size: 0.7rem;
