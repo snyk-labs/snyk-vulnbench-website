@@ -4,12 +4,13 @@ import ReleaseMeta from "../../components/site/ReleaseMeta.astro";
 import { releaseStatusLabel, releases } from "../../data/releases";
 import { v20Copy } from "../../data/releases/2.0-content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../config/design-theme";
 ---
 
 <BaseLayout
   title="Releases"
   description="Versioned Snyk VulnBench benchmark releases, research questions, datasets, and publication status."
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
 >
   <PageHero
     eyebrow="Release catalog"

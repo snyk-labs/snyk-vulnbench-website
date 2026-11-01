@@ -44,6 +44,7 @@ describe("design-theme browser metadata", () => {
     expect(designThemeAssets.classic).toEqual({
       favicon: "/favicon.svg",
       defaultSocialImage: "/social/vulnbench-default.svg",
+      release20SocialImage: "/social/2.0/release.svg",
     });
   });
 
@@ -55,6 +56,7 @@ describe("design-theme browser metadata", () => {
     expect(designThemeAssets["snyk-2026"]).toEqual({
       favicon: "/brand/snyk-2026/favicon.svg",
       defaultSocialImage: "/brand/snyk-2026/social.png",
+      release20SocialImage: "/brand/snyk-2026/social-2.0.png",
     });
   });
 });

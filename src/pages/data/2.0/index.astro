@@ -3,6 +3,7 @@ import PageHero from "../../../components/site/PageHero.astro";
 import { requireReleaseBySlug } from "../../../data/releases";
 import { v20Copy, v20Tables } from "../../../data/releases/2.0-content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
 
 const release = requireReleaseBySlug("2.0");
 const tablesDownload = v20Copy.data.downloads.find(({ href }) => href === "/data/2.0/");
@@ -17,7 +18,7 @@ const tables = v20Tables.map((table) => ({
 <BaseLayout
   title="2.0 evidence tables"
   description={tablesDownload.text}
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
 >
   <PageHero
     eyebrow="2.0 · Data"

@@ -5,6 +5,7 @@ import { requireReleaseBySlug } from "../../../data/releases";
 import { getV20Table, v20Copy } from "../../../data/releases/2.0-content";
 import { v20CorrectionHistory } from "../../../data/releases/corrections";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
 
 const release = requireReleaseBySlug("2.0");
 const { data, home } = v20Copy;
@@ -24,7 +25,7 @@ const provenanceRows = [
 <BaseLayout
   title="2.0 Data"
   description={data.h1}
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
   release={release}
 >
   <PageHero

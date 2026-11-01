@@ -10,6 +10,7 @@ import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
 import { releaseStatusLabel, requireReleaseBySlug } from "../../../data/releases";
 import { v20Copy } from "../../../data/releases/2.0-content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
 
 const release = requireReleaseBySlug("2.0");
 const { home, releaseCard, releasePage } = v20Copy;
@@ -19,7 +20,7 @@ const mutedSections = new Set(["design", "main-result", "flow-shape", "outside",
 <BaseLayout
   title={release.name}
   description={releaseCard.summary}
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
   release={release}
 >
   <PageHero

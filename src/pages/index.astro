@@ -5,12 +5,13 @@ import PublicationBlock from "../components/home/PublicationBlock.astro";
 import ResearchPrinciples from "../components/home/ResearchPrinciples.astro";
 import { v20Copy } from "../data/releases/2.0-content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../config/design-theme";
 ---
 
 <BaseLayout
   title="Snyk VulnBench"
   description={v20Copy.releaseCard.summary}
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
 >
   <Hero />
   <KeyFindings />

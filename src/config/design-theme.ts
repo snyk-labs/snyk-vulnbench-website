@@ -5,16 +5,19 @@ export type DesignTheme = (typeof designThemes)[number];
 export interface DesignThemeAssets {
   favicon: string;
   defaultSocialImage: string;
+  release20SocialImage: string;
 }
 
 export const designThemeAssets: Record<DesignTheme, DesignThemeAssets> = {
   classic: {
     favicon: "/favicon.svg",
     defaultSocialImage: "/social/vulnbench-default.svg",
+    release20SocialImage: "/social/2.0/release.svg",
   },
   "snyk-2026": {
     favicon: "/brand/snyk-2026/favicon.svg",
     defaultSocialImage: "/brand/snyk-2026/social.png",
+    release20SocialImage: "/brand/snyk-2026/social-2.0.png",
   },
 };
 
@@ -37,3 +40,5 @@ export const designTheme = resolveDesignTheme(
 );
 
 export const isSnyk2026Design = designTheme === "snyk-2026";
+
+export const release20SocialImage = designThemeAssets[designTheme].release20SocialImage;

@@ -2,6 +2,7 @@
 import PageHero from "../components/site/PageHero.astro";
 import { releaseStatusLabel, releases } from "../data/releases";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../config/design-theme";
 
 const principles = [
   {
@@ -30,7 +31,7 @@ const principles = [
 <BaseLayout
   title="Methodology"
   description="Initiative-level methodology principles and release-specific benchmark protocols for Snyk VulnBench."
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
 >
   <PageHero
     eyebrow="Initiative methodology"

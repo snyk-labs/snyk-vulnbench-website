@@ -12,6 +12,7 @@ import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
 import { requireReleaseBySlug } from "../../../data/releases";
 import { v20Copy } from "../../../data/releases/2.0-content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
 
 const release = requireReleaseBySlug("2.0");
 const { home, findings } = v20Copy;
@@ -35,7 +36,7 @@ const findingViews = [
 <BaseLayout
   title="2.0 Explore evidence"
   description={home.findings_intro.body}
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
   release={release}
 >
   <PageHero

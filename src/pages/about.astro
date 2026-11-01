@@ -5,6 +5,7 @@ import ReleaseCitation from "../components/site/ReleaseCitation.astro";
 import { requireReleaseBySlug } from "../data/releases";
 import { v20Copy } from "../data/releases/2.0-content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../config/design-theme";
 
 const v20Release = requireReleaseBySlug("2.0");
 const js10Release = requireReleaseBySlug("js-1.0");
@@ -28,7 +29,7 @@ const teams = [
 <BaseLayout
   title="About"
   description="The scope, principles, team, version policy, and citation guidance for the Snyk VulnBench benchmark initiative."
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
 >
   <PageHero
     eyebrow="About VulnBench"

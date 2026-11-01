@@ -12,6 +12,7 @@ import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
 import { requireReleaseBySlug } from "../../../data/releases";
 import { v20Copy } from "../../../data/releases/2.0-content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
 
 const release = requireReleaseBySlug("2.0");
 const { methodology, terms } = v20Copy;
@@ -46,7 +47,7 @@ const sections = methodology.sections.map((section, index) => {
 <BaseLayout
   title={methodology.title}
   description={methodology.lede}
-  image="/social/2.0/release.svg"
+  image={release20SocialImage}
   release={release}
 >
   <PageHero eyebrow={methodology.title} title={methodology.h1} description={methodology.lede}>
