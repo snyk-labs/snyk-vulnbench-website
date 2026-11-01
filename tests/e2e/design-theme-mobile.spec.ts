@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { prepareTheme } from "./support/theme";
+import { v20Home } from "./support/v20-copy";
 
 test.describe("Snyk 2026 mobile shell", () => {
   test.use({ viewport: { width: 320, height: 900 } });
@@ -36,7 +37,7 @@ test.describe("Snyk 2026 mobile shell", () => {
 
       const heading = page.getByRole("heading", {
         level: 1,
-        name: "Can LLMs find the same bugs twice?",
+        name: v20Home.h1,
       });
       await expect(heading).toBeVisible();
       await expect(heading).toHaveCSS("font-weight", "700");

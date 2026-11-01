@@ -1,23 +1,8 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
+import { firstOf, readV20Copy, v20Home as home } from "./support/v20-copy";
 
-const contentRoot = resolve(process.cwd(), "src/data/releases/content/2.0/copy");
-const readJson = <T>(path: string) =>
-  JSON.parse(readFileSync(resolve(contentRoot, path), "utf8")) as T;
-
-const home = readJson<{
-  h1: string;
-  subtitle: string;
-  buttons: string[];
-  stats: { value: string; label: string }[];
-  headline_evidence: { h2: string; callouts: string[]; for_appsec: string };
-  findings_intro: { h2: string };
-  principles: { h2: string };
-  release_history: { name: string; line: string }[];
-}>("home.json");
-const findings = readJson<{ title: string }[]>("findings.json");
-const disclosure = readJson<{ short: string }>("disclosure.json");
+const findings = readV20Copy<{ title: string }[]>("findings.json");
+const disclosure = readV20Copy<{ short: string }>("disclosure.json");
 
 async function expectHomepageEvidence(page: Page) {
   await expect(page.locator("main h1")).toHaveCount(1);
@@ -43,7 +28,7 @@ async function expectHomepageEvidence(page: Page) {
     await expect(scope.getByText(label, { exact: true })).toBeVisible();
   }
 
-  await expect(page.getByRole("link", { name: home.buttons[0] }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: firstOf(home.buttons) }).first()).toBeVisible();
   await expect(
     page.getByRole("heading", { name: home.findings_intro.h2 }),
   ).toBeVisible();
