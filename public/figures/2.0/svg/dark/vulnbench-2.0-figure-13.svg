@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="319.68pt" height="213.12925pt" viewBox="0 0 319.68 213.12925" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 213.12925 
+L 319.68 213.12925 
+L 319.68 0 
+L 0 0 
+z
+" style="fill: #030328"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 99.36 167.76 
+L 301.968 167.76 
+L 301.968 14.256 
+L 99.36 14.256 
+z
+" style="fill: #030328"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 99.36 167.76 
+L 99.36 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m54f9142462" d="M 0 0 
+L 0 2.5 
+" style="stroke: #a7a7b4; stroke-width: 0.6"/>
+      </defs>
+      <g>
+       <use xlink:href="#m54f9142462" x="99.36" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="99.36" y="178.588" transform="rotate(-0 99.36 178.588)">0.0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 123.48 167.76 
+L 123.48 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m54f9142462" x="123.48" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="123.48" y="178.588" transform="rotate(-0 123.48 178.588)">2.5</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 147.6 167.76 
+L 147.6 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m54f9142462" x="147.6" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="147.6" y="178.588" transform="rotate(-0 147.6 178.588)">5.0</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 171.72 167.76 
+L 171.72 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m54f9142462" x="171.72" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="171.72" y="178.588" transform="rotate(-0 171.72 178.588)">7.5</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 195.84 167.76 
+L 195.84 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m54f9142462" x="195.84" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="195.84" y="178.588" transform="rotate(-0 195.84 178.588)">10.0</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 219.96 167.76 
+L 219.96 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m54f9142462" x="219.96" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="219.96" y="178.588" transform="rotate(-0 219.96 178.588)">12.5</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_13">
+      <path d="M 244.08 167.76 
+L 244.08 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m54f9142462" x="244.08" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="244.08" y="178.588" transform="rotate(-0 244.08 178.588)">15.0</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_15">
+      <path d="M 268.2 167.76 
+L 268.2 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m54f9142462" x="268.2" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="268.2" y="178.588" transform="rotate(-0 268.2 178.588)">17.5</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_17">
+      <path d="M 292.32 167.76 
+L 292.32 14.256 
+" clip-path="url(#pfc6116b50f)" style="fill: none; stroke: #262646; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_18">
+      <g>
+       <use xlink:href="#m54f9142462" x="292.32" y="167.76" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="292.32" y="178.588" transform="rotate(-0 292.32 178.588)">20.0</text>
+     </g>
+    </g>
+    <g id="text_10">
+     <text style="font-size: 7.5px; font-family: 'Geist'; text-anchor: middle; fill: #a7a7b4" x="200.664" y="188.933" transform="rotate(-0 200.664 188.933)">reference vulnerabilities (108)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_19">
+      <defs>
+       <path id="m3f04af6bf2" d="M 0 0 
+L -2.5 0 
+" style="stroke: #a7a7b4; stroke-width: 0.6"/>
+      </defs>
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="157.411301" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="159.683301" transform="rotate(-0 93.36 159.683301)">idor</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="147.195408" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="149.470408" transform="rotate(-0 93.36 149.470408)">mass-assignment</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="136.979516" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="139.254516" transform="rotate(-0 93.36 139.254516)">improper-type-validation</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="126.763624" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="129.035624" transform="rotate(-0 93.36 129.035624)">redos</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="116.547731" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="118.822731" transform="rotate(-0 93.36 118.822731)">template-injection</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_24">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="106.331839" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_16">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="108.606839" transform="rotate(-0 93.36 108.606839)">code-injection</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_25">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="96.115946" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="98.387946" transform="rotate(-0 93.36 98.387946)">insecure-deserialization</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_26">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="85.900054" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="88.175054" transform="rotate(-0 93.36 88.175054)">prototype-pollution</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_27">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="75.684161" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="77.956161" transform="rotate(-0 93.36 77.956161)">ssrf</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_28">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="65.468269" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="67.743269" transform="rotate(-0 93.36 67.743269)">open-redirect</text>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_29">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="55.252376" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="57.527376" transform="rotate(-0 93.36 57.527376)">sql-injection</text>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_30">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="45.036484" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_22">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="47.311484" transform="rotate(-0 93.36 47.311484)">command-injection</text>
+     </g>
+    </g>
+    <g id="ytick_13">
+     <g id="line2d_31">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="34.820592" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_23">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="37.092592" transform="rotate(-0 93.36 37.092592)">path-traversal</text>
+     </g>
+    </g>
+    <g id="ytick_14">
+     <g id="line2d_32">
+      <g>
+       <use xlink:href="#m3f04af6bf2" x="99.36" y="24.604699" style="fill: #a7a7b4; stroke: #a7a7b4; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_24">
+      <text style="font-size: 6.4px; font-family: 'Geist'; text-anchor: end; fill: #a7a7b4" x="93.36" y="26.876699" transform="rotate(-0 93.36 26.876699)">xss</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 99.36 27.975944 
+L 282.672 27.975944 
+L 282.672 21.233455 
+L 99.36 21.233455 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 99.36 38.191836 
+L 253.728 38.191836 
+L 253.728 31.449347 
+L 99.36 31.449347 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 99.36 48.407728 
+L 224.784 48.407728 
+L 224.784 41.665239 
+L 99.36 41.665239 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 99.36 58.623621 
+L 224.784 58.623621 
+L 224.784 51.881132 
+L 99.36 51.881132 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 99.36 68.839513 
+L 205.488 68.839513 
+L 205.488 62.097024 
+L 99.36 62.097024 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 99.36 79.055406 
+L 186.192 79.055406 
+L 186.192 72.312917 
+L 99.36 72.312917 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 99.36 89.271298 
+L 157.248 89.271298 
+L 157.248 82.528809 
+L 99.36 82.528809 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 99.36 99.487191 
+L 147.6 99.487191 
+L 147.6 92.744702 
+L 99.36 92.744702 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 99.36 109.703083 
+L 137.952 109.703083 
+L 137.952 102.960594 
+L 99.36 102.960594 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 99.36 119.918976 
+L 137.952 119.918976 
+L 137.952 113.176487 
+L 99.36 113.176487 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 99.36 130.134868 
+L 128.304 130.134868 
+L 128.304 123.392379 
+L 99.36 123.392379 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 99.36 140.350761 
+L 118.656 140.350761 
+L 118.656 133.608272 
+L 99.36 133.608272 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 99.36 150.566653 
+L 118.656 150.566653 
+L 118.656 143.824164 
+L 99.36 143.824164 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 99.36 160.782545 
+L 109.008 160.782545 
+L 109.008 154.040056 
+L 99.36 154.040056 
+z
+" clip-path="url(#pfc6116b50f)" style="fill: #5f00c2"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 99.36 167.76 
+L 99.36 14.256 
+" style="fill: none; stroke: #747489; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 99.36 167.76 
+L 301.968 167.76 
+" style="fill: none; stroke: #747489; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="285.5664" y="26.284699" transform="rotate(-0 285.5664 26.284699)">19</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="256.6224" y="36.500592" transform="rotate(-0 256.6224 36.500592)">16</text>
+   </g>
+   <g id="text_27">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="227.6784" y="46.716484" transform="rotate(-0 227.6784 46.716484)">13</text>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="227.6784" y="56.932376" transform="rotate(-0 227.6784 56.932376)">13</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="208.3824" y="67.148269" transform="rotate(-0 208.3824 67.148269)">11</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="189.0864" y="77.364161" transform="rotate(-0 189.0864 77.364161)">9</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="160.1424" y="87.580054" transform="rotate(-0 160.1424 87.580054)">6</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="150.4944" y="97.795946" transform="rotate(-0 150.4944 97.795946)">5</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="140.8464" y="108.011839" transform="rotate(-0 140.8464 108.011839)">4</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="140.8464" y="118.227731" transform="rotate(-0 140.8464 118.227731)">4</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="131.1984" y="128.443624" transform="rotate(-0 131.1984 128.443624)">3</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="121.5504" y="138.659516" transform="rotate(-0 121.5504 138.659516)">2</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="121.5504" y="148.875408" transform="rotate(-0 121.5504 148.875408)">2</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 6px; font-family: 'Geist Mono'; text-anchor: start; fill: #ffffff" x="111.9024" y="159.091301" transform="rotate(-0 111.9024 159.091301)">1</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g clip-path="url(#pe59a07cd5c)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAaUAAAACCAYAAAD4vMNMAAABIUlEQVR4nO2US5aEIAxFbwDLqrX0Znr/eynTAxFJBHHWEzIBX5Kbjx7lJ/yqaCTyIrISCCQ+BBKBhcQbIZJ4E0hEFpIe2krgRSBVcSuRF0Jk4YMQC1cQApQzACBEQCpdIEfb+5F71a65Oxui47S0K/uuh3buwQ4NZq/HcQ92T8Hpz2bp7wkURPO5nc/lXmlsaD6vOX1NGxxTw+QfNUZs69cR23H0wazWpyib9ZUcMnu7aNrQ9nxAvhdN+eYXszm2djRFDWc8k/r+W/t2nNt9ufd38jT3lb+z+i40n8X46hyfp4eIeOaAIb52sy+b1+/L8U1fz+Jqntzsprm3Mn+faRm7T0bzNxjtOr4v28NZ5z6OKk5Ey79t2rRp06ZN+1dThD+yq8iV/w0XxgAAAABJRU5ErkJggg==" id="imagee486d601e5" transform="scale(1 -1) translate(0 -1.44)" x="8.64" y="-8.136" width="303.12" height="1.44"/>
+   </g>
+  </g>
+  <g id="text_39">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; text-anchor: end; fill: #818193" x="308.016" y="203.64925" transform="rotate(-0 308.016 203.64925)">Snyk VulnBench 2.0 · vulnbench.com</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pfc6116b50f">
+   <rect x="99.36" y="14.256" width="202.608" height="153.504"/>
+  </clipPath>
+  <clipPath id="pe59a07cd5c">
+   <rect x="8.64" y="8.64" width="302.4" height="0.936"/>
+  </clipPath>
+ </defs>
+</svg>

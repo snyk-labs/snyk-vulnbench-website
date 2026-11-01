@@ -77,7 +77,7 @@ export const releaseSchema = z.object({
     methodology: z.string().startsWith("/releases/"),
     data: z.string().startsWith("/releases/"),
     paper: z.url(),
-    publication: z.url(),
+    publication: z.url().optional(),
     github: z.url(),
   }),
   citation: z.object({
@@ -85,6 +85,10 @@ export const releaseSchema = z.object({
     title: nonEmptyString,
     year: z.number().int().min(2000),
     url: z.url(),
+    arxivId: z.string().regex(/^\d{4}\.\d{4,5}$/).optional(),
+    primaryClass: nonEmptyString.optional(),
+    doi: nonEmptyString.optional(),
+    pdfUrl: z.url().optional(),
   }),
   availableViews: z
     .array(
@@ -92,6 +96,8 @@ export const releaseSchema = z.object({
         "summary",
         "repeatability",
         "coverage",
+        "complementarity",
+        "harness-policy",
         "efficiency",
         "findings",
       ]),

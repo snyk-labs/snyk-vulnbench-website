@@ -39,6 +39,10 @@ for (const [path, label] of [
   ["releases/js-1.0/cases/index.html", "Cases"],
   ["releases/js-1.0/methodology/index.html", "Release methodology"],
   ["releases/js-1.0/data/index.html", "Release data"],
+  ["releases/2.0/index.html", "2.0 release overview"],
+  ["releases/2.0/explore/index.html", "2.0 explore"],
+  ["releases/2.0/methodology/index.html", "2.0 release methodology"],
+  ["releases/2.0/data/index.html", "2.0 release data"],
 ]) {
   const total = await measurePage(path, label);
   if (total > NARRATIVE_JAVASCRIPT_BUDGET) {

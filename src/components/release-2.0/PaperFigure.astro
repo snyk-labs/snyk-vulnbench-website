@@ -1,0 +1,106 @@
+---
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { getV20Figure } from "../../data/releases/2.0-content";
+
+interface Props {
+  number: number;
+  scheme?: "auto" | "dark";
+  loading?: "lazy" | "eager";
+}
+
+const { number, scheme = "auto", loading = "lazy" } = Astro.props;
+const figure = getV20Figure(number);
+const svg = readFileSync(join(process.cwd(), "public", figure.light.svg), "utf8");
+const viewBox = /viewBox="0 0 ([\d.]+) ([\d.]+)"/u.exec(svg);
+if (!viewBox) throw new Error(`Figure ${number} has no viewBox`);
+const width = Math.round(Number(viewBox[1]) * (4 / 3));
+const height = Math.round(Number(viewBox[2]) * (4 / 3));
+const variants =
+  scheme === "dark"
+    ? [{ scheme: "dark", src: figure.dark.svg, className: "always" }]
+    : [
+        { scheme: "light", src: figure.light.svg, className: "light" },
+        { scheme: "dark", src: figure.dark.svg, className: "dark" },
+      ];
+---
+
+<figure class="paper-figure" id={`figure-${number}`}>
+  <div class:list={["paper-figure__frame", { "paper-figure__frame--dark": scheme === "dark" }]}>
+    {
+      variants.map((variant) => (
+        <img
+          class={`paper-figure__image paper-figure__image--${variant.className}`}
+          src={variant.src}
+          alt={figure.alt}
+          width={width}
+          height={height}
+          loading={loading}
+          decoding="async"
+        />
+      ))
+    }
+  </div>
+  <figcaption>
+    <strong>Figure {figure.number}.</strong>
+    {figure.caption}
+    <span class="paper-figure__downloads">
+      <a href={figure.light.png}>PNG, light</a>
+      <a href={figure.dark.png}>PNG, dark</a>
+      <a href={figure.light.svg}>SVG, light</a>
+      <a href={figure.dark.svg}>SVG, dark</a>
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .paper-figure {
+    display: grid;
+    min-width: 0;
+    margin: var(--space-5) 0 0;
+    gap: var(--space-3);
+  }
+
+  .paper-figure__frame {
+    overflow: hidden;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper-raised);
+  }
+
+  .paper-figure__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .paper-figure__image--dark {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .paper-figure__image--light {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .paper-figure__image--dark {
+    display: block;
+  }
+
+  figcaption {
+    max-width: 60rem;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  figcaption strong {
+    color: var(--ink);
+  }
+
+  .paper-figure__downloads {
+    display: flex;
+    margin-top: var(--space-2);
+    gap: var(--space-2) var(--space-3);
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+</style>

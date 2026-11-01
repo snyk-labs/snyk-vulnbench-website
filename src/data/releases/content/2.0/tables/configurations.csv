@@ -1,0 +1,10 @@
+display_name,harness_and_version,version_basis,model,effort_budget,prompt,primary_metric
+Snyk Code,Snyk Code CLI 1.1305.1,reported by the operator after the run,—,—,none,Attacker-Reachable Vulnerability Recall
+Claude Code /security-review · Opus 5 xhigh,Claude Code 2.1.251,observed at preflight and in the bundled binary,Opus 5,"xhigh, 30 turns",benchmark system prompt + /security-review,Attacker-Reachable Vulnerability Recall
+Claude Code /security-review · Sonnet 5 xhigh,Claude Code 2.1.251,observed at preflight and in the bundled binary,Sonnet 5,"xhigh, 30 turns",as above,Attacker-Reachable Vulnerability Recall
+Claude Code /security-review · Opus 5 medium + Snyk MCP,"Claude Code 2.1.251; Snyk MCP snyk@latest, 1.1307.0",Claude Code: preflight and bundled binary; MCP: inferred from the unpinned package and the run date,Opus 5,"medium, 30 turns",as above + one required snyk_code_scan,Attacker-Reachable Vulnerability Recall
+Codex Security · GPT-5.6 Luna,Codex Security 0.1.24 (plugin 0.1.79),recorded in every run record,GPT-5.6 Luna,"xhigh, standard scan",built-in,Attacker-Reachable Vulnerability Recall
+Codex Security · GPT-5.6 Terra,Codex Security 0.1.24 (plugin 0.1.79),recorded in every run record,GPT-5.6 Terra,"xhigh, standard scan",built-in,Attacker-Reachable Vulnerability Recall
+Codex Security · GPT-5.6 Sol,Codex Security 0.1.24 (plugin 0.1.79),recorded in every run record,GPT-5.6 Sol,"xhigh, standard scan",built-in,Attacker-Reachable Vulnerability Recall
+DeepSec · Opus 5 xhigh,DeepSec 2.3.7,recorded in every run record,Opus 5,"xhigh, 150 turns per batch",built-in,localized recall
+DeepSec · GPT-5.6 Sol xhigh,DeepSec 2.3.7,recorded in every run record,GPT-5.6 Sol,"xhigh, 150 turns per batch",built-in,localized recall

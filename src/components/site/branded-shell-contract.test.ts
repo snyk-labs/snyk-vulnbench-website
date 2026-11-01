@@ -215,15 +215,15 @@ describe("build-selected branded shell contract", () => {
     const hero = await source("src/components/home/Hero.astro");
 
     for (const content of [
-      "{currentRelease.name}",
-      "{currentRelease.researchQuestion}",
-      "A repeatability and Snyk-reference agreement study",
+      "{releaseName}",
+      "{home.h1}",
+      "{home.subtitle}",
       "{currentRelease.links.explore}",
       "{currentRelease.links.paper}",
       "{currentRelease.links.methodology}",
       "{currentRelease.links.data}",
-      "<EvidenceStrip evidence={currentRelease.evidence} />",
-      "<slot />",
+      "<EvidenceStrip items={home.stats} />",
+      "<PaperFigure number={1}",
     ]) {
       expect(hero).toContain(content);
     }

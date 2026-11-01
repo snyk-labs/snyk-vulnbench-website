@@ -1,3 +1,5 @@
+import { v20Copy } from "../../data/releases/2.0-content";
+
 export interface ReleaseShareCard {
   eyebrow: string;
   title: string;
@@ -74,13 +76,14 @@ const escapeXml = (value: string) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
 
-function wrapText(value: string, maximumCharacters: number) {
-  const words = value.split(/\s+/);
+function wrapText(value: string, maximumCharacters: number, separator?: string) {
+  const words = separator ? value.split(separator) : value.split(/\s+/);
+  const joiner = separator ?? " ";
   const lines: string[] = [];
   let line = "";
 
   for (const word of words) {
-    const candidate = line ? `${line} ${word}` : word;
+    const candidate = line ? `${line}${joiner}${word}` : word;
     if (candidate.length <= maximumCharacters || !line) {
       line = candidate;
     } else {
@@ -98,8 +101,9 @@ function textLines(
   y: number,
   lineHeight: number,
   maximumCharacters: number,
+  separator?: string,
 ) {
-  return wrapText(value, maximumCharacters)
+  return wrapText(value, maximumCharacters, separator)
     .map(
       (line, index) =>
         `<tspan x="${x}" y="${y + index * lineHeight}">${escapeXml(line)}</tspan>`,
@@ -352,5 +356,52 @@ export function renderDefaultSocialCard(
   <text x="220" y="568" fill="#FFFFFF" fill-opacity="0.68" font-family="Geist Mono" font-size="12">Dataset 1.0.0 · deterministic Snyk Code reference set</text>
   <text x="220" y="592" fill="#FFFFFF" font-family="Geist Mono" font-size="12">Source: published benchmark evidence · vulnbench.com</text>
 </svg>`;
+}
+/* snyk-2026-audit:end */
+
+const release20Card = {
+  name: v20Copy.releaseCard.name,
+  question: v20Copy.releaseCard.question,
+  subtitle: v20Copy.home.subtitle,
+  summary: v20Copy.releaseCard.summary,
+  datasetLine: v20Copy.home.headline_evidence.dataset_line,
+};
+
+function renderClassicRelease20Card() {
+  const card = release20Card;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">${escapeXml(card.name)}</title>
+  <desc id="description">${escapeXml(card.question)}</desc>
+  <rect width="1200" height="630" fill="#f7f4ed"/>
+  <rect x="0" width="28" height="630" fill="#4b2be3"/>
+  <text x="80" y="92" fill="#4b2be3" font-family="monospace" font-size="24" font-weight="700">${escapeXml(card.name.toUpperCase())}</text>
+  <text fill="#17141f" font-family="Arial, sans-serif" font-size="50" font-weight="700">${textLines(card.question, 80, 170, 58, 40)}</text>
+  <text fill="#55515f" font-family="Arial, sans-serif" font-size="27">${textLines(card.subtitle, 80, 352, 34, 70)}</text>
+  <rect x="80" y="420" width="1040" height="2" fill="#aaa1b0"/>
+  <text fill="#17141f" font-family="Arial, sans-serif" font-size="21">${textLines(card.summary, 80, 462, 29, 92)}</text>
+  <text fill="#625d68" font-family="monospace" font-size="16">${textLines(card.datasetLine, 80, 576, 24, 104, " · ")}</text>
+</svg>`;
+}
+
+/* snyk-2026-audit:start */
+function renderBrandedRelease20Card(assets: BrandSocialAssets) {
+  const card = release20Card;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">${escapeXml(card.name)}</title>
+  <desc id="description">${escapeXml(card.question)}</desc>
+  ${brandCanvas(assets)}
+  <text x="70" y="74" fill="#FFFFFF" font-family="Geist Mono" font-size="18" font-weight="500" letter-spacing="1.5">${escapeXml(card.name.toUpperCase())}</text>
+  <text fill="#FFFFFF" font-family="Geist" font-size="44" font-weight="700" letter-spacing="-1">${textLines(card.question, 70, 200, 52, 34)}</text>
+  <text fill="#FFFFFF" fill-opacity="0.78" font-family="Geist" font-size="24" font-weight="500">${textLines(card.subtitle, 70, 362, 32, 62)}</text>
+  <rect x="70" y="420" width="860" height="104" fill="#030328" stroke="#FFFFFF" stroke-opacity="0.24"/>
+  <text fill="#FFFFFF" font-family="Geist" font-size="18">${textLines(card.summary, 94, 452, 26, 82)}</text>
+  <text fill="#FFFFFF" fill-opacity="0.78" font-family="Geist Mono" font-size="14">${textLines(card.datasetLine, 70, 570, 22, 98, " · ")}</text>
+</svg>`;
+}
+
+export function renderRelease20SocialCard(options: RenderOptions) {
+  return options.designTheme === "classic"
+    ? renderClassicRelease20Card()
+    : renderBrandedRelease20Card(options.assets);
 }
 /* snyk-2026-audit:end */

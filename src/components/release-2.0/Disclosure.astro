@@ -1,0 +1,35 @@
+---
+import { v20Copy } from "../../data/releases/2.0-content";
+
+interface Props {
+  form: "short" | "long";
+  /** A heading directly above whose text the disclosure's first sentence repeats; that sentence is dropped. */
+  repeats?: string;
+}
+
+const { form, repeats } = Astro.props;
+const disclosure = v20Copy.disclosure[form];
+const lead = repeats ? `${repeats}. ` : "";
+if (!disclosure.startsWith(lead)) {
+  throw new Error(`The ${form} disclosure does not start with "${lead}"`);
+}
+---
+
+<aside class="disclosure" aria-label="Disclosure" data-disclosure={form}>
+  <p>{disclosure.slice(lead.length)}</p>
+</aside>
+
+<style>
+  .disclosure {
+    max-width: 48rem;
+    padding: var(--space-3) var(--space-4);
+    border-left: 0.25rem solid var(--ink);
+    background: var(--paper-raised);
+  }
+
+  .disclosure p {
+    color: var(--ink);
+    font-size: var(--step-0);
+    line-height: 1.6;
+  }
+</style>

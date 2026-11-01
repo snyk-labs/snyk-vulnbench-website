@@ -56,3 +56,9 @@ export const js10CorrectionHistory = correctionHistorySchema.parse({
   datasetVersion: "1.0.0",
   corrections: [],
 });
+
+export const v20CorrectionHistory = correctionHistorySchema.parse({
+  releaseId: "snyk-vulnbench-2.0",
+  datasetVersion: "2.0.0",
+  corrections: [],
+});

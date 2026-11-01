@@ -53,9 +53,13 @@ test("applies dark semantic surfaces to evidence and analytical views", async ({
   await prepareTheme(page, "dark", "dark");
   await page.goto("/");
 
-  const evidenceBand = page.locator(".evidence-band");
-  await expect(evidenceBand).toHaveCSS("background-color", "rgb(23, 20, 27)");
-  await expect(evidenceBand).toHaveCSS("color", "rgb(245, 240, 232)");
+  const heroFigure = page.locator(".hero-visual #figure-1");
+  await expect(heroFigure.locator(".paper-figure__image--dark")).toBeVisible();
+  await expect(heroFigure.locator(".paper-figure__image--light")).toBeHidden();
+  await expect(heroFigure.locator(".paper-figure__frame")).toHaveCSS(
+    "background-color",
+    "rgb(41, 37, 45)",
+  );
 
   await page.goto("/releases/js-1.0/");
   await expect(page.locator(".evidence-scatter__plot").first()).toHaveCSS(
@@ -292,12 +296,8 @@ for (const systemColorMode of ["light", "dark"] as const) {
       );
       await expect(page.locator("[data-theme-toggle]")).toBeHidden();
       await expect(page.locator("main")).toBeVisible();
-      await expect(
-        page.getByRole("heading", {
-          level: 1,
-          name: "Can LLMs find the same bugs twice?",
-        }),
-      ).toBeVisible();
+      await expect(page.locator("main h1")).toHaveCount(1);
+      await expect(page.locator(".hero-visual #figure-1 img").first()).toBeVisible();
     });
   });
 }

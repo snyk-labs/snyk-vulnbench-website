@@ -1,0 +1,10 @@
+config_id,metric,wall_time_total_min,wall_time_total_h,wall_time_per_matched_s,cost_status,known_cost_total_usd,known_cost_per_matched_usd,tokens_per_matched_millions,findings_per_matched
+snyk-code,ar_recall,8,0.1,5,no per-scan model cost,,,,4.78
+opus-5-xhigh-security-review,ar_recall,334,5.6,236,known,164.53,1.94,1.03,1.34
+opus-5-medium-security-review-with-snyk-mcp,ar_recall,142,2.4,107,known,57.44,0.72,0.35,1.21
+sonnet-5-xhigh-security-review,ar_recall,187,3.1,153,known,39.56,0.54,0.72,1.34
+codex-security-luna-xhigh,ar_recall,324,5.4,433,known,21.32,0.47,24.08,4.8
+codex-security-terra-xhigh,ar_recall,297,4.9,508,known,207.99,5.94,24.42,6.31
+codex-security-sol-xhigh,ar_recall,534,8.9,942,known,745.17,21.92,42.11,7.85
+deepsec-claude-opus-5-xhigh-turns-150,localized_recall,1068,17.8,1733,known,355.17,9.60,3.69,
+deepsec-codex-sol-xhigh-turns-150,localized_recall,196,3.3,11752,unavailable,,,12.99,

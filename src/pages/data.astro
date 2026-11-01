@@ -3,11 +3,13 @@ import PageHero from "../components/site/PageHero.astro";
 import ReleaseMeta from "../components/site/ReleaseMeta.astro";
 import { releases } from "../data/releases";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../config/design-theme";
 ---
 
 <BaseLayout
   title="Data"
   description="Versioned VulnBench datasets, source provenance, schemas, correction histories, and static downloads."
+  image={release20SocialImage}
 >
   <PageHero
     eyebrow="Dataset catalog"

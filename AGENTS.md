@@ -43,9 +43,11 @@ documentation aligned with them.
 ## Project Context
 
 This repository is the canonical static website for the Snyk VulnBench
-benchmark initiative. The current public release is Snyk VulnBench JS 1.0,
-which studies repeatability and agreement with a deterministic Snyk Code
-reference set.
+benchmark initiative. The current public release is Snyk VulnBench 2.0, an
+attacker-reachable recall study against an independent curated reference set.
+The superseded Snyk VulnBench JS 1.0 release studies repeatability and
+agreement with a deterministic Snyk Code reference set; its pages and data stay
+unchanged apart from the status label.
 
 The implemented foundation includes:
 
@@ -65,11 +67,16 @@ The implemented foundation includes:
 - `src/components/charts/` — typed interactive analytical components.
 - `src/components/explorer/` — Phase 2 URL state, selectors, controls,
   comparison, exports, and guided explorer views.
+- `src/components/release-2.0/` — 2.0 paper figures, exact-value tables,
+  disclosure, and release sections.
 - `src/data/explorer/` — validated browser-safe explorer dataset.
 - `src/data/evidence/` — normalized finding signatures, fixture references,
   and licensed project source context.
 - `src/data/releases/` — release schema, manifests, selectors, and contract
   tests.
+- `src/data/releases/content/2.0/` — imported 2.0 copy, tables, and figure
+  metadata; regenerate with `scripts/import-vulnbench-2.0.mjs`, never edit by
+  hand (see `docs/CONVENTIONS.md`).
 - `src/data/releases/fixtures/` — non-public release-system validation
   fixtures; never expose these through public registries or routes.
 - `src/styles/` — global design tokens and shared styles.

@@ -1,41 +1,46 @@
 ---
-import { currentRelease } from "../../data/releases";
+import { requireReleaseBySlug } from "../../data/releases";
+import { v20Copy } from "../../data/releases/2.0-content";
+
+interface Props {
+  full?: boolean;
+}
+
+const { full = false } = Astro.props;
+const release = requireReleaseBySlug("2.0");
+const intro = v20Copy.home.findings_intro;
+const findings = v20Copy.findings.map((finding, index) => ({
+  ...finding,
+  body: full ? finding.body : finding.body.slice(0, 1),
+  explorerPath: release.featuredFindings[index]?.explorerPath ?? release.links.explore,
+}));
 ---
 
-<section class="section" aria-labelledby="findings-title">
+<section class="section" id="findings" aria-labelledby="findings-title">
   <div class="container">
     <div class="section-heading">
-      <p class="eyebrow">What the results mean in practice</p>
-      <h2 id="findings-title">An AI review is a measurement—not a verdict.</h2>
-      <p class="lede">
-        Repeat the same task and the story sharpens: many reference-matched
-        findings hold steady; AI review and deterministic SAST reveal different
-        blind spots; and more spend does not reliably improve Snyk-reference
-        agreement.
-      </p>
+      <p class="eyebrow">{intro.kicker}</p>
+      <h2 id="findings-title">{intro.h2}</h2>
+      <p class="lede">{intro.body}</p>
     </div>
 
     <ol class="findings">
       {
-        currentRelease.featuredFindings.map(
-          ({ title, summary, explorerPath, caveat }, index) => (
-            <li>
-              <span class="finding-number metric">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h3>{title}</h3>
-                <p>{summary}</p>
-                <p class="caveat">
-                  <strong>Interpret with care:</strong> {caveat}
-                </p>
-              </div>
-              <a class="text-link" href={explorerPath}>
-                Open the evidence
-              </a>
-            </li>
-          ),
-        )
+        findings.map(({ n, title, body, care, explorerPath }) => (
+          <li>
+            <span class="finding-number metric">{n}</span>
+            <div>
+              <h3>{title}</h3>
+              {body.map((paragraph) => <p>{paragraph}</p>)}
+              <p class="caveat">
+                <strong>Interpret with care:</strong> {care}
+              </p>
+            </div>
+            <a class="text-link" href={explorerPath}>
+              Open the evidence
+            </a>
+          </li>
+        ))
       }
     </ol>
   </div>
@@ -67,7 +72,7 @@ import { currentRelease } from "../../data/releases";
     font-size: var(--step-2);
   }
 
-  h3 + p {
+  h3 ~ p:not(.caveat) {
     max-width: 47rem;
     margin-top: var(--space-3);
     color: var(--ink-soft);

@@ -2,8 +2,10 @@
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
 import { js10CorrectionHistory } from "../../../data/releases/corrections";
-import { currentRelease } from "../../../data/releases";
+import { requireReleaseBySlug } from "../../../data/releases";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const release = requireReleaseBySlug("js-1.0");
 
 const downloads = [
   {
@@ -39,7 +41,7 @@ const downloads = [
     format: "GitHub",
     description:
       "Fixture projects, reference findings, generated visualizations, article notes, and Apache 2.0 license.",
-    href: currentRelease.links.github,
+    href: release.links.github,
   },
 ];
 ---
@@ -47,14 +49,14 @@ const downloads = [
 <BaseLayout
   title="JS 1.0 Data"
   description="Download Snyk VulnBench JS 1.0 data and inspect its schema, provenance, source snapshot, and correction policy."
-  release={currentRelease}
+  release={release}
 >
   <PageHero
     eyebrow="JS 1.0 · Data"
     title="Versioned evidence with traceable provenance"
     description="The release data is shipped as immutable static assets. Every published value remains tied to the JS 1.0 protocol, source revision, and dataset version."
   >
-    <ReleaseMeta slot="aside" release={currentRelease} />
+    <ReleaseMeta slot="aside" release={release} />
   </PageHero>
 
   <section class="section">
@@ -91,7 +93,7 @@ const downloads = [
       <div class="prose">
         <p>
           The website vendors the complete contents of
-          <a href={currentRelease.links.github}
+          <a href={release.links.github}
             >snyk-labs/snyk-vulnbench-js-1.0</a
           >
           at the published commit below. Upstream files are verified against

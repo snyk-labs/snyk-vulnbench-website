@@ -1,0 +1,10 @@
+order,config_id,display_name,figure_label,family,metric,colour,macro_recall_pct,matched,reference,interval95_lo_pct,interval95_hi_pct,findings,precision_pct,matched_exact_line,matched_file_level
+1,snyk-code,Snyk Code,Snyk Code,SAST,ar_recall,ink,82.4,89,108,74.0,90.5,425,20.9,85,89
+2,opus-5-xhigh-security-review,Claude Code /security-review · Opus 5 xhigh,Opus 5 xhigh,Claude Code,ar_recall,purple-100,79.3,85,108,71.6,86.7,114,74.6,79,89
+3,opus-5-medium-security-review-with-snyk-mcp,Claude Code /security-review · Opus 5 medium + Snyk MCP,Opus 5 med + MCP,Claude Code,ar_recall,purple-72,75.2,80,108,68.2,82.3,97,82.5,74,84
+4,sonnet-5-xhigh-security-review,Claude Code /security-review · Sonnet 5 xhigh,Sonnet 5 xhigh,Claude Code,ar_recall,purple-45,67.0,73,108,57.7,76.2,98,74.5,55,76
+5,codex-security-luna-xhigh,Codex Security · GPT-5.6 Luna,CxSec GPT-5.6 Luna,Codex Security,ar_recall,orange-100,41.2,45,108,26.6,56.5,216,20.8,15,66
+6,codex-security-terra-xhigh,Codex Security · GPT-5.6 Terra,CxSec GPT-5.6 Terra,Codex Security,ar_recall,orange-72,30.1,35,108,19.1,41.9,221,15.8,6,69
+7,codex-security-sol-xhigh,Codex Security · GPT-5.6 Sol,CxSec GPT-5.6 Sol,Codex Security,ar_recall,orange-45,29.2,34,108,18.1,41.1,267,12.7,2,80
+8,deepsec-claude-opus-5-xhigh-turns-150,DeepSec · Opus 5 xhigh,DeepSec Opus 5,DeepSec,localized_recall,pink-100,37.5,37,108,22.6,53.2,524,7.1,,
+9,deepsec-codex-sol-xhigh-turns-150,DeepSec · GPT-5.6 Sol xhigh,DeepSec GPT-5.6 Sol,DeepSec,localized_recall,pink-50,2.5,1,108,0.0,7.5,10,10.0,,

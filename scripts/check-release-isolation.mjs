@@ -14,6 +14,12 @@ const publicFiles = [
   "releases/js-1.0/explore/index.html",
   "releases/js-1.0/data/index.html",
   "data/js-1.0/published-evidence.json",
+  "releases/2.0/index.html",
+  "releases/2.0/explore/index.html",
+  "releases/2.0/methodology/index.html",
+  "releases/2.0/data/index.html",
+  "data/2.0/index.html",
+  "data/2.0/headline.csv",
 ];
 
 async function walk(directory) {
@@ -73,4 +79,4 @@ try {
   }
 }
 
-console.log("Public release isolation passed: JS 1.0 only");
+console.log("Public release isolation passed: Snyk VulnBench 2.0 and JS 1.0 only");

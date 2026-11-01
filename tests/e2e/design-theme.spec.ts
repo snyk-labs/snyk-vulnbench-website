@@ -8,6 +8,7 @@ import {
   THEME_KEY,
   themeToggle,
 } from "./support/theme";
+import { firstOf, v20Home } from "./support/v20-copy";
 
 const BRAND_THEME_COLORS = {
   light: "#FFFFFF",
@@ -366,28 +367,14 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
     "background-color",
     WHITE,
   );
-  await expect(page.locator(".evidence-band")).toHaveCSS(
-    "background-color",
-    WHITE,
-  );
-  await expect(page.locator(".evidence-band")).toHaveCSS("color", MIDNIGHT);
   await expect(page.locator(".brand-fabric")).toHaveCSS("opacity", "0.16");
-  await expect(page.locator(".recurrence-plot")).toHaveCSS(
+  await expect(page.locator(".hero-visual")).toHaveCSS(
     "background-color",
     MIDNIGHT,
   );
-  await expect(page.locator(".recurrence-plot__bar--matchedAllFive")).toHaveCSS(
-    "color",
-    PURPLE,
-  );
-  await expect(page.locator(".recurrence-plot__bar--unmatchedAllFive")).toHaveCSS(
-    "color",
-    ORANGE_RED,
-  );
-  await expect(page.locator(".recurrence-chart__inspect").first()).toHaveCSS(
-    "color",
-    HOT_PINK,
-  );
+  const heroFigure = page.locator(".hero-visual #figure-1");
+  await expect(heroFigure.locator(".paper-figure__image--always")).toBeVisible();
+  await expect(heroFigure.locator(".paper-figure__image--light")).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
 
   await page.goto("/releases/js-1.0");
@@ -404,6 +391,14 @@ test("uses a conventional Light canvas with one contained gradient accent", asyn
   await expect(page.locator(".recurrence-chart__inspect").first()).toHaveCSS(
     "color",
     PURPLE,
+  );
+  await expect(page.locator(".recurrence-plot__bar--matchedAllFive").first()).toHaveCSS(
+    "color",
+    PURPLE,
+  );
+  await expect(page.locator(".recurrence-plot__bar--unmatchedAllFive").first()).toHaveCSS(
+    "color",
+    ORANGE_RED,
   );
 
   await page.goto("/releases/js-1.0/explore?v=1&view=coverage&metric=unmatched");
@@ -521,36 +516,18 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
   );
   expect(contrastBetween(WHITE, MIDNIGHT)).toBeGreaterThanOrEqual(3);
   expect(contrastBetween(WHITE, DARK_RAISED)).toBeGreaterThanOrEqual(3);
-  const evidenceColors = await page.evaluate(() => {
-    const surface = document.querySelector<HTMLElement>(".evidence-band");
-    const matched = document.querySelector<HTMLElement>(
-      ".evidence-band .observation.matched .metric",
-    );
-    const unmatched = document.querySelector<HTMLElement>(
-      ".evidence-band .observation.unmatched .metric",
-    );
-    if (!surface || !matched || !unmatched) {
-      throw new Error("Homepage evidence colors are incomplete");
-    }
-    return {
-      background: getComputedStyle(surface).backgroundColor,
-      matched: getComputedStyle(matched).color,
-      unmatched: getComputedStyle(unmatched).color,
-    };
-  });
-  expect(evidenceColors).toEqual({
-    background: DARK_RAISED,
-    matched: DARK_PRIMARY,
-    unmatched: ORANGE_RED,
-  });
-  expect(
-    contrastBetween(evidenceColors.matched, evidenceColors.background),
-  ).toBeGreaterThanOrEqual(4.5);
-  expect(
-    contrastBetween(evidenceColors.unmatched, evidenceColors.background),
-  ).toBeGreaterThanOrEqual(4.5);
+  const scopeValue = page.locator(".hero .evidence-strip dt").first();
+  await expect(scopeValue).toHaveCSS("color", WHITE);
+  expect(contrastBetween(WHITE, MIDNIGHT)).toBeGreaterThanOrEqual(4.5);
   await expect(
-    page.locator(".recurrence-plot__bar--matchedAllFive"),
+    page.locator(".hero-visual #figure-1 .paper-figure__image--always"),
+  ).toBeVisible();
+  await expectOneVisibleBrandGradient(page);
+
+  await page.goto("/releases/js-1.0");
+  await expect(page.locator(".page-hero h1")).toHaveCSS("color", WHITE);
+  await expect(
+    page.locator(".recurrence-plot__bar--matchedAllFive").first(),
   ).toHaveCSS("color", PURPLE);
   const inspectColor = await page
     .locator(".recurrence-chart__inspect")
@@ -564,10 +541,6 @@ test("uses neutral Warm Ink layers and restrained semantic color in explicit Dar
       name: "Finding recurrence contrast. Reference-matched findings were more likely to recur in all five runs than unmatched findings.",
     }),
   ).toBeVisible();
-  await expectOneVisibleBrandGradient(page);
-
-  await page.goto("/releases/js-1.0");
-  await expect(page.locator(".page-hero h1")).toHaveCSS("color", WHITE);
   await expect(page.locator(".page-hero .lede")).toHaveCSS("color", DARK_BODY);
   await expect(page.locator(".page-hero aside")).toHaveCSS(
     "background-color",
@@ -843,6 +816,16 @@ test("publishes branded favicon and default social metadata assets", async ({
   request,
 }) => {
   await page.goto("/");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    "https://vulnbench.com/brand/snyk-2026/social-2.0.png",
+  );
+  await expect(page.locator('meta[property="og:image:type"]')).toHaveAttribute(
+    "content",
+    "image/png",
+  );
+
+  await page.goto("/privacy");
 
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
     "href",
@@ -850,7 +833,7 @@ test("publishes branded favicon and default social metadata assets", async ({
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
-    "https://vulnbench.com/brand/snyk-2026/social.png",
+    "https://vulnbench.com/brand/snyk-2026/social-2.0.png",
   );
   await expect(page.locator('meta[property="og:image:type"]')).toHaveAttribute(
     "content",
@@ -876,6 +859,7 @@ test("publishes branded favicon and default social metadata assets", async ({
   for (const path of [
     "/brand/snyk-2026/social.svg",
     "/brand/snyk-2026/social.png",
+    "/brand/snyk-2026/social-2.0.png",
     "/brand/snyk-2026/logo-snyk-white.png",
     "/brand/snyk-2026/BRC_Fabric_NoGradient.png",
     "/brand/snyk-2026/BRC_Fabric_Gradient.png",
@@ -1034,14 +1018,14 @@ test.describe("Snyk 2026 without JavaScript in system Light", () => {
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "Can LLMs find the same bugs twice?",
+        name: v20Home.h1,
       }),
     ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Explore the results" }),
     ).toBeVisible();
-    await expect(page.locator(".evidence-strip")).toContainText("300");
-    await expect(page.locator(".evidence-strip")).toContainText("scans");
+    await expect(page.locator(".evidence-strip")).toContainText(firstOf(v20Home.stats).value);
+    await expect(page.locator(".evidence-strip")).toContainText(firstOf(v20Home.stats).label);
     await expectNoHorizontalOverflow(page);
 
     await page.goto("/releases/js-1.0/explore");
@@ -1135,16 +1119,14 @@ test.describe("Snyk 2026 without JavaScript in system Dark", () => {
       "background-color",
       "rgba(111, 0, 221, 0.08)",
     );
-    const inspectColor = await page
-      .locator(".recurrence-chart__inspect")
-      .first()
-      .evaluate((element) => getComputedStyle(element).color);
-    expect(inspectColor).toBe(HOT_PINK);
+    await expect(
+      page.locator(".hero-visual #figure-1 .paper-figure__image--always"),
+    ).toBeVisible();
     await expect(page.locator("[data-theme-toggle]")).toBeHidden();
     await expect(
       page.getByRole("heading", {
         level: 1,
-        name: "Can LLMs find the same bugs twice?",
+        name: v20Home.h1,
       }),
     ).toBeVisible();
     await expect(
@@ -1159,8 +1141,8 @@ test.describe("Snyk 2026 without JavaScript in system Dark", () => {
       "box-shadow",
       "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(111, 0, 221) 0px 0px 0px 6px",
     );
-    await expect(page.locator(".evidence-strip")).toContainText("300");
-    await expect(page.locator(".evidence-strip")).toContainText("scans");
+    await expect(page.locator(".evidence-strip")).toContainText(firstOf(v20Home.stats).value);
+    await expect(page.locator(".evidence-strip")).toContainText(firstOf(v20Home.stats).label);
     await expectNoHorizontalOverflow(page);
 
     await page.goto("/releases/js-1.0");

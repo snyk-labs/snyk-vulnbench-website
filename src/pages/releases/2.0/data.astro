@@ -1,0 +1,224 @@
+---
+import PageHero from "../../../components/site/PageHero.astro";
+import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
+import { requireReleaseBySlug } from "../../../data/releases";
+import { getV20Table, v20Copy } from "../../../data/releases/2.0-content";
+import { v20CorrectionHistory } from "../../../data/releases/corrections";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
+
+const release = requireReleaseBySlug("2.0");
+const { data, home } = v20Copy;
+const { provenance } = data;
+const sourceArchive = getV20Table("headline").meta.source_archive as {
+  checksums: string;
+};
+const provenanceRows = [
+  { term: "Dataset version", value: provenance.dataset_version },
+  { term: "Execution", value: provenance.execution },
+  { term: "Parent execution", value: provenance.parent },
+  { term: "Archive SHA-256", value: provenance.archive_sha256 },
+  { term: "Parent archive SHA-256", value: provenance.parent_archive_sha256 },
+];
+---
+
+<BaseLayout
+  title="2.0 Data"
+  description={data.h1}
+  image={release20SocialImage}
+  release={release}
+>
+  <PageHero
+    eyebrow="2.0 · Data"
+    title={data.h1}
+    description={home.headline_evidence.dataset_line}
+  >
+    <ReleaseMeta slot="aside" release={release} />
+  </PageHero>
+
+  <section class="section">
+    <div class="container data-grid">
+      <div>
+        <p class="eyebrow">Downloads</p>
+        <h2>Published release assets</h2>
+      </div>
+      <div class="downloads">
+        {
+          data.downloads.map(({ kind, title, href, text }) => (
+            <article>
+              <span class="format metric">{kind}</span>
+              <h3>
+                <a href={href}>{title}</a>
+              </h3>
+              <p>{text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section provenance">
+    <div class="container data-grid">
+      <div>
+        <p class="eyebrow">Provenance</p>
+        <h2>Exact source archive</h2>
+      </div>
+      <div class="prose">
+        <dl class="provenance-list">
+          {
+            provenanceRows.map(({ term, value }) => (
+              <div>
+                <dt>{term}</dt>
+                <dd class="metric">{value}</dd>
+              </div>
+            ))
+          }
+          <div>
+            <dt>Checksums</dt>
+            <dd class="metric">
+              <a href={sourceArchive.checksums}>{provenance.checksums_file}</a>
+            </dd>
+          </div>
+          <div>
+            <dt>License</dt>
+            <dd>{provenance.license}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container data-grid">
+      <div>
+        <p class="eyebrow">Data dictionary</p>
+        <h2>Core concepts</h2>
+      </div>
+      <dl class="dictionary">
+        {
+          data.dictionary.map(([term, definition]) => (
+            <div>
+              <dt>{term}</dt>
+              <dd>{definition}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section corrections" id="corrections">
+    <div class="container">
+      <p class="eyebrow">Corrections</p>
+      <h2>
+        {
+          v20CorrectionHistory.corrections.length === 0
+            ? "No corrections published"
+            : "Published corrections"
+        }
+      </h2>
+      <p>{data.corrections}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .data-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .data-grid > div:first-child h2 {
+    max-width: 13ch;
+    margin-top: var(--space-2);
+  }
+
+  .downloads {
+    border-top: 1px solid var(--ink);
+  }
+
+  .downloads article {
+    display: grid;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-2);
+    justify-items: start;
+  }
+
+  .format {
+    display: inline-block;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--purple);
+    color: var(--purple-dark);
+    font-size: 0.68rem;
+  }
+
+  .downloads p {
+    max-width: 44rem;
+    color: var(--ink-soft);
+  }
+
+  .provenance {
+    background: var(--paper-muted);
+  }
+
+  .provenance-list {
+    display: grid;
+    border-top: 1px solid var(--ink);
+  }
+
+  .provenance-list div,
+  .dictionary div {
+    display: grid;
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--rule-strong);
+    gap: var(--space-2);
+  }
+
+  .provenance-list dt,
+  .dictionary dt {
+    font-weight: var(--font-weight-label-strong);
+  }
+
+  .provenance-list dd,
+  .dictionary dd {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .dictionary {
+    margin: 0;
+    border-top: 1px solid var(--ink);
+  }
+
+  .dictionary dd {
+    color: var(--ink-soft);
+  }
+
+  .corrections {
+    background: var(--warning-soft);
+  }
+
+  .corrections h2 {
+    margin-top: var(--space-2);
+  }
+
+  .corrections p:last-child {
+    max-width: 48rem;
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 58rem) {
+    .data-grid {
+      grid-template-columns: 0.55fr 1.45fr;
+      gap: var(--space-8);
+    }
+
+    .provenance-list div,
+    .dictionary div {
+      grid-template-columns: 12rem 1fr;
+    }
+  }
+</style>

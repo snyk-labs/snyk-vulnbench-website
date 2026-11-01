@@ -24,3 +24,12 @@ be edited or recompressed.
 - Role: Bottom-right purple-only fabric accent for Family B
 - Dimensions: 5733 × 3355 pixels
 - SHA-256: `84ab4f561189a7e3e92e58b7332c98d31fccdf481aa4d15894fa44f7b0c52385`
+
+## `social-2.0.png`
+
+- Source: the Snyk 2026 build's generated `/social/2.0/release.svg` card
+- Role: Snyk VulnBench 2.0 Open Graph preview for unfurlers that do not render SVG
+- Regenerate: serve a Snyk 2026 build with `npm run build && npm run preview`, then
+  run `node scripts/rasterise-social-card.mjs <preview-origin>/social/2.0/release.svg public/brand/snyk-2026/social-2.0.png`
+- Dimensions: 1200 × 630 pixels
+- SHA-256: `346e48090d63c23a86ad9316bf22127e96ac5ffdd0fa6baa68d246b5a295722f`

@@ -1,0 +1,138 @@
+---
+import PageHero from "../../../components/site/PageHero.astro";
+import { requireReleaseBySlug } from "../../../data/releases";
+import { v20Copy, v20Tables } from "../../../data/releases/2.0-content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../../../config/design-theme";
+
+const release = requireReleaseBySlug("2.0");
+const tablesDownload = v20Copy.data.downloads.find(({ href }) => href === "/data/2.0/");
+if (!tablesDownload) throw new Error("data.json has no website evidence tables entry");
+const tables = v20Tables.map((table) => ({
+  name: table.name,
+  basis: typeof table.meta.basis === "string" ? table.meta.basis : "",
+  units: typeof table.meta.units === "string" ? table.meta.units : "",
+  paper: typeof table.meta.paper === "string" ? table.meta.paper : "",
+}));
+---
+
+<BaseLayout
+  title="2.0 evidence tables"
+  description={tablesDownload.text}
+  image={release20SocialImage}
+>
+  <PageHero
+    eyebrow="2.0 · Data"
+    title={tablesDownload.title}
+    description={tablesDownload.text}
+  >
+    <div slot="actions" class="button-row">
+      <a class="button" href={release.links.data}>Data and provenance</a>
+      <a class="button secondary" href={release.links.overview}>Release overview</a>
+    </div>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <p class="empty-cells">{v20Tables[0]?.meta.empty_cells}</p>
+      <ol class="tables">
+        {
+          tables.map(({ name, basis, units, paper }) => (
+            <li>
+              <h2>{name}.csv</h2>
+              <dl>
+                <div>
+                  <dt>Basis</dt>{" "}
+                  <dd>{basis}</dd>
+                </div>
+                <div>
+                  <dt>Units</dt>{" "}
+                  <dd>{units}</dd>
+                </div>
+                <div>
+                  <dt>Paper</dt>{" "}
+                  <dd>{paper}</dd>
+                </div>
+              </dl>
+              <p class="links">
+                <a href={`/data/2.0/${name}.csv`} download>
+                  {name}.csv
+                </a>
+                <a href={`/data/2.0/${name}.meta.json`} download>
+                  {name}.meta.json
+                </a>
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .empty-cells {
+    max-width: 48rem;
+    padding-left: var(--space-3);
+    border-left: 0.2rem solid var(--warning);
+  }
+
+  .tables {
+    display: grid;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    border-top: 1px solid var(--ink);
+    list-style: none;
+  }
+
+  .tables li {
+    display: grid;
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    gap: var(--space-2);
+  }
+
+  .tables h2 {
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    overflow-wrap: anywhere;
+  }
+
+  dl {
+    display: grid;
+    margin: 0;
+    gap: var(--space-1);
+  }
+
+  dl div {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  dt {
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .links {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+
+  @media (min-width: 48rem) {
+    dl div {
+      grid-template-columns: 6rem 1fr;
+    }
+  }
+</style>

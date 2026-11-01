@@ -3,8 +3,10 @@ import { ExplorerApp } from "../../../components/explorer/ExplorerApp";
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
 import { loadJs10ExplorerDataset } from "../../../data/explorer/js-1.0";
-import { currentRelease } from "../../../data/releases";
+import { requireReleaseBySlug } from "../../../data/releases";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const release = requireReleaseBySlug("js-1.0");
 
 const explorerDataset = await loadJs10ExplorerDataset();
 ---
@@ -12,7 +14,7 @@ const explorerDataset = await loadJs10ExplorerDataset();
 <BaseLayout
   title="Explore JS 1.0"
   description="Inspect the published Snyk VulnBench JS 1.0 recurrence evidence and its scientific context."
-  release={currentRelease}
+  release={release}
 >
   <PageHero
     eyebrow="JS 1.0 · Interactive explorer"
@@ -21,11 +23,11 @@ const explorerDataset = await loadJs10ExplorerDataset();
   >
     <div slot="actions" class="button-row">
       <a class="button" href="#explorer-workbench">Open the workbench</a>
-      <a class="button secondary" href={currentRelease.links.overview}
+      <a class="button secondary" href={release.links.overview}
         >Read the release narrative</a
       >
     </div>
-    <ReleaseMeta slot="aside" release={currentRelease} />
+    <ReleaseMeta slot="aside" release={release} />
   </PageHero>
 
   <section id="explorer-workbench">

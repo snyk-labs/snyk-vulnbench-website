@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="485.28pt" height="380.74525pt" viewBox="0 0 485.28 380.74525" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 380.74525 
+L 485.28 380.74525 
+L 485.28 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 177.12 333.216 
+L 429.84 333.216 
+L 429.84 74.88 
+L 177.12 74.88 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#p2d70119c89)">
+    <image xlink:href="data:image/png;base64,
+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" id="image92bdaa253f" transform="scale(1 -1) translate(0 -258.48)" x="177.12" y="-74.736" width="252.72" height="258.48"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 177.12 74.88 
+L 429.84 74.88 
+L 429.84 87.181714 
+L 177.12 87.181714 
+L 177.12 74.88 
+z
+" clip-path="url(#p2d70119c89)" style="fill: none; stroke: #030328; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="194.638002" y="72.118189" transform="rotate(-35 194.638002 72.118189)">Snyk Code</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="230.698074" y="72.057085" transform="rotate(-35 230.698074 72.057085)">Opus 5 xhigh</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="266.843717" y="72.118189" transform="rotate(-35 266.843717 72.118189)">Opus 5 med + MCP</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="302.903789" y="72.057085" transform="rotate(-35 302.903789 72.057085)">Sonnet 5 xhigh</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="339.049431" y="72.118189" transform="rotate(-35 339.049431 72.118189)">CxSec GPT-5.6 Luna</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6"/>
+     <g id="text_6">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="375.152288" y="72.118189" transform="rotate(-35 375.152288 72.118189)">CxSec GPT-5.6 Terra</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7"/>
+     <g id="text_7">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #4a4a64" x="411.255145" y="72.118189" transform="rotate(-35 411.255145 72.118189)">CxSec GPT-5.6 Sol</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_8"/>
+     <g id="text_8">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="83.243357" transform="rotate(-0 175.12 83.243357)">Endpoint rule, ±2 lines (used for all results)</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_9"/>
+     <g id="text_9">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="95.429837" transform="rotate(-0 175.12 95.429837)">Endpoint rule, exact line</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_10"/>
+     <g id="text_10">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="107.731551" transform="rotate(-0 175.12 107.731551)">Endpoint rule, ±1</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_11"/>
+     <g id="text_11">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="120.077516" transform="rotate(-0 175.12 120.077516)">Endpoint rule, ±3</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_12"/>
+     <g id="text_12">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="132.33498" transform="rotate(-0 175.12 132.33498)">Endpoint rule, ±5</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_13"/>
+     <g id="text_13">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="144.680944" transform="rotate(-0 175.12 144.680944)">Endpoint rule, ±10</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_14"/>
+     <g id="text_14">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="156.982658" transform="rotate(-0 175.12 156.982658)">Endpoint rule, ±20</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_15"/>
+     <g id="text_15">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="169.240123" transform="rotate(-0 175.12 169.240123)">Endpoint rule, right file, any line</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_16"/>
+     <g id="text_16">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="181.586087" transform="rotate(-0 175.12 181.586087)">Source and sink both required, exact line</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_17"/>
+     <g id="text_17">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="193.887801" transform="rotate(-0 175.12 193.887801)">Source and sink both required, ±2</text>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_18"/>
+     <g id="text_18">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="206.189516" transform="rotate(-0 175.12 206.189516)">Sink required, ±2</text>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_19"/>
+     <g id="text_19">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="218.49123" transform="rotate(-0 175.12 218.49123)">Source required, ±2</text>
+     </g>
+    </g>
+    <g id="ytick_13">
+     <g id="line2d_20"/>
+     <g id="text_20">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="230.748694" transform="rotate(-0 175.12 230.748694)">Maximum matching instead of greedy</text>
+     </g>
+    </g>
+    <g id="ytick_14">
+     <g id="line2d_21"/>
+     <g id="text_21">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="243.050408" transform="rotate(-0 175.12 243.050408)">No type aliases</text>
+     </g>
+    </g>
+    <g id="ytick_15">
+     <g id="line2d_22"/>
+     <g id="text_22">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="255.352123" transform="rotate(-0 175.12 255.352123)">Many-to-one credit</text>
+     </g>
+    </g>
+    <g id="ytick_16">
+     <g id="line2d_23"/>
+     <g id="text_23">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="267.698087" transform="rotate(-0 175.12 267.698087)">Any location, ±2</text>
+     </g>
+    </g>
+    <g id="ytick_17">
+     <g id="line2d_24"/>
+     <g id="text_24">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="279.955551" transform="rotate(-0 175.12 279.955551)">Any location, exact line</text>
+     </g>
+    </g>
+    <g id="ytick_18">
+     <g id="line2d_25"/>
+     <g id="text_25">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="292.257266" transform="rotate(-0 175.12 292.257266)">Any location, ±5</text>
+     </g>
+    </g>
+    <g id="ytick_19">
+     <g id="line2d_26"/>
+     <g id="text_26">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="304.60323" transform="rotate(-0 175.12 304.60323)">Any location, ±10</text>
+     </g>
+    </g>
+    <g id="ytick_20">
+     <g id="line2d_27"/>
+     <g id="text_27">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="316.860694" transform="rotate(-0 175.12 316.860694)">Any location, right file, any line</text>
+     </g>
+    </g>
+    <g id="ytick_21">
+     <g id="line2d_28"/>
+     <g id="text_28">
+      <text style="font-size: 5.9px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="175.12" y="329.162408" transform="rotate(-0 175.12 329.162408)">Vulnerability type only</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_29">
+    <path d="M 177.12 173.293714 
+L 429.84 173.293714 
+" clip-path="url(#p2d70119c89)" style="fill: none; stroke: #ffffff; stroke-width: 2.2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_30">
+    <path d="M 177.12 222.500571 
+L 429.84 222.500571 
+" clip-path="url(#p2d70119c89)" style="fill: none; stroke: #ffffff; stroke-width: 2.2; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_31">
+    <path d="M 177.12 259.405714 
+L 429.84 259.405714 
+" clip-path="url(#p2d70119c89)" style="fill: none; stroke: #ffffff; stroke-width: 2.2; stroke-linecap: square"/>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="82.766857" transform="rotate(-0 195.171429 82.766857)">1</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="82.766857" transform="rotate(-0 231.274286 82.766857)">2</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="82.766857" transform="rotate(-0 267.377143 82.766857)">3</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="82.766857" transform="rotate(-0 303.48 82.766857)">4</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="82.766857" transform="rotate(-0 339.582857 82.766857)">5</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="82.766857" transform="rotate(-0 375.685714 82.766857)">6</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="82.766857" transform="rotate(-0 411.788571 82.766857)">7</text>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="82.654857" transform="rotate(-0 437.060571 82.654857)">tau 1.00</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="95.068571" transform="rotate(-0 195.171429 95.068571)">1</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="95.068571" transform="rotate(-0 231.274286 95.068571)">2</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="95.068571" transform="rotate(-0 267.377143 95.068571)">3</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="95.068571" transform="rotate(-0 303.48 95.068571)">4</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="95.068571" transform="rotate(-0 339.582857 95.068571)">5</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="95.068571" transform="rotate(-0 375.685714 95.068571)">6</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="95.068571" transform="rotate(-0 411.788571 95.068571)">7</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="94.956571" transform="rotate(-0 437.060571 94.956571)">tau 1.00</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="107.370286" transform="rotate(-0 195.171429 107.370286)">1</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="107.370286" transform="rotate(-0 231.274286 107.370286)">2</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="107.370286" transform="rotate(-0 267.377143 107.370286)">3</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="107.370286" transform="rotate(-0 303.48 107.370286)">4</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="107.370286" transform="rotate(-0 339.582857 107.370286)">5</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="107.370286" transform="rotate(-0 375.685714 107.370286)">6</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="107.370286" transform="rotate(-0 411.788571 107.370286)">7</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="107.258286" transform="rotate(-0 437.060571 107.258286)">tau 1.00</text>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="119.672" transform="rotate(-0 195.171429 119.672)">1</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="119.672" transform="rotate(-0 231.274286 119.672)">2</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="119.672" transform="rotate(-0 267.377143 119.672)">3</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="119.672" transform="rotate(-0 303.48 119.672)">4</text>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="119.672" transform="rotate(-0 339.582857 119.672)">5</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="119.672" transform="rotate(-0 375.685714 119.672)">7</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="119.672" transform="rotate(-0 411.788571 119.672)">6</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="119.56" transform="rotate(-0 437.060571 119.56)">tau 0.90</text>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="131.973714" transform="rotate(-0 195.171429 131.973714)">1</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="131.973714" transform="rotate(-0 231.274286 131.973714)">2</text>
+   </g>
+   <g id="text_63">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="131.973714" transform="rotate(-0 267.377143 131.973714)">3</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="131.973714" transform="rotate(-0 303.48 131.973714)">4</text>
+   </g>
+   <g id="text_65">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="131.973714" transform="rotate(-0 339.582857 131.973714)">6</text>
+   </g>
+   <g id="text_66">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="131.973714" transform="rotate(-0 375.685714 131.973714)">7</text>
+   </g>
+   <g id="text_67">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="131.973714" transform="rotate(-0 411.788571 131.973714)">5</text>
+   </g>
+   <g id="text_68">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="131.861714" transform="rotate(-0 437.060571 131.861714)">tau 0.81</text>
+   </g>
+   <g id="text_69">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="144.275429" transform="rotate(-0 195.171429 144.275429)">1</text>
+   </g>
+   <g id="text_70">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="144.275429" transform="rotate(-0 231.274286 144.275429)">2</text>
+   </g>
+   <g id="text_71">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="144.275429" transform="rotate(-0 267.377143 144.275429)">3</text>
+   </g>
+   <g id="text_72">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="144.275429" transform="rotate(-0 303.48 144.275429)">4</text>
+   </g>
+   <g id="text_73">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="144.275429" transform="rotate(-0 339.582857 144.275429)">7</text>
+   </g>
+   <g id="text_74">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="144.275429" transform="rotate(-0 375.685714 144.275429)">6</text>
+   </g>
+   <g id="text_75">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="144.275429" transform="rotate(-0 411.788571 144.275429)">5</text>
+   </g>
+   <g id="text_76">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="144.163429" transform="rotate(-0 437.060571 144.163429)">tau 0.71</text>
+   </g>
+   <g id="text_77">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="156.577143" transform="rotate(-0 195.171429 156.577143)">1</text>
+   </g>
+   <g id="text_78">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="156.577143" transform="rotate(-0 231.274286 156.577143)">2</text>
+   </g>
+   <g id="text_79">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="156.577143" transform="rotate(-0 267.377143 156.577143)">3</text>
+   </g>
+   <g id="text_80">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="156.577143" transform="rotate(-0 303.48 156.577143)">5</text>
+   </g>
+   <g id="text_81">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="156.577143" transform="rotate(-0 339.582857 156.577143)">7</text>
+   </g>
+   <g id="text_82">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="156.577143" transform="rotate(-0 375.685714 156.577143)">6</text>
+   </g>
+   <g id="text_83">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="156.577143" transform="rotate(-0 411.788571 156.577143)">4</text>
+   </g>
+   <g id="text_84">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="156.465143" transform="rotate(-0 437.060571 156.465143)">tau 0.62</text>
+   </g>
+   <g id="text_85">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="168.878857" transform="rotate(-0 195.171429 168.878857)">2</text>
+   </g>
+   <g id="text_86">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="168.878857" transform="rotate(-0 231.274286 168.878857)">1</text>
+   </g>
+   <g id="text_87">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="168.878857" transform="rotate(-0 267.377143 168.878857)">3</text>
+   </g>
+   <g id="text_88">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="168.878857" transform="rotate(-0 303.48 168.878857)">5</text>
+   </g>
+   <g id="text_89">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="168.878857" transform="rotate(-0 339.582857 168.878857)">7</text>
+   </g>
+   <g id="text_90">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="168.878857" transform="rotate(-0 375.685714 168.878857)">6</text>
+   </g>
+   <g id="text_91">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="168.878857" transform="rotate(-0 411.788571 168.878857)">4</text>
+   </g>
+   <g id="text_92">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="168.766857" transform="rotate(-0 437.060571 168.766857)">tau 0.52</text>
+   </g>
+   <g id="text_93">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="181.180571" transform="rotate(-0 195.171429 181.180571)">1</text>
+   </g>
+   <g id="text_94">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="181.180571" transform="rotate(-0 231.274286 181.180571)">2</text>
+   </g>
+   <g id="text_95">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="181.180571" transform="rotate(-0 267.377143 181.180571)">3</text>
+   </g>
+   <g id="text_96">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="181.180571" transform="rotate(-0 303.48 181.180571)">4</text>
+   </g>
+   <g id="text_97">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="181.180571" transform="rotate(-0 339.582857 181.180571)">5</text>
+   </g>
+   <g id="text_98">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="181.180571" transform="rotate(-0 375.685714 181.180571)">6</text>
+   </g>
+   <g id="text_99">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="181.180571" transform="rotate(-0 411.788571 181.180571)">7</text>
+   </g>
+   <g id="text_100">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="181.068571" transform="rotate(-0 437.060571 181.068571)">tau 1.00</text>
+   </g>
+   <g id="text_101">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="193.482286" transform="rotate(-0 195.171429 193.482286)">1</text>
+   </g>
+   <g id="text_102">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="193.482286" transform="rotate(-0 231.274286 193.482286)">2</text>
+   </g>
+   <g id="text_103">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="193.482286" transform="rotate(-0 267.377143 193.482286)">3</text>
+   </g>
+   <g id="text_104">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="193.482286" transform="rotate(-0 303.48 193.482286)">4</text>
+   </g>
+   <g id="text_105">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="193.482286" transform="rotate(-0 339.582857 193.482286)">5</text>
+   </g>
+   <g id="text_106">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="193.482286" transform="rotate(-0 375.685714 193.482286)">6</text>
+   </g>
+   <g id="text_107">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="193.482286" transform="rotate(-0 411.788571 193.482286)">7</text>
+   </g>
+   <g id="text_108">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="193.370286" transform="rotate(-0 437.060571 193.370286)">tau 1.00</text>
+   </g>
+   <g id="text_109">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="205.784" transform="rotate(-0 195.171429 205.784)">1</text>
+   </g>
+   <g id="text_110">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="205.784" transform="rotate(-0 231.274286 205.784)">2</text>
+   </g>
+   <g id="text_111">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="205.784" transform="rotate(-0 267.377143 205.784)">3</text>
+   </g>
+   <g id="text_112">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="205.784" transform="rotate(-0 303.48 205.784)">4</text>
+   </g>
+   <g id="text_113">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="205.784" transform="rotate(-0 339.582857 205.784)">5</text>
+   </g>
+   <g id="text_114">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="205.784" transform="rotate(-0 375.685714 205.784)">6</text>
+   </g>
+   <g id="text_115">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="205.784" transform="rotate(-0 411.788571 205.784)">7</text>
+   </g>
+   <g id="text_116">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="205.672" transform="rotate(-0 437.060571 205.672)">tau 1.00</text>
+   </g>
+   <g id="text_117">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="218.085714" transform="rotate(-0 195.171429 218.085714)">1</text>
+   </g>
+   <g id="text_118">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="218.085714" transform="rotate(-0 231.274286 218.085714)">2</text>
+   </g>
+   <g id="text_119">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="218.085714" transform="rotate(-0 267.377143 218.085714)">3</text>
+   </g>
+   <g id="text_120">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="218.085714" transform="rotate(-0 303.48 218.085714)">4</text>
+   </g>
+   <g id="text_121">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="218.085714" transform="rotate(-0 339.582857 218.085714)">6</text>
+   </g>
+   <g id="text_122">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="218.085714" transform="rotate(-0 375.685714 218.085714)">7</text>
+   </g>
+   <g id="text_123">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="218.085714" transform="rotate(-0 411.788571 218.085714)">5</text>
+   </g>
+   <g id="text_124">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="217.973714" transform="rotate(-0 437.060571 217.973714)">tau 0.81</text>
+   </g>
+   <g id="text_125">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="230.387429" transform="rotate(-0 195.171429 230.387429)">1</text>
+   </g>
+   <g id="text_126">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="230.387429" transform="rotate(-0 231.274286 230.387429)">2</text>
+   </g>
+   <g id="text_127">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="230.387429" transform="rotate(-0 267.377143 230.387429)">3</text>
+   </g>
+   <g id="text_128">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="230.387429" transform="rotate(-0 303.48 230.387429)">4</text>
+   </g>
+   <g id="text_129">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="230.387429" transform="rotate(-0 339.582857 230.387429)">5</text>
+   </g>
+   <g id="text_130">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="230.387429" transform="rotate(-0 375.685714 230.387429)">6</text>
+   </g>
+   <g id="text_131">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="230.387429" transform="rotate(-0 411.788571 230.387429)">7</text>
+   </g>
+   <g id="text_132">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="230.275429" transform="rotate(-0 437.060571 230.275429)">tau 1.00</text>
+   </g>
+   <g id="text_133">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="242.689143" transform="rotate(-0 195.171429 242.689143)">1</text>
+   </g>
+   <g id="text_134">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="242.689143" transform="rotate(-0 231.274286 242.689143)">2</text>
+   </g>
+   <g id="text_135">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="242.689143" transform="rotate(-0 267.377143 242.689143)">3</text>
+   </g>
+   <g id="text_136">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="242.689143" transform="rotate(-0 303.48 242.689143)">4</text>
+   </g>
+   <g id="text_137">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="242.689143" transform="rotate(-0 339.582857 242.689143)">5</text>
+   </g>
+   <g id="text_138">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="242.689143" transform="rotate(-0 375.685714 242.689143)">6</text>
+   </g>
+   <g id="text_139">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="242.689143" transform="rotate(-0 411.788571 242.689143)">7</text>
+   </g>
+   <g id="text_140">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="242.577143" transform="rotate(-0 437.060571 242.577143)">tau 1.00</text>
+   </g>
+   <g id="text_141">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="254.990857" transform="rotate(-0 195.171429 254.990857)">1</text>
+   </g>
+   <g id="text_142">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="254.990857" transform="rotate(-0 231.274286 254.990857)">2</text>
+   </g>
+   <g id="text_143">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="254.990857" transform="rotate(-0 267.377143 254.990857)">3</text>
+   </g>
+   <g id="text_144">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="254.990857" transform="rotate(-0 303.48 254.990857)">4</text>
+   </g>
+   <g id="text_145">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="254.990857" transform="rotate(-0 339.582857 254.990857)">5</text>
+   </g>
+   <g id="text_146">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="254.990857" transform="rotate(-0 375.685714 254.990857)">6</text>
+   </g>
+   <g id="text_147">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="254.990857" transform="rotate(-0 411.788571 254.990857)">7</text>
+   </g>
+   <g id="text_148">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="254.878857" transform="rotate(-0 437.060571 254.878857)">tau 1.00</text>
+   </g>
+   <g id="text_149">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="267.292571" transform="rotate(-0 195.171429 267.292571)">1</text>
+   </g>
+   <g id="text_150">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="267.292571" transform="rotate(-0 231.274286 267.292571)">2</text>
+   </g>
+   <g id="text_151">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="267.292571" transform="rotate(-0 267.377143 267.292571)">3</text>
+   </g>
+   <g id="text_152">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="267.292571" transform="rotate(-0 303.48 267.292571)">5</text>
+   </g>
+   <g id="text_153">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="267.292571" transform="rotate(-0 339.582857 267.292571)">6</text>
+   </g>
+   <g id="text_154">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="267.292571" transform="rotate(-0 375.685714 267.292571)">7</text>
+   </g>
+   <g id="text_155">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="267.292571" transform="rotate(-0 411.788571 267.292571)">4</text>
+   </g>
+   <g id="text_156">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="267.180571" transform="rotate(-0 437.060571 267.180571)">tau 0.71</text>
+   </g>
+   <g id="text_157">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="279.594286" transform="rotate(-0 195.171429 279.594286)">1</text>
+   </g>
+   <g id="text_158">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="279.594286" transform="rotate(-0 231.274286 279.594286)">2</text>
+   </g>
+   <g id="text_159">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="279.594286" transform="rotate(-0 267.377143 279.594286)">3</text>
+   </g>
+   <g id="text_160">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="279.594286" transform="rotate(-0 303.48 279.594286)">4</text>
+   </g>
+   <g id="text_161">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="279.594286" transform="rotate(-0 339.582857 279.594286)">5</text>
+   </g>
+   <g id="text_162">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="279.594286" transform="rotate(-0 375.685714 279.594286)">7</text>
+   </g>
+   <g id="text_163">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="279.594286" transform="rotate(-0 411.788571 279.594286)">6</text>
+   </g>
+   <g id="text_164">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="279.482286" transform="rotate(-0 437.060571 279.482286)">tau 0.90</text>
+   </g>
+   <g id="text_165">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="291.896" transform="rotate(-0 195.171429 291.896)">1</text>
+   </g>
+   <g id="text_166">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="291.896" transform="rotate(-0 231.274286 291.896)">2</text>
+   </g>
+   <g id="text_167">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="291.896" transform="rotate(-0 267.377143 291.896)">3</text>
+   </g>
+   <g id="text_168">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="291.896" transform="rotate(-0 303.48 291.896)">5</text>
+   </g>
+   <g id="text_169">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="291.896" transform="rotate(-0 339.582857 291.896)">7</text>
+   </g>
+   <g id="text_170">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="291.896" transform="rotate(-0 375.685714 291.896)">6</text>
+   </g>
+   <g id="text_171">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="291.896" transform="rotate(-0 411.788571 291.896)">4</text>
+   </g>
+   <g id="text_172">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="291.784" transform="rotate(-0 437.060571 291.784)">tau 0.62</text>
+   </g>
+   <g id="text_173">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="304.197714" transform="rotate(-0 195.171429 304.197714)">1</text>
+   </g>
+   <g id="text_174">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="304.197714" transform="rotate(-0 231.274286 304.197714)">2</text>
+   </g>
+   <g id="text_175">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="304.197714" transform="rotate(-0 267.377143 304.197714)">3</text>
+   </g>
+   <g id="text_176">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="304.197714" transform="rotate(-0 303.48 304.197714)">5</text>
+   </g>
+   <g id="text_177">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="304.197714" transform="rotate(-0 339.582857 304.197714)">7</text>
+   </g>
+   <g id="text_178">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="304.197714" transform="rotate(-0 375.685714 304.197714)">6</text>
+   </g>
+   <g id="text_179">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="304.197714" transform="rotate(-0 411.788571 304.197714)">4</text>
+   </g>
+   <g id="text_180">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="304.085714" transform="rotate(-0 437.060571 304.085714)">tau 0.62</text>
+   </g>
+   <g id="text_181">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="316.499429" transform="rotate(-0 195.171429 316.499429)">2</text>
+   </g>
+   <g id="text_182">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="316.499429" transform="rotate(-0 231.274286 316.499429)">1</text>
+   </g>
+   <g id="text_183">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="316.499429" transform="rotate(-0 267.377143 316.499429)">3</text>
+   </g>
+   <g id="text_184">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="316.499429" transform="rotate(-0 303.48 316.499429)">7</text>
+   </g>
+   <g id="text_185">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="316.499429" transform="rotate(-0 339.582857 316.499429)">6</text>
+   </g>
+   <g id="text_186">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="316.499429" transform="rotate(-0 375.685714 316.499429)">5</text>
+   </g>
+   <g id="text_187">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="316.499429" transform="rotate(-0 411.788571 316.499429)">4</text>
+   </g>
+   <g id="text_188">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="316.387429" transform="rotate(-0 437.060571 316.387429)">tau 0.33</text>
+   </g>
+   <g id="text_189">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="195.171429" y="328.801143" transform="rotate(-0 195.171429 328.801143)">1</text>
+   </g>
+   <g id="text_190">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #ffffff" x="231.274286" y="328.801143" transform="rotate(-0 231.274286 328.801143)">2</text>
+   </g>
+   <g id="text_191">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="267.377143" y="328.801143" transform="rotate(-0 267.377143 328.801143)">4</text>
+   </g>
+   <g id="text_192">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="303.48" y="328.801143" transform="rotate(-0 303.48 328.801143)">7</text>
+   </g>
+   <g id="text_193">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="339.582857" y="328.801143" transform="rotate(-0 339.582857 328.801143)">6</text>
+   </g>
+   <g id="text_194">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="375.685714" y="328.801143" transform="rotate(-0 375.685714 328.801143)">5</text>
+   </g>
+   <g id="text_195">
+    <text style="font-size: 6.2px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="411.788571" y="328.801143" transform="rotate(-0 411.788571 328.801143)">3</text>
+   </g>
+   <g id="text_196">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #4a4a64" x="437.060571" y="328.689143" transform="rotate(-0 437.060571 328.689143)">tau 0.33</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g clip-path="url(#p06d8c86018)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAooAAAADCAYAAAAUVC61AAABfklEQVR4nO2WXXLCMAyEPzkB2rP0Mr3/XRr1ITaRbeUHAg/MaF8SVtJqLXmYyE/6VYCkI4kLACNfgJAYGLg63A2AgRtCQkiMhdPCSa6BxJXEmHW+c+2l4xJj108QEinHZ8wchhOkiUsVJzuqOZs3uLWSuVqncDbv8X6+zpl+S+26djrdb9E508+fw7r24/36OzL3w9T22qD5x5RZBfG48j7lQpPHBCgq5Z0ca3Rkcrg2b37Xqsbp13ks+fbd07P9/ta9dnOo47rni9a/32/T194uHN9q97O5i8Lt6dm4PYu3n607NGUtO5s1Xxu7N1x/R+p+7uw6D1M55eYccOfg3xGtPGz4Wp2DNlzJZ9G7xzAxk+dxUh5a191jjuaBPvJsbedBF6o9Z8s5tZ6uHPZwbJ5yahd+rrS5J3aBmPDB+7A3T9ncxU4fx7+8aBeFE6/WctLwLVftYn4m3gjnKKfR7i8QCAQCr8M7/rcDgcDn4q0fivFRFwgEAoFAIPC5+Ac32cWYY2ZJFQAAAABJRU5ErkJggg==" id="image3f82551bbd" transform="scale(1 -1) translate(0 -2.16)" x="8.64" y="-8.136" width="468" height="2.16"/>
+   </g>
+  </g>
+  <g id="text_197">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; fill: #4a4a64" transform="translate(13.32 350.44525)">Rank of each endpoint-aware configuration by macro recall under the scoring rule used for all results</text>
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; fill: #4a4a64" transform="translate(13.32 356.392625)">(outlined) and 20 alternative rules; tau = Kendall rank correlation with the outlined row.</text>
+  </g>
+  <g id="text_198">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; text-anchor: end; fill: #747489" x="471.96" y="371.26525" transform="rotate(-0 471.96 371.26525)">Snyk VulnBench 2.0 · vulnbench.com</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2d70119c89">
+   <rect x="177.12" y="74.88" width="252.72" height="258.336"/>
+  </clipPath>
+  <clipPath id="p06d8c86018">
+   <rect x="8.64" y="8.64" width="468" height="1.656"/>
+  </clipPath>
+ </defs>
+</svg>

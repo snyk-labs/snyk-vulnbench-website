@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="485.28pt" height="223.49725pt" viewBox="0 0 485.28 223.49725" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 223.49725 
+L 485.28 223.49725 
+L 485.28 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 18 59.095385 
+L 186.48 59.095385 
+L 186.48 40.153846 
+L 18 40.153846 
+z
+" clip-path="url(#pc296317ffd)" style="fill: #d2d2d8"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 58.56 85.403077 
+L 145.92 85.403077 
+L 145.92 66.461538 
+L 58.56 66.461538 
+z
+" clip-path="url(#pc296317ffd)" style="fill: #ffa6ff"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 67.92 111.710769 
+L 136.56 111.710769 
+L 136.56 92.769231 
+L 67.92 92.769231 
+z
+" clip-path="url(#pc296317ffd)" style="fill: #ffccff"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 73.38 138.018462 
+L 131.1 138.018462 
+L 131.1 119.076923 
+L 73.38 119.076923 
+z
+" clip-path="url(#pc296317ffd)" style="fill: #ff00ff"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 101.46 164.326154 
+L 103.02 164.326154 
+L 103.02 145.384615 
+L 101.46 145.384615 
+z
+" clip-path="url(#pc296317ffd)" style="fill: #ff80ff"/>
+   </g>
+   <g id="text_1">
+    <text style="font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="102.24" y="51.472615" transform="rotate(-0 102.24 51.472615)">108</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #030328" x="192.72" y="51.360615" transform="rotate(-0 192.72 51.360615)">reference vulnerabilities</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="102.24" y="77.780308" transform="rotate(-0 102.24 77.780308)">56</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 6.2px; font-family: 'Geist'; fill: #030328" transform="translate(192.72 74.593011)">a flow file among the scan stage's candidates</text>
+    <text style="font-size: 6.2px; font-family: 'Geist'; fill: #030328" transform="translate(192.72 80.712605)">(model-free; same for both backends)</text>
+   </g>
+   <g id="text_5">
+    <text style="font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="102.24" y="104.088" transform="rotate(-0 102.24 104.088)">44</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 6.2px; font-family: 'Geist'; fill: #030328" transform="translate(192.72 101.176603)">the sink file among the candidates (of 107</text>
+    <text style="font-size: 6.2px; font-family: 'Geist'; fill: #030328" transform="translate(192.72 107.023397)">with a sink)</text>
+   </g>
+   <g id="text_7">
+    <text style="font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="102.24" y="130.395692" transform="rotate(-0 102.24 130.395692)">37</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #030328" x="192.72" y="130.295802" transform="rotate(-0 192.72 130.295802)">localized match, Opus 5 xhigh backend</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: middle; fill: #030328" x="102.24" y="156.703385" transform="rotate(-0 102.24 156.703385)">1</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: start; fill: #030328" x="192.72" y="156.622385" transform="rotate(-0 192.72 156.622385)">localized match, GPT-5.6 Sol backend</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: start; fill: #6f00dd" x="18" y="30.114" transform="rotate(-0 18 30.114)">A · DEEPSEC 2.3.7 (SCAN → PROCESS → EXPORT): WHERE THE REFERENCE SET IS LOST</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_7">
+    <path d="M 411.12 163.44 
+L 462.6 163.44 
+L 462.6 51.84 
+L 411.12 51.84 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 411.12 73.821818 
+L 423 73.821818 
+L 423 56.912727 
+L 411.12 56.912727 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ebebee"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 411.12 73.821818 
+L 423 73.821818 
+L 423 56.912727 
+L 411.12 56.912727 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ff66ff"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 411.12 102.003636 
+L 440.82 102.003636 
+L 440.82 85.094545 
+L 411.12 85.094545 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ebebee"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 411.12 102.003636 
+L 433.89 102.003636 
+L 433.89 85.094545 
+L 411.12 85.094545 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ff66ff"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 411.12 130.185455 
+L 442.8 130.185455 
+L 442.8 113.276364 
+L 411.12 113.276364 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ebebee"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 411.12 130.185455 
+L 422.01 130.185455 
+L 422.01 113.276364 
+L 411.12 113.276364 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ff66ff"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 411.12 158.367273 
+L 444.78 158.367273 
+L 444.78 141.458182 
+L 411.12 141.458182 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ebebee"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 411.12 158.367273 
+L 421.02 158.367273 
+L 421.02 141.458182 
+L 411.12 141.458182 
+z
+" clip-path="url(#p7115bd100f)" style="fill: #ff66ff"/>
+   </g>
+   <g id="matplotlib.axis_1"/>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="mffc609f837" d="M 0 0 
+L -2.5 0 
+" style="stroke: #4a4a64; stroke-width: 0.6"/>
+      </defs>
+      <g>
+       <use xlink:href="#mffc609f837" x="411.12" y="149.912727" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="405.12" y="152.113727" transform="rotate(-0 405.12 152.113727)">Python</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#mffc609f837" x="411.12" y="121.730909" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="405.12" y="123.931909" transform="rotate(-0 405.12 123.931909)">Go</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#mffc609f837" x="411.12" y="93.549091" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="405.12" y="95.750091" transform="rotate(-0 405.12 95.750091)">JS/TS</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#mffc609f837" x="411.12" y="65.367273" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="font-size: 6.2px; font-family: 'Geist'; text-anchor: end; fill: #4a4a64" x="405.12" y="67.568273" transform="rotate(-0 405.12 67.568273)">Java</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_16">
+    <path d="M 411.12 163.44 
+L 411.12 51.84 
+" style="fill: none; stroke: #868698; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="423.99" y="66.991273" transform="rotate(-0 423.99 66.991273)">12/12</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="441.81" y="95.173091" transform="rotate(-0 441.81 95.173091)">23/30</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="443.79" y="123.354909" transform="rotate(-0 443.79 123.354909)">11/32</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 5.8px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="445.77" y="151.536727" transform="rotate(-0 445.77 151.536727)">10/34</text>
+   </g>
+   <g id="text_20">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: start; fill: #6f00dd" x="380.232" y="44.154" transform="rotate(-0 380.232 44.154)">B · BY LANGUAGE</text>
+   </g>
+  </g>
+  <g id="axes_3">
+   <g clip-path="url(#p387ca5a5a2)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAooAAAACCAYAAADfCP0QAAABZElEQVR4nO2SXWKEMAiEP9Ddbc/Sy/T+d6n0wURJgn+1bxtejAPMTCDypd9mwGAjygOAkQ9AUAYGngH2AmDghaAIypgxy5ikHlCeKGPi+Uy9jwZTxkZPEBRNeRBIPliwuY4Fk/SPwzTAfN0Q9ma1kidjvu66XsxzR2/t3ebWALumt/Lc0YvnsM19Xa99I7MerrflBks/U0INJMLyeUqNro4JMEzymZSreGQKsLpuPlvRE+g1HnO9P0d8Xu9n22szhzJvR76o/cd6u76OdhH4Nr+f3V1k7IjP5/1dov3svaEpcfnZbPna2b3D2jdS6oWzazwkX+FsNu538Eas8LDja3MOVmG5npVvyeFyri7CJH+s7FtyAecJHflrb+PBVqi+Z40FvRGvnPZwbp5yaxdxrdS1N3aBuPTJ93A0T9ndxYFO4F/+aRcZk6jXY1LhNVbsYv5q473HW0bw7Hr06NGjR48ebx6/xXDFlsEJUHQAAAAASUVORK5CYII=" id="image3f2dab9c04" transform="scale(1 -1) translate(0 -1.44)" x="8.64" y="-8.1" width="468" height="1.44"/>
+   </g>
+  </g>
+  <g id="text_21">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; fill: #4a4a64" transform="translate(13.32 196.44)">Localized recall (DeepSec's primary metric); not comparable with Attacker-Reachable Vulnerability Recall. No</text>
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; fill: #4a4a64" transform="translate(13.32 202.118575)">match occurs without a selected flow file.</text>
+  </g>
+  <g id="text_22">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; text-anchor: end; fill: #747489" x="471.96" y="214.01725" transform="rotate(-0 471.96 214.01725)">Snyk VulnBench 2.0 · vulnbench.com</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pc296317ffd">
+   <rect x="18" y="33.84" width="168.48" height="136.8"/>
+  </clipPath>
+  <clipPath id="p7115bd100f">
+   <rect x="411.12" y="51.84" width="51.48" height="111.6"/>
+  </clipPath>
+  <clipPath id="p387ca5a5a2">
+   <rect x="8.64" y="8.64" width="468" height="0.9"/>
+  </clipPath>
+ </defs>
+</svg>

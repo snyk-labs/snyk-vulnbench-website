@@ -1,0 +1,20 @@
+---
+import DataTable from "./DataTable.astro";
+import { scorecardSpecs } from "./evidence-tables";
+---
+
+<div class="scorecard">
+  {
+    scorecardSpecs().map((spec) => (
+      <DataTable {...spec} collapsible={false} />
+    ))
+  }
+</div>
+
+<style>
+  .scorecard {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-4);
+  }
+</style>

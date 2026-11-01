@@ -2,16 +2,21 @@
 import type { Release } from "../../data/releases/schema";
 
 interface Props {
-  evidence: Release["evidence"];
+  evidence?: Release["evidence"];
+  items?: { value: string | number; label: string }[];
 }
 
-const { evidence } = Astro.props;
-const items = [
-  { value: evidence.scans, label: "scans" },
-  { value: evidence.projects, label: "projects" },
-  { value: evidence.configurations, label: "configurations" },
-  { value: evidence.repetitions, label: "repetitions" },
-];
+const { evidence, items: providedItems } = Astro.props;
+const items =
+  providedItems ??
+  (evidence
+    ? [
+        { value: evidence.scans, label: "scans" },
+        { value: evidence.projects, label: "projects" },
+        { value: evidence.configurations, label: "configurations" },
+        { value: evidence.repetitions, label: "repetitions" },
+      ]
+    : []);
 ---
 
 <dl class="evidence-strip" aria-label="Benchmark scope">

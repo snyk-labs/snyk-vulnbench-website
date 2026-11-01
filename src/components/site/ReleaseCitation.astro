@@ -1,0 +1,120 @@
+---
+import { formatBibtexCitation } from "../../data/releases/citation";
+import type { Release } from "../../data/releases/schema";
+
+interface Props {
+  release: Release;
+  plain?: string;
+}
+
+const { release, plain } = Astro.props;
+const bibtex = formatBibtexCitation(release);
+---
+
+<article class="release-citation" aria-label={`${release.name} citation`}>
+  <h3>{release.name}</h3>
+  {plain && <blockquote>{plain}</blockquote>}
+  <div class="citation-source" data-bibtex-citation>
+    <pre><code>{bibtex}</code></pre>
+    <div class="citation-actions">
+      <button class="button secondary" type="button" data-copy-bibtex>
+        Copy BibTeX
+      </button>
+      <span data-citation-status aria-live="polite"></span>
+    </div>
+  </div>
+  <p class="authors">{release.citation.authors.join(" · ")}</p>
+  <nav class="citation-links" aria-label={`${release.name} publication links`}>
+    <a href={release.links.paper}>Paper</a>
+    {release.links.publication && <a href={release.links.publication}>Snyk publication</a>}
+    <a href={release.links.github}>GitHub</a>
+    <a href={release.links.data}>Data</a>
+  </nav>
+</article>
+
+<style>
+  .release-citation {
+    display: grid;
+    min-width: 0;
+    padding: var(--space-4);
+    border: 1px solid var(--purple);
+    background: var(--paper-raised);
+    gap: var(--space-3);
+  }
+
+  h3 {
+    font-size: var(--step-1);
+  }
+
+  blockquote {
+    margin: 0;
+    font-size: var(--step--1);
+  }
+
+  .citation-source pre {
+    margin: 0 0 var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .citation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  [data-citation-status] {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .authors {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+
+  .citation-links {
+    display: flex;
+    gap: var(--space-2) var(--space-3);
+    flex-wrap: wrap;
+    font-size: var(--step--1);
+    font-weight: var(--font-weight-control);
+  }
+</style>
+
+<script>
+  let copiedStatusTimeout: number | undefined;
+
+  document.querySelectorAll<HTMLButtonElement>("[data-copy-bibtex]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const source = button.closest<HTMLElement>("[data-bibtex-citation]");
+      const code = source?.querySelector("code");
+      const status = source?.querySelector<HTMLElement>("[data-citation-status]");
+      const citation = code?.textContent;
+
+      if (!citation || !navigator.clipboard?.writeText) {
+        window.clearTimeout(copiedStatusTimeout);
+        if (status) status.textContent = "Select and copy the BibTeX entry manually.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(citation);
+        if (status) {
+          window.clearTimeout(copiedStatusTimeout);
+          status.textContent = "Copied";
+          copiedStatusTimeout = window.setTimeout(() => {
+            if (status.textContent === "Copied") status.textContent = "";
+          }, 3_000);
+        }
+      } catch {
+        window.clearTimeout(copiedStatusTimeout);
+        if (status) status.textContent = "Select and copy the BibTeX entry manually.";
+      }
+    });
+  });
+</script>

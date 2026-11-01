@@ -181,6 +181,7 @@ const SOURCE_COMPOSITIONS = [
       { path: "src/components/social/share-card.ts", marked: true },
       { path: "src/pages/brand/snyk-2026/social.svg.ts" },
       { path: "src/pages/social/js-1.0/[view].svg.ts" },
+      { path: "src/pages/social/2.0/release.svg.ts" },
     ],
   },
   {
@@ -199,6 +200,7 @@ const GENERATED_SVG_TARGETS = [
   "dist/social/js-1.0/repeatability.svg",
   "dist/social/js-1.0/coverage.svg",
   "dist/social/js-1.0/efficiency.svg",
+  "dist/social/2.0/release.svg",
 ];
 
 function lineNumberAt(source, index) {
@@ -1664,7 +1666,7 @@ export function auditGeneratedMetadata(source, fileName = "<html>") {
   )?.[1];
   if (
     !socialImage ||
-    !/\/(?:brand\/snyk-2026\/social\.(?:svg|png)|social\/js-1\.0\/(?:summary|repeatability|coverage|efficiency)\.svg)$/u.test(
+    !/\/(?:brand\/snyk-2026\/social(?:\.svg|\.png|-2\.0\.png)|social\/js-1\.0\/(?:summary|repeatability|coverage|efficiency)\.svg)$/u.test(
       socialImage,
     )
   ) {

@@ -137,7 +137,16 @@ const datasetStructuredData = release
             name="citation_publication_date"
             content={release.publishedAt}
           />
-          <meta name="citation_pdf_url" content={release.links.paper} />
+          <meta
+            name="citation_pdf_url"
+            content={release.citation.pdfUrl ?? release.links.paper}
+          />
+          {release.citation.arxivId && (
+            <meta name="citation_arxiv_id" content={release.citation.arxivId} />
+          )}
+          {release.citation.doi && (
+            <meta name="citation_doi" content={release.citation.doi} />
+          )}
           <script
             is:inline
             type="application/ld+json"

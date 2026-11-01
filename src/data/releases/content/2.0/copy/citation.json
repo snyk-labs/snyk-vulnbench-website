@@ -1,0 +1,13 @@
+{
+  "preferred_2_0": "paper/citation.bib (key tal2026snykvulnbench20)",
+  "plain_2_0": "Liran Tal, Chris Liu, Charlotte Fereday, Sebastian Roth, Brian Clark. “How Deterministic SAST and AI Security Agents Divide the Work: Coverage, Harness Policy and Cost in Snyk VulnBench 2.0.” arXiv:2610.38617, 2026.",
+  "preferred_js_1_0": "unchanged (key tal2026snykvulnbenchjs10)",
+  "guidance": "Cite the release, not an unversioned score. Include the release name and dataset version 2.0.0 when reproducing a chart or filtered result.",
+  "team_2_0": [
+    "Liran Tal · Snyk",
+    "Chris Liu · Snyk",
+    "Charlotte Fereday · Snyk",
+    "Sebastian Roth · Snyk",
+    "Brian Clark · Snyk"
+  ]
+}

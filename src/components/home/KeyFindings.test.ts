@@ -1,30 +1,25 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { expect, test } from "vitest";
+import { v20Copy } from "../../data/releases/2.0-content";
+import { v20Release } from "../../data/releases/2.0";
 
 const componentPath = resolve(process.cwd(), "src/components/home/KeyFindings.astro");
-const releasePath = resolve(process.cwd(), "src/data/releases/js-1.0.ts");
 
-test("frames headline findings as practical implications", async () => {
-  const [component, release] = await Promise.all([
-    readFile(componentPath, "utf8"),
-    readFile(releasePath, "utf8"),
+test("frames headline findings with the 2.0 copy in the paper's order", async () => {
+  const component = (await readFile(componentPath, "utf8")).replace(/\s+/g, " ");
+
+  expect(component).toContain("{intro.kicker}");
+  expect(component).toContain("{intro.h2}");
+  expect(component).toContain("{intro.body}");
+  expect(component).toContain("Interpret with care:");
+  expect(v20Copy.findings.map(({ id }) => id)).toEqual([
+    "complementarity",
+    "harness-policy",
+    "efficiency",
+    "robustness",
   ]);
-  const normalizedComponent = component.replace(/\s+/g, " ");
-  const normalizedRelease = release.replace(/\s+/g, " ");
-
-  expect(normalizedComponent).toContain("What the results mean in practice");
-  expect(normalizedComponent).toContain(
-    "An AI review is a measurement—not a verdict.",
-  );
-  expect(normalizedComponent).toContain(
-    "Repeat the same task and the story sharpens: many reference-matched findings hold steady; AI review and deterministic SAST reveal different blind spots; and more spend does not reliably improve Snyk-reference agreement.",
-  );
-  expect(normalizedRelease).toContain("Repeatability makes confidence visible");
-  expect(normalizedRelease).toContain(
-    "AI review and SAST expose different blind spots",
-  );
-  expect(normalizedRelease).toContain(
-    "Paying more did not reliably improve the result",
+  expect(v20Release.featuredFindings.map(({ title }) => title)).toEqual(
+    v20Copy.findings.map(({ title }) => title),
   );
 });

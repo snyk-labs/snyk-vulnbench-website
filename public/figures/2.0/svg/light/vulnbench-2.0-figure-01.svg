@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="487.007156pt" height="283.40125pt" viewBox="0 0 487.007156 283.40125" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 283.40125 
+L 487.007156 283.40125 
+L 487.007156 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 149.04 144.072 
+L 383.04 144.072 
+L 383.04 22.896 
+L 149.04 22.896 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 149.04 144.072 
+L 149.04 22.896 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m8f7ebe96dd" d="M 0 0 
+L 0 2.5 
+" style="stroke: #4a4a64; stroke-width: 0.6"/>
+      </defs>
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="149.04" y="144.072" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="149.04" y="154.9" transform="rotate(-0 149.04 154.9)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 195.84 144.072 
+L 195.84 22.896 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="195.84" y="144.072" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="195.84" y="154.9" transform="rotate(-0 195.84 154.9)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 242.64 144.072 
+L 242.64 22.896 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="242.64" y="144.072" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="242.64" y="154.9" transform="rotate(-0 242.64 154.9)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 289.44 144.072 
+L 289.44 22.896 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="289.44" y="144.072" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="289.44" y="154.9" transform="rotate(-0 289.44 154.9)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 336.24 144.072 
+L 336.24 22.896 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="336.24" y="144.072" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="336.24" y="154.9" transform="rotate(-0 336.24 154.9)">80</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_11">
+      <path d="M 383.04 144.072 
+L 383.04 22.896 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="383.04" y="144.072" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 6.8px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="383.04" y="154.9" transform="rotate(-0 383.04 154.9)">100</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 7.5px; font-family: 'Geist'; text-anchor: middle; fill: #4a4a64" x="266.04" y="165.545" transform="rotate(-0 266.04 165.545)">Attacker-Reachable Vulnerability Recall, macro over 20 apps (%)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2"/>
+   <g id="line2d_13">
+    <path d="M 322.144308 32.994 
+L 360.81 32.994 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #030328; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="line2d_14">
+    <path d="M 316.62846 49.824 
+L 351.870732 49.824 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #6f00dd; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="m6ea6e8f7fc" d="M 0 2.54951 
+L 0 -2.54951 
+" style="stroke: #6f00dd"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#m6ea6e8f7fc" x="341.873333" y="49.824" style="fill: #6f00dd; stroke: #6f00dd"/>
+    </g>
+   </g>
+   <g id="line2d_15">
+    <path d="M 308.632914 66.654 
+L 341.672778 66.654 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #9747e7; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="PathCollection_2">
+    <defs>
+     <path id="m74ae25c8cc" d="M 0 2.54951 
+L 0 -2.54951 
+" style="stroke: #9747e7"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#m74ae25c8cc" x="331.04" y="66.654" style="fill: #9747e7; stroke: #9747e7"/>
+    </g>
+   </g>
+   <g id="line2d_16">
+    <path d="M 284.007222 83.484 
+L 327.43926 83.484 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #be8cf0; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="PathCollection_3">
+    <defs>
+     <path id="ma3f065a4a5" d="M 0 2.54951 
+L 0 -2.54951 
+" style="stroke: #be8cf0"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#ma3f065a4a5" x="313.706667" y="83.484" style="fill: #be8cf0; stroke: #be8cf0"/>
+    </g>
+   </g>
+   <g id="line2d_17">
+    <path d="M 211.243518 100.314 
+L 281.285568 100.314 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #f3552e; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="line2d_18">
+    <path d="M 193.831578 117.144 
+L 246.989826 117.144 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #f68569; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="line2d_19">
+    <path d="M 191.325672 133.974 
+L 245.202768 133.974 
+" clip-path="url(#p6e77c9e021)" style="fill: none; stroke: #fab3a1; stroke-opacity: 0.55; stroke-width: 1.6"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 149.04 144.072 
+L 383.04 144.072 
+" style="fill: none; stroke: #868698; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="PathCollection_4">
+    <defs>
+     <path id="mb1ff3e5b86" d="M 0 2.915476 
+C 0.773193 2.915476 1.514823 2.608283 2.061553 2.061553 
+C 2.608283 1.514823 2.915476 0.773193 2.915476 0 
+C 2.915476 -0.773193 2.608283 -1.514823 2.061553 -2.061553 
+C 1.514823 -2.608283 0.773193 -2.915476 0 -2.915476 
+C -0.773193 -2.915476 -1.514823 -2.608283 -2.061553 -2.061553 
+C -2.608283 -1.514823 -2.915476 -0.773193 -2.915476 0 
+C -2.915476 0.773193 -2.608283 1.514823 -2.061553 2.061553 
+C -1.514823 2.608283 -0.773193 2.915476 0 2.915476 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#mb1ff3e5b86" x="341.922924" y="32.994" style="fill: #030328; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="34.980984" transform="rotate(-0 146.7 34.980984)">Snyk Code</text>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="34.786" transform="rotate(-0 385.38 34.786)">82.4%  (89 of 108)</text>
+   </g>
+   <g id="PathCollection_5">
+    <defs>
+     <path id="mb4abe1f722" d="M -2.915476 2.915476 
+L 2.915476 2.915476 
+L 2.915476 -2.915476 
+L -2.915476 -2.915476 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#mb4abe1f722" x="334.512846" y="49.824" style="fill: #6f00dd; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="51.769477" transform="rotate(-0 146.7 51.769477)">Claude Code · Opus 5 xhigh</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="51.616" transform="rotate(-0 385.38 51.616)">79.3%  (85 of 108)</text>
+   </g>
+   <g id="PathCollection_6">
+    <defs>
+     <path id="m071773d74d" d="M -0 4.123106 
+L 4.123106 0 
+L 0 -4.123106 
+L -4.123106 -0 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#m071773d74d" x="325.041462" y="66.654" style="fill: #9747e7; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="68.640984" transform="rotate(-0 146.7 68.640984)">Claude Code · Opus 5 medium + Snyk MCP</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="68.446" transform="rotate(-0 385.38 68.446)">75.2%  (80 of 108)</text>
+   </g>
+   <g id="PathCollection_7">
+    <defs>
+     <path id="mb29779d694" d="M 0 -2.915476 
+L -2.915476 2.915476 
+L 2.915476 2.915476 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#mb29779d694" x="305.903538" y="83.484" style="fill: #be8cf0; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="85.429477" transform="rotate(-0 146.7 85.429477)">Claude Code · Sonnet 5 xhigh</text>
+   </g>
+   <g id="text_15">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="85.276" transform="rotate(-0 385.38 85.276)">67.0%  (73 of 108)</text>
+   </g>
+   <g id="PathCollection_8">
+    <defs>
+     <path id="ma033ac3fe0" d="M -0 2.915476 
+L 2.915476 -2.915476 
+L -2.915476 -2.915476 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#ma033ac3fe0" x="245.509308" y="100.314" style="fill: #f3552e; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="102.300984" transform="rotate(-0 146.7 102.300984)">Codex Security · GPT-5.6 Luna</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="102.106" transform="rotate(-0 385.38 102.106)">41.2%  (45 of 108)</text>
+   </g>
+   <g id="PathCollection_9">
+    <defs>
+     <path id="m7a061ac5d0" d="M 0 -2.915476 
+L -2.772782 -0.900932 
+L -1.713674 2.35867 
+L 1.713674 2.35867 
+L 2.772782 -0.900932 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#m7a061ac5d0" x="219.54654" y="117.144" style="fill: #f68569; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="119.130984" transform="rotate(-0 146.7 119.130984)">Codex Security · GPT-5.6 Terra</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="118.936" transform="rotate(-0 385.38 118.936)">30.1%  (35 of 108)</text>
+   </g>
+   <g id="PathCollection_10">
+    <defs>
+     <path id="m91a606f02a" d="M 0 -2.915476 
+L -2.524876 -1.457738 
+L -2.524876 1.457738 
+L -0 2.915476 
+L 2.524876 1.457738 
+L 2.524876 -1.457738 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p6e77c9e021)">
+     <use xlink:href="#m91a606f02a" x="217.401462" y="133.974" style="fill: #fab3a1; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="135.960984" transform="rotate(-0 146.7 135.960984)">Codex Security · GPT-5.6 Sol</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="135.766" transform="rotate(-0 385.38 135.766)">29.2%  (34 of 108)</text>
+   </g>
+   <g id="text_22">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: start; fill: #6f00dd" x="27.36" y="17.05896" transform="rotate(-0 27.36 17.05896)">A · ENDPOINT-AWARE CONFIGURATIONS (PRIMARY ±2-LINE RULE)</text>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_4">
+    <path d="M 149.04 222.48 
+L 383.04 222.48 
+L 383.04 193.968 
+L 149.04 193.968 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_7">
+     <g id="line2d_20">
+      <path d="M 149.04 222.48 
+L 149.04 193.968 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="149.04" y="222.48" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_22">
+      <path d="M 195.84 222.48 
+L 195.84 193.968 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="195.84" y="222.48" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_24">
+      <path d="M 242.64 222.48 
+L 242.64 193.968 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_25">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="242.64" y="222.48" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_26">
+      <path d="M 289.44 222.48 
+L 289.44 193.968 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_27">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="289.44" y="222.48" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_11">
+     <g id="line2d_28">
+      <path d="M 336.24 222.48 
+L 336.24 193.968 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_29">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="336.24" y="222.48" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_12">
+     <g id="line2d_30">
+      <path d="M 383.04 222.48 
+L 383.04 193.968 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #e1e1e5; stroke-width: 0.6; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_31">
+      <g>
+       <use xlink:href="#m8f7ebe96dd" x="383.04" y="222.48" style="fill: #4a4a64; stroke: #4a4a64; stroke-width: 0.6"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4"/>
+   <g id="line2d_32">
+    <path d="M 202.024386 201.744 
+L 273.50577 201.744 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #ff00ff; stroke-opacity: 0.55; stroke-width: 1.6; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_33">
+    <path d="M 149.04 214.704 
+L 166.59 214.704 
+" clip-path="url(#p849a059631)" style="fill: none; stroke: #ff80ff; stroke-opacity: 0.55; stroke-width: 1.6; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 149.04 222.48 
+L 383.04 222.48 
+" style="fill: none; stroke: #868698; stroke-width: 0.6; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="PathCollection_11">
+    <defs>
+     <path id="m04c83a9926" d="M 0 2.738613 
+C 0.726289 2.738613 1.422928 2.450055 1.936492 1.936492 
+C 2.450055 1.422928 2.738613 0.726289 2.738613 0 
+C 2.738613 -0.726289 2.450055 -1.422928 1.936492 -1.936492 
+C 1.422928 -2.450055 0.726289 -2.738613 0 -2.738613 
+C -0.726289 -2.738613 -1.422928 -2.450055 -1.936492 -1.936492 
+C -2.450055 -1.422928 -2.738613 -0.726289 -2.738613 0 
+C -2.738613 0.726289 -2.450055 1.422928 -1.936492 1.936492 
+C -1.422928 2.450055 -0.726289 2.738613 0 2.738613 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p849a059631)">
+     <use xlink:href="#m04c83a9926" x="236.845692" y="201.744" style="fill: #ff00ff; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="203.689477" transform="rotate(-0 146.7 203.689477)">DeepSec · Opus 5 xhigh</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="203.536" transform="rotate(-0 385.38 203.536)">37.5%  (37 of 108)</text>
+   </g>
+   <g id="PathCollection_12">
+    <defs>
+     <path id="me8879199c5" d="M -1.369306 2.738613 
+L 0 1.369306 
+L 1.369306 2.738613 
+L 2.738613 1.369306 
+L 1.369306 0 
+L 2.738613 -1.369306 
+L 1.369306 -2.738613 
+L 0 -1.369306 
+L -1.369306 -2.738613 
+L -2.738613 -1.369306 
+L -1.369306 0 
+L -2.738613 1.369306 
+z
+" style="stroke: #ffffff; stroke-width: 0.6"/>
+    </defs>
+    <g clip-path="url(#p849a059631)">
+     <use xlink:href="#me8879199c5" x="154.89" y="214.704" style="fill: #ff80ff; stroke: #ffffff; stroke-width: 0.6"/>
+    </g>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 6.9px; font-family: 'Geist'; text-anchor: end; fill: #030328" x="146.7" y="216.649477" transform="rotate(-0 146.7 216.649477)">DeepSec · GPT-5.6 Sol xhigh</text>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 6.4px; font-family: 'Geist Mono'; text-anchor: start; fill: #030328" x="385.38" y="216.496" transform="rotate(-0 385.38 216.496)">2.5%  (1 of 108)</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 500; font-size: 6.6px; font-family: 'Geist Mono'; text-anchor: start; fill: #6f00dd" x="27.36" y="189.477154" transform="rotate(-0 27.36 189.477154)">B · DEEPSEC: LOCALIZED VULNERABILITY RECALL (DIFFERENT EVIDENCE REQUIREMENT; NOT RANKED WITH A)</text>
+   </g>
+  </g>
+  <g id="axes_3">
+   <g clip-path="url(#pb071bc53d1)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAooAAAACCAYAAADfCP0QAAABZElEQVR4nO2SXWKEMAiEP9Ddbc/Sy/T+d6n0wURJgn+1bxtejAPMTCDypd9mwGAjygOAkQ9AUAYGngH2AmDghaAIypgxy5ikHlCeKGPi+Uy9jwZTxkZPEBRNeRBIPliwuY4Fk/SPwzTAfN0Q9ma1kidjvu66XsxzR2/t3ebWALumt/Lc0YvnsM19Xa99I7MerrflBks/U0INJMLyeUqNro4JMEzymZSreGQKsLpuPlvRE+g1HnO9P0d8Xu9n22szhzJvR76o/cd6u76OdhH4Nr+f3V1k7IjP5/1dov3svaEpcfnZbPna2b3D2jdS6oWzazwkX+FsNu538Eas8LDja3MOVmG5npVvyeFyri7CJH+s7FtyAecJHflrb+PBVqi+Z40FvRGvnPZwbp5yaxdxrdS1N3aBuPTJ93A0T9ndxYFO4F/+aRcZk6jXY1LhNVbsYv5q473HW0bw7Hr06NGjR48ebx6/xXDFlsEJUHQAAAAASUVORK5CYII=" id="image78a96dcc9c" transform="scale(1 -1) translate(0 -1.44)" x="8.64" y="-8.388" width="468" height="1.44"/>
+   </g>
+  </g>
+  <g id="text_28">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; fill: #4a4a64" transform="translate(13.32 255.05725)">Top two not separable: 16 vs 12 discordant, McNemar p = 0.57; descriptive. The interval reflects app</text>
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; fill: #4a4a64" transform="translate(13.32 260.842925)">selection, not run-to-run variation; Snyk Code output was identical across three runs.</text>
+  </g>
+  <g id="text_29">
+   <text style="font-size: 5.6px; font-family: 'Geist Mono'; text-anchor: end; fill: #747489" x="471.96" y="273.92125" transform="rotate(-0 471.96 273.92125)">Snyk VulnBench 2.0 · vulnbench.com</text>
+  </g>
+  <g id="legend_1">
+   <g id="line2d_34">
+    <path d="M 14.58 240.564 
+L 19.86 240.564 
+L 25.14 240.564 
+" style="fill: none; stroke: #4a4a64; stroke-opacity: 0.6; stroke-width: 1.6; stroke-linecap: square"/>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 6.6px; font-family: 'Geist'; text-anchor: start; fill: #030328" x="30.42" y="242.874" transform="rotate(-0 30.42 242.874)">95% interval from resampling apps (which apps are in the corpus; not run-to-run noise)</text>
+   </g>
+   <g id="line2d_35">
+    <path d="M 303.98175 240.564 
+L 309.26175 240.564 
+L 314.54175 240.564 
+" style="fill: none"/>
+    <defs>
+     <path id="ma650022e8f" d="M 0 3.5 
+L 0 -3.5 
+" style="stroke: #6f00dd"/>
+    </defs>
+    <g>
+     <use xlink:href="#ma650022e8f" x="309.26175" y="240.564" style="fill: #6f00dd; stroke: #6f00dd"/>
+    </g>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 6.6px; font-family: 'Geist'; text-anchor: start; fill: #030328" x="319.82175" y="242.874" transform="rotate(-0 319.82175 242.874)">many-to-one credit (sensitivity; Claude Code rows)</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p6e77c9e021">
+   <rect x="149.04" y="22.896" width="234" height="121.176"/>
+  </clipPath>
+  <clipPath id="p849a059631">
+   <rect x="149.04" y="193.968" width="234" height="28.512"/>
+  </clipPath>
+  <clipPath id="pb071bc53d1">
+   <rect x="8.64" y="8.64" width="468" height="1.188"/>
+  </clipPath>
+ </defs>
+</svg>

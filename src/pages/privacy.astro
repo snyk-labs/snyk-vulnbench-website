@@ -1,11 +1,13 @@
 ---
 import PageHero from "../components/site/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { release20SocialImage } from "../config/design-theme";
 ---
 
 <BaseLayout
   title="Privacy"
   description="How Snyk VulnBench uses privacy-minimized, cookieless analytics."
+  image={release20SocialImage}
 >
   <PageHero
     eyebrow="Privacy"

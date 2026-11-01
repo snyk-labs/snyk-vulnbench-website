@@ -1,0 +1,46 @@
+---
+import DataTable from "./DataTable.astro";
+import PaperFigure from "./PaperFigure.astro";
+import { figureTableSpecs, type TableSpec } from "./evidence-tables";
+
+interface Props {
+  figures: number[];
+  idPrefix?: string;
+}
+
+const { figures, idPrefix = "values-" } = Astro.props;
+const seen = new Set<string>();
+const groups = figures.map((number) => {
+  const specs: TableSpec[] = figureTableSpecs(number).filter((spec) => {
+    if (seen.has(spec.id)) return false;
+    seen.add(spec.id);
+    return true;
+  });
+  return { number, specs };
+});
+---
+
+<div class="figure-group">
+  {
+    groups.map(({ number, specs }) => (
+      <div class="figure-group__item">
+        <PaperFigure number={number} />
+        {specs.map((spec) => (
+          <DataTable {...spec} id={`${idPrefix}${spec.id}`} />
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .figure-group {
+    display: grid;
+    min-width: 0;
+    gap: var(--space-6);
+  }
+
+  .figure-group__item {
+    min-width: 0;
+  }
+</style>

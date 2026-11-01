@@ -3,8 +3,10 @@ import ProjectCaseDetail from "../../../../components/evidence/ProjectCaseDetail
 import PageHero from "../../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../../components/site/ReleaseMeta.astro";
 import { loadJs10EvidenceDepth } from "../../../../data/evidence/js-1.0";
-import { currentRelease } from "../../../../data/releases";
+import { requireReleaseBySlug } from "../../../../data/releases";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
+
+const release = requireReleaseBySlug("js-1.0");
 
 export async function getStaticPaths() {
   const evidence = await loadJs10EvidenceDepth();
@@ -26,7 +28,7 @@ const returnPath = `/releases/js-1.0/explore?v=1&view=findings&projects=${projec
 <BaseLayout
   title={`${project.name} case evidence`}
   description={`Reference findings, model matches, unmatched reports, recurrence, and source context for ${project.name}.`}
-  release={currentRelease}
+  release={release}
 >
   <PageHero
     eyebrow="JS 1.0 · Project evidence"
@@ -39,7 +41,7 @@ const returnPath = `/releases/js-1.0/explore?v=1&view=findings&projects=${projec
         >All representative cases</a
       >
     </div>
-    <ReleaseMeta slot="aside" release={currentRelease} />
+    <ReleaseMeta slot="aside" release={release} />
   </PageHero>
 
   <section class="section">

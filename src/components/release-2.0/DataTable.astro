@@ -1,0 +1,204 @@
+---
+import type { V20Table } from "../../data/releases/2.0-content";
+import type { ColumnGroup, DataColumn } from "./evidence-tables";
+
+interface Props {
+  id?: string;
+  caption: string;
+  columns: DataColumn[];
+  rows: Record<string, string>[];
+  groups?: ColumnGroup[];
+  table?: V20Table;
+  note?: string;
+  collapsible?: boolean;
+  summary?: string;
+  open?: boolean;
+}
+
+const {
+  id,
+  caption,
+  columns,
+  rows,
+  groups,
+  table,
+  note,
+  collapsible = true,
+  summary = "View exact values",
+  open = false,
+} = Astro.props;
+
+const cell = (column: DataColumn, row: Record<string, string>) => {
+  const value = column.display ? column.display(row) : (row[column.key] ?? "");
+  return value === "" ? "—" : value;
+};
+const Wrapper = collapsible ? "details" : "div";
+const notes = [note, table?.meta.empty_cells].filter(
+  (value): value is string => typeof value === "string" && value.length > 0,
+);
+---
+
+<Wrapper class="data-table" id={id} open={collapsible && open ? true : undefined}>
+  {collapsible && <summary>{summary}</summary>}
+  <div class="data-table__scroll" tabindex="0" role="region" aria-label={caption}>
+    <table>
+      <caption>{caption}</caption>
+      <thead>
+        {
+          groups && (
+            <tr>
+              {groups.map(({ label, span }) => (
+                <th scope="colgroup" colspan={span}>
+                  {label}
+                </th>
+              ))}
+            </tr>
+          )
+        }
+        <tr>
+          {
+            columns.map((column) => (
+              <th scope="col" class:list={{ numeric: column.numeric }}>
+                {column.label}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr>
+              {columns.map((column) =>
+                column.rowHeader ? (
+                  <th scope="row">
+                    {column.swatch?.(row) && (
+                      <span
+                        class="swatch"
+                        style={`--swatch: ${column.swatch(row)}`}
+                        aria-hidden="true"
+                      />
+                    )}
+                    {cell(column, row)}
+                  </th>
+                ) : (
+                  <td class:list={{ numeric: column.numeric }}>
+                    {cell(column, row)}
+                  </td>
+                ),
+              )}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  {notes.map((text) => <p class="data-table__note">{text}</p>)}
+  {
+    table && (
+      <p class="data-table__source">
+        <a href={`/data/2.0/${table.name}.csv`}>{table.name}.csv</a>
+        <a href={`/data/2.0/${table.name}.meta.json`}>{table.name}.meta.json</a>
+      </p>
+    )
+  }
+</Wrapper>
+
+<style>
+  .data-table {
+    min-width: 0;
+    margin-top: var(--space-3);
+    font-size: var(--step--1);
+  }
+
+  details.data-table,
+  div.data-table {
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper-raised);
+  }
+
+  summary {
+    cursor: pointer;
+    font-weight: var(--font-weight-control);
+  }
+
+  .data-table__scroll {
+    max-width: 100%;
+    margin-top: var(--space-3);
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    background: var(--paper-raised);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  caption {
+    padding: 0.6rem 0.75rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  thead th {
+    background: var(--paper-muted);
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: var(--font-weight-label);
+  }
+
+  th[scope="colgroup"] {
+    border-left: 1px solid var(--rule-strong);
+    color: var(--ink);
+  }
+
+  tbody th {
+    font-weight: var(--font-weight-label);
+    min-width: 12rem;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-right: 0.45rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: 50%;
+    background: var(--swatch);
+    vertical-align: -0.05rem;
+  }
+
+  .numeric {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .data-table__note,
+  .data-table__source {
+    margin-top: var(--space-2);
+    color: var(--ink-soft);
+  }
+
+  .data-table__source {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+</style>

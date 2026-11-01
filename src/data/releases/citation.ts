@@ -43,12 +43,26 @@ export function formatBibtexCitation({
   citation,
 }: CitationRelease): string {
   const authors = citation.authors.map(formatAuthor).join(" and ");
+  const arxivFields = citation.arxivId
+    ? [
+        `  eprint = {${escapeBibtexValue(citation.arxivId)}},`,
+        "  archivePrefix = {arXiv},",
+        ...(citation.primaryClass
+          ? [`  primaryClass = {${escapeBibtexValue(citation.primaryClass)}},`]
+          : []),
+      ]
+    : [];
+  const doiField = citation.doi
+    ? [`  doi = {${escapeBibtexValue(citation.doi)}},`]
+    : [];
 
   return [
     `@misc{${citationKey({ id, citation })},`,
     `  author = {${authors}},`,
     `  title = {${escapeBibtexValue(citation.title)}},`,
     `  year = {${citation.year}},`,
+    ...arxivFields,
+    ...doiField,
     `  url = {${escapeBibtexValue(citation.url)}}`,
     "}",
   ].join("\n");

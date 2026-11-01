@@ -1,0 +1,73 @@
+{
+  "h1": "Versioned evidence with traceable provenance",
+  "downloads": [
+    {
+      "kind": "GitHub",
+      "title": "Harness, scorer, fixtures and reference sets",
+      "href": "https://github.com/snyk-labs/snyk-vulnbench",
+      "text": "The benchmark harness, the scorer (src/scorer.ts), the 20 fixtures with findings-attacker-reachable.json, and the scoring documentation (docs/benchmark.md)."
+    },
+    {
+      "kind": "Archive",
+      "title": "Main dataset",
+      "href": "https://github.com/snyk-labs/snyk-vulnbench/tree/main/publications/vulnbench-v2/20260907-vulnbench-v2-deepsec-150-574753a2",
+      "text": "The authoritative execution, with its parent retained for audit, archive checksums and per-file checksums."
+    },
+    {
+      "kind": "Archive",
+      "title": "Supplementary dataset",
+      "href": "https://github.com/snyk-labs/snyk-vulnbench/tree/main/publications/vulnbench-v2/20261001-supplementary-controls",
+      "text": "Prompt-swap control, equal-effort arm and Snyk Code repeats; never merged into the main results."
+    },
+    {
+      "kind": "Archive",
+      "title": "Post-disclosure re-scan",
+      "href": "https://github.com/snyk-labs/snyk-vulnbench/tree/main/publications/vulnbench-v2/20261028-postfix-snyk-code",
+      "text": "A labelled Snyk Code re-scan after one rule update; never merged into the main results."
+    },
+    {
+      "kind": "GitHub",
+      "title": "Reproducers",
+      "href": "https://github.com/snyk-labs/snyk-vulnbench/tree/main/docs/vulnbench-v2-adjudication/reproducers",
+      "text": "One directory per real vulnerability found outside the reference set."
+    },
+    {
+      "kind": "CSV",
+      "title": "Website evidence tables",
+      "href": "/data/2.0/",
+      "text": "The derived tables behind the 2.0 charts, each with a notes file naming its source archive and checksum."
+    }
+  ],
+  "provenance": {
+    "dataset_version": "2.0.0",
+    "execution": "20260907-vulnbench-v2-deepsec-150-574753a2",
+    "parent": "20260901-vulnbench-v2-c08730c4",
+    "archive_sha256": "b29c643079c8fddc361463ca39e29204e0510d0a16300631784b59772157acd6",
+    "parent_archive_sha256": "8a3ee79fec516f6d723fe5d228faf155dfa590cc209b2d3f38e9c3daee0d4bcb",
+    "checksums_file": "publications/vulnbench-v2/20260907-vulnbench-v2-deepsec-150-574753a2/SHA256SUMS",
+    "license": "The harness code and benchmark data are released under the Apache License 2.0; the fixture applications keep their upstream licenses, listed in THIRD_PARTY_LICENSES.md."
+  },
+  "dictionary": [
+    [
+      "Run",
+      "One configuration scanning one application once."
+    ],
+    [
+      "Reference vulnerability",
+      "A curated, attacker-reachable vulnerability with its source, sink and flow."
+    ],
+    [
+      "Match",
+      "A finding credited to a reference vulnerability under the endpoint rule."
+    ],
+    [
+      "Outside the reference set",
+      "A finding that matched no reference vulnerability; not proven false."
+    ],
+    [
+      "Known cost",
+      "Cost recorded by the harness; unavailable is not zero."
+    ]
+  ],
+  "corrections": "No corrections published for dataset 2.0.0. The one known reference-set defect is disclosed in the paper; all results use the reference set as frozen for the runs, and the public iguana answer file now carries the correction, so re-scoring with the current public files differs on that entry."
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Snyk VulnBench 2.0",
+  "slug": "/releases/2.0",
+  "question": "What do AI security agents find that SAST does not, and what do they miss that SAST catches?",
+  "summary": "A blind study of nine productized security configurations, from the Snyk Code static analyzer to Claude Code, Codex Security and DeepSec, on 108 hand-curated, attacker-reachable vulnerabilities in 20 open-source web applications.",
+  "status": "current (from launch day; JS 1.0 becomes \"previous\")",
+  "published": "28 October 2026",
+  "dataset": "2.0.0",
+  "last_updated": "28 October 2026",
+  "links": [
+    "Release overview",
+    "Explore evidence",
+    "Data and provenance",
+    "Paper",
+    "GitHub",
+    "Correction history",
+    "Cite this release"
+  ],
+  "catalogue_footer": "Each release defines its own protocol, reference set, metrics and dataset version. Numbers are never compared across releases."
+}

@@ -136,3 +136,51 @@ performance capture, replay, surveys, feature flags, exceptions, and page
 leaves. Send only origin-plus-path page views; remove query strings, fragments,
 and referrers. Publish the static privacy disclosure and verify both sanitized
 network payloads and the absence of PostHog requests with JavaScript disabled.
+
+## Release copy and published numbers
+
+A release's narrative claims and numbers are reviewed outside this repository
+before launch. The site reproduces that reviewed record; it never derives new
+claims from it.
+
+- Import release copy, tables and figures with the release's import script
+  (for 2.0, `node scripts/import-vulnbench-2.0.mjs --handoff <extracted-package-dir>`).
+  Keep the handoff package outside the repository. The importer copies only
+  served content and strips internal review keys (`src` tags, claim IDs and
+  `source_claims`); the numbers registry, guardrails and checking scripts stay
+  in the package.
+- Render numbers exactly as the imported copy or table cell prints them. Do
+  not compute differences, ratios, percentages or rankings in components, and
+  do not type numbers into components or tests; tests read the imported files.
+- Keep wording as imported. Presentation may split lines, choose which body
+  lines a card shows, or shorten headings without changing meaning; record any
+  added interface label as a deviation for review.
+- An interface label that is not in the imported copy must be purely
+  navigational or descriptive: no number, claim, ranking or evaluative word.
+  Put units, denominators and scope in a table note quoted from the copy or the
+  table's notes file instead, and list every such label, with its page, in the
+  pull request for review.
+- Drop a copy sentence only where the page shows the identical text directly
+  above it, and do it in code that fails the build if the copy changes
+  (for example `<Disclosure repeats={home.eyebrow} />`); everywhere else render
+  the copy in full.
+- Previous releases keep their URLs, pages, data and citations. A new release
+  changes only the previous release's status label; global navigation and the
+  footer move to the current release.
+- Verify with the package's number checker against built output, a search of
+  the build for claim IDs, and a normalized diff of previous-release pages and
+  data against `main` that ignores only the shared header and footer.
+
+## Social previews
+
+External unfurlers do not reliably render SVG. In the Snyk 2026 build, every
+page's `og:image` is a 1200 × 630 PNG; generated SVG cards remain available as
+sources. Rasterize a new card from the served build with
+`scripts/rasterise-social-card.mjs`, record its provenance and checksum, and
+assert the PNG's dimensions and size in unit tests.
+
+A release card's text comes only from that release's card and homepage copy
+(for 2.0, `copy/release-card.json` and `copy/home.json`), and its numbers only
+from the release's printed values; a unit test checks every line of the card
+against those files. A shared page with no release-neutral default card uses
+the current release's card, never a previous release's.

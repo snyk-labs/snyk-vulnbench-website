@@ -1,0 +1,8 @@
+config_id,same_file_matched,same_file_total,cross_file_matched,cross_file_total,same_file_misses,same_file_misses_policy_classes,same_file_misses_xss
+snyk-code,40,46,49,62,6,1,1
+opus-5-medium-security-review-with-snyk-mcp,30,46,50,62,16,9,3
+opus-5-xhigh-security-review,32,46,53,62,14,8,3
+sonnet-5-xhigh-security-review,27,46,46,62,19,11,4
+codex-security-luna-xhigh,14,46,31,62,32,11,9
+codex-security-terra-xhigh,14,46,21,62,32,11,8
+codex-security-sol-xhigh,12,46,22,62,34,12,7

@@ -1,0 +1,17 @@
+[
+  "One run per configuration and application: run-to-run variation of the AI configurations is unmeasured, and every difference between them is a single observation.",
+  "All authors are employees of Snyk, which develops Snyk Code. The Snyk Code product owner is a co-author, and his team shipped a rule update for one of the findings outside the reference set; all main results are reported as run, before that update.",
+  "Reference vulnerabilities were partly seeded with OpenAI and Anthropic models, which could favor the AI configurations; some seeding prompts included vulnerable-pattern examples from a Snyk database, and five applications had been used in Snyk demonstrations, which could favor Snyk Code. The net effect is unknown.",
+  "Without the five demonstration applications, Snyk Code matches 74 and Opus 5 xhigh 72 of the remaining 87 vulnerabilities, and they remain the top two.",
+  "The reference set can omit real vulnerabilities; measured precision is a lower bound. One known defect makes one vulnerability unmatchable; correcting it raises Claude Code /security-review with Opus 5 medium + Snyk MCP from 80 to 81 and Opus 5 xhigh from 85 to 86, and the union of all seven to 102.",
+  "The two-line tolerance, the endpoint rule and one-to-one credit are choices, not facts about the tools; the robustness section shows which conclusions depend on them.",
+  "Snyk Code is the only SAST engine evaluated; statements about deterministic SAST are measured on Snyk Code and may not hold for other engines.",
+  "Results belong to the configurations as run, including versions and modes; the design cannot separate harness from model.",
+  "Cost, token and time figures come from single runs; unavailable costs are excluded, never treated as zero.",
+  "Class names follow Snyk Code's vocabulary; findings labeled outside it could go uncredited. The measured effect is small: removing the reference set's alternative class names changes one match.",
+  "The origin of each vulnerability, and which model seeded which application, were not recorded.",
+  "The archive does not record the Snyk CLI version (the operator reported it after the run), and the Snyk MCP server ran unpinned, so its version is inferred; exact re-execution of those rows is bounded, re-scoring is not.",
+  "Codex Security ran in its standard full-repository mode, not its deep mode, and its scans reported partial coverage on 7, 6 and 3 of the 20 applications for GPT-5.6 Luna, Terra and Sol; partial scans are scored as returned.",
+  "Five failed attempts preceded the scored success in 4 of the 180 runs; only the final attempt is scored.",
+  "Several applications are intentionally vulnerable demonstrations, many vulnerabilities were seeded, and Java is thin; how the results carry over to production code bases is untested."
+]

@@ -1,0 +1,10 @@
+stage,language_family,count,of
+reference vulnerabilities,all,108,
+a flow file among the scan stage's candidates,all,56,108
+the sink file among the candidates (vulnerabilities with a labeled sink),all,44,107
+"localized match, Opus 5 xhigh backend",all,37,56
+"localized match, GPT-5.6 Sol backend",all,1,56
+a flow file among the scan stage's candidates,Go,11,32
+a flow file among the scan stage's candidates,JavaScript / TypeScript,23,30
+a flow file among the scan stage's candidates,Python,10,34
+a flow file among the scan stage's candidates,Java,12,12
