@@ -18,5 +18,5 @@
     "checksums": "https://github.com/snyk-labs/snyk-vulnbench/blob/main/publications/vulnbench-v2/20260907-vulnbench-v2-deepsec-150-574753a2/SHA256SUMS"
   },
   "derivation_note": "Rows in the paper's order. Produced by the VulnBench 2.0 analysis pipeline, which verifies the archive's SHA-256, extracts it, and re-scores every run with a re-implementation of the public scorer that reproduces every recorded scoring decision; this file is a selection and renaming of the pipeline's output.",
-  "empty_cells": "An empty cell means not applicable or unavailable as stated in `columns`; it never means zero."
+  "empty_cells": "An empty cell means not applicable or unavailable; it never means zero."
 }

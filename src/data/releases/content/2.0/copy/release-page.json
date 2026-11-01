@@ -69,7 +69,7 @@
   {
     "id": "outside",
     "kicker": "Findings outside the reference set",
-    "h2": "Real vulnerabilities the answer key missed",
+    "h2": "Real vulnerabilities the reference set missed",
     "body": [
       "23 clusters of findings outside the reference set were reported by at least three configurations from at least two tool families. We reviewed the 15 of them that Snyk Code did not report and that fall in a scored class or are CSRF: thirteen were real, one was borderline and one was judged to be by design; none was noise.",
       "In this run, AI configurations found at least seven real vulnerabilities in scored classes that the reference set did not contain and Snyk Code did not report. All seven were reproduced live.",
