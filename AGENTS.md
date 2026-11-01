@@ -137,6 +137,15 @@ npm run verify
 
 The development server listens on port `4321`.
 
+## Cursor Cloud specific instructions
+
+- Node.js 24 is required (`package.json` `engines` is `>=24 <25`). Cloud Agent install pins Node.js 24.22.2 under `/usr/local` and links `node`, `npm`, and `npx` into `/usr/local/cargo/bin` so they precede the image Node 22 on `PATH`.
+- Dependencies come from `npm ci`. Playwright Chromium and its system libraries are installed with `npx playwright install --with-deps chromium` because `npm run test:e2e` and `npm run verify` launch a browser.
+- `npm run dev` listens on port 4321 and is started on boot. Leave ports 4322 and 4323 free: Playwright uses 4322 for the Snyk 2026 suite and 4323 for the Classic suite.
+- Astro 7 allows one dev server per checkout. The boot server holds that lock, so `npm run test:e2e`, `npm run test:e2e:snyk-2026`, and `npm run verify` fail until you stop it with `npx astro dev stop`. Start the site again afterwards with `npm run dev`.
+- `npm run check`, `npm run test:unit`, and `npm run build` are the day-to-day checks. `npm run verify` runs the full Classic and Snyk 2026 gates, including browser tests.
+- Do not start the applications under `snyk-vulnbench-js-1.0/fixtures/`. They are intentionally vulnerable benchmark evidence.
+
 ## Testing and Verification
 
 - `npm run check` — Astro and TypeScript diagnostics.
