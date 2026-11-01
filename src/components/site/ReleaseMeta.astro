@@ -44,7 +44,11 @@ const date = new Intl.DateTimeFormat("en-GB", {
 
   <nav aria-label="Release metadata links">
     <a href={release.links.paper}>Paper</a>
-    <a href={release.links.publication}>Snyk publication</a>
+    {
+      release.links.publication && (
+        <a href={release.links.publication}>Snyk publication</a>
+      )
+    }
     <a href={release.links.github}>GitHub</a>
     <a href={`${release.links.data}#corrections`}>Correction history</a>
     <a href="/about#citation">Cite this release</a>

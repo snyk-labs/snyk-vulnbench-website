@@ -8,36 +8,38 @@ import VulnerabilityCoverage from "../../../components/evidence/VulnerabilityCov
 import EvidenceStrip from "../../../components/home/EvidenceStrip.astro";
 import PageHero from "../../../components/site/PageHero.astro";
 import ReleaseMeta from "../../../components/site/ReleaseMeta.astro";
-import { currentRelease } from "../../../data/releases";
+import { releaseStatusLabel, requireReleaseBySlug } from "../../../data/releases";
 import { getHeadlineEvidence } from "../../../data/releases/headline";
 import { loadJs10PublishedEvidence } from "../../../data/releases/js-1.0-source";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const release = requireReleaseBySlug("js-1.0");
 
 const evidence = getHeadlineEvidence("js-1.0");
 const publishedEvidence = await loadJs10PublishedEvidence();
 ---
 
 <BaseLayout
-  title={currentRelease.name}
+  title={release.name}
   description="Can LLMs find the same bugs twice? Explore the Snyk VulnBench JS 1.0 repeatability and reference-agreement study."
-  release={currentRelease}
+  release={release}
 >
   <PageHero
-    eyebrow="Current release · JS 1.0"
-    title={currentRelease.researchQuestion}
-    description={currentRelease.description}
+    eyebrow={`${releaseStatusLabel(release)} · JS 1.0`}
+    title={release.researchQuestion}
+    description={release.description}
   >
     <div slot="actions" class="button-row">
-      <a class="button" href={currentRelease.links.explore}>Explore evidence</a>
-      <a class="button secondary" href={currentRelease.links.paper}
+      <a class="button" href={release.links.explore}>Explore evidence</a>
+      <a class="button secondary" href={release.links.paper}
         >Read the paper</a
       >
     </div>
-    <ReleaseMeta slot="aside" release={currentRelease} />
+    <ReleaseMeta slot="aside" release={release} />
   </PageHero>
 
   <div class="release-scope container">
-    <EvidenceStrip evidence={currentRelease.evidence} />
+    <EvidenceStrip evidence={release.evidence} />
   </div>
 
   <article>
@@ -201,7 +203,7 @@ const publishedEvidence = await loadJs10PublishedEvidence();
             Published cost estimates reflect small fixtures and the model-session
             assumptions documented for this release.
           </p>
-          <a class="text-link" href={`${currentRelease.links.explore}?view=efficiency`}
+          <a class="text-link" href={`${release.links.explore}?view=efficiency`}
             >Inspect efficiency evidence</a
           >
         </div>
@@ -286,7 +288,7 @@ const publishedEvidence = await loadJs10PublishedEvidence();
         </div>
         <ul>
           {
-            currentRelease.caveats.map((caveat) => (
+            release.caveats.map((caveat) => (
               <li>{caveat}</li>
             ))
           }
@@ -299,16 +301,16 @@ const publishedEvidence = await loadJs10PublishedEvidence();
         <p class="eyebrow">Continue the research trail</p>
         <h2>Inspect the evidence behind the narrative</h2>
         <nav aria-label="Release resources">
-          <a class="button" href={currentRelease.links.explore}>Explore results</a>
-          <a class="button secondary" href={currentRelease.links.methodology}
+          <a class="button" href={release.links.explore}>Explore results</a>
+          <a class="button secondary" href={release.links.methodology}
             >Methodology</a
           >
-          <a class="button secondary" href={currentRelease.links.data}>Data</a>
+          <a class="button secondary" href={release.links.data}>Data</a>
           <a class="button secondary" href="/releases/js-1.0/cases">Cases</a>
-          <a class="button secondary" href={currentRelease.links.github}
+          <a class="button secondary" href={release.links.github}
             >GitHub</a
           >
-          <a class="button secondary" href={currentRelease.links.publication}
+          <a class="button secondary" href={release.links.publication}
             >Snyk publication</a
           >
           <a class="button secondary" href="/about#citation"

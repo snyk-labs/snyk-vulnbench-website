@@ -4,6 +4,13 @@ import { currentRelease } from "../../data/releases";
 import { isSnyk2026Design } from "../../config/design-theme";
 import SnykLogo from "./SnykLogo.astro";
 /* snyk-2026-audit:end */
+
+const publishedDate = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(new Date(`${currentRelease.publishedAt}T00:00:00Z`));
 ---
 
 <footer class="site-footer">
@@ -34,7 +41,7 @@ import SnykLogo from "./SnykLogo.astro";
       <h2>Current release</h2>
       <a href={currentRelease.links.overview}>{currentRelease.name}</a>
       <p class="release-meta">
-        Published <time datetime={currentRelease.publishedAt}>11 June 2026</time>
+        Published <time datetime={currentRelease.publishedAt}>{publishedDate}</time>
         · Dataset <span class="metric">{currentRelease.datasetVersion}</span>
       </p>
     </div>
