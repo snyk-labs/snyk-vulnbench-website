@@ -14,6 +14,9 @@ import EvidenceStrip from "./EvidenceStrip.astro";
 const { home } = v20Copy;
 const [releaseKicker, releaseName] = home.current_release_label.split(" · ");
 const [exploreLabel, paperLabel, methodologyLabel, dataLabel] = home.buttons;
+/* snyk-2026-audit:start */
+const heroFigureScheme = isSnyk2026Design ? "dark" : "auto";
+/* snyk-2026-audit:end */
 ---
 
 <section class="hero">
@@ -61,7 +64,7 @@ const [exploreLabel, paperLabel, methodologyLabel, dataLabel] = home.buttons;
         </div>
         <span class="metric">2.0</span>
       </div>
-      <PaperFigure number={1} scheme={isSnyk2026Design ? "dark" : "auto"} loading="eager" />
+      <PaperFigure number={1} scheme={heroFigureScheme} loading="eager" />
       <ul class="callouts">
         {home.headline_evidence.callouts.map((callout) => <li>{callout}</li>)}
       </ul>
