@@ -146,12 +146,13 @@ claims from it.
 - Import release copy, tables and figures with the release's import script
   (for 2.0, `node scripts/import-vulnbench-2.0.mjs --handoff <extracted-package-dir>`).
   Keep the handoff package outside the repository. The importer copies only
-  served content and strips internal review keys (`src` tags, claim IDs and
-  `source_claims`); the numbers registry, guardrails and checking scripts stay
-  in the package.
-- Serve each table and notes download as the stored file's bytes, never a
-  re-serialization, so `/data/<release>/` files can be compared byte for byte
-  with the reviewed package.
+  served content and strips internal review keys (`src` tags and figure
+  claims) from copy and figure metadata; the numbers registry, table-claims
+  mapping, guardrails and checking scripts stay in the package.
+- Copy and serve each table and notes download exactly as supplied, never
+  re-serialized, so `/data/<release>/` files match the reviewed package byte
+  for byte. The import fails if a served table file carries a claim ID; ask for
+  a corrected package rather than editing it.
 - Render numbers exactly as the imported copy or table cell prints them. Do
   not compute differences, ratios, percentages or rankings in components, and
   do not type numbers into components or tests; tests read the imported files.

@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 // Imports the reviewed Snyk VulnBench 2.0 site handoff into the repository.
-// Only content the site serves is copied. Source tags (`src`), claim IDs and
-// per-table `source_claims` are internal review keys and are removed; the
-// handoff's numbers registry, README, guardrails and scripts are never copied.
+// Only content the site serves is copied. Source tags (`src`) and figure
+// claims are internal review keys and are removed from copy and figure
+// metadata. Tables and their notes files are served as supplied, so they are
+// copied byte for byte and the import fails if one carries a claim ID. The
+// handoff's numbers registry, table-claims mapping, README, guardrails and
+// scripts are never copied.
 
 import { copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
@@ -79,18 +82,11 @@ export async function importVulnbench20(handoffRoot, workspaceRoot) {
 
   const tableRoot = join(handoffRoot, "data", "tables");
   for (const file of (await readdir(tableRoot)).sort()) {
-    const source = join(tableRoot, file);
-    if (file.endsWith(".csv")) {
-      const text = await readFile(source, "utf8");
-      assertNoClaimIds(text, file);
-      await writeFile(join(contentRoot, "tables", file), text);
-    } else if (file.endsWith(".meta.json")) {
-      const meta = JSON.parse(await readFile(source, "utf8"));
-      await writeJson(
-        join(contentRoot, "tables", file),
-        withoutKeys(meta, ["source_claims"]),
-      );
-    }
+    if (!file.endsWith(".csv") && !file.endsWith(".meta.json")) continue;
+    const bytes = await readFile(join(tableRoot, file));
+    assertNoClaimIds(bytes.toString("utf8"), file);
+    if (file.endsWith(".meta.json")) JSON.parse(bytes.toString("utf8"));
+    await writeFile(join(contentRoot, "tables", file), bytes);
   }
 
   const colours = JSON.parse(

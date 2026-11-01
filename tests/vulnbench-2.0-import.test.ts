@@ -1,7 +1,8 @@
-import { readdir, readFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
-import { stripSourceTags } from "../scripts/import-vulnbench-2.0.mjs";
+import { importVulnbench20, stripSourceTags } from "../scripts/import-vulnbench-2.0.mjs";
 
 const workspaceRoot = resolve(process.cwd());
 const contentRoot = join(workspaceRoot, "src/data/releases/content/2.0");
@@ -29,7 +30,68 @@ function collectKeys(value: unknown, keys = new Set<string>()) {
   return keys;
 }
 
+const copyFiles = [
+  "citation.json",
+  "data.json",
+  "differs.json",
+  "disclosure.json",
+  "findings.json",
+  "home.json",
+  "limitations.json",
+  "methodology.json",
+  "release-card.json",
+  "release-page.json",
+  "terms.json",
+];
+
+async function withHandoff(meta: string, run: (handoff: string, workspace: string) => Promise<void>) {
+  const root = await mkdtemp(join(tmpdir(), "vulnbench-import-"));
+  const handoff = join(root, "handoff");
+  const workspace = join(root, "workspace");
+  const put = async (path: string, text: string) => {
+    await mkdir(dirname(join(handoff, path)), { recursive: true });
+    await writeFile(join(handoff, path), text);
+  };
+  try {
+    for (const file of copyFiles) await put(`copy/${file}`, "{}");
+    await put("data/tables/example.csv", "a,b\n1,\n");
+    await put("data/tables/example.meta.json", meta);
+    await put("data/table-claims.json", '{"tables":{"example.csv":["C-HEAD-01"]}}');
+    await put("data/colours.json", "{}");
+    await put("figures/figures.json", '{"figures":[]}');
+    await put("paper/citation.bib", "@article{x}\n");
+    for (const format of ["svg", "png"]) {
+      for (const scheme of ["light", "dark"]) {
+        await mkdir(join(handoff, "figures", format, scheme), { recursive: true });
+      }
+    }
+    await mkdir(workspace);
+    await run(handoff, workspace);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+}
+
 describe("Snyk VulnBench 2.0 content import", () => {
+  it("copies each notes file byte for byte and never the claim mapping", async () => {
+    const meta = '{\n  "units": "counts",\n  "paper": "Figure 6A"\n}';
+    await withHandoff(meta, async (handoff, workspace) => {
+      await importVulnbench20(handoff, workspace);
+      const tables = join(workspace, "src/data/releases/content/2.0/tables");
+      expect(await readFile(join(tables, "example.meta.json"), "utf8")).toBe(meta);
+      expect((await readdir(tables)).sort()).toEqual(["example.csv", "example.meta.json"]);
+      const imported = await walk(join(workspace, "src/data/releases/content/2.0"));
+      expect(imported.some((file) => file.endsWith("table-claims.json"))).toBe(false);
+    });
+  });
+
+  it("refuses a notes file that still carries claim IDs", async () => {
+    const meta = '{\n  "source_claims": ["C-HEAD-01"]\n}';
+    await withHandoff(meta, async (handoff, workspace) => {
+      await expect(importVulnbench20(handoff, workspace)).rejects.toThrow(/claim ID C-HEAD-01/u);
+    });
+  });
+
   it("replaces tagged lines with their text and drops source tags", () => {
     expect(
       stripSourceTags({

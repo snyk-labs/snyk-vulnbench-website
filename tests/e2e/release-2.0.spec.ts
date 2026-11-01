@@ -166,6 +166,7 @@ test("every 2.0 notes download is the stored file byte for byte, with its paper 
     expect(download.status(), file).toBe(200);
     const text = await download.text();
     expect(text, file).toBe(readContent(`tables/${file}`));
+    expect(text, file).not.toMatch(/source_claims|\bC-[A-Z0-9]+-\d+/u);
     const meta = JSON.parse(text) as Record<string, unknown>;
     expect(Object.keys(meta), file).toEqual(expect.arrayContaining(["units", "basis", "paper"]));
     expect(meta, file).not.toHaveProperty("source_claims");
