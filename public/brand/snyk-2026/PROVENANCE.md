@@ -32,4 +32,4 @@ be edited or recompressed.
 - Regenerate: serve a Snyk 2026 build with `npm run build && npm run preview`, then
   run `node scripts/rasterise-social-card.mjs <preview-origin>/social/2.0/release.svg public/brand/snyk-2026/social-2.0.png`
 - Dimensions: 1200 × 630 pixels
-- SHA-256: `a1dece9ee8fe5e2b34caf198c08b428ceb8cd87eb7b83e0a18d7ce78ea2c1da6`
+- SHA-256: `346e48090d63c23a86ad9316bf22127e96ac5ffdd0fa6baa68d246b5a295722f`
