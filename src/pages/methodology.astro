@@ -1,6 +1,6 @@
 ---
 import PageHero from "../components/site/PageHero.astro";
-import { currentRelease } from "../data/releases";
+import { releaseStatusLabel, releases } from "../data/releases";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const principles = [
@@ -30,6 +30,7 @@ const principles = [
 <BaseLayout
   title="Methodology"
   description="Initiative-level methodology principles and release-specific benchmark protocols for Snyk VulnBench."
+  image="/social/2.0/release.svg"
 >
   <PageHero
     eyebrow="Initiative methodology"
@@ -55,20 +56,24 @@ const principles = [
     </div>
   </section>
 
-  <section class="section release-method">
-    <div class="container">
-      <p class="eyebrow">Current protocol</p>
-      <h2>{currentRelease.name}</h2>
-      <p class="lede">{currentRelease.studyType}</p>
-      <p>
-        Read the benchmark design, matching rules, metric definitions,
-        limitations, and source-reproduction notes for the current release.
-      </p>
-      <a class="button" href={currentRelease.links.methodology}
-        >Open JS 1.0 methodology</a
-      >
-    </div>
-  </section>
+  {
+    releases.map((release) => (
+      <section class="section release-method">
+        <div class="container">
+          <p class="eyebrow">{releaseStatusLabel(release)} · Protocol</p>
+          <h2>{release.name}</h2>
+          <p class="lede">{release.studyType}</p>
+          <p>
+            Read the benchmark design, matching rules, metric definitions,
+            limitations, and source-reproduction notes for this release.
+          </p>
+          <a class="button" href={release.links.methodology}>
+            Open {release.shortName} methodology
+          </a>
+        </div>
+      </section>
+    ))
+  }
 </BaseLayout>
 
 <style>
@@ -104,6 +109,11 @@ const principles = [
 
   .release-method {
     background: var(--purple-soft);
+  }
+
+  .release-method + .release-method {
+    border-top: 1px solid var(--rule-strong);
+    background: var(--paper-muted);
   }
 
   .release-method h2 {

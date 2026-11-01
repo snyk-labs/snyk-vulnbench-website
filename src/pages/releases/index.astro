@@ -1,13 +1,15 @@
 ---
 import PageHero from "../../components/site/PageHero.astro";
 import ReleaseMeta from "../../components/site/ReleaseMeta.astro";
-import { releases } from "../../data/releases";
+import { releaseStatusLabel, releases } from "../../data/releases";
+import { v20Copy } from "../../data/releases/2.0-content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
   title="Releases"
   description="Versioned Snyk VulnBench benchmark releases, research questions, datasets, and publication status."
+  image="/social/2.0/release.svg"
 >
   <PageHero
     eyebrow="Release catalog"
@@ -22,7 +24,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           releases.map((release) => (
             <li>
               <div>
-                <p class="eyebrow">Current release</p>
+                <p class="eyebrow">{releaseStatusLabel(release)}</p>
                 <h2>
                   <a href={release.links.overview}>{release.name}</a>
                 </h2>
@@ -40,10 +42,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         }
       </ol>
 
-      <p class="future-note">
-        Further VulnBench releases are planned. No unpublished results or
-        speculative rankings are shown here.
-      </p>
+      <p class="future-note">{v20Copy.releaseCard.catalogue_footer}</p>
     </div>
   </section>
 </BaseLayout>
