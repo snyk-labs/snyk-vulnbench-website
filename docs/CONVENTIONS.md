@@ -155,6 +155,15 @@ claims from it.
 - Keep wording as imported. Presentation may split lines, choose which body
   lines a card shows, or shorten headings without changing meaning; record any
   added interface label as a deviation for review.
+- An interface label that is not in the imported copy must be purely
+  navigational or descriptive: no number, claim, ranking or evaluative word.
+  Put units, denominators and scope in a table note quoted from the copy or the
+  table's notes file instead, and list every such label, with its page, in the
+  pull request for review.
+- Drop a copy sentence only where the page shows the identical text directly
+  above it, and do it in code that fails the build if the copy changes
+  (for example `<Disclosure repeats={home.eyebrow} />`); everywhere else render
+  the copy in full.
 - Previous releases keep their URLs, pages, data and citations. A new release
   changes only the previous release's status label; global navigation and the
   footer move to the current release.
@@ -169,3 +178,9 @@ page's `og:image` is a 1200 × 630 PNG; generated SVG cards remain available as
 sources. Rasterize a new card from the served build with
 `scripts/rasterise-social-card.mjs`, record its provenance and checksum, and
 assert the PNG's dimensions and size in unit tests.
+
+A release card's text comes only from that release's card and homepage copy
+(for 2.0, `copy/release-card.json` and `copy/home.json`), and its numbers only
+from the release's printed values; a unit test checks every line of the card
+against those files. A shared page with no release-neutral default card uses
+the current release's card, never a previous release's.
