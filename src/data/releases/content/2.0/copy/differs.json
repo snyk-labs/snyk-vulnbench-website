@@ -1,0 +1,42 @@
+{
+  "h2": "Two releases, two questions",
+  "intro": "VulnBench 2.0 takes the next steps JS 1.0 named: application-scale fixtures, an independent ground truth and stricter scoring. Its numbers are not comparable with JS 1.0's.",
+  "rows": [
+    {
+      "aspect": "Question",
+      "js10": "Can LLMs find the same bugs twice? Repeatability and agreement.",
+      "v20": "What do AI security agents find that SAST does not, and what do they miss?"
+    },
+    {
+      "aspect": "Fixtures",
+      "js10": "Ten small JavaScript and Express projects",
+      "v20": "20 open-source web applications in Go, JavaScript/TypeScript, Python and Java"
+    },
+    {
+      "aspect": "Reference set",
+      "js10": "Snyk Code's findings define the reference set",
+      "v20": "Curated, attacker-reachable vulnerabilities with annotated source-to-sink flows and author-verified exploits; not derived from any tool's findings"
+    },
+    {
+      "aspect": "Matching",
+      "js10": "Same vulnerability type; file and line not required",
+      "v20": "Class plus source and sink, each within two lines; one finding credited to at most one vulnerability"
+    },
+    {
+      "aspect": "Systems",
+      "js10": "Claude configurations through one agentic harness, plus Snyk Code reproducing its own reference",
+      "v20": "Productized harnesses: Snyk Code, Claude Code /security-review, Codex Security, DeepSec"
+    },
+    {
+      "aspect": "Repetitions",
+      "js10": "Five identical runs per configuration and project",
+      "v20": "One run per configuration and application; Snyk Code repeated twice more in supplementary runs"
+    },
+    {
+      "aspect": "Headline metric",
+      "js10": "Snyk-reference F1 and recurrence",
+      "v20": "Attacker-Reachable Vulnerability Recall (macro, with the matched count); DeepSec scored with localized recall"
+    }
+  ],
+  "boundary": "Snyk Code's 100% in JS 1.0 is reproduction of the reference set it defined; in 2.0 Snyk Code is scored against an independent reference set like every other configuration. Never compare a 2.0 number with a JS 1.0 number."
+}

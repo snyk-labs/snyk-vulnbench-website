@@ -1,0 +1,6 @@
+arm,subset,control_matched,security_review_matched,n
+"prompt-swap control (Opus 5 xhigh, default audit prompt)",classes the built-in review policy excludes or restricts,16,9,20
+"prompt-swap control (Opus 5 xhigh, default audit prompt)",all other non-React/Angular,71,69,78
+"prompt-swap control (Opus 5 xhigh, default audit prompt)",open redirect,9,5,11
+"prompt-swap control (Opus 5 xhigh, default audit prompt)",prototype pollution,5,4,6
+"prompt-swap control (Opus 5 xhigh, default audit prompt)",ReDoS,2,0,3

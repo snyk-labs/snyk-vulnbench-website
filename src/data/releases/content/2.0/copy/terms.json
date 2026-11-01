@@ -1,0 +1,62 @@
+[
+  [
+    "Attacker-reachable vulnerability",
+    "A flaw where input an outside attacker controls reaches a dangerous operation without being neutralized."
+  ],
+  [
+    "Reference set",
+    "The 108 curated vulnerabilities, each with its class, source, sink and flow. Results are scored against the frozen snapshot stored in the run manifest; the public findings-attacker-reachable.json files match it except for iguana, which now carries a correction."
+  ],
+  [
+    "Source",
+    "Where attacker-controlled input enters the application."
+  ],
+  [
+    "Sink",
+    "The dangerous operation the input reaches."
+  ],
+  [
+    "Cross-file flow",
+    "A curated flow whose source-to-sink path spans more than one file."
+  ],
+  [
+    "Endpoint rule",
+    "The match rule: the right class, and reported locations within two lines of the curated flow's endpoints; for flows of three or more locations, both a source and a sink."
+  ],
+  [
+    "Endpoint-aware configuration",
+    "One of the seven configurations scored with the endpoint rule. DeepSec, which reports no endpoint roles, is not one."
+  ],
+  [
+    "Configuration",
+    "A complete harness and model combination, such as Claude Code /security-review with Opus 5 at xhigh effort."
+  ],
+  [
+    "Harness",
+    "The product around the model: its built-in instructions, pipeline and reporting."
+  ],
+  [
+    "Matched",
+    "Credited to a reference vulnerability under the endpoint rule."
+  ],
+  [
+    "Outside the reference set",
+    "A finding that matched no reference vulnerability. It is not necessarily wrong."
+  ],
+  [
+    "Macro recall",
+    "Recall computed per application and averaged, so each application weighs the same."
+  ],
+  [
+    "Localized recall",
+    "DeepSec's metric: class match plus any reported location near any curated flow location."
+  ],
+  [
+    "Classes the built-in review policy excludes or restricts",
+    "ReDoS, prototype pollution and open redirect, chosen from Claude Code's /security-review prompt text."
+  ],
+  [
+    "Prompt-swap control",
+    "A supplementary run of the same model and effort with the benchmark's default audit prompt in place of /security-review."
+  ]
+]

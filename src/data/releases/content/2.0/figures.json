@@ -1,0 +1,239 @@
+{
+  "about": "Web variants of the paper's figures (light and dark; SVG and 2x PNG). Use the caption and alt text as written. Figures 1-12 are the paper's body figures; 13 is Appendix A's class distribution.",
+  "figures": [
+    {
+      "paper_figure": 1,
+      "file_stem": "vulnbench-2.0-figure-01",
+      "source_stem": "fig01-headline-recall",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-01.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-01.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-01.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-01.png"
+        }
+      },
+      "caption": "Main recall results. (A) The seven endpoint-aware configurations: macro Attacker-Reachable Vulnerability Recall with the matched count; the bar is a 95% interval from resampling the 20 applications, which shows how much a score depends on which applications are in the corpus, not run-to-run variation. (B) DeepSec, scored with localized recall, on its own axis. The tick on the Claude Code rows marks the score under many-to-one credit, a sensitivity check. The top two cannot be separated: they disagree on 28 vulnerabilities, 16 vs 12 (McNemar p = 0.57, descriptive).",
+      "alt": "Horizontal bar chart of macro recall. Snyk Code 82.4% (89 of 108); Claude Code Opus 5 xhigh 79.3% (85 of 108); Opus 5 medium + Snyk MCP 75.2% (80 of 108); Sonnet 5 xhigh 67.0% (73 of 108); Codex Security GPT-5.6 Luna 41.2% (45 of 108), GPT-5.6 Terra 30.1% (35 of 108), GPT-5.6 Sol 29.2% (34 of 108). The top two cannot be separated. A separate panel shows DeepSec localized recall, a different evidence requirement: Opus 5 xhigh 37.5% (37 of 108), GPT-5.6 Sol xhigh 2.5% (1 of 108), a configuration that exported no findings in 16 of its 20 runs.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 2,
+      "file_stem": "vulnbench-2.0-figure-02",
+      "source_stem": "fig02-complementarity-ceiling",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-02.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-02.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-02.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-02.png"
+        }
+      },
+      "caption": "The ceiling (endpoint-aware configurations only; DeepSec excluded). (A) Greedy cover: Snyk Code matches 89; Opus 5 xhigh adds the 12 it matched and Snyk Code did not, reaching 101, the union of all seven (102 after the reference-set correction); Opus 5 xhigh also misses 16 vulnerabilities that Snyk Code matched, which the cumulative count does not show. (B) The two sets of disagreements by class; hatching marks cross-file flows.",
+      "alt": "Two panels. A staircase rises from 89 for Snyk Code to 101 after adding Claude Code Opus 5 xhigh, with no further gains from the other configurations. A diverging bar chart shows by class the 16 vulnerabilities matched only by Snyk Code and the 12 matched only by Opus 5 xhigh.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 3,
+      "file_stem": "vulnbench-2.0-figure-03",
+      "source_stem": "fig02b-overlap-upset",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-03.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-03.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-03.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-03.png"
+        }
+      },
+      "caption": "Exact overlap of the matched sets. Each bar counts the reference vulnerabilities matched by exactly the marked combination of configurations; the three Codex Security configurations are pooled. The light bar counts the 7 matched by no endpoint-aware configuration; the dark bar the 10 only Snyk Code matched (5 under many-to-one credit). DeepSec is excluded.",
+      "alt": "UpSet plot of the 108 reference vulnerabilities across Snyk Code, three Claude Code configurations and Codex Security pooled. One bar marks the 10 matched only by Snyk Code; another the 7 matched by none.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 4,
+      "file_stem": "vulnbench-2.0-figure-04",
+      "source_stem": "fig03-flow-shape",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-04.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-04.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-04.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-04.png"
+        }
+      },
+      "caption": "Where each engine wins, by flow shape. (A) Recall on the 46 same-file and 62 cross-file vulnerabilities. (B) What each configuration's same-file misses are. (C) Cross-file cross-site scripting, the one cell where every configuration matched at most 4 of 7. Rows are the same configuration in every panel.",
+      "alt": "Three panels with one row per endpoint-aware configuration. Same-file and cross-file recall: Snyk Code 40/46 and 49/62; Opus 5 xhigh 32/46 and 53/62; Opus 5 med + MCP 30/46 and 50/62; Sonnet 5 xhigh 27/46 and 46/62; Codex Security GPT-5.6 Luna 14/46 and 31/62, Terra 14/46 and 21/62, Sol 12/46 and 22/62.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 5,
+      "file_stem": "vulnbench-2.0-figure-05",
+      "source_stem": "fig04-unmatched-queue",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-05.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-05.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-05.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-05.png"
+        }
+      },
+      "caption": "The triage cost. (A) Findings that matched no reference vulnerability, by category; they are outside the reference set and not proven false. (B) Precision against the reference set and over reports in the 14 scored classes only; both are lower bounds. DeepSec is omitted.",
+      "alt": "Stacked bars of findings outside the reference set per endpoint-aware configuration, led by Snyk Code's 336, most in classes outside the 14 scored classes; a second panel compares precision against the reference set with precision over in-taxonomy reports.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 6,
+      "file_stem": "vulnbench-2.0-figure-06",
+      "source_stem": "fig05-policy-classes",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-06.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-06.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-06.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-06.png"
+        }
+      },
+      "caption": "Classes the built-in review policy excludes or restricts. The Claude Code /security-review prompt (version 2.1.251) excludes ReDoS and asks that prototype pollution and open redirect be reported only at extremely high confidence; these classes were chosen from the prompt text, not from the data. (A) Credited recall on the 20 vulnerabilities in those classes, the 7 cross-site scripting vulnerabilities in React and Angular applications, and the 81 others. (B) Per class, credited against reported anywhere in the application. The dashed outline is the supplementary prompt-swap control (19 applications, single run), shown beside the main results and not merged into them.",
+      "alt": "Grouped bars of credited recall for the seven endpoint-aware configurations. In the 20 policy-class vulnerabilities Snyk Code matched 18 and Opus 5 xhigh 9; the supplementary prompt-swap control (single run, 19 of the 20 applications), outlined, reached 16 of the 20. A second panel shows, per class, credited and reported counts.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 7,
+      "file_stem": "vulnbench-2.0-figure-07",
+      "source_stem": "fig06-sol-sink-offsets",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-07.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-07.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-07.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-07.png"
+        }
+      },
+      "caption": "Codex Security with GPT-5.6 Sol: for each of the 57 missed curated sinks with a reported location in the same file, the offset of the nearest reported location from the sink line (negative means above). Among the 41 locations that are not themselves a curated source, 39 lie above the sink, median six lines. The shaded band is the two-line tolerance.",
+      "alt": "Histogram of line offsets for 57 missed sinks; most bars sit left of zero, meaning the reported line is above the dangerous call; 39 of 41 non-source locations are above it.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 8,
+      "file_stem": "vulnbench-2.0-figure-08",
+      "source_stem": "fig07-tolerance-curve",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-08.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-08.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-08.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-08.png"
+        }
+      },
+      "caption": "Matches against line tolerance. (A) The seven endpoint-aware configurations under the endpoint rule, from exact line to file level; only the two-line setting is used for results, the others are counterfactual rescorings of the same findings. (B) DeepSec under its own localized rule, on a separate axis.",
+      "alt": "Line chart of vulnerabilities matched against line tolerance. Snyk Code and the Claude Code configurations stay nearly flat; the Codex Security configurations rise steeply, GPT-5.6 Sol from 34 at two lines to 80 at file level. DeepSec is on a separate axis.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 9,
+      "file_stem": "vulnbench-2.0-figure-09",
+      "source_stem": "fig08-deepsec-funnel",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-09.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-09.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-09.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-09.png"
+        }
+      },
+      "caption": "Where DeepSec 2.3.7 loses the reference set. (A) Of 108 reference vulnerabilities, 56 had a flow file among the scan stage's candidates (model-free, identical for both backends) and 44 had their sink file there; localized matches follow for each backend. (B) Candidate coverage by language family. Localized recall is not comparable with Attacker-Reachable Vulnerability Recall.",
+      "alt": "Funnel from 108 reference vulnerabilities to 56 with a flow file selected, then to 37 localized matches for the Opus 5 backend and 1 for the GPT-5.6 Sol backend, which exported no findings in 16 of its 20 runs; a second panel shows candidate coverage by language.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 10,
+      "file_stem": "vulnbench-2.0-figure-10",
+      "source_stem": "fig09-coverage-cost-time",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-10.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-10.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-10.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-10.png"
+        }
+      },
+      "caption": "Coverage against cost and time (endpoint-aware configurations; DeepSec excluded). (A) Macro recall against mean known cost per application, log scale; Snyk Code has no per-scan model cost and is shown in a separate column, not on the dollar axis. Ringed points form the recall-versus-cost frontier. (B) Macro recall against mean wall time per application, log scale. One run per configuration and application; every ratio is a single observation.",
+      "alt": "Two scatter plots of macro recall. Against cost, Snyk Code sits in a separate no-per-scan-model-cost column; arrows mark two same-harness contrasts: Codex Security GPT-5.6 Sol cost 35.0 times GPT-5.6 Luna for 11 fewer matches, and Claude Code Opus 5 cost 4.2 times Sonnet 5 for 12 more. Against wall time, Snyk Code took 8 minutes in total against at least 2.4 hours for the AI configurations.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 11,
+      "file_stem": "vulnbench-2.0-figure-11",
+      "source_stem": "fig10-per-matched",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-11.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-11.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-11.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-11.png"
+        }
+      },
+      "caption": "Resources per matched reference vulnerability: totals over the 20 applications divided by the number matched. (A) Wall time, log scale. (B) Known dollar cost, log scale; Snyk Code has no per-scan model cost. (C) Tokens, log scale; provider accounting differs, so compare within a family. (D) Reported findings per matched vulnerability, a measure of review volume.",
+      "alt": "Four bar panels per endpoint-aware configuration. Wall time per match: Snyk Code 5 s, AI configurations 107 to 942 s. Known cost per match: $0.47 to $21.92; Snyk Code has no per-scan model cost. Tokens per match: Claude Code 0.35 to 1.03 million, Codex Security 24 to 42 million. Findings per match: Claude Code 1.21 to 1.34, Snyk Code 4.78, Codex Security 4.80 to 7.85.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 12,
+      "file_stem": "vulnbench-2.0-figure-12",
+      "source_stem": "figC1-rank-stability",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-12.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-12.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-12.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-12.png"
+        }
+      },
+      "caption": "Rank of each endpoint-aware configuration by macro recall under the scoring rule used for all results (outlined row) and 20 alternative rules, grouped as line tolerance, endpoint roles, matching and credit, and location-only or type-only rules. The right column gives Kendall's τ against the outlined row. DeepSec is excluded because it reports no endpoint roles.",
+      "alt": "Grid of ranks, one row per scoring rule. Snyk Code and Opus 5 xhigh hold the top two ranks in every row, with Snyk Code first under 18 of the 20 alternatives and Opus 5 xhigh first under the other two; the middle ranks reorder under lenient location rules; Kendall's τ ranges from 1.00 down to 0.33.",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    },
+    {
+      "paper_figure": 13,
+      "file_stem": "vulnbench-2.0-figure-13",
+      "source_stem": "figA3-type-distribution",
+      "files": {
+        "light": {
+          "svg": "figures/svg/light/vulnbench-2.0-figure-13.svg",
+          "png": "figures/png/light/vulnbench-2.0-figure-13.png"
+        },
+        "dark": {
+          "svg": "figures/svg/dark/vulnbench-2.0-figure-13.svg",
+          "png": "figures/png/dark/vulnbench-2.0-figure-13.png"
+        }
+      },
+      "caption": "Vulnerability classes in the reference set.",
+      "alt": "Bar chart of the 14 vulnerability classes, led by cross-site scripting (19), path traversal (16), command injection (13) and SQL injection (13).",
+      "in_image_note_checked": "matches the final paper (arXiv v1)"
+    }
+  ]
+}

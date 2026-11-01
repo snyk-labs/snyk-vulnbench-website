@@ -1,0 +1,164 @@
+[
+  {
+    "id": "question",
+    "kicker": "Research question",
+    "h2": "Who finds which vulnerabilities?",
+    "body": [
+      "When security teams point AI coding agents or AI security harnesses at real applications, what do they find that deterministic SAST does not, and what do they miss that it catches?",
+      "We lead with recall, because the question practitioners ask of a scanner is whether it finds the vulnerabilities that are actually there; precision and cost are reported beside it."
+    ]
+  },
+  {
+    "id": "design",
+    "kicker": "Benchmark design and configurations",
+    "h2": "Nine configurations, one blind protocol",
+    "body": [
+      "Each of the 9 configurations ran once on each of the 20 applications, for 180 successful runs. No configuration received an advisory, a class hint or the reference set.",
+      "Every result belongs to a complete harness and model configuration, never to a model alone."
+    ],
+    "table": "data/tables/headline.csv (scorecard: macro recall, matched, 95% interval, precision, exact-line matches; DeepSec rows in a separate block)",
+    "boundary": "Interpretation boundary: the interval shows how much a score depends on which applications are in the corpus, not run-to-run variation."
+  },
+  {
+    "id": "main-result",
+    "kicker": "Central result",
+    "h2": "Close at the top. Too close to separate.",
+    "figure": 1,
+    "body": [
+      "A corpus of this size cannot separate the top two: a split as close as 16 to 12 would need a corpus many times larger before it could indicate a real difference, and not separating them is also not evidence that they are equal. Snyk Code ranks first in 74% of the resampled corpora.",
+      "The three Codex Security configurations matched between 34 and 45 vulnerabilities; much of that gap is about which line they report, not whether they see the vulnerability."
+    ]
+  },
+  {
+    "id": "complementarity",
+    "kicker": "Complementarity",
+    "h2": "Two engines reach the ceiling",
+    "figures": [
+      2,
+      3
+    ],
+    "body": [
+      "Snyk Code matches 89; Opus 5 xhigh adds the 12 vulnerabilities that it matched and Snyk Code did not, reaching 101. After those two, no other configuration adds a vulnerability. Opus 5 xhigh also misses 16 vulnerabilities that Snyk Code matched, which the cumulative count does not show.",
+      "Under many-to-one credit, Snyk Code's unique coverage falls to 5 and the best pair of AI configurations reaches 93, while the combined ceiling of 101 holds.",
+      "The authorization classes illustrate the split: on the three IDOR and mass-assignment vulnerabilities, Snyk Code matched none and the Claude Code configurations matched two or three. In the other direction, Snyk Code matched all 11 open redirects, all 6 prototype-pollution vulnerabilities and all 16 path traversals."
+    ]
+  },
+  {
+    "id": "flow-shape",
+    "kicker": "Where each engine wins",
+    "h2": "Within one file and across files",
+    "figure": 4,
+    "body": [
+      "Within a single file Snyk Code has the highest recall: 40 of the 46 same-file vulnerabilities, against 32 for Opus 5 xhigh. Across files the two are close: 49 of 62 and 53.",
+      "For the Claude Code configurations, the blind spots are about which classes they report, not about navigating a codebase.",
+      "One cell is hard for every engine: cross-file cross-site scripting, where no endpoint-aware configuration matched more than 4 of the 7. In 5 of those 7 the data flows from server-side code to a browser page; Snyk Code matched none of the 5 and Opus 5 xhigh 2.",
+      "Snyk Code's lower cross-file recall comes largely from this cell: with cross-site scripting removed, its cross-file and same-file recall are essentially equal (47 of 55 and 29 of 34)."
+    ]
+  },
+  {
+    "id": "triage",
+    "kicker": "The cost of combining",
+    "h2": "A larger queue to triage",
+    "figure": 5,
+    "body": [
+      "Snyk Code and Opus 5 xhigh together report 539 findings for their 101 matches. 336 of Snyk Code's 425 findings matched no reference vulnerability; 87% of those are in classes outside the 14 scored classes, led by hardcoded credentials (195).",
+      "Counting only reports in the scored classes, precision is 69% (89 of 129) for Snyk Code against 81% (85 of 105) for Opus 5 xhigh."
+    ],
+    "boundary": "Findings outside the reference set are not proven false; both precision measures are lower bounds."
+  },
+  {
+    "id": "outside",
+    "kicker": "Findings outside the reference set",
+    "h2": "Real vulnerabilities the answer key missed",
+    "body": [
+      "23 clusters of findings outside the reference set were reported by at least three configurations from at least two tool families. We reviewed the 15 of them that Snyk Code did not report and that fall in a scored class or are CSRF: thirteen were real, one was borderline and one was judged to be by design; none was noise.",
+      "In this run, AI configurations found at least seven real vulnerabilities in scored classes that the reference set did not contain and Snyk Code did not report. All seven were reproduced live.",
+      "Codex Security configurations reported all seven, the Claude Code configurations six and DeepSec three; the consensus filter gives more weight to the family with three configurations, so these counts do not measure how broadly each family discovers issues.",
+      "They follow data where a first-party taint model typically ends: through library semantics and across the server-to-browser hop."
+    ],
+    "boundary": "Each candidate had a code-level first pass and an independent skeptical second pass, both by AI agents, and a final call by an author; the consensus filter favors issues several tools can see. These findings are never added to the reference set or the recall results, and they are a lower-bound count, not a miss rate for any engine."
+  },
+  {
+    "id": "policy",
+    "kicker": "Harness policy",
+    "h2": "A built-in policy that suppresses real classes",
+    "figure": 6,
+    "body": [
+      "The built-in /security-review prompt in Claude Code 2.1.251, the version that ran, excludes ReDoS and asks that prototype pollution and open redirect be reported only at extremely high confidence. These classes were chosen from the prompt text, before looking at results.",
+      "No Claude Code configuration reported a single ReDoS finding anywhere in the three applications that contain one. For the 11 open redirects, counting a finding of the class anywhere in the application, the Claude Code configurations reported 2 to 6 of the 11 and each Codex Security configuration reported 10 of the 11, though Codex Security was credited for only 4 or 5 of the 11 open redirects; Snyk Code reported and was credited for all 11.",
+      "Prototype pollution is weaker evidence: Opus 5 at both effort settings reported all 6 and was credited for 4.",
+      "Prompt-swap control (supplementary, 19 of the 20 applications, single run): matched 16 of the 20 vulnerabilities in the classes the policy excludes or restricts, against 9 with /security-review, with little change elsewhere."
+    ],
+    "boundary": "The control is shown beside the main results and never merged into them; changes on the model provider's side cannot be excluded."
+  },
+  {
+    "id": "localization",
+    "kicker": "Localization",
+    "h2": "The right function, a line above the dangerous call",
+    "figures": [
+      7,
+      8
+    ],
+    "body": [
+      "Codex Security with GPT-5.6 Sol located 80 of the 108 vulnerabilities at file level, but 34 under the two-line rule. When it missed a curated sink, its nearest reported location in the same file sat above the curated line in 39 of the 41 cases where that location was not itself a source, a median of six lines above.",
+      "A harness can detect a vulnerability and still hand the developer the wrong line. Line-level evidence is what makes a finding actionable."
+    ]
+  },
+  {
+    "id": "deepsec",
+    "kicker": "A pre-model ceiling",
+    "h2": "DeepSec's file selection fixes a recall ceiling before the model runs",
+    "figure": 9,
+    "body": [
+      "DeepSec's model-free scan stage queued at least one file from the curated flow for only 56 of the 108 vulnerabilities: all 12 Java vulnerabilities and 23 of 30 in JavaScript and TypeScript, but 11 of 32 in Go and 10 of 34 in Python.",
+      "Conditional on selection, the Opus 5 backend's localized recall was 37 of 56 and the GPT-5.6 Sol backend's 1 of 56. The GPT-5.6 Sol backend exported no findings in 16 of its 20 runs; the records cannot tell the backend's behavior inside DeepSec from an integration problem, so this row describes the configuration as executed and says nothing about the model."
+    ],
+    "boundary": "Localized recall is DeepSec's primary metric and is not comparable with Attacker-Reachable Vulnerability Recall."
+  },
+  {
+    "id": "efficiency",
+    "kicker": "Efficiency",
+    "h2": "What coverage costs",
+    "figures": [
+      10,
+      11
+    ],
+    "body": [
+      "Per matched vulnerability, wall time was 5 seconds for Snyk Code and between 107 and 942 seconds for the endpoint-aware AI configurations.",
+      "Known cost per matched vulnerability ranged from $0.47 (Codex Security with GPT-5.6 Luna) to $21.92 (Codex Security with GPT-5.6 Sol). The recall-versus-cost frontier consists of Codex Security with GPT-5.6 Luna and the three Claude Code configurations.",
+      "Per matched vulnerability, the Claude Code configurations reported 1.21 to 1.34 findings, Snyk Code 4.78 and the Codex Security configurations 4.80 to 7.85: a measure of how much a team would review, not how much of it is noise.",
+      "The Snyk MCP configuration matched 80 vulnerabilities, every one of which Opus 5 xhigh also matched, at 0.35 times the cost. Effort, MCP access and the prompt all differ, so this is a cheaper configuration that kept 80 of the 85, not an effect of grounding."
+    ],
+    "boundary": "One run per configuration and application: every ratio is a single observation. Cost is known cost only ($1,594.08 across the main matrix); an unavailable cost is never shown as zero. Snyk Code has no per-scan model cost; its license cost is outside this study. Tokens compare only within a provider family."
+  },
+  {
+    "id": "robustness",
+    "kicker": "Robustness",
+    "h2": "Which conclusions depend on the scoring rule",
+    "figure": 12,
+    "body": [
+      "Rank agreement with the rule used for all results ranges from a Kendall τ of 1.00 down to 0.33; the top four change membership under 7 of the 20 alternatives.",
+      "Leaving out one application at a time changes some rank in 4 of the 20 cases and the top rank in none.",
+      "In two supplementary repetitions, Snyk Code returned byte-identical findings on all 20 applications, and the same 89 matches each time. The AI configurations ran once per application."
+    ]
+  },
+  {
+    "id": "implications",
+    "kicker": "Operational meaning",
+    "h2": "Practical implications for security teams",
+    "items": [
+      {
+        "title": "Run deterministic SAST and AI review together",
+        "text": "In this study neither was sufficient alone, and together they reached the ceiling of what all comparable configurations found, at the price of a larger triage queue. Deterministic SAST was measured on Snyk Code, the only SAST engine evaluated."
+      },
+      {
+        "title": "Read the harness as part of what you buy",
+        "text": "A built-in policy, a localization habit or a pre-model file filter shapes what reaches the report."
+      },
+      {
+        "title": "Judge spend by coverage, not by price",
+        "text": "A more expensive model did not reliably buy more coverage."
+      }
+    ]
+  }
+]

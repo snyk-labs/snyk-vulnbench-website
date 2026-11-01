@@ -1,0 +1,22 @@
+config_id,subset,matched,n
+snyk-code,classes the built-in review policy excludes or restricts,18,20
+snyk-code,XSS in React/Angular applications,4,7
+snyk-code,all other vulns,67,81
+opus-5-medium-security-review-with-snyk-mcp,classes the built-in review policy excludes or restricts,5,20
+opus-5-medium-security-review-with-snyk-mcp,XSS in React/Angular applications,5,7
+opus-5-medium-security-review-with-snyk-mcp,all other vulns,70,81
+opus-5-xhigh-security-review,classes the built-in review policy excludes or restricts,9,20
+opus-5-xhigh-security-review,XSS in React/Angular applications,5,7
+opus-5-xhigh-security-review,all other vulns,71,81
+sonnet-5-xhigh-security-review,classes the built-in review policy excludes or restricts,6,20
+sonnet-5-xhigh-security-review,XSS in React/Angular applications,4,7
+sonnet-5-xhigh-security-review,all other vulns,63,81
+codex-security-luna-xhigh,classes the built-in review policy excludes or restricts,6,20
+codex-security-luna-xhigh,XSS in React/Angular applications,3,7
+codex-security-luna-xhigh,all other vulns,36,81
+codex-security-terra-xhigh,classes the built-in review policy excludes or restricts,5,20
+codex-security-terra-xhigh,XSS in React/Angular applications,1,7
+codex-security-terra-xhigh,all other vulns,29,81
+codex-security-sol-xhigh,classes the built-in review policy excludes or restricts,4,20
+codex-security-sol-xhigh,XSS in React/Angular applications,1,7
+codex-security-sol-xhigh,all other vulns,29,81

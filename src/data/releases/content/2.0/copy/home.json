@@ -1,0 +1,87 @@
+{
+  "current_release_label": "Current release · Snyk VulnBench 2.0",
+  "eyebrow": "A Snyk benchmark initiative",
+  "h1": "What do AI security agents find that SAST does not, and what do they miss that SAST catches?",
+  "subtitle": "An attacker-reachable recall study of deterministic SAST and AI security agents",
+  "lede": "We ran nine productized security configurations once each, blind, on 20 open-source web applications. For the seven endpoint-aware configurations, a finding counts only when it locates the attacker-controlled source and the dangerous sink of a curated vulnerability, each within two lines; DeepSec is scored separately.",
+  "buttons": [
+    "Explore the results",
+    "Read the paper",
+    "View methodology",
+    "Download data"
+  ],
+  "stats": [
+    {
+      "value": "108",
+      "label": "attacker-reachable vulnerabilities"
+    },
+    {
+      "value": "20",
+      "label": "open-source web applications"
+    },
+    {
+      "value": "62",
+      "label": "flows across more than one file"
+    },
+    {
+      "value": "9",
+      "label": "configurations, one run each"
+    }
+  ],
+  "headline_evidence": {
+    "kicker": "Headline evidence · Attacker-Reachable Vulnerability Recall",
+    "h2": "Close at the top. Different ground covered.",
+    "chart": "figure 1 (all seven endpoint-aware configurations; DeepSec in its own panel)",
+    "rows_from": "data/tables/headline.csv",
+    "callouts": [
+      "Snyk Code 82.4% (89 of 108) and Claude Code /security-review with Opus 5 xhigh 79.3% (85 of 108): they disagree on 28 vulnerabilities, 16 to 12, too few to tell them apart.",
+      "Together they match 101 of 108, the same as all seven endpoint-aware configurations combined: a ceiling across configurations, not one tool's result.",
+      "DeepSec is scored with localized recall, a different evidence requirement, and is shown separately."
+    ],
+    "for_appsec": "In this study neither engine was sufficient alone. A vulnerability class an engine does not report is a real miss here, because every reference vulnerability is attacker-reachable.",
+    "dataset_line": "Dataset 2.0.0 · Snyk VulnBench 2.0 · 108 reference vulnerabilities · one run per configuration and application · Source: published 2.0 paper"
+  },
+  "findings_intro": {
+    "kicker": "What the results mean in practice",
+    "h2": "An AI security engine is a model inside a harness.",
+    "body": "Deterministic SAST and AI review covered different ground; what an AI engine reported depended on its harness as much as on its model; and coverage and cost were only loosely related."
+  },
+  "principles": {
+    "kicker": "Research principles",
+    "h2": "Evidence before ranking",
+    "body": "VulnBench is a versioned research initiative, not a universal leaderboard. Every release defines what it measured and what it did not prove.",
+    "items": [
+      {
+        "title": "Independent reference sets",
+        "text": "2.0 scores against curated, attacker-reachable vulnerabilities, not against any tool's findings."
+      },
+      {
+        "title": "Strict, stated scoring",
+        "text": "A finding counts only when it locates the curated vulnerability's endpoints; alternative scoring rules are reported, not hidden."
+      },
+      {
+        "title": "Same rules for every system",
+        "text": "Every configuration is named in full and scored by the same rule; DeepSec's different metric is never ranked with the others."
+      },
+      {
+        "title": "Reproducible data",
+        "text": "The harness, reference sets and every run are public and checksummed."
+      },
+      {
+        "title": "Explicit limitations",
+        "text": "Agreement is never relabeled as accuracy, and findings outside the reference set are never called false."
+      }
+    ]
+  },
+  "release_history": [
+    {
+      "name": "Snyk VulnBench 2.0",
+      "line": "Published 28 October 2026 · Current"
+    },
+    {
+      "name": "Snyk VulnBench JS 1.0",
+      "line": "Published 11 June 2026"
+    }
+  ],
+  "release_history_note": "Releases measure different things. JS 1.0 measured repeatability and agreement with Snyk Code; 2.0 measures attacker-reachable recall against an independent reference set."
+}

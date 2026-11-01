@@ -1,0 +1,146 @@
+{
+  "title": "2.0 · Methodology",
+  "h1": "An attacker-reachable recall study under one blind protocol",
+  "lede": "Nine productized configurations scan 20 applications once each. For the seven endpoint-aware configurations a finding counts only when it meets the curated flow's endpoints; DeepSec, which reports no endpoint roles, is scored with localized recall.",
+  "sections": [
+    {
+      "id": "design",
+      "h2": "108 vulnerabilities in 20 applications",
+      "body": [
+        "The corpus contains 108 reference vulnerabilities, between 2 and 10 per application (median 5). For 62 of them the curated flow from source to sink spans more than one file; the other 46 stay within a single file.",
+        "The vulnerabilities fall into 14 classes, led by cross-site scripting (19), path traversal (16), command injection (13) and SQL injection (13). Across the corpus there are 447 authored flow locations: 131 sources, 118 sinks and 198 unlabeled intermediate steps.",
+        "Sixteen applications are third-party projects; four were written by Snyk employees for earlier work and reused here."
+      ],
+      "table": "data/tables/corpus_by_language.csv",
+      "figure": 13
+    },
+    {
+      "id": "reference",
+      "h2": "An independent, attacker-reachable reference set",
+      "body": [
+        "Reference vulnerabilities either already existed in intentionally vulnerable demonstration applications or were seeded by the authors with an AI coding assistant, using OpenAI and Anthropic models. Every one was then curated with an annotated source-to-sink flow and an exploit proof of concept verified by the authors.",
+        "Attacker-reachable means that input an outside attacker controls reaches a dangerous operation without being neutralized.",
+        "The reference set is not derived from any tool's findings. Snyk Code was used during curation only as a format and class-naming reference."
+      ]
+    },
+    {
+      "id": "configurations",
+      "h2": "Nine configurations",
+      "table": "data/tables/configurations.csv",
+      "body": [
+        "Snyk Code runs through its command-line interface with no prompt. Claude Code runs its built-in /security-review command with three model and effort settings, one with the Snyk MCP server. Codex Security runs in its standard full-repository mode with GPT-5.6 Luna, GPT-5.6 Terra or GPT-5.6 Sol. DeepSec runs with an Opus 5 or a GPT-5.6 Sol backend.",
+        "In the MCP configuration the agent must call snyk_code_scan exactly once and, by construction, receives Snyk Code's findings for the application (the MCP responses were not recorded); it does not receive coverage information about what Snyk Code analyzed.",
+        "Versions and how each is known are recorded per row; vendors' built-in prompts are paraphrased, not reproduced."
+      ]
+    },
+    {
+      "id": "protocol",
+      "h2": "Blind, independent runs",
+      "body": [
+        "No configuration receives an advisory, a vulnerability description, a class hint or the reference set. Every run starts in a fresh, isolated workspace with only the application source.",
+        "Each of the 9 configurations ran once on each of the 20 applications, for 180 successful runs."
+      ]
+    },
+    {
+      "id": "scoring",
+      "h2": "The endpoint rule",
+      "body": [
+        "A finding matches when its class equals the reference class or a listed alternative and its reported locations meet the endpoint rule, with a tolerance of two lines: for a flow with one curated location, a match to that location is enough; for two, a match to either labeled endpoint; for three or more, distinct reported locations must match both a labeled source and a labeled sink.",
+        "Of the 62 cross-file flows, 61 fall under the strict three-or-more rule, against 29 of the 46 same-file flows.",
+        "Matching is one-to-one: a finding can be credited to at most one vulnerability.",
+        "Why two lines: the tolerance absorbs a tool and an annotator anchoring different lines of the same statement. Under exact-line matching Snyk Code matches 85 instead of 89, and the ranking of the seven comparable configurations is unchanged.",
+        "DeepSec exports files and lines but no source or sink roles, so it is scored with localized recall: a class match plus any reported location within two lines of any curated flow location."
+      ]
+    },
+    {
+      "id": "metrics",
+      "h2": "Each value answers a narrow question",
+      "metrics": [
+        {
+          "name": "Attacker-Reachable Vulnerability Recall",
+          "definition": "The share of reference vulnerabilities a configuration matched under the endpoint rule.",
+          "unit": "percent",
+          "aggregation": "Macro average over the 20 applications, with the pooled matched count beside it",
+          "caveat": "Pooled (micro) and macro recall rank the configurations identically."
+        },
+        {
+          "name": "Localized recall (DeepSec)",
+          "definition": "A class match plus any reported location within two lines of any curated flow location.",
+          "unit": "percent",
+          "aggregation": "Macro average over the 20 applications",
+          "caveat": "A different evidence requirement; never ranked or combined with Attacker-Reachable Vulnerability Recall."
+        },
+        {
+          "name": "Precision against the reference set",
+          "definition": "The share of a configuration's findings that matched a reference vulnerability.",
+          "unit": "percent",
+          "aggregation": "Pooled over all findings",
+          "caveat": "A lower bound, because the reference set may omit real vulnerabilities."
+        },
+        {
+          "name": "95% interval",
+          "definition": "The middle 95% of macro recall over 4,000 resamples of the 20 applications (seed 20260929).",
+          "unit": "percent",
+          "aggregation": "Resampling applications with replacement",
+          "caveat": "Shows sensitivity to which applications are in the corpus, not run-to-run variation."
+        },
+        {
+          "name": "Paired comparison",
+          "definition": "McNemar's test looks only at the vulnerabilities one configuration found and the other missed.",
+          "unit": "p-value",
+          "aggregation": "Per pair of configurations",
+          "caveat": "Descriptive and unadjusted; no difference is described as significant."
+        },
+        {
+          "name": "Wall time",
+          "definition": "Elapsed time per run, including each harness's pipeline and the shared gateway.",
+          "unit": "seconds or hours",
+          "aggregation": "Total over 20 applications, or per matched vulnerability",
+          "caveat": "Measures each configuration as deployed, not model speed alone."
+        },
+        {
+          "name": "Known cost",
+          "definition": "The cost recorded by the harness for each run.",
+          "unit": "USD",
+          "aggregation": "Total over 20 applications divided by matched vulnerabilities",
+          "caveat": "Snyk Code has no per-scan model cost; an unavailable cost is never shown as zero."
+        },
+        {
+          "name": "Tokens",
+          "definition": "Tokens recorded by each harness for its runs.",
+          "unit": "tokens",
+          "aggregation": "Per matched vulnerability",
+          "caveat": "Providers account for cached input differently; compare within a family."
+        },
+        {
+          "name": "Findings per matched vulnerability",
+          "definition": "Reported findings divided by matched vulnerabilities.",
+          "unit": "ratio",
+          "aggregation": "Totals over 20 applications",
+          "caveat": "A measure of review volume, not of noise."
+        }
+      ]
+    },
+    {
+      "id": "supplementary",
+      "h2": "Supplementary runs",
+      "body": [
+        "Three supplementary arms ran about a month after the main runs with the same tasks, reference set and prompts: an equal-effort comparison for the MCP configuration, a prompt-swap control for the review policy, and two repeats of Snyk Code.",
+        "They are reported beside the main results and are never merged into the main tables, unions or rankings."
+      ]
+    },
+    {
+      "id": "limitations",
+      "h2": "What the protocol cannot establish",
+      "list_from": "limitations"
+    },
+    {
+      "id": "reproduction",
+      "h2": "Trace the release to its public archive",
+      "body": [
+        "All analysis numbers were recomputed from the public run archive by a separate re-implementation of the scorer, which reproduces every recorded scoring decision in all 180 runs.",
+        "The main dataset is publications/vulnbench-v2/ in the harness repository, with a SHA-256 checksum for the archive and per-file checksums."
+      ]
+    }
+  ]
+}

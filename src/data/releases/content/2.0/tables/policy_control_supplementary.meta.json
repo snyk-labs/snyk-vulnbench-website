@@ -1,0 +1,17 @@
+{
+  "table": "policy_control_supplementary.csv",
+  "columns": {
+    "security_review_matched": "the main-run Claude Code /security-review Opus 5 xhigh configuration on the same 19 applications"
+  },
+  "units": "counts",
+  "basis": "SUPPLEMENTARY: single run on 19 of the 20 applications, about a month after the main runs; never merge into main tables, unions or rankings",
+  "paper": "Section 4.1, Figure 6 (dashed outline)",
+  "source_archive": {
+    "execution": "20260907-vulnbench-v2-deepsec-150-574753a2",
+    "path": "publications/vulnbench-v2/20260907-vulnbench-v2-deepsec-150-574753a2/bundles/20260907-vulnbench-v2-deepsec-150-574753a2.tar.gz",
+    "sha256": "b29c643079c8fddc361463ca39e29204e0510d0a16300631784b59772157acd6",
+    "checksums": "https://github.com/snyk-labs/snyk-vulnbench/blob/main/publications/vulnbench-v2/20260907-vulnbench-v2-deepsec-150-574753a2/SHA256SUMS"
+  },
+  "derivation_note": "Values as printed in Section 4.1; source archive publications/vulnbench-v2/20261001-supplementary-controls/. Produced by the VulnBench 2.0 analysis pipeline, which verifies the archive's SHA-256, extracts it, and re-scores every run with a re-implementation of the public scorer that reproduces every recorded scoring decision; this file is a selection and renaming of the pipeline's output.",
+  "empty_cells": "An empty cell means not applicable or unavailable as stated in `columns`; it never means zero."
+}

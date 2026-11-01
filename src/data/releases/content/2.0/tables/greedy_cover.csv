@@ -1,0 +1,8 @@
+step,config_id,marginal_gain,cumulative
+1,snyk-code,89,89
+2,opus-5-xhigh-security-review,12,101
+3,opus-5-medium-security-review-with-snyk-mcp,0,101
+4,sonnet-5-xhigh-security-review,0,101
+5,codex-security-luna-xhigh,0,101
+6,codex-security-terra-xhigh,0,101
+7,codex-security-sol-xhigh,0,101

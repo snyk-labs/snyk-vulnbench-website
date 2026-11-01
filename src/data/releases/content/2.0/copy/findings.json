@@ -1,0 +1,74 @@
+[
+  {
+    "n": "01",
+    "id": "complementarity",
+    "title": "SAST and AI review cover different ground",
+    "paper_section": "3",
+    "body": [
+      "Snyk Code matched 82.4% (89 of 108) and Claude Code /security-review with Opus 5 xhigh 79.3% (85 of 108). They disagree on 28 vulnerabilities, 16 matched only by Snyk Code and 12 only by Opus 5 xhigh; a corpus of this size cannot separate them.",
+      "Together they match 101 of 108, as many as all seven endpoint-aware configurations combined. The best pair without SAST, Opus 5 xhigh with Codex Security GPT-5.6 Terra, reaches 89 (93 under many-to-one credit).",
+      "Snyk Code adds 16 vulnerabilities to Opus 5 xhigh, only 3 of them cross-file, led by open redirect (6). Opus 5 xhigh adds 12 to Snyk Code, 7 of them cross-file, including the authorization classes.",
+      "Snyk Code is the only one of the seven endpoint-aware configurations with unique coverage: 10 vulnerabilities in six classes (5 under many-to-one credit).",
+      "Outside the reference set, in this run, AI configurations found at least seven real vulnerabilities in scored classes that the reference set did not contain and Snyk Code did not report."
+    ],
+    "care": "A union across configurations is a ceiling, not one tool's result. Combining the two also combines their queues: 539 findings for 101 matches.",
+    "figures": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "n": "02",
+    "id": "harness-policy",
+    "title": "The harness decides what gets reported",
+    "paper_section": "4",
+    "body": [
+      "Claude Code's /security-review excludes ReDoS and reports prototype pollution and open redirect only at extremely high confidence. On the 20 reference vulnerabilities in those classes, Snyk Code matched 18 and Opus 5 xhigh 9; on the 81 others (excluding 7 cross-site scripting vulnerabilities in React and Angular applications), Opus 5 xhigh matched 71 and Snyk Code 67.",
+      "In a supplementary run on 19 of the 20 applications, the same model at the same effort, without that policy, matched 16 of the 20.",
+      "Codex Security with GPT-5.6 Sol located 80 vulnerabilities at file level but 34 under the two-line rule, typically pointing above the dangerous call.",
+      "DeepSec's model-free scan stage queued a file from only 56 of the 108 flows before any model ran.",
+      "The model still matters inside a harness: under the same harness, effort and prompt, Opus 5 matched 14 vulnerabilities that Sonnet 5 missed, against 2 the other way."
+    ],
+    "care": "The policy reading rests on the policy text and one supplementary control run; harness and model cannot be fully separated by this design.",
+    "figures": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "n": "03",
+    "id": "efficiency",
+    "title": "Coverage and cost were only loosely related",
+    "paper_section": "5",
+    "body": [
+      "Snyk Code scanned all 20 applications in 8 minutes; the comparable AI configurations took between 2.4 hours and 8.9 hours.",
+      "Within Codex Security, all at xhigh effort, GPT-5.6 Sol cost 35.0 times as much as GPT-5.6 Luna and matched 11 fewer vulnerabilities: a comparison of model tiers, not of reasoning effort. Within Claude Code /security-review, at the same xhigh effort and with the same prompt, Opus 5 cost 4.2 times as much as Sonnet 5 and matched 12 more.",
+      "Known cost per matched vulnerability ranged from $0.47 to $21.92."
+    ],
+    "care": "One run per configuration and application: every ratio is a single observation. Snyk Code has no per-scan model cost; its license cost is outside this study.",
+    "figures": [
+      10,
+      11
+    ]
+  },
+  {
+    "n": "04",
+    "id": "robustness",
+    "title": "The top two hold; the middle reorders",
+    "paper_section": "6",
+    "body": [
+      "Snyk Code and Opus 5 xhigh are the two highest-ranked endpoint-aware configurations under every one of the 20 alternative scoring rules; Snyk Code ranks first under 18 and Opus 5 xhigh under the other two; their order should not be read as a result.",
+      "Line tolerance is the main driver of reordering: widening it from ±2 to ±10 lines adds 37 matches for Codex Security with GPT-5.6 Sol, 28 for Terra and 16 for Luna, at most 3 for any Claude Code configuration, and none for Snyk Code."
+    ],
+    "care": "Rescoring shows which conclusions survive changes in the scoring rule; it does not add statistical power.",
+    "figures": [
+      12,
+      8
+    ]
+  }
+]

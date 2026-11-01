@@ -1,0 +1,86 @@
+{
+  "configs": [
+    {
+      "config_id": "snyk-code",
+      "display_name": "Snyk Code",
+      "figure_label": "Snyk Code",
+      "family": "SAST",
+      "metric": "ar_recall",
+      "colour": "ink"
+    },
+    {
+      "config_id": "opus-5-xhigh-security-review",
+      "display_name": "Claude Code /security-review · Opus 5 xhigh",
+      "figure_label": "Opus 5 xhigh",
+      "family": "Claude Code",
+      "metric": "ar_recall",
+      "colour": "purple-100"
+    },
+    {
+      "config_id": "opus-5-medium-security-review-with-snyk-mcp",
+      "display_name": "Claude Code /security-review · Opus 5 medium + Snyk MCP",
+      "figure_label": "Opus 5 med + MCP",
+      "family": "Claude Code",
+      "metric": "ar_recall",
+      "colour": "purple-72"
+    },
+    {
+      "config_id": "sonnet-5-xhigh-security-review",
+      "display_name": "Claude Code /security-review · Sonnet 5 xhigh",
+      "figure_label": "Sonnet 5 xhigh",
+      "family": "Claude Code",
+      "metric": "ar_recall",
+      "colour": "purple-45"
+    },
+    {
+      "config_id": "codex-security-luna-xhigh",
+      "display_name": "Codex Security · GPT-5.6 Luna",
+      "figure_label": "CxSec GPT-5.6 Luna",
+      "family": "Codex Security",
+      "metric": "ar_recall",
+      "colour": "orange-100"
+    },
+    {
+      "config_id": "codex-security-terra-xhigh",
+      "display_name": "Codex Security · GPT-5.6 Terra",
+      "figure_label": "CxSec GPT-5.6 Terra",
+      "family": "Codex Security",
+      "metric": "ar_recall",
+      "colour": "orange-72"
+    },
+    {
+      "config_id": "codex-security-sol-xhigh",
+      "display_name": "Codex Security · GPT-5.6 Sol",
+      "figure_label": "CxSec GPT-5.6 Sol",
+      "family": "Codex Security",
+      "metric": "ar_recall",
+      "colour": "orange-45"
+    },
+    {
+      "config_id": "deepsec-claude-opus-5-xhigh-turns-150",
+      "display_name": "DeepSec · Opus 5 xhigh",
+      "figure_label": "DeepSec Opus 5",
+      "family": "DeepSec",
+      "metric": "localized_recall",
+      "colour": "pink-100"
+    },
+    {
+      "config_id": "deepsec-codex-sol-xhigh-turns-150",
+      "display_name": "DeepSec · GPT-5.6 Sol xhigh",
+      "figure_label": "DeepSec GPT-5.6 Sol",
+      "family": "DeepSec",
+      "metric": "localized_recall",
+      "colour": "pink-50"
+    }
+  ],
+  "tokens": {
+    "ink": {
+      "light": "#030328",
+      "dark": "#FFFFFF"
+    },
+    "purple": "#6F00DD",
+    "orange": "#F3552E",
+    "pink": "#FF00FF",
+    "note": "Tints are the family colour at the stated opacity over the page background (on dark, lighter tints read better); Snyk Code is drawn in the text colour."
+  }
+}

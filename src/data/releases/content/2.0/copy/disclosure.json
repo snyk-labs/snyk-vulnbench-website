@@ -1,0 +1,5 @@
+{
+  "short": "A Snyk benchmark initiative. All authors are employees of Snyk, which develops Snyk Code, one of the evaluated configurations.",
+  "long": "All authors are employees of Snyk, which develops Snyk Code. The paper describes how the corpus and reference set were built and the biases that follow, in both directions. The harness, fixtures, reference sets and all run data are public, so every result can be re-scored.",
+  "placement": "Release page header area, the methodology page, the about page, and the homepage release card (short form)."
+}
