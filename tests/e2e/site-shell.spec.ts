@@ -84,7 +84,7 @@ test("keeps exactly one top-level navigation item active", async ({ page }) => {
 
   await navigation.getByRole("link", { name: "Explore", exact: true }).click();
 
-  await expect(page).toHaveURL(/\/releases\/js-1\.0\/explore/);
+  await expect(page).toHaveURL(/\/releases\/2\.0\/explore/);
   if (await menu.isVisible()) {
     await menu.click();
   }

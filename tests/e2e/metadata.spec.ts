@@ -13,7 +13,7 @@ test("publishes canonical social metadata", async ({ page, request }) => {
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",
-    /https:\/\/vulnbench\.com\/social\/vulnbench-default\.svg/,
+    "https://vulnbench.com/social/2.0/release.svg",
   );
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
     "href",
@@ -24,9 +24,11 @@ test("publishes canonical social metadata", async ({ page, request }) => {
     "image/svg+xml",
   );
 
-  const socialImage = await request.get("/social/vulnbench-default.svg");
-  expect(socialImage.status()).toBe(200);
-  expect(socialImage.headers()["content-type"]).toContain("image/svg+xml");
+  for (const path of ["/social/2.0/release.svg", "/social/vulnbench-default.svg"]) {
+    const socialImage = await request.get(path);
+    expect(socialImage.status()).toBe(200);
+    expect(socialImage.headers()["content-type"]).toContain("image/svg+xml");
+  }
 
   const favicon = await request.get("/favicon.svg");
   expect(favicon.status()).toBe(200);

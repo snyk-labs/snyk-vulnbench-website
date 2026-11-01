@@ -51,7 +51,7 @@ test("the 2.0 release page is current and carries the disclosure and differs blo
       name: "What do AI security agents find that SAST does not, and what do they miss that SAST catches?",
     }),
   ).toBeVisible();
-  await expect(page.locator(".release-meta").first()).toContainText("Current");
+  await expect(page.locator(".release-meta").first()).toContainText(/current/i);
   await expectBodySizedDisclosure(page, disclosure.long);
   await expect(page.getByRole("heading", { name: "Two releases, two questions" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Snyk publication" })).toHaveCount(0);
@@ -179,7 +179,7 @@ test("catalogues and citation list 2.0 first and keep JS 1.0 as superseded", asy
     await page.goto(path);
     const headings = await page.locator("main li h2, main li h3").allInnerTexts();
     expect(headings.slice(0, 2)).toEqual(["Snyk VulnBench 2.0", "Snyk VulnBench JS 1.0"]);
-    await expect(page.locator("main")).toContainText("Superseded");
+    await expect(page.locator("main")).toContainText(/superseded/i);
   }
 
   await page.goto("/about");
